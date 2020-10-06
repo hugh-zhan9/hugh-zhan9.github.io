@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="聊天室程序室在各种网络程序中比较流行的一种，通过对这个应用比较广泛的基于C&#x2F;S模型的聊天室设计和实现的讲解，使读者可以通过C#进行聊天室程序的简单设计，甚至是优化，添加更多的功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Socket的C&#x2F;S模式的聊天室">
+<meta property="og:url" content="http://yoursite.com/2020/03/18/Chat-Room-Based-On-CS/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="聊天室程序室在各种网络程序中比较流行的一种，通过对这个应用比较广泛的基于C&#x2F;S模型的聊天室设计和实现的讲解，使读者可以通过C#进行聊天室程序的简单设计，甚至是优化，添加更多的功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/16/8YhzSH.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/18/8wCt3T.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/03/18/8wCYCV.png">
+<meta property="article:published_time" content="2020-03-18T12:18:49.000Z">
+<meta property="article:modified_time" content="2020-04-02T13:47:18.000Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/03/16/8YhzSH.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/18/Chat-Room-Based-On-CS/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>基于Socket的C/S模式的聊天室 | </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7e4557d4ccc5f2373ebada2ff7d42a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title"></span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+        <li class="menu-item menu-item-photos">
+
+    <a href="/photos/" rel="section"><i class="fa fa-fw fa-photo"></i>Photos</a>
+
+  </li>
+        <li class="menu-item menu-item-map">
+
+    <a href="/DiyWeb/" rel="section"><i class="fa fa-fw fa-map-marker"></i>足迹</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+
++ 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/18/Chat-Room-Based-On-CS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日积硅步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于Socket的C/S模式的聊天室
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-18 20:18:49" itemprop="dateCreated datePublished" datetime="2020-03-18T20:18:49+08:00">2020-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-02 21:47:18" itemprop="dateModified" datetime="2020-04-02T21:47:18+08:00">2020-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="热度" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/03/18/Chat-Room-Based-On-CS/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/18/Chat-Room-Based-On-CS/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>37 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>聊天室程序室在各种网络程序中比较流行的一种，通过对这个应用比较广泛的基于C/S模型的聊天室设计和实现的讲解，使读者可以通过C#进行聊天室程序的简单设计，甚至是优化，添加更多的功能。</p>
+<a id="more"></a>
+
+<h1 id="关于Socket"><a href="#关于Socket" class="headerlink" title="关于Socket"></a>关于Socket</h1><p>所谓Socket，填充称为”套接字”，它是通信的基础。用于描述IP地址和端口。<br>一个套接字是通信的一端，在这一端上可以找到与其对应的一个名字。一个正在被使用的套接字都有它的类型和与其相关的进程。套接字存在于通信域，通信域是为了处理一般的线程通过套接字通信而引进的一种抽象概念。通信域通常与同一个域中的套接字交换数据(数据交换也可以穿越域的界限，但是这时需要执行某种解释程序)。套接字也可以说是一个通信链的句柄。应用程序通常通过套接字向网络发出请求或者应答网络请求。<br>常用的socket类型有两种：流式socket(SOCK_STREAM)和数据报式socket(SOCK_DGRAM)。流式是一种面向连接的socket，针对面向连接的TCP服务额应用；和数据报式socket是一种无连接的socket，对应于无连接的UDP服务应用。</p>
+<h1 id="C-S聊天室模型"><a href="#C-S聊天室模型" class="headerlink" title="C/S聊天室模型"></a>C/S聊天室模型</h1><p>C/S(client/server)模式又称为c/s结构，是软件系统体系结构的一种。简单地讲就是基于企业内部网络地应用系统。与B/S(Browser/Server)模式相比，C/S模式的应用系统最大的好处是不依赖企业外网的环境，即无论企业是否能够上网，都不影响应用。<br>聊天室主要由聊天室客户端和聊天室服务器组成。<br>聊天室服务器负责管理与客户端的连接并发送消息给客户端。<br>聊天室客户端负责接收或者发送聊天信息，登录聊天室服务器等。<br>一个简单的C/S聊天室模型如下图，聊天室服务器和客户端之间通过聊天协议进行通信。聊天室服务器和聊天室客户端信息的传递是按照如下所示的方式进行的。<br><img src="https://s1.ax1x.com/2020/03/16/8YhzSH.jpg" alt="服务器/客户端聊天室模型"><br>如图所示，首先要启动聊天室服务器，然后使得TcpListener开始监听端口，此时TcpListener 会进入一个 Pending 的状态，等待客户端的连接。当有客户端连接之后，通过AcceptSocket返回与客户端连接的Socket对象，然后通过读写Socket对象完成与聊天室客户端的数据传递。<br>聊天室客户端建立之后，首先创建一个Socket对象，然后通过这个Socket对象连接聊天室服务器，连接成功后通过Socket完成数据的接收和发送处理。</p>
+<h1 id="聊天协议"><a href="#聊天协议" class="headerlink" title="聊天协议"></a>聊天协议</h1><h2 id="关于聊天协议的应答"><a href="#关于聊天协议的应答" class="headerlink" title="关于聊天协议的应答"></a>关于聊天协议的应答</h2><p>在聊天协议中每个聊天命令都是应答方式的，即聊天室发送聊天命令后会接收到一个应答消息。在本实例中，只定义了OK和ERROR两种应答，客户端收到OK应答时，表示前面的聊天命令执行成功；收到ERROR应答时，说明前面发送的聊天命令执行失败。<br>应答使用文本字符串<code>OK</code>和<code>ERROR</code>表示，因此接收到数据后直接进行判断即可，这一样可以简化程序的实现。应答<code>ERROR</code>后面可以跟参数表示失败的原因，例如：<code>ERROR|出错原因</code></p>
+<h2 id="聊天状态处理"><a href="#聊天状态处理" class="headerlink" title="聊天状态处理"></a>聊天状态处理</h2><p>在聊天室的聊天过程中，客户端包含<code>closed</code>和<code>connected</code>两种状态。当执行CONNECT命令之后，进入connected状态。只有在这种状态下才可以执行以下聊天命令。</p>
+<blockquote>
+<p>JOIN:加入聊天<br>LIST:列出所有用户<br>CHAT:发送聊天信息<br>PRIV:进行聊天<br>QUIT:退出聊天</p>
+</blockquote>
+<p>在执行QUIT命令后，聊天的状态会变成closed状态，此时客户端只能执行CONNECT命令再次登录聊天室服务器。</p>
+<h2 id="聊天命令介绍"><a href="#聊天命令介绍" class="headerlink" title="聊天命令介绍"></a>聊天命令介绍</h2><p>聊天命令主要包括<code>CONNECT</code>、<code>JOIN</code>、<code>LIST</code>、<code>CHAT</code>、<code>PRIV</code>和<code>QUIT</code>，下面是关于这些聊天命令的定义以及命令格式的相关介绍。</p>
+<ol>
+<li>CONNECT命令<br>CONNECT命令用于连接聊天室服务器。当聊天室客户端与服务器建立了Socket连接之后，会马上发送CONNECT命令，其命令格式如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONNECT|发送者的用户名：附加信息|</span><br></pre></td></tr></table></figure>
+CONNECT的参数为发送者的用户名，一般为用于聊天的昵称，如果昵称存在了就会发送ERROR应答，否则发送OK应答。下面是两个CONNECT的连接过程：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CONNECT|Tom|</span><br><span class="line">    -ERROR|User Tom already exits</span><br><span class="line"></span><br><span class="line">CONNECT|Mike|</span><br><span class="line">    -OK</span><br></pre></td></tr></table></figure></li>
+<li>JOIN命令<br>JOIN命令用于通知其他用户本人已加入聊天室。当一个用户登录到聊天室服务器后，服务器会发送JOIN命令通知每个聊天室客户端有新用户加入，JOIN命令格式如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JOIN|XXXX|</span><br></pre></td></tr></table></figure>
+JOIN的参数为刚刚登录到聊天室服务器的用户名，该命令可以不需要客户端的响应，客户端接收到该命令之后一般会更新界面，显示XXXX已经加入到聊天室，对于刚刚加入聊天室服务器的用户，其状态会在收到JOIN命令后变为connected状态。</li>
+<li>LIST命令<br>LIST命令用于向聊天室客户端发送全部的登录用户的用户名，以便于用户在聊天室客户端选择用户进行私下聊天。LIST的命令格式如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIST|user1|user2|...|userN|</span><br></pre></td></tr></table></figure>
+客户端接收到该命令之后会解析命令参数，并把这些用户显示在界面上。</li>
+<li>CHAT命令<br>CHAT命令用于向所有用户发送聊天信息，这是公开的聊天信息，其命令格式定义为：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CHAT|发送者的用户名：发送内容|</span><br></pre></td></tr></table></figure></li>
+<li>PRIV命令<br>PRIV命令是私下聊天命令，与CHAT命令不同，通过PRIV命令传输的信息只能被接收者看到。PRIV命令的格式如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PRIV|发送者的用户名|接收者的用户名|发送内容|</span><br></pre></td></tr></table></figure></li>
+<li>EXIT和QUIT命令<br>EXIT命令是客户端发送给服务端的，表示当前用户要推出聊天室，其命令格式如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXIT|要离开的用户名|</span><br></pre></td></tr></table></figure>
+当聊天室服务器接收到EXIT命令之后，会清除该用户的一些记录和数据。然后向该用户发送QUIT命令，表示该用户已经离开。QUIT命令的格式如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QUIT|</span><br></pre></td></tr></table></figure>
+客户端接收到QUIT命令之后可以将连接状态变成closed状态。</li>
+</ol>
+<h1 id="系统功能定义"><a href="#系统功能定义" class="headerlink" title="系统功能定义"></a>系统功能定义</h1><p>C/S聊天室工具提供了最基本的聊天功能，如：聊天、用户列表维护等，在开发聊天程序之前，首先需要定义好程序所要实现的功能，根据聊天室的实际需要，一个聊天室主要由聊天室服务器和聊天室客户端组成。下面分别介绍这两个部分的具体系统功能定义。</p>
+<h2 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h2><p>聊天室的服务器端是聊天室最重要的一部分，是聊天室的主体，所以应该首先创建聊天室的服务端，只有存在了聊天室的服务端之后，客户端才能正常与其连接，从而实现聊天功能。<br>服务器端建立完成之后，一般都处于监听状态，等待客户端的连接请求，聊天室的界面设计如下图：</p>
+<p><img src="https://s1.ax1x.com/2020/03/18/8wCt3T.png" alt="聊天室"></p>
+<p>“服务器端口”文本框用于输入聊天室服务器需要进行监听的端口号。“开启服务器”按钮用于启动聊天室服务器，开始进行监听。“停止服务器”按钮用于停止聊天室服务器。下侧列表框分别用于显示在线用户列表和系统信息以及聊天信息。在下方的Label控件用于显示在线人数。</p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>客户端主要用于和用户交互，其界面设计如下：</p>
+<p><img src="https://s1.ax1x.com/2020/03/18/8wCYCV.png" alt="聊天室客户端"></p>
+<p>聊天室客户端各控件的功能如下：</p>
+<blockquote>
+<p>服务器：该文本档用于输入聊天室服务器的IP地址或者是聊天室服务器的机器名称等。</p>
+<p>端口：该文本框用于输入聊天室服务器进行监听的端口号。</p>
+<p>用户名：该文本框用于登陆聊天室服务器的用户名。如果为空则不允许登录，提示用户输入用户名。</p>
+<p>在线用户列表：该列表框用于显示当前在线的全部用户，给出这些用户的用户名</p>
+<p>聊天内容：该文本框用于显示聊天信息，系统信息等。</p>
+<p>发送信息：该文本框用于输入聊天内容，单击“发送”按钮就会发送这些信息</p>
+<p>发送：该按钮用于发送聊天信息</p>
+<p>私聊：该复选框选中之后，用于向选中用户发送悄悄话。</p>
+<p>离开聊天室：该按钮用于退出聊天室服务器。</p>
+</blockquote>
+<h1 id="系统功能设计"><a href="#系统功能设计" class="headerlink" title="系统功能设计"></a>系统功能设计</h1><p>聊天室服务器和聊天室客户端之间的协议解析和执行室最重要的部分。这一节将基于上一节中的功能，给出聊天室服务器程序实现聊天协议的解析流程和聊天室客户端实现聊天协议的解析流程图。</p>
+<h2 id="聊天室服务器的协议解析流程"><a href="#聊天室服务器的协议解析流程" class="headerlink" title="聊天室服务器的协议解析流程"></a>聊天室服务器的协议解析流程</h2><p>聊天室服务器程序实现聊天协议的解析流程如下图所示：</p>
+<p>从图中可以看出，当客户端连接服务器之后，服务器将为这个客户端建立一个数据接收的独立线程。</p>
+<p>服务器接收到CONNECT命令以后，就向其他客户端发送JOIN命令，告诉其他用户有新的用户接入，然后把当前全部用户信息返回给刚刚加入的用户，以便于该用户在界面上显示用户列表。当接收到EXIT命令之后，告诉其他用户有用户退出了，这些用户就会将退出用户从用户列表删除。</p>
+<h2 id="聊天室客户端的协议解析流程"><a href="#聊天室客户端的协议解析流程" class="headerlink" title="聊天室客户端的协议解析流程"></a>聊天室客户端的协议解析流程</h2><p>当聊天室客户端连接到聊天室服务器之后，聊天室服务器立即建立一个数据接收的独立线程。在接收线程中，如果收到了聊天命令，客户端就对其进行解析处理，聊天室客户端会处理OK、ERROR、JOIN、LIST和QUIT这5中命令，聊天室客户端的数据接收流程如图：</p>
+<p>当接收到QUIT命令之后，聊天室客户端就会将该退出用户从用户列表删除。如果不是这几种命令，就会直接将信息显示在聊天界面上。</p>
+<h1 id="系统功能实现"><a href="#系统功能实现" class="headerlink" title="系统功能实现"></a>系统功能实现</h1><p>下面将分别介绍服务端和客户端之间的实现方法，该聊天系统的主要功能有：公共聊天，私人聊天，系统消息和用户显示。</p>
+<h2 id="服务器端程序设计"><a href="#服务器端程序设计" class="headerlink" title="服务器端程序设计"></a>服务器端程序设计</h2><ol>
+<li>类和成员定义以及构造函数</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1~37</span></span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"><span class="keyword">using</span> System.Data;</span><br><span class="line"><span class="keyword">using</span> System.Drawing;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Windows.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Net;</span><br><span class="line"><span class="keyword">using</span> System.Net.Sockets;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ChatApplicationServer</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">frmServerMain</span> : <span class="title">Form</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//clients 数组保存当前在线用户的client对象</span></span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">static</span> Hashtable clients = <span class="keyword">new</span> Hashtable();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//该服务器默认的监听器</span></span><br><span class="line">        <span class="keyword">private</span> TcpListener listener;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//默认最大支持的客户端数量</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">int</span> MaxUser = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//服务器是否开启的标志</span></span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">bool</span> ServerFlag <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">frmServerMain</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">AppendMsgEventHandler</span>(<span class="params">RichTextBox rb, <span class="keyword">string</span> msg</span>)</span>; </span><br><span class="line">        <span class="comment">//定义在线程中操作不同线程创建的控件的委托</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">AppendUserEverntHandler</span>(<span class="params">ListBox lb, <span class="keyword">string</span> username</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其中，静态变量clients是一个<code>HashTable</code>对象,用于保存当前的在线用户数据。listener是一个<code>TcpListener</code>对象，用于监听默认的端口。我们看一下<code>MSDN</code>中对<code>TcpListener</code>类的介绍：<code>TcpListener</code>类提供了一些简单的方法，用于在阻止同步模式下侦听和接收传入连接请求。可以使用<code>TcpClient</code>或<code>Socket</code>来连接<code>TcpListener</code>，可使用<code>IPEndPoint</code>、本地<code>IP</code>地址和端口号，或者仅使用端口号来<code>TcpListener</code>，可以将本地<code>IP</code>指定为<code>Any</code>,将本地端口号指定为0.如果选择这样做，可在选择套接字之后使用<code>LocalEndPoint</code>属性来标识已指定的信息。</p>
+<p><code>MAXUSER</code>常量定义了服务器可以接受的用户最大数目，也就是说，当服务器端接收的客户端连接超过这个数目之后就会拒绝连接请求。<code>ServerFlag</code>用于表示是否已经开始监听<code>Socket</code>请求，当<code>ServerFlag</code>为true时表示服务器开始工作了，当为false时将断开所有用户的连接。</p>
+<ol start="2">
+<li><p>获得有效的端口号和IP地址</p>
+<p>下面的代码用于获得本地局域网或者拨号动态分配IP地址，在启动聊天室时需要用到这些IP地址。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span>137~165</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获得本机局域网IP地址</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">string</span> <span class="title">ReturnIpAddress</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    IPAddress[] AddressList = Dns.GetHostByName(Dns.GetHostName()).AddressList;</span><br><span class="line">    <span class="keyword">if</span> (AddressList.Length &lt; <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> AddressList[<span class="number">0</span>].ToString();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获得拨号动态分配IP地址</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">string</span> <span class="title">GetDynamicIpAddress</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    IPAddress[] AddressList = Dns.GetHostByName(Dns.GetHostName()).AddressList;</span><br><span class="line">    <span class="keyword">if</span> (AddressList.Length &lt; <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> AddressList[<span class="number">1</span>].ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//114~136</span></span><br><span class="line"><span class="comment">//获取有效的端口号</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">ReturnValidPort</span>(<span class="params"><span class="keyword">string</span> strport</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> port;</span><br><span class="line">    <span class="comment">//测试端口号是否有效</span></span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> （TbServerPort.Text == <span class="string">""</span>）</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="string">"端口号为空，不能启动服务器"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            port = Convert.ToInt32(TbServerPort.Text.Trim());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.RbChatContent.AppendText(<span class="string">"无效的端口号："</span> + ex.Message + <span class="string">"\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> port;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动聊天室服务器</p>
+<p>在聊天室服务器界面中，当用户点击“启动服务器”按钮时，会执行以下代码来启动聊天室服务器，并监听指定的Socket端口。监听程序是单独在一个线程中实现的，这样可以不影响界面的正常操作。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//39~75</span></span><br><span class="line"><span class="comment">//开启服务器</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">BtStartServer_Click</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> IPort = <span class="keyword">this</span>.ReturnValidPort(TbServerPort.Text.Trim());</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">if</span> (IPort &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox.Show(<span class="string">"错误的端口信息！"</span>, <span class="string">"错误提示"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">string</span> ip = <span class="keyword">this</span>.ReturnIpAddress();</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        IPAddress UserIP = IPAddress.Parse(ip);</span><br><span class="line">   </span><br><span class="line">        <span class="comment">//创建服务器套接字</span></span><br><span class="line">        listener = <span class="keyword">new</span> TcpListener(UserIP, IPort);</span><br><span class="line">        listener.Start();</span><br><span class="line">   </span><br><span class="line">        <span class="keyword">this</span>.RbChatContent.AppendText(<span class="string">"服务器已经启动，正在监听"</span> + ip + <span class="string">"端口号："</span> + TbServerPort.Text + <span class="string">"........\n"</span>);</span><br><span class="line">   </span><br><span class="line">        frmServerMain.ServerFlag = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">//以下方法启动一个新的线程，执行监听方法</span></span><br><span class="line">        <span class="comment">//以便在一个独立的进程中执行确认与客户端连接的操作</span></span><br><span class="line">        Thread thread = <span class="keyword">new</span> Thread(StartListen);</span><br><span class="line">        thread.Start();</span><br><span class="line">   </span><br><span class="line">        BtStartServer.Enabled = <span class="literal">false</span>;</span><br><span class="line">        BtStartServer.Enabled = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.RbChatContent.AppendText(ex.Message + <span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//77~112</span></span><br><span class="line"><span class="comment">//用于接收客户端的请求，确认与客户端的连接</span></span><br><span class="line"><span class="comment">//并且启动一个新的线程处理客户端的请求</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">StartListen</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (frmServerMain.ServerFlag)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当接收到客户端请求时，确认与客户端的连接</span></span><br><span class="line">            <span class="keyword">if</span> (listener.Pending())</span><br><span class="line">            &#123;</span><br><span class="line">                Socket NewSocket = listener.AcceptSocket();</span><br><span class="line">                <span class="keyword">if</span> (clients.Count &gt;= MaxUser)</span><br><span class="line">                &#123;</span><br><span class="line">                    MessageBox.Show(<span class="string">"连接数已超过允许连接的最大数"</span> + MaxUser.ToString() + <span class="string">",拒绝新的连接！"</span>, <span class="string">"错误提示"</span>);</span><br><span class="line">                    <span class="keyword">this</span>.RbChatContent.AppendText(<span class="string">"连接数已超过允许连接的最大数"</span> + MaxUser.ToString() + <span class="string">",拒绝新的连接！"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">//启动一个新的线程，处理用户相应的请求</span></span><br><span class="line">                    ChatClient NewClient = <span class="keyword">new</span> ChatClient(<span class="keyword">this</span>, NewSocket);</span><br><span class="line">                    Thread ClientThread = <span class="keyword">new</span> Thread(NewClient.ClientService);</span><br><span class="line">                    ClientThread.Start();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            Thread.Sleep(<span class="number">200</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.UpdateMsg(ex.Message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>界面处理</p>
+<p>在整个聊天室程序中，还提供了一些对于界面的处理方法。当用户编辑“服务器端口”文本框室，对用户的输入进行验证，当服务端口号为空时，便让“开启服务器”按钮变为不可用状态，上述界面的事件代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//244~247</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TbServerPort_TextChanged</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.BtStartServer.Enable = (<span class="keyword">this</span>.TbServerPort.Text != <span class="string">""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<p>当用户点击了“停止服务器”按钮后，将聊天室服务器运行状态标志ServerFlag设置为false，并将“通知服务器”按钮设置为不可选的状态，同时将“开启服务器”按钮设置为可用状态，并在界面消息中显示“服务器已经停止监听信息”。代码实现如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//228~236</span></span><br><span class="line"><span class="comment">//停止服务器</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">BtStopServer_Click</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    frmServerMain.ServerFlag = <span class="literal">false</span>;</span><br><span class="line">    BtStartServer.Enabled = <span class="literal">true</span>;</span><br><span class="line">    BtStartServer.Enabled = <span class="literal">false</span>;</span><br><span class="line">    UpdateMsg(<span class="string">"服务器已经停止监听。\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当有新用户进入聊天室时，可以调用AddUser方法添加用户进入聊天室的系统消息，并且把新进来的用户添加到在线用户列表中，并且更新在线人数，AddUser方法代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//178~191</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>添加用户更新界面</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/sunmmary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="name"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddUser</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span> str = <span class="string">"【"</span> + name + <span class="string">"】"</span> + <span class="string">"已经加入聊天！\n"</span>;</span><br><span class="line">    Invoke(<span class="keyword">new</span> AppendMsgEventHandler(AppendUserEvent), RbChatContent, str);</span><br><span class="line">    <span class="comment">//将刚加入的用户添加进用户列表</span></span><br><span class="line">    Invoke(<span class="keyword">new</span> AppendMsgEventHandler(AppendUserEvent), LbOnlineUser, name);</span><br><span class="line">    <span class="keyword">this</span>.TslOnlineUserNum.Text = Convert.Tostring(clinets.Count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当用户离开聊天室以后，可调用RemoveUser方法添加用户已经离开聊天室的系统信息，并且把当前用户从在线用户列表中移除，同时更新人数，RemoveUser方法代码编写如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//216~226</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>移出用户</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/sunmmary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="name"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveUser</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.RbChatContent.AppendText(name + <span class="string">"已经离开聊天室\n"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">this</span>.LbOnlineUser.Items.Remove(name);</span><br><span class="line">    <span class="keyword">this</span>.TslOnlineUserNum.Text = System.Convert.Tostring(clients.Count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取在线用户列表的方法为GetUserList方法,把在线用户列表中的用户名称以“|”隔开，这个方法在发送LIST命令时调用，GetUserList方法代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//202~214</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>获取用户列表</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/sunmmary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetUserList</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span> UserList = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;LbOnlineUser.Items.Count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        UserList = UserList + LbOnlineUser.Items[i].Tostring() + <span class="string">"|"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> UserList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UpdateMsg方法用于更新信息显示界面，在有聊天消息或者系统消息的时候将信息显示到界面上，在这里，为了保证线程间操作不会出现跨线程操作不属于本线程创建的控件的不安全因素，采用委托异步执行更新操作。其实现代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//36</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">AppendMsgEventHandler</span>(<span class="params">RichTextBox rb, <span class="keyword">string</span> msg</span>)</span>;</span><br><span class="line"><span class="comment">//定义在线程中操作不同线程创建的控件的委托</span></span><br></pre></td></tr></table></figure>
+
+<p>frnServerMain.cs第193~196行委托要执行的方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AppendMsgEvent</span>(<span class="params">RichTextBox rb, <span class="keyword">string</span> msg</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    rb.AppendText(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>frnServerMain.cs第167~174行的UpdateMsg方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>更新显示信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/sunmmary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="name"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateMsg</span>(<span class="params"><span class="keyword">string</span> msg</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Invoke(<span class="keyword">new</span> AppendMsgEventHandler(AppendMsgEvernt),RbChatContent, msg + <span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当聊天室服务器窗体关闭时，会执行窗体的FormClosing事件，在该事件中，将服务器运行状态标志ServerFlag置为false，然后将服务器停止运行，退出操作，其相应的代码编写如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//238~242        </span></span><br><span class="line"><span class="comment">//关闭窗体</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">frmServerMain_FormClosing</span>(<span class="params"><span class="keyword">object</span> sender, FormClosingEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    frmServerMain.ServerFlag = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="5">
+<li><p>关于ChatClient类的定义</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//255~291</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChatClient</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> name;</span><br><span class="line">    <span class="keyword">private</span> Socket CurrentSocket = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> IpAddress;</span><br><span class="line">    <span class="keyword">private</span> frmServerMain server;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//保留当前连接的状态</span></span><br><span class="line">    <span class="comment">//CLOSED--&gt;CONNECTED--&gt;CLOSED</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">string</span> ConnState = <span class="string">"closed"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ChatClient</span>(<span class="params">frmServerMain server, Socket CurrentScoket</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">this</span>.server = server;</span><br><span class="line">        <span class="keyword">this</span>.CurrentSocket = CurrentSocket;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; name = <span class="keyword">value</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Socket CurrentSocket</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> CurrentSocket; &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; CurrentSocket = <span class="keyword">value</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> IpAddress</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> IpAddress; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取远程IP地址</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">string</span> <span class="title">GetRemoteIp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> ((IpEndPoint)CurrentSocket.RemoteEndPoint).Address.ToString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="6">
+<li>聊天命令的处理</li>
+</ol>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//472~477</span></span><br><span class="line"><span class="comment">//回发消息给客户端</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SendToClient</span>(<span class="params">ChatClient client, <span class="keyword">string</span> msg</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Byte[] message = System.Text.Encoding.Default.GetBytes(msg.ToCharArray());</span><br><span class="line">    client.CurrentSocket.Send(message, message.Length, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//293~333</span></span><br><span class="line"><span class="comment">//与客户端进行数据通信，包括接收客户端的请求</span></span><br><span class="line"><span class="comment">//根据不同的请求命令，执行相应的操作，并将操作结果返回给客户端</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ClientServer</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span>[] AccpetStr = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">bool</span> KeepConnected = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用循环不断地与客户端进行交互，直到其发出EXIT或者QUIT命令</span></span><br><span class="line">    <span class="comment">//将KeepConnected设置为false，退出循环，关闭当前连接，中止当前线程</span></span><br><span class="line">    <span class="keyword">while</span> (KeepConnected &amp;&amp; frmServerMain.ServerFlag)</span><br><span class="line">    &#123;</span><br><span class="line">        AccpetStr = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (CurrentSocket == <span class="literal">null</span> || CurrentSocket.Available &lt; <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Thread.Sleep(<span class="number">300</span>);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//接收信息存入buff数组中</span></span><br><span class="line">            <span class="keyword">int</span> length = CurrentSocket.Receive(buff);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//将字符数组转换为字符串</span></span><br><span class="line">            <span class="keyword">string</span> Command = Encoding.Default.GetString(buff, <span class="number">0</span>, length);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//对字符串按分隔符拆分</span></span><br><span class="line">            AccpetStr = Command.Split(<span class="keyword">new</span> <span class="keyword">char</span>[] &#123; <span class="string">'|'</span> &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (AccpetStr == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Thread.Sleep(<span class="number">00</span>);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception ex)</span><br><span class="line">        &#123;</span><br><span class="line">            server.UpdateMsg(<span class="string">"程序发生异常，异常信息："</span> + ex.Message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   w</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//334~369</span></span><br><span class="line"><span class="keyword">if</span> (AcceptStr[<span class="number">0</span>] == <span class="string">"CONNECT"</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//如果为CONNECT，则它的命令格式为"CONNECT|发送者的用户名：附件信息"</span></span><br><span class="line">    <span class="comment">//则AcceptStr[1]保存的就是用户名</span></span><br><span class="line">    <span class="keyword">this</span>.name = AcceptStr[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (frmServerMain.clients.Contains(<span class="keyword">this</span>.name))</span><br><span class="line">    &#123;</span><br><span class="line">        SendToClient(<span class="keyword">this</span>, <span class="string">"ERORR|User"</span> + <span class="keyword">this</span>.name + <span class="string">"已经存在！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Hashtable SynClient = Hashtable.Synchronized(frmServerMain.client);</span><br><span class="line">        SynClient.Add(<span class="keyword">this</span>.name, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//更新界面</span></span><br><span class="line">        server.AddUser(<span class="keyword">this</span>.name);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//对每一个在线用户发送JOIN和LIST消息命令更新用户列表</span></span><br><span class="line">        IEnumerator MyIEnumerator = frmServerMain.clients.Value.GetEnumerator();</span><br><span class="line">        <span class="keyword">while</span> (MyIEnumerator.MoveNext())</span><br><span class="line">        &#123;</span><br><span class="line">            ChatClient cClient = (ChatClient)MyIEnumerator.Current;</span><br><span class="line">            SendToClient(cClient, <span class="string">"JOIN|"</span> + <span class="keyword">this</span>.name + <span class="string">"|"</span>);</span><br><span class="line">            Thread.Sleep(<span class="number">100</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//更新连接状态</span></span><br><span class="line">        ConnState = <span class="string">"connected"</span>;</span><br><span class="line">        SendToClient(<span class="keyword">this</span>, <span class="string">"ok"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//向客户端发送LIST命令更新用户列表</span></span><br><span class="line">        <span class="keyword">string</span> MsgUsers = <span class="string">"LIST|"</span> + server.GetUserList();</span><br><span class="line">        SendToClient(<span class="keyword">this</span>, MsgUsers);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   wode </p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//370~382</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (AcceptStr[<span class="number">0</span>] == <span class="string">"LIST"</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (ConnState == <span class="string">"CONNECTED"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//向客户端发送LIST命令，以此更新客户端的当前在线用户列表</span></span><br><span class="line">        <span class="keyword">string</span> MsgUser = <span class="string">"LIST|"</span> + server.GetUserList();</span><br><span class="line">        SendToClient(<span class="keyword">this</span>, MsgUsers);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        SendToClient(<span class="keyword">this</span>, <span class="string">"ERROR|服务器未连接，请重新登录"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   wde </p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 383~404</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (AcceptStr[<span class="number">0</span>] == <span class="string">"CHAT"</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (ConnState == <span class="string">"connected"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//此时接收到的命令格式为：</span></span><br><span class="line">        <span class="comment">//命令标识符(CHAT)|发送者的用户名：发送内容|</span></span><br><span class="line">        <span class="comment">//向所有当前在线的用户转发此信息</span></span><br><span class="line">        IEnumerator MyEnumerator = frmServerMain.client.Value.GetEnumerator();</span><br><span class="line">        <span class="keyword">while</span> (MyEnumerator.MoveNext())</span><br><span class="line">        &#123;</span><br><span class="line">            ChatClient client = (ChatClient)MyEnumerator.Current;</span><br><span class="line">            <span class="comment">//将"发送者的用户名：发送内容"转发给用户</span></span><br><span class="line">            SendToClient(client, AcceptStr[<span class="number">1</span>]);    </span><br><span class="line">        &#125;</span><br><span class="line">        server.UpDateMsg(AcceptStr[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//发送错误信息</span></span><br><span class="line">        SendToClient(<span class="keyword">this</span>, <span class="string">"ERROR|服务器未连接，请重新登录"</span>)；</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   wb</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//405~437</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (AcceptStr[<span class="number">0</span>] == <span class="string">"PRIV"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">if</span> (ConnState == <span class="string">"connected"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//此时接收到的命令格式为：</span></span><br><span class="line">        <span class="comment">//命令标识符(PRIV)|发送者的用户名|接收者用户名|发送内容||</span></span><br><span class="line">        <span class="comment">//AcceptStr[1]中保存了发送者的用户名</span></span><br><span class="line">        <span class="keyword">string</span> sender = AcceptStr[<span class="number">1</span>];</span><br><span class="line">        <span class="comment">//AcceptStr[2]中保存了接收者的用户名</span></span><br><span class="line">        <span class="keyword">string</span> receiver = AcceptStr[<span class="number">2</span>];</span><br><span class="line">        <span class="comment">//AcceptStr[3]中保存了发送的内容</span></span><br><span class="line">        <span class="keyword">string</span> Content = AcceptStr[<span class="number">3</span>];</span><br><span class="line">        <span class="keyword">string</span> message = sender + <span class="string">"---&gt;"</span> + reciver + <span class="string">": "</span> + content;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//仅将信息转发给发送者和接收者</span></span><br><span class="line">        <span class="keyword">if</span> (frmServerMain.client.Contains(sender))</span><br><span class="line">        &#123;</span><br><span class="line">            SendToClient((ChatClient)frmServerMain.clients[sender],message);        </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (frmServerMain.clients.Contains(receiver))</span><br><span class="line">        &#123;</span><br><span class="line">            SendToClient((ChatClient)frmServerMain.clients[receiver],message);  </span><br><span class="line">        &#125;</span><br><span class="line">        server.UpDateMsg(message);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//发送错误信息</span></span><br><span class="line">        SendToClient(<span class="keyword">this</span>, <span class="string">"ERROR|服务器未连接，请重新登录"</span>)；</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   12</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//438~467</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (AcceptStr[<span class="number">0</span>] == <span class="string">"EXIT"</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//此时接收到的命令的格式为：命令标识符(EXIT)|发送者的用户名</span></span><br><span class="line">    <span class="comment">//向所有当前在线的用户发送该用户已离开的信息    </span></span><br><span class="line">    <span class="keyword">if</span> (frmServerMain.client.Contains(AcceptStr[<span class="number">1</span>]))</span><br><span class="line">    &#123;</span><br><span class="line">        ChatClient client = (ChatClient)frmServerMain.client[AcceptStr[<span class="number">1</span>]];</span><br><span class="line">        <span class="comment">//将该用户对应的Client对象从clients中删除</span></span><br><span class="line">        Hashtable SyncClients = Hashtable.Synchronized(frmServerMain.clients);</span><br><span class="line">        SyncClients.Remove(client.name);</span><br><span class="line">        server.RemoveUser(client.name);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//向客户端发送Quit命令</span></span><br><span class="line">        <span class="keyword">string</span> message = <span class="string">"QUIT|"</span> + AcceptStr[<span class="number">1</span>];</span><br><span class="line">        System.Collections.IEnumerator MyEnumetator = frmServerMain.clients.Values.GetEnumerator();</span><br><span class="line">        <span class="keyword">while</span> (MyEnumerator.MoverNext())</span><br><span class="line">        &#123;</span><br><span class="line">            ChatClient newClient = (ChatClient)MyEnumerator.Current;</span><br><span class="line">            SendToClient(newClient, message);</span><br><span class="line">        &#125;</span><br><span class="line">        server.UpDateMsg(<span class="string">"QUIT"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//退出当前线程</span></span><br><span class="line">    <span class="keyword">break</span>；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="客户端程序设计"><a href="#客户端程序设计" class="headerlink" title="客户端程序设计"></a>客户端程序设计</h2><p>聊天室客户端程序主要包含在frmClientMain.cs文件中，该文件中只定义了一个frmClientMain类，改类封装了聊天室客户端界面和聊天美联处理逻辑。下面介绍这个类的主要功能和实现逻辑。</p>
+<ol>
+<li><p>类的成员定义及构造函数</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1~37</span></span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"><span class="keyword">using</span> System.Data;</span><br><span class="line"><span class="keyword">using</span> System.Drawing;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Windows.Forms;</span><br><span class="line"></span><br><span class="line"><span class="comment">//引入Socket和线程的命名空间</span></span><br><span class="line"><span class="keyword">using</span> System.Net;</span><br><span class="line"><span class="keyword">using</span> System.Net.Sockets;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ChatApplication</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">frmClientMain</span> : <span class="title">Form</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//与服务器的连接</span></span><br><span class="line">        <span class="keyword">private</span> TcpClient tcpClient;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//与服务器交流的流通道</span></span><br><span class="line">        <span class="keyword">private</span> NetworkStream nsStream;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//客户端的两种状态</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">string</span> ClOSED = <span class="string">"closed"</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">string</span> CONNECTED = <span class="string">"connected"</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">string</span> clientState = ClOSED;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">bool</span> StopFlag;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">frmClientMain</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>   其中tcpClient是一个TcpClient类的实例对象。关于TcpClient类，MSDN有以下说明：TcpClient类提供了一些简单的方法，用于在同步阻止模式下通过网络来连接、发送、和接收流数据。</p>
+<p>   为使TcpClient连接并交换数据，将使用TCP ProtocolType创建的TcpListener或Socket，必须侦听是否有传入的连接请求。可以使用下面两种方法之一连接到该侦听器：</p>
+<blockquote>
+<p>创建一个TcpClient，并调用3个可用的Connect方法之一。</p>
+<p>使用远程主机名和端口i好创建TcpClient。此构造函数将自动尝试一个连接。</p>
+</blockquote>
+<p>   nsStream是一个流对象，用于与服务器进行通信。clientState定义了当前客户端的状态，它的值可以是“cloesed”和“connected”。</p>
+<ol start="2">
+<li><p>与聊天室服务器的连接</p>
+<p>聊天室客户端启动后，单机“登录”按钮，就会进行与聊天室服务器的连接。程序首先检查是否已经是connected状态，如果是就退出。然后检查是否输入了用户名，如果没有输入，就用一个MessageBox对话框提醒用户输入用户名，最后通过TcpClient的Connect方法连接服务器端程序并发送CONNECT命令。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment">//40~85</span></span><br><span class="line"><span class="comment">//连接聊天室服务器</span></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">btLogin_Click</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>      &#123;</span><br><span class="line">          <span class="keyword">if</span> (clientState == CONNECTED)</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line">   </span><br><span class="line">          <span class="keyword">if</span> (<span class="keyword">this</span>.tbUserName.Text.Length == <span class="number">0</span>)</span><br><span class="line">          &#123;</span><br><span class="line">              MessageBox.Show(<span class="string">"请输入你的用户名！"</span>, <span class="string">"操作提示"</span>, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);</span><br><span class="line">              <span class="keyword">this</span>.tbUserName.Focus();</span><br><span class="line">              <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">try</span></span><br><span class="line">          &#123;</span><br><span class="line">              <span class="comment">//创建一个客户端套接字，它是Login的一个公共属性</span></span><br><span class="line">              <span class="comment">//将被传递给frmClientMain窗体</span></span><br><span class="line">              tcpClient = <span class="keyword">new</span> TcpClient();</span><br><span class="line">              <span class="comment">//向指定的IP地址的服务器发出连接请求</span></span><br><span class="line">              tcpClient.Connect(IPAddress.Parse(tbServer.Text), Int32.Parse(tbServerPort.Text));</span><br><span class="line">              <span class="comment">//获得与服务器数据交互的流通道（NetworkStream）</span></span><br><span class="line">              nsStream = tcpClient.GetStream();</span><br><span class="line">   </span><br><span class="line">              <span class="comment">//启动一个新的线程，执行方法this.ServerResponse()</span></span><br><span class="line">              <span class="comment">//以便来响应从服务器发回的信息</span></span><br><span class="line">              Thread newthread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> ThreadStart(<span class="keyword">this</span>.ServerResponse));</span><br><span class="line">              newthread.Start();</span><br><span class="line">   </span><br><span class="line">              <span class="comment">//向服务器发送CONNECT请求命令</span></span><br><span class="line">              <span class="comment">//此命令的格式与服务器端的定义格式一致</span></span><br><span class="line">              <span class="comment">//命令格式为：命令格式符(CONNECT)|发送者的用户名|</span></span><br><span class="line">              <span class="keyword">string</span> cmd = <span class="string">"CONNECT|"</span> + <span class="keyword">this</span>.tbUserName.Text + <span class="string">"|"</span>;</span><br><span class="line">              <span class="comment">//将字符串转化为字符数组</span></span><br><span class="line">              Byte[] bytes = System.Text.Encoding.Default.GetBytes(cmd.ToCharArray());</span><br><span class="line">              nsStream.Write(bytes, <span class="number">0</span>, bytes.Length);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">catch</span></span><br><span class="line">          &#123;</span><br><span class="line">              MessageBox.Show(ex.Message);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>聊天信息的发送</p>
+<p>当客户端连接到服务器以后，用户就可以通过客户端进行消息的发送了，消息输入完毕之后，单机客户端的“发送”按钮，就会计如“发送”按钮的单击事件。在“发送”按钮的单击事件中，会判断用户聊天是否私聊，如果是私聊，就会发送PRIV命令到服务器，否则就会发送CHAT命令到服务器。具体事件代码如下。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment">//200~249</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span>如果不是私聊，将CHAT命令发送给服务器，否则（为私聊），将PRIV命令发送给服务器</span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span>命令格式一定要与服务器端的命令格式一致</span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="sender"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="e"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">btSend_Click</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>      &#123;</span><br><span class="line">          <span class="keyword">try</span></span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">if</span> (!<span class="keyword">this</span>.cbPriChat.Checked)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//此时命令格式是：</span></span><br><span class="line">                  <span class="comment">//命令标识符(CHAT)|发送者的用户名：发送内容|</span></span><br><span class="line">                  <span class="keyword">string</span> message = <span class="string">"CHAT|"</span> + <span class="keyword">this</span>.tbUserName.Text + <span class="string">":"</span> + rbSendMsg.Text + <span class="string">"|"</span>;</span><br><span class="line">                  rbSendMsg.Text = <span class="string">""</span>;</span><br><span class="line">                  rbSendMsg.Focus();</span><br><span class="line">                  <span class="comment">//将字符串转化为字符数组</span></span><br><span class="line">                  Byte[] bytes = System.Text.Encoding.Default.GetBytes(message.ToCharArray());</span><br><span class="line">                  nsStream.Write(bytes, <span class="number">0</span>, bytes.Length);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">else</span></span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="keyword">if</span> (lbUserList.SelectedIndex == <span class="number">-1</span>)</span><br><span class="line">                  &#123;</span><br><span class="line">                      MessageBox.Show(<span class="string">"请在列表中选择一个用户"</span>, <span class="string">"提示信息"</span>, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);</span><br><span class="line">                      <span class="keyword">return</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">string</span> receiver = lbUserList.SelectedItem.ToString();</span><br><span class="line">                  <span class="comment">//消息格式是：</span></span><br><span class="line">                  <span class="comment">//命令标识符(PRIV)|发送者的用户名|接收者的用户名|发送内容|</span></span><br><span class="line">                  <span class="keyword">string</span> message = <span class="string">"PRIV|"</span> + <span class="keyword">this</span>.tbUserName.Text + <span class="string">"|"</span> + receiver + <span class="string">"|"</span> + rbSendMsg.Text + <span class="string">"|"</span>;</span><br><span class="line">                  rbSendMsg.Text = <span class="string">""</span>;</span><br><span class="line">                  rbSendMsg.Focus();</span><br><span class="line">                  <span class="comment">//将字符串转化为字符数组</span></span><br><span class="line">                  <span class="keyword">byte</span>[] bytes = System.Text.Encoding.ASCII.GetBytes(message.ToCharArray());</span><br><span class="line">                  nsStream.Write(bytes, <span class="number">0</span>, bytes.Length);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">catch</span></span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">this</span>.rbChatContent.AppendText(<span class="string">"网络发生错误或者服务器已退出"</span>);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>聊天命令的处理</p>
+<p>(1) 处理从聊天室服务器发送回来的聊天信息命令室通过聊天室客户端程序中的ServerResponse方法来完成的，该方法会不断地监测是否有聊天室服务器发送来的命令，如果有，就把命令解析到一个字符串数组。该方法中地while循环将会在客户端发出EXIT命令后退出，其相应的代码编写如下。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment">//86~120</span></span><br><span class="line"><span class="comment">//用于接收从服务器发出的信息</span></span><br><span class="line">      <span class="comment">//根据不同的命令，执行相应的操作</span></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ServerResponse</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>      &#123;</span><br><span class="line">          ListBox.CheckForllegalCrossThreadCalls = <span class="literal">false</span>;</span><br><span class="line">          <span class="comment">//定义一个byte数组，用于接收从服务器端发送来的数据</span></span><br><span class="line">          <span class="comment">//每次所能接收的数据包的最大长度为1024字节</span></span><br><span class="line">          <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">          <span class="keyword">string</span> msg;</span><br><span class="line">          <span class="keyword">int</span> len;</span><br><span class="line">          <span class="keyword">try</span></span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">if</span> (!nsStream.CanRead)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="keyword">return</span>;</span><br><span class="line">              &#125;</span><br><span class="line">   </span><br><span class="line">              StopFlag = <span class="literal">false</span>;</span><br><span class="line">              <span class="keyword">while</span> (!StopFlag)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//从流中得到数据，并存入buff字符数组中</span></span><br><span class="line">                  len = nsStream.Read(buff, <span class="number">0</span>, buff.Length);</span><br><span class="line">                  <span class="keyword">if</span> (len &lt; <span class="number">1</span>)</span><br><span class="line">                  &#123;</span><br><span class="line">                      Thread.Sleep(<span class="number">200</span>);</span><br><span class="line">                      <span class="keyword">continue</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">   </span><br><span class="line">                  <span class="comment">//将字符数组转化为字符串</span></span><br><span class="line">                  msg = System.Text.Encoding.Default.GetString(buff, <span class="number">0</span>, len);</span><br><span class="line">                  msg.Trim();</span><br><span class="line">   </span><br><span class="line">                  <span class="keyword">string</span>[] acceptFromServer = msg.Split(<span class="keyword">new</span> Char[] &#123; <span class="string">'|'</span> &#125;);</span><br><span class="line">                  <span class="comment">//acceptFromServer[0]中保存了命令标识符（LIST或JOIN或QUIT）</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>   (2) 以下代码是对OK和ERROR命令的处理，主要是对界面的更新，显示命令的执行结果；如果是ERROR命令，还会显示错误信息，用来提示用户检查自己的操作。</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">              <span class="comment">//121~131</span></span><br><span class="line"><span class="keyword">if</span> (acceptFromServer[<span class="number">0</span>].ToUpper() == <span class="string">"OK"</span>)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//处理响应</span></span><br><span class="line">                  Invoke(<span class="keyword">new</span> addHandleer(<span class="keyword">add</span>), rbChatContent, <span class="string">"命令执行成功"</span>);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">else</span></span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//命令执行错误</span></span><br><span class="line">                  Invoke(<span class="keyword">new</span> addHandleer(<span class="keyword">add</span>), rbChatContent, <span class="string">"命令执行错误："</span> + acceptFromServer[<span class="number">1</span>]);</span><br><span class="line">              &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>   (3) 当客户端接受的命令室LIST时，就会将LIST命令附带的全部参数显示在当前在线用户列表，具体的实现代码如下：</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//132~145</span></span><br><span class="line">              <span class="keyword">else</span> <span class="keyword">if</span> (acceptFromServer[<span class="number">0</span>] == <span class="string">"LIST"</span>)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//此时从服务器返回的消息格式：</span></span><br><span class="line">                  <span class="comment">//命令标识符(LIST)|用户名1|用户名2|...（所有在线用户名）|</span></span><br><span class="line">                  Invoke(<span class="keyword">new</span> addHandleer(<span class="keyword">add</span>), rbChatContent, <span class="string">"获得用户列表"</span>);</span><br><span class="line">   </span><br><span class="line">                  <span class="comment">//add("获得用户列表")</span></span><br><span class="line">                  <span class="comment">//更新在线用户列表</span></span><br><span class="line">                  lbUserList.Items.Clear();</span><br><span class="line">                  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; acceptFromServer.Length - <span class="number">1</span>; i++)</span><br><span class="line">                  &#123;</span><br><span class="line">                      lbUserList.Items.Add(acceptFromServer[i].Trim());</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>   (4) 当客户端接收的命令是JOIN时，会在界面上显示“XXX已经进入了聊天室”，并且在当前在线用户列表中添加新来的用户，具体代码实现如下。</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//146~156</span></span><br><span class="line">              <span class="keyword">else</span> <span class="keyword">if</span> (acceptFromServer[<span class="number">0</span>] == <span class="string">"JOIN"</span>)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//此时从服务器返回的消息格式：</span></span><br><span class="line">                  <span class="comment">//命令标识符(JOIN)|刚刚登入的用户名|</span></span><br><span class="line">                  Invoke(<span class="keyword">new</span> addHandleer(<span class="keyword">add</span>), rbChatContent, acceptFromServer[<span class="number">1</span>] + <span class="string">""</span> + <span class="string">"已经进入了聊天室"</span>);</span><br><span class="line">                  <span class="keyword">this</span>.lbUserList.Items.Add(acceptFromServer[<span class="number">1</span>]);</span><br><span class="line">                  <span class="keyword">if</span> (<span class="keyword">this</span>.tbUserName.Text == acceptFromServer[<span class="number">1</span>])</span><br><span class="line">                  &#123;</span><br><span class="line">                      <span class="keyword">this</span>.clientState = CONNECTED;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>   (5) 当客户端接收的命令是QUIT时，会在界面上显示“XXX离开聊天室”，并且在当前在线用户列表中删除离线的用户，具体代码实现如下。</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//157~164</span></span><br><span class="line">              <span class="keyword">else</span> <span class="keyword">if</span> (acceptFromServer[<span class="number">0</span>] == <span class="string">"QUIT"</span>)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="keyword">if</span> (<span class="keyword">this</span>.lbUserList.Items.IndexOf(acceptFromServer[<span class="number">1</span>]) &gt; <span class="number">-1</span>)</span><br><span class="line">                  &#123;</span><br><span class="line">                      <span class="keyword">this</span>.lbServerList.Items.Remove(acceptFromServer[<span class="number">1</span>]);</span><br><span class="line">                  &#125;</span><br><span class="line">                  Invoke(<span class="keyword">new</span> addHandleer(<span class="keyword">add</span>), rbChatContent, <span class="string">"用户："</span> + acceptFromServer[<span class="number">1</span>] + <span class="string">"离开聊天室"</span>);</span><br><span class="line">              &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>   (6) 如果接收的命令不在以上命令中，就作为普通的系统消息显示在界面上，不做任何处理，具体代码实现如下。</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//165~170</span></span><br><span class="line">              <span class="keyword">else</span></span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="comment">//如果从服务器返回的其他消息格式，</span></span><br><span class="line">                  <span class="comment">//则在ListBox控件中直接显示</span></span><br><span class="line">                  Invoke(<span class="keyword">new</span> addHandleer(<span class="keyword">add</span>), rbChatContent, msg);</span><br><span class="line">              &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="5">
+<li><p>退出聊天</p>
+<p>当用户单机客户端界面上的“离开聊天室”按钮时，就会进入“离开聊天室”按钮的单击事件。在“离开聊天室”按钮的单击事件中，会发送EXIT命令到服务器，并将clientState设置为cloed状态，把StopFlag标志是指为true，具体事件代码如下。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//251~270</span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span>离开聊天</span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="sender"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">      <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;param name="e"&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">btQuit_Click</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>      &#123;</span><br><span class="line">          <span class="keyword">if</span> (clientState == CONNECTED)</span><br><span class="line">          &#123;</span><br><span class="line">              <span class="keyword">string</span> message = <span class="string">"EXIT|"</span> + <span class="keyword">this</span>.tbUserName.Text + <span class="string">"|"</span>;</span><br><span class="line">              <span class="comment">//将字符串转化为字符数组</span></span><br><span class="line">              Byte[] bytes = System.Text.Encoding.Default.GetBytes(message.ToCharArray());</span><br><span class="line">              nsStream.Write(bytes, <span class="number">0</span>, bytes.Length);</span><br><span class="line">   </span><br><span class="line">              <span class="keyword">this</span>.clientState = ClOSED;</span><br><span class="line">              <span class="keyword">this</span>.StopFlag = <span class="literal">true</span>;</span><br><span class="line">              <span class="keyword">this</span>.lbUserList.Items.Clear();</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>   当用户关闭聊天室客户端窗体的时候，需要执行与“离开聊天室”一样的操作，要在其FormClosing事件中写下以下代码来实现。</p>
+   <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//272~275</span></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">frmClientMain_FormClosing</span>(<span class="params"><span class="keyword">object</span> sender, FormClosingEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>      &#123;</span><br><span class="line">          btQuit_Click(sender, e);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="聊天室程序的运行与测试"><a href="#聊天室程序的运行与测试" class="headerlink" title="聊天室程序的运行与测试"></a>聊天室程序的运行与测试</h2><h1 id="聊天室的安装与部署"><a href="#聊天室的安装与部署" class="headerlink" title="聊天室的安装与部署"></a>聊天室的安装与部署</h1>
+    </div>
+
+    
+    
+    
+
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://twitter.com/username">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+
+                <span class="label">Twitter</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+                <span class="icon">
+                  <i class="fa fa-wechat"></i>
+                </span>
+
+                <span class="label">WeChat</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C#</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/16/Object-Oriented-Programming/" rel="prev" title="面向对象编程">
+      <i class="fa fa-chevron-left"></i> 面向对象编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/20/Super-Object-Oriented-Programming/" rel="next" title="面向对象高级编程">
+      面向对象高级编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于Socket"><span class="nav-number">1.</span> <span class="nav-text">关于Socket</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-S聊天室模型"><span class="nav-number">2.</span> <span class="nav-text">C&#x2F;S聊天室模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聊天协议"><span class="nav-number">3.</span> <span class="nav-text">聊天协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于聊天协议的应答"><span class="nav-number">3.1.</span> <span class="nav-text">关于聊天协议的应答</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天状态处理"><span class="nav-number">3.2.</span> <span class="nav-text">聊天状态处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天命令介绍"><span class="nav-number">3.3.</span> <span class="nav-text">聊天命令介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统功能定义"><span class="nav-number">4.</span> <span class="nav-text">系统功能定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器端"><span class="nav-number">4.1.</span> <span class="nav-text">服务器端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端"><span class="nav-number">4.2.</span> <span class="nav-text">客户端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统功能设计"><span class="nav-number">5.</span> <span class="nav-text">系统功能设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天室服务器的协议解析流程"><span class="nav-number">5.1.</span> <span class="nav-text">聊天室服务器的协议解析流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天室客户端的协议解析流程"><span class="nav-number">5.2.</span> <span class="nav-text">聊天室客户端的协议解析流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统功能实现"><span class="nav-number">6.</span> <span class="nav-text">系统功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器端程序设计"><span class="nav-number">6.1.</span> <span class="nav-text">服务器端程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端程序设计"><span class="nav-number">6.2.</span> <span class="nav-text">客户端程序设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聊天室程序的运行与测试"><span class="nav-number">6.3.</span> <span class="nav-text">聊天室程序的运行与测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聊天室的安装与部署"><span class="nav-number">7.</span> <span class="nav-text">聊天室的安装与部署</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日积硅步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/yourname" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com">友情链接</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+
+
+      <!-- tianqi -->
+      <script type="text/javascript">
+      WIDGET = {FID: 'qGIt0yNpAw'}
+      </script>
+      <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+
+
+<div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1297742167&auto=1&height=66">
+  </iframe>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-node-js-Github/" rel="tag">hexo node.js Github</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memory/" rel="tag">memory</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%AE%B0/" rel="tag">杂记</a><span class="tag-list-count">2</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+</aside>
+<div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35:20</span>
+</div>
+
+<span id="sitetime"></span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2020,02,4,00,00,00); //北京时间2020-2-4 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+	siteTime();
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey: 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script type="text/javascript" src="/js/schemes/crash-cheat.js"></script>
+
+
+</body>
+</html>

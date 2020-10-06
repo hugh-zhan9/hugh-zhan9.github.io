@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=E7Yuw4hI34nNHflgejimQIzVZp8HHWzn"></script>
+    <title>足迹</title>
+    <style type="text/css">
+      body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+    </style>
+</head>
+<body>
+    <div id="allmap"></div>
+	<base target="_blank">
+</body>
+</html>
+ 
+<script type = "text/javascript" >
+var map = new BMap.Map("allmap"); // 创建Map实例
+var point = new BMap.Point(110, 30.2); // 创建点坐标
+var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
+var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+var overView = new BMap.OverviewMapControl();
+var overViewOpen = new BMap.OverviewMapControl({isOpen:true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT});
+var top_right_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_RIGHT});// 右上角，添加比例尺
+map.centerAndZoom("长沙", 6); // 初始化地图,设置中心点坐标和地图级别。
+map.enableScrollWheelZoom(); //启用滚轮放大缩小
+map.setCurrentCity("深圳");        //由于有3D图，需要设置城市哦
+map.addControl(mapType2);          //左上角，默认地图控件
+map.addControl(top_right_control); //添加右上角比例尺
+
+// 以下是添加数组，依次顺序是：文章标题、坐标、地址、文章链接、图片链接
+var infos = "2019- 深圳,113.88308,22.55329,深圳富士康观澜园区宝源科技园, ,http://u.lushaojun.com/2014/1356_26.jpg,";
+var info = infos.split(";");//创建数组
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); //创建信息窗口
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[1], information[2], information[0],information[3],information[4],information[5]);
+}
+// 第二个标点
+var infos = "2015.9 - 2019.6 长沙,112.98626,28.25591,中南林业科技大学四年大学生涯, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[1], information[2], information[0],information[3],information[4],information[5]);
+}
+var infos = "2018.7 洛阳,112.51078,34.70431,学校组织生产实习, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[1], information[2], information[0],information[3],information[4],information[5]);
+}
+var infos = "2016.6 株洲,113.174219,27.85635,金工实习, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[1], information[2], information[0],information[3],information[4],information[5]);
+}
+var infos = "2019.7 惠州,114.42,23.12,公司团建, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[1], information[2], information[0],information[3],information[4],information[5]);
+}
+var infos = "怀化,110.04098,27.57771,家, https://hugh-zhan9.xyz/1996/12/20/huai-hua/ ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[1], information[2], information[0],information[3],information[4],information[5]);
+}
+// 添加数组区域结束
+
+function createMarker(lng, lat, name, address,web,pic1) {
+var marker = new BMap.Marker(new BMap.Point(lng, lat)); // 创建标注
+map.addOverlay(marker); // 将标注添加到地图中
+var content = name + ":<a href="+web+">文章详情</a>"+"<br/>地址："+address+"<br/><img src="+pic1+" style='width:300px;' >"; // 窗口固格式以及样式
+marker.addEventListener("click", function() {
+infoWindow.setContent(content);
+this.openInfoWindow(infoWindow);
+});    //创建信息窗口事件
+} 
+</script>
+</html>

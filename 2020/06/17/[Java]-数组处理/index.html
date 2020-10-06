@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="数组是最常见的一种数据结构，它是相同类型的用一个标识符封装到一起的基本类型数据序列或者对象序列。数组使用一个统一的数组名和不同的下标来唯一确定数组中的元素。实质上，数组是一个简单的线性序列，因此访问速度很快。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组处理">
+<meta property="og:url" content="http://yoursite.com/2020/06/17/[Java]-%E6%95%B0%E7%BB%84%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="数组是最常见的一种数据结构，它是相同类型的用一个标识符封装到一起的基本类型数据序列或者对象序列。数组使用一个统一的数组名和不同的下标来唯一确定数组中的元素。实质上，数组是一个简单的线性序列，因此访问速度很快。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-17T14:50:29.000Z">
+<meta property="article:modified_time" content="2020-07-03T14:58:52.000Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/17/[Java]-%E6%95%B0%E7%BB%84%E5%A4%84%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>数组处理 | </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7e4557d4ccc5f2373ebada2ff7d42a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title"></span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+        <li class="menu-item menu-item-photos">
+
+    <a href="/photos/" rel="section"><i class="fa fa-fw fa-photo"></i>Photos</a>
+
+  </li>
+        <li class="menu-item menu-item-map">
+
+    <a href="/DiyWeb/" rel="section"><i class="fa fa-fw fa-map-marker"></i>足迹</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+
++ 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/17/[Java]-%E6%95%B0%E7%BB%84%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日积硅步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数组处理
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-17 22:50:29" itemprop="dateCreated datePublished" datetime="2020-06-17T22:50:29+08:00">2020-06-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-03 22:58:52" itemprop="dateModified" datetime="2020-07-03T22:58:52+08:00">2020-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="热度" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/17/%5BJava%5D-%E6%95%B0%E7%BB%84%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/17/%5BJava%5D-%E6%95%B0%E7%BB%84%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>24 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数组是最常见的一种数据结构，它是相同类型的用一个标识符封装到一起的基本类型数据序列或者对象序列。数组使用一个统一的数组名和不同的下标来唯一确定数组中的元素。实质上，数组是一个简单的线性序列，因此访问速度很快。</p>
+<a id="more"></a>
+
+<h1 id="数组简介"><a href="#数组简介" class="headerlink" title="数组简介"></a>数组简介</h1><p><strong>数组（<code>array</code>）是一种最简单的复合数据类型，它是有序数据的集合，数组中的每个元素具有相同的数据类型，可以用一个统一的数组名和不同的下标来确定数组中唯一的元素。根据数组的维度，可以将其分为一维数组、二维数组和多维数组等。</strong></p>
+<p>数组是非常重要的集合类型，大部分计算机语言中数组具有如下三个基本特性：</p>
+<ul>
+<li>一致性：数组只能保存相同数据类型元素，元素的数据类型可以是任何相同的数据类型。</li>
+<li>有序性：数组中的元素是有序的，通过下标访问。</li>
+<li>不可变性：数组一旦初始化，则长度（数组中元素的个数）不可变。</li>
+</ul>
+<p>数组具有以下特点：</p>
+<ul>
+<li>数值数组元素的默认值为 0，而引用元素的默认值为 null。</li>
+<li>数组元素可以是任何类型，包括数组类型。</li>
+<li>数组类型是从抽象基类 Array 派生的引用类型。</li>
+</ul>
+<h2 id="一维数组"><a href="#一维数组" class="headerlink" title="一维数组"></a>一维数组</h2><p>一维数组（one-dimensional array）实质上是一组相同类型数据的线性集合，是数组中最简单的一种数组。数组是引用数据类型，引用数据类型在使用之前一定要做两件事情：声明和初始化。</p>
+<h3 id="分配空间"><a href="#分配空间" class="headerlink" title="分配空间"></a>分配空间</h3><p>声明了数组，只是得到了一个存放数组的变量，并没有为数组元素分配内存空间，不能使用。因此要为数组分配内存空间，这样数组的每一个元素才有一个空间进行存储。分配空间就是要告诉计算机在内存中为它分配几个连续的位置来存储数据。在 Java 中可以使用 <code>new</code>关键字来给数组分配空间。分配空间的语法格式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arrayName = <span class="keyword">new</span> type[size]; <span class="comment">//数组名 = new 数据类型[数组长度];</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：一旦声明了数组的大小，就不能再修改。这里的数组长度也是必需的，不能少。</p>
+</blockquote>
+<p>尽管数组可以存储一组基本数据类型的元素，但是数组整体属于引用数据类型。当声明一个数组变量时，其实是创建了一个类型为“<code>数据类型[]</code>”（如<code>int[]</code>、<code>double[]</code>、<code>String[]</code>）的数组对象，它具有如下的方法和属性。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>clone()</code></td>
+<td><code>Object</code></td>
+</tr>
+<tr>
+<td><code>equals(Object obj)</code></td>
+<td><code>boolean</code></td>
+</tr>
+<tr>
+<td><code>getClass()</code></td>
+<td><code>class&lt;?&gt;</code></td>
+</tr>
+<tr>
+<td><code>hashCode()</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td><code>notify()</code></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>notyicy All()</code></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>toString()</code></td>
+<td><code>String</code></td>
+</tr>
+<tr>
+<td><code>wait()</code></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>wait(long timeout)</code></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>wait(long timeout,int nanos)</code></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td><code>int</code></td>
+</tr>
+</tbody></table>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>数组必须先初始化，然后才可以使用。所谓初始化，就是为数组的数组元素分配内存空间，并为每个数组元素赋初始值。</p>
+<p>一旦为数组的每个数组元素分配了内存空间，每个内存空间里存储的内容就是该数组元素的值，即使这个内存空间存储的内容为空，这个空也是一个值（<code>null</code>）。不管以哪种方式来初始化数组，只要为数组元素分配了内存空间，数组元素就具有了初始值。初始值的获得有两种形式，一种由系统自动分配，另一种由程序员指定。</p>
+<p>数组在初始化数组的同时，可以指定数组的大小，也可以分别初始化数组中的每一个元素。</p>
+<ol>
+<li><p>使用<code>new</code>指定数组大小后进行初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type[] arrayName = <span class="keyword">new</span> type[size];</span><br><span class="line">arrayName[<span class="number">0</span>] = value;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>如果程序员只指定了数组的长度，那么系统将负责为这些数组元素分配初始值。指定初始值时，系统按如下规则分配初始值。</p>
+<ul>
+<li>数组元素的类型是基本类型中的整数类型（<code>byte</code>、<code>short</code>、<code>int</code>和<code>long</code>），则数组元素的值是 0。</li>
+<li>数组元素的类型是基本类型中的浮点类型（<code>float</code>、<code>double</code>），则数组元素的值是 0.0。</li>
+<li>数组元素的类型是基本类型中的字符类型（<code>char</code>），则数组元素的值是<code>\u0000</code>。</li>
+<li>数组元素的类型是基本类型中的布尔类型（<code>boolean</code>），则数组元素的值是<code>false</code>。</li>
+<li>数组元素的类型是引用类型（类、接口和数组），则数组元素的值是<code>null</code>。</li>
+</ul>
+</li>
+<li><p>使用<code>new</code>指定数组元素的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type[] arrayName = <span class="keyword">new</span> type[]&#123;value1,...,valueN&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>直接指定数组元素的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type[] arrayName = &#123;value1,...,valueN&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="二维数组和多维数组"><a href="#二维数组和多维数组" class="headerlink" title="二维数组和多维数组"></a>二维数组和多维数组</h2><p>为了方便组织各种信息，计算机常将信息以表的形式进行组织，然后再以行和列的形式呈现出来。二维数组的结构决定了其能非常方便地表示计算机中的表，以第一个下标表示元素所在的行，第二个下标表示元素所在的列。</p>
+<h3 id="创建二维数组"><a href="#创建二维数组" class="headerlink" title="创建二维数组"></a>创建二维数组</h3><p> 在 Java 中二维数组被看作数组的数组，即二维数组为一个特殊的一维数组，其每个元素又是一个一维数组。Java 并不直接支持二维数组，但是允许定义数组元素是一维数组的一维数组，以达到同样的效果。声明二维数组的语法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type[][] arrayName;</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化二维数组"><a href="#初始化二维数组" class="headerlink" title="初始化二维数组"></a>初始化二维数组</h3><p>二维数组可以初始化，和一维数组一样，可以通过 3 种方式来指定元素的初始值。这 3 种方式的语法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type[][] arrayName = <span class="keyword">new</span> type[][]&#123;value1,...,valueN&#125;;</span><br><span class="line">type[][] arrayName = <span class="keyword">new</span> type[size][size2];</span><br><span class="line">type[][] arrayName = <span class="keyword">new</span> type[size][];</span><br></pre></td></tr></table></figure>
+
+<h3 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h3><p>除了一维数组和二维数组外，Java 中还支持更多维的数组，如三维数组、四维数组和五维数组等，它们都属于多维数组。经过前面一维，二维的练习后不难发现，想要提高数组的维数，只要在声明数组时将索引与中括号再加一组即可，所以三维数组的声明为<code>type[][][] arrayName;</code>，以此类推。</p>
+<p> 三维数组有三个层次，可以将三维数组理解为一个一维数组，其内容的每个元素都是二维数组。依此类推，可以获取任意维数的数组。</p>
+<h2 id="不规则数组"><a href="#不规则数组" class="headerlink" title="不规则数组"></a>不规则数组</h2><p> Java 实际上没有多维数组，只有一维数组。多维数组被解释为是数组的数组，所以因此会衍生出一种不规则数组。规则的 4×3 二维数组有 12 个元素，而不规则数组就不一定了。如下代码静态初始化了一个不规则数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] intArray = &#123;&#123;<span class="number">1</span>,<span class="number">2</span>&#125;,&#123;<span class="number">11</span>&#125;,&#123;<span class="number">21</span>,<span class="number">22</span>,<span class="number">23</span>&#125;,&#123;<span class="number">31</span>,<span class="number">32</span>,<span class="number">33</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>动态初始化不规则数组比较麻烦，不能使用<code>new int[4][3]</code>语句，而是先初始化高维数组，然后再分别逐个初始化低维数组。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] intArray = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">4</span>][]; <span class="comment">//先初始化高维数组为4</span></span><br><span class="line"><span class="comment">//逐一初始化低维数组</span></span><br><span class="line">intArray[<span class="number">0</span>] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">intArray[<span class="number">1</span>] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1</span>];</span><br><span class="line">intArray[<span class="number">2</span>] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];</span><br><span class="line">intArray[<span class="number">3</span>] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+
+<p>从上述代码初始化数组完成之后，不是有 12 个元素而是 9 个元素，其中下标 <code>[0][2]</code>、<code>[1][1]</code> 和 <code>[1][2]</code>是不存在的，如果试图访问它们则会抛出<font color=red>下标越界异常</font>。</p>
+<blockquote>
+<p><font color=red>下标越界异常（ArrayIndexOutOfBoundsException）</font>是试图访问不存在的下标时引发的异常。</p>
+</blockquote>
+<hr>
+<p>Java 的数组要求所有的数组元素具有相同的数据类型。因此，在一个数组中，数组元素的类型是唯一的，即一个数组里只能存储一种数据类型的数据，而不能存储多种数据类型的数据。因为 Java 语言是面向对象的语言，而类与类之间可以支持继承关系（从已有的类中派生出新的类，新的类能吸收已有类的数据属性和行为），这样可能产生一个数组里可以存放多种数据类型的假象。例如有一个水果数组，要求每个数组元素都是水果，实际上数组元素既可以是苹果，也可以是香蕉（苹果、香蕉都继承了水果，都是一种特殊的水果），但这个数组的数组元素的类型还是唯一的，只能是水果类型。</p>
+<p>一旦数组的初始化完成，数组在内存中所占的空间将被固定下来，因此数组的长度将不可改变。即使把某个数组元素的数据清空，但它所占的空间依然被保留，依然属于该数组，数组的长度依然不变。</p>
+<p>Java 的数组既可以存储基本类型的数据，也可以存储引用类型的数据，只要所有的数组元素具有相同的类型即可。</p>
+<p>值得指出的是，数组也是一种数据类型，它本身是一种引用类型。例如 int 是一个基本类型，但<code>int[]</code>（这是定义数组的一种方式）就是一种引用类型了。</p>
+<h1 id="Arrays类"><a href="#Arrays类" class="headerlink" title="Arrays类"></a>Arrays类</h1><p><font color=red><code>Arrays</code>类是一个工具类，其中包含了数组操作的很多方法。这个<code>Arrays</code>类里均为<code>static</code> 修饰的方法（<code>static</code>修饰的方法可以直接通过类名调用），可以直接通过 <code>Arrays.xxx(xxx)</code>的形式调用方法。</font></p>
+<ol>
+<li><p><code>int binarySearch(type[] a, type key)</code></p>
+<p>使用二分法查询<code>key</code>元素在 a 数组中出现的索引，如果 a 数组不包含<code>key</code>元素值，则返回负数，调用该方法时要求数组中元素已按升序排列，这样才能得到正确的结果。</p>
+</li>
+<li><p><code>int binarySearch(type[] a, int fromIndex, int tolndex, type key)</code></p>
+<p>这个方法与前一个方法类似，但它只搜索 a 数组中<code>fromIndex</code>到<code>toIndex</code>索引的元素。</p>
+</li>
+<li><p><code>type[] copyOf(type[] origianl, int length)</code></p>
+<p>这个方法把<code>original</code>数组复制成一个新数组，其中<code>length</code>是新数组的长度。如果<code>length</code>小于<code>original</code>数组的长度，则新数组就是原数组的前面<code>length</code>个元素，如果<code>length</code>大于<code>Original</code>数组的长度，则新数组的前面元素就是原数组的所有元素，后面补充 <code>0</code>（数值类型）、<code>false</code>（布尔类型）或者<code>null</code>（引用类型）。</p>
+</li>
+<li><p><code>type[] copyOfRange(type[] original, int from, int to)</code></p>
+<p>该方法与上一个方法类似，但这个方法只赋值<code>original</code>数组的<code>from</code>索引到<code>to</code>所有的元素。</p>
+</li>
+<li><p><code>boolean equals(type[] a, type[] a2)</code></p>
+<p>如果 a 数组和 a2 数组的长度相等且数组元素也一一相同，返回<code>true</code></p>
+</li>
+<li><p><code>void fill(type[] a, type val)</code></p>
+<p>该方法将会把 a 数组的所有元素都赋值为<code>val</code></p>
+</li>
+<li><p><code>void fill(type[] a, int fromIndex, int toIndex, type val)</code></p>
+<p>该方法与前一个方法的作用相同，区别是该方法仅仅对<code>fromIndex</code>到<code>toIndex</code>索引的数组元素赋值为<code>val</code>。</p>
+</li>
+<li><p><code>void sort(type[] a)</code></p>
+<p>该方法对 a 数组的数组元素进行排序。</p>
+</li>
+<li><p><code>void sort(type[] a, int fromIndex, int toIndex)</code></p>
+<p>该方法与前一个方法类似，区别是该方法仅仅对<code>fromIndex</code>到<code>toIndex</code>索引的元素进行排序。</p>
+</li>
+<li><p><code>String toString(type[] a)</code></p>
+<p>该方法将一个数组转换成一个字符串。该方法按顺序把多个数组元素连接在一起，多个数组元素使用逗号和空格隔开。</p>
+</li>
+</ol>
+<hr>
+<p><code>Arrays</code>类的用法示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArraysTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 定义一个a数组</span></span><br><span class="line">        <span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;;</span><br><span class="line">        <span class="comment">// 定义一个a2数组</span></span><br><span class="line">        <span class="keyword">int</span>[] a2 = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span> &#125;;</span><br><span class="line">        <span class="comment">// a数组和a2数组的长度相等，毎个元素依次相等，将输出true</span></span><br><span class="line">        System.out.println(<span class="string">"a数组和a2数组是否相等："</span> + Arrays.equals(a, a2));</span><br><span class="line">        <span class="comment">// 通过复制a数组，生成一个新的b数组</span></span><br><span class="line">        <span class="keyword">int</span>[] b = Arrays.copyOf(a, <span class="number">6</span>);</span><br><span class="line">        System.out.println(<span class="string">"a数组和b数组是否相等："</span> + Arrays.equals(a, b));</span><br><span class="line">        <span class="comment">// 输出b数组的元素，将输出[3, 4, 5, 6, 0, 0]</span></span><br><span class="line">        System.out.println(<span class="string">"b 数组的元素为："</span> + Arrays.toString(b));</span><br><span class="line">        <span class="comment">// 将b数组的第3个元素（包括）到第5个元素（不包括）賦值为1</span></span><br><span class="line">        Arrays.fill(b, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 输出b数组的元素，将输出[3, 4, 1, 1, 0, 0]</span></span><br><span class="line">        System.out.println(<span class="string">"b 数组的元素为："</span> + Arrays.toString(b));</span><br><span class="line">        <span class="comment">// 对b数组进行排序</span></span><br><span class="line">        Arrays.sort(b);</span><br><span class="line">        <span class="comment">// 输出b数组的元素.将输出[0,0,1,1,3,4]</span></span><br><span class="line">        System.out.println(<span class="string">"b数组的元素为："</span> + Arrays.toString(b));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Arrays</code>类处于<code>java.util</code>包下，为了在程序中使用<code>Arrays</code>类，必须在程序中导入<code>java.util.Arrays</code>类。</p>
+<p>除此之外，在<code>System</code>类里也包含了一个<code>static void arraycpooy(Object src,int srePos,Object dest, int dcsPos,int length)</code>方法，该方法可以将<code>src</code>数组里的元素赋值给<code>dest</code>数组的元素，其中<code>srccPos</code>指定从<code>src</code>数组的第几个元素开始赋值，<code>length</code>参数指定将<code>src</code>数组的多少个元素值赋给<code>dest</code>数组的元素。</p>
+<hr>
+<p>Java8 增强了<code>Arrays</code>类的功能，为<code>Array</code>增加了一些工具方法，这些工具方法可以充分利用多 CPU 并行的能力来提高设值、排序的性能。下面是 Java 8 为 <code>Arrays</code>类增加的工具方法。</p>
+<ol>
+<li><p><code>void parallelPrefix(xxx[] array, XxxBinaryOperator op)</code></p>
+<p>该方法使用<code>op</code>参数指定的计算公式计算得到的结果作为新的元素。<code>op</code>计算公式包括<code>left</code>，<code>right</code>两个形参，其中<code>left</code>代表数组中前一个索引处的元素，<code>right</code>代表数组中当前索引处的元素，当计算第一个新数组元素时，<code>left</code>默认为<code>1</code>。</p>
+</li>
+<li><p><code>void parallelPrefix(xxx[] array, int toIndex, XxxBinaryOperator op)</code></p>
+<p>该方法与上一个方法类似，区别是该方法仅重新计算<code>fromIndex</code>到<code>toIndex</code>索引的元素。</p>
+</li>
+<li><p><code>void setAll(xxx[] array, IntToXxxFunction generator)</code></p>
+<p>该方法使用指定的生成器（<code>generator</code>）为所有数组元素设置值，该生成器控制数组元素的值和生成算法。</p>
+</li>
+<li><p><code>void parallelSetAll(xxx[] array, IntToXxxFunction generator)</code></p>
+<p>该方法的功能与上一个方法相同，只是该方法增加了并行能力，可以利用多 CPU 并行来提高性能。</p>
+</li>
+<li><p><code>void parallelSort(xxx[] a)</code></p>
+<p>该方法的功能与<code>Arrays</code>类以前就有的<code>sort()</code>方法类似，只是该方法增加了并行能力，可以利用多 CPU 并行来提高性能。</p>
+</li>
+<li><p><code>void parallelSort(xxx[] a, int fromIndex, int toIndex)</code></p>
+<p>该方法与上一个方法类似，区别是该方法仅对<code>fromIndex</code>到<code>toIndex</code>索引的元素进行排序。</p>
+</li>
+<li><p><code>Spliterator.OfXxx spliterator(xxx[] array)</code></p>
+<p>将数组的所有元素转换成对应的<code>Spliterator</code>对象。</p>
+</li>
+<li><p><code>Spliterator.OfXxx spliterator(xxx[] array, int startInclusive, int endExclusive)</code></p>
+<p>该方法与上一个方法类似，区别是该方法仅转换<code>startInclusive</code>到<code>endExclusive</code>索引的元素。</p>
+</li>
+<li><p><code>XxxStream stream(xxx[] array)</code></p>
+<p>该方法将数组转换为<code>Stream</code>，<code>Stream</code>是 Java8 新增的流式编程的 API</p>
+</li>
+<li><p><code>XxxStream stream(xxx[] array, int startInclusive, int endExclusive)</code></p>
+<p>该方法与上一个方法类似，区别是该方法仅将<code>fromIndex</code>到<code>toIndex</code>索引转换为<code>Stream</code>。</p>
+</li>
+</ol>
+<p>上面方法列表中，所有以<code>parallel</code>开头的方法都表示该方法可利用 CPU 并行的能力来提高性能。上面方法中的<code>xxx</code>代表不同的数据类型，比如处理<code>int[]</code>型数组时应将<code>xxx</code>换成<code>int</code>，处理<code>long[]</code>型数组时应将<code>xxx</code>换成<code>long</code>。</p>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.function.IntBinaryOperator;</span><br><span class="line"><span class="keyword">import</span> java.util.function.IntUnaryOperator;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayTest2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] arr1 = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">25</span>,<span class="number">16</span>,<span class="number">30</span>,<span class="number">18</span>&#125;;</span><br><span class="line">        Arrays.parallelSort(arr1);</span><br><span class="line">        System.out.println(Arrays.toString(arr1));</span><br><span class="line">        <span class="keyword">int</span>[] arr2 = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;-<span class="number">13</span>,-<span class="number">4</span>,<span class="number">25</span>,<span class="number">26</span>,<span class="number">30</span>,<span class="number">18</span>&#125;;</span><br><span class="line">        Arrays.parallelPrefix(arr2,<span class="keyword">new</span> IntBinaryOperator()&#123;</span><br><span class="line">            <span class="comment">//left 代表数组中前一个索引处的元素，计算第一个元素时，left为1</span></span><br><span class="line">            <span class="comment">//right 代表数组中当前索引处的元素</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">applyAsInt</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> left * right;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;); </span><br><span class="line">        System.out.println(Arrays.toString(arr2));</span><br><span class="line">        <span class="keyword">int</span>[] arr3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];</span><br><span class="line">        Arrays.parallelSetAll(arr3,<span class="keyword">new</span> IntUnaryOperator()&#123;</span><br><span class="line">            <span class="comment">// operand代表正在计算的元素索引</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">applyAsInt</span><span class="params">(<span class="keyword">int</span> operand)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> operand * <span class="number">5</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(Arrays.toString(arr3));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组相等"><a href="#数组相等" class="headerlink" title="数组相等"></a>数组相等</h2><p>数组相等的条件不仅要求数组元素的个数必须相等，而且要求对应位置的元素也相等。Arrays 类提供了 equals() 方法比较整个数组。语法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.equals(arrayA, arrayB);</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组填充"><a href="#数组填充" class="headerlink" title="数组填充"></a>数组填充</h2><p><code>Arrays</code>类提供了一个<code>fill()</code>方法，可以在指定位置进行数值填充。<code>fill()</code>方法虽然可以填充数组，但是它的功能有限制，只能使用同一个数值进行填充。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.fill(array, value);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] number = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];</span><br><span class="line">    System.out.println(<span class="string">"number 一共有"</span> + number.length +<span class="string">"个元素，它们分别是："</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; number.length; i++)&#123;</span><br><span class="line">        Arrays.fill(number, i);</span><br><span class="line">        System.out,println(<span class="string">"number["</span> + i +<span class="string">"]="</span> + i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查找指定元素—-binarySearch"><a href="#查找指定元素—-binarySearch" class="headerlink" title="查找指定元素—-binarySearch()"></a>查找指定元素—-binarySearch()</h2><p>查找数组是指从数组中查询指定位置的元素，或者查询某元素在指定数组中的位置。使用<code>Arrays</code>类的<code>binarySearch()</code>方法可以实现数组的查找，该方法可使用二分搜索法来搜索指定数组，以获得指定对象，该方法返回要搜索元素的索引值。<code>binarySearch()</code>方法有多种重载形式来满足不同类型数组的查找需要，常用的重载形式有两种。</p>
+<ol>
+<li><p><code>binarySearch(Object[] a, Object key);</code></p>
+<p>其中<code>a</code>表示要搜索的数组，<code>key</code>表示要搜索的值。如果<code>key</code>包含在数组中，则返回搜索值的索引，否则返回<code>-1</code>或<code>-插入点</code>。插入点指搜索键将要插入数组的位置，即第一个大于此键的元素索引。</p>
+<p><font color=red><strong>在进行数组查询之前，必须对数组进行排序(可以使用<code>sort()</code>方法)</strong></font>。如果没有对数组进行排序，则结果是不确定的。如果数组包含多个带有指定值的元素，则无法确认找到的是哪个。</p>
+</li>
+<li><p><code>binarySearch(Object[] a, int fromIndex, int toIndex, Object key);</code></p>
+<p><code>fromIndex</code>指定索引的开始处（包括开始处），<code>toIndex</code>指定索引范围的结束处（不包括结束处）。</p>
+</li>
+</ol>
+<h2 id="数组复制"><a href="#数组复制" class="headerlink" title="数组复制"></a>数组复制</h2><p>复制数组，是指将一个数组中的元素在另一个数组中进行复制。在 Java 中实现数组复制分别有以下4中方法</p>
+<ul>
+<li><code>Arrays</code>类的<code>copyOf()</code>方法</li>
+<li><code>Arrays</code>类的<code>copyOfRange()</code>方法</li>
+<li><code>System</code>类的<code>arraycopy()</code>方法</li>
+<li><code>Object</code>类的<code>clone()</code>方法</li>
+</ul>
+<h4 id="copyOf-和-copyOfRange"><a href="#copyOf-和-copyOfRange" class="headerlink" title="copyOf()  和 copyOfRange()"></a>copyOf()  和 copyOfRange()</h4><p><code>Arrays</code>类的<code>copyOf()</code>方法与<code>copyOfRange()</code>方法都可实现对数组的复制。<code>copyOf()</code>方法是复制数组至新数组，<code>copyOfRange()</code>方法则将指定数组的指定长度复制到一个新数组中。</p>
+<ol>
+<li><p>使用<code>copyOf()</code>方法对数组进行复制</p>
+<p><code>Arrays</code>类的<code>copyOf()</code>方法语法格式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.copyOf(dataType[] srcArray, <span class="keyword">int</span> length);</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>srcArray</code>表示原数组，<code>length</code>表示复制后的新数组的长度。</p>
+<p>使用这种方法复制数组时，默认从原数组的第一个元素（索引值为0）开始复制，目标数组的长度将为<code>length</code>。如果<code>length</code>大于<code>srcArray.length</code>，则目标数组中采用默认值填充；如果<code>length</code>小于<code>srcArray.length</code>，则复制到第<code>length</code>个元素即止。</p>
+<blockquote>
+<p>注意：如果目标数组已经存在，将会被重构。</p>
+</blockquote>
+</li>
+<li><p>使用<code>copyOfRange()</code>方法对数组进行复制</p>
+<p><code>Arrays</code>类的<code>copyOfRange()</code>方法是另一种复制数组的方法，其语法结构如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Arrays.copyOfRange(dataType[] srcArray, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> endIndex);</span><br></pre></td></tr></table></figure>
+
+<p><code>srcArray</code>表示原数组，<code>startIndex</code>表示开始复制的起始索引，目标数组中将包含起始索引对应的元素，另外，<code>startIndex</code>必须在<code>0 ~ srcArray.length</code>之间。<code>endIndex</code>表示终止索引，目标数组中将不包含终止索引对应的元素，<code>endIndex</code>可以大于<code>srcArray.length</code>，如果大于<code>srcArray.length</code>，则目标数组中使用默认值填充。</p>
+</li>
+</ol>
+<h4 id="arraycopy"><a href="#arraycopy" class="headerlink" title="arraycopy()"></a>arraycopy()</h4><p><code>arraycopy()</code>方法位于<code>java.lang.System</code>类中，语法格式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.arraycopy(dataType[] srcArray, <span class="keyword">int</span> srcIndex, dataType[] destArray, <span class="keyword">int</span> destIndex, <span class="keyword">int</span> length)</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>srcArray</code>表示原数组；<code>srcIndex</code>表示原数组的起始位置索引，<code>destArray</code>表示目标数组，<code>destIndex</code>表示目标数组的起始位置索引，<code>length</code>表示要复制的数组长度。</p>
+<blockquote>
+<p>注意：在使用<code>arraycopy()</code>方法时要注意，此方法的命名违背了 Java 的命名惯例。即第二个单词<code>copy</code>的首字母没有大写，但按惯例写法应该为<code>arrayCopy</code>。请读者在使用此方法时注意方法名的书写。</p>
+</blockquote>
+<h4 id="clone"><a href="#clone" class="headerlink" title="clone()"></a>clone()</h4><p><code>clone</code>方法也可以实现复制数组，该方法是类<code>Object</code>中的方法，可以创建一个单独内存空间的对象。因为数组也是一个<code>Object</code>类，因此也可以使用数组对象的<code>clone()</code>方法来复制数组。</p>
+<p><font color=red><code>clone()</code>方法的返回值是<code>Object</code>类型，要使用强制类型转换为适当的类型</font>，其语法形式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arrayName.clone()</span><br><span class="line"><span class="comment">// 示例：int[] targetArray = (int[]) sourceArray.clone();</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><font color=red>注意：以上几种方法都是浅拷贝（浅复制）。浅拷贝只是复制了对象的引用地址，两个对象指向同一个内存地址，所以修改其中任意的值，另一个值都会随之变化。深拷贝是将对象及值复制过来，两个对象修改其中任意的值另一个值不会改变。</font></p>
+<h1 id="数组排序"><a href="#数组排序" class="headerlink" title="数组排序"></a>数组排序</h1><blockquote>
+<p>注意，要想改变默认的排列顺序，不能使用基本类型（<code>int</code>,<code>double</code>,<code>char</code>）而要使用它们对应的类。</p>
+</blockquote>
+<ol>
+<li><p>升序</p>
+<p>导入<code>java.util.Arrays</code>包</p>
+<p>使用<code>Arrays.sort(数组名)</code>对数组进行排序，排序规则是从大到小，即升序。</p>
+</li>
+<li><p>降序</p>
+<p>在 Java 中使用<code>sort</code>实现降序有两种方法：</p>
+<ul>
+<li><p>利用<code>Collections.reverseOrder()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">    Integer[] a = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;; <span class="comment">//数组类型为 Integer</span></span><br><span class="line">    Arrays.sort(a, Collections.reverseOrder());</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> arr : a)&#123;</span><br><span class="line">        System.out.print(arr + <span class="string">" "</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果: 9 8 7 6 5 4 3 2 1 0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现<code>Comparator</code>接口的复写<code>compare()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		*注意，要想改变默认的排列顺序，不能使用基本类型(int, double, char)而要使用它们对应的类</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		Integer[] a = &#123;<span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">5</span>&#125;;</span><br><span class="line">		<span class="comment">// 定义一个自定义类myComparator的对象</span></span><br><span class="line">		Comparator cmp = <span class="keyword">new</span> MyComparator();</span><br><span class="line">		Arrays.sort(a, cmp);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> arr : a) &#123;</span><br><span class="line">			System.out.print(arr + <span class="string">" "</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 实现 Comparator接口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Integer</span>&gt;</span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Integer o1, Integer o2)</span></span>&#123;</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		* 如果o1小于o2，就返回正值，如果o1大于o2就返回负值</span></span><br><span class="line"><span class="comment">		* 这样颠倒一下，就可以实现降序排序了,反之即可自定义升序排序了</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		<span class="keyword">return</span> o2 - o1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果： 9 8 7 6 5 4 3 2 1 0</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote>
+<p>注意：使用以上两种方法时，数组必须是包装类型，否则会编译不通过。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="冒泡排序法（重要）"><a href="#冒泡排序法（重要）" class="headerlink" title="冒泡排序法（重要）"></a>冒泡排序法（重要）</h2><p>冒泡排序<code>(Bubble sort)</code>是常用的数组排序算法之一，冒泡排序的基本思想是：对比相邻的元素值，如果满足条件就交换元素值，把较小的元素值移动到数组前面，把大的元素值移动到数组后面（也就是交换两个元素的位置），这样数组元素就像气泡一样从底部上升到顶部。</p>
+<p>冒泡排序的算法比较简单，排序的结果稳定，但时间效率不太高。<font color=red>Java 中的冒泡排序在双层循环中实现，其中外层循环控制排序轮数，总循环次数为要排序数组的长度减 1。而内层循环主要用于对比相邻元素的大小，以确定是否交换位置，对比和交换次数依排序轮数而减少。</font></p>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BubbleSort</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Scanner scan = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">		<span class="keyword">double</span>[] score = <span class="keyword">new</span> <span class="keyword">double</span>[<span class="number">5</span>];</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; score.length; i++) &#123;</span><br><span class="line">			System.out.print(<span class="string">"请输入第"</span> + (i + <span class="number">1</span>) + <span class="string">"个成绩："</span>);</span><br><span class="line">			score[i] = scan.nextDouble();</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"排序前的元素值："</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">double</span> val : score ) &#123;</span><br><span class="line">			System.out.print(val + <span class="string">"\t"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println();</span><br><span class="line">		System.out.println(<span class="string">"通过冒泡排序方法对数组进行排序："</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; score.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">			<span class="comment">//比较相邻两个元素，较大的数往后冒泡</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; score.length - <span class="number">1</span> - i ; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (score[j] &gt; score[j+<span class="number">1</span>]) &#123;</span><br><span class="line">					<span class="keyword">double</span> temp = score[j + <span class="number">1</span>]; <span class="comment">//把第一个元素值保存到临时变量中</span></span><br><span class="line">					score[j + <span class="number">1</span>] = score[j]; <span class="comment">//把第二个元素值转移到第一个元素变量中</span></span><br><span class="line">					score[j] = temp; <span class="comment">//把临时变量(第一个元素的原始值)保存到第二个元素中</span></span><br><span class="line">				&#125;</span><br><span class="line">				System.out.print(score[j] + <span class="string">" "</span>); <span class="comment">//对排序后的数组元素进行输出</span></span><br><span class="line">			&#125;</span><br><span class="line">			System.out.print(<span class="string">"【"</span>);</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = score.length - <span class="number">1</span> - i; j &lt; score.length ; j++) &#123;</span><br><span class="line">				System.out.print(score[j] + <span class="string">" "</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(<span class="string">"】"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="快速排序法"><a href="#快速排序法" class="headerlink" title="快速排序法"></a>快速排序法</h2><p>快速排序<code>（Quicksort）</code>是对冒泡排序的一种改进，是一种排序执行效率很高的排序算法。</p>
+<p>快速排序的基本思想是：通过一趟排序，将要排序的数据分隔成独立的两部分，其中一部分的所有数据比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以</p>
+<p>具体做法是：假设要对某个数组进行排序，首先需要任意选取一个数据（通常选用第一个数据）作为关键数据，然后将所有比它小的数都放到它的前面，所有比它大的数都放到它的后面。这个过程称为一趟快速排序；递归调用此过程，即可实现数据的快速排序。递归进行，以此使整个数据变成有序序列。</p>
+<hr>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickSort</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span>[] number = &#123;<span class="number">12</span>, <span class="number">15</span>, <span class="number">24</span>, <span class="number">99</span>, <span class="number">14</span>, <span class="number">11</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">		 System.out.println(<span class="string">"排序前: "</span>);</span><br><span class="line">		 <span class="keyword">for</span> (<span class="keyword">int</span> val : number) &#123;</span><br><span class="line">		 	System.out.print(val + <span class="string">" "</span>);</span><br><span class="line">		 &#125;</span><br><span class="line">		 System.out.println();</span><br><span class="line">		 quick(number);</span><br><span class="line">		 System.out.println(<span class="string">"排序后: "</span>);</span><br><span class="line">		 <span class="keyword">for</span> (<span class="keyword">int</span> val : number) &#123;</span><br><span class="line">		 	System.out.print(val + <span class="string">" "</span>);</span><br><span class="line">		 &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quick</span><span class="params">(<span class="keyword">int</span>[] arr)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(arr.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="comment">//查看数组是否为空</span></span><br><span class="line">			unckSort(arr, <span class="number">0</span>, arr.length-<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unckSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">			<span class="keyword">int</span> middle = getMiddle(arr, low, high); <span class="comment">//将list数组一分为二</span></span><br><span class="line">			unckSort(arr, low, middle-<span class="number">1</span>); <span class="comment">//对低字表进行递归排序</span></span><br><span class="line">			unckSort(arr, middle+<span class="number">1</span>, high); <span class="comment">//对高字表进行递归排序</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getMiddle</span><span class="params">(<span class="keyword">int</span>[] list, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = list[low];  <span class="comment">//数组的第一个值作为中轴(凤姐点或关键数据)</span></span><br><span class="line">		<span class="keyword">while</span> (low &lt; high)&#123;</span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; list[high] &gt; tmp) &#123;</span><br><span class="line">				high--;</span><br><span class="line">			&#125;</span><br><span class="line">			list[low] = list[high]; <span class="comment">//比中轴小的记录移到低端</span></span><br><span class="line">			<span class="keyword">while</span> (low &lt; high &amp;&amp; list[low] &lt; tmp) &#123;</span><br><span class="line">				low++;</span><br><span class="line">			&#125;</span><br><span class="line">			list[high] = list[low]; <span class="comment">//比中轴大的记录移到高端</span></span><br><span class="line">		&#125;</span><br><span class="line">		list[low] = tmp; <span class="comment">//中轴记录到尾</span></span><br><span class="line">		<span class="keyword">return</span> low; <span class="comment">//返回中轴位置</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="选择排序法"><a href="#选择排序法" class="headerlink" title="选择排序法"></a>选择排序法</h2><p><a href="https://www.jianshu.com/p/5223afa8796c" target="_blank" rel="noopener">https://www.jianshu.com/p/5223afa8796c</a></p>
+<p><a href="https://www.cnblogs.com/menglong1108/p/11632225.html" target="_blank" rel="noopener">https://www.cnblogs.com/menglong1108/p/11632225.html</a></p>
+<p><a href="https://codeplayer.vip/p/j7sbj" target="_blank" rel="noopener">https://codeplayer.vip/p/j7sbj</a></p>
+<p><a href="https://www.runoob.com/w3cnote/selection-sort.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/selection-sort.html</a></p>
+<p><a href="https://blog.csdn.net/changhangshi/article/details/82740541" target="_blank" rel="noopener">https://blog.csdn.net/changhangshi/article/details/82740541</a></p>
+<p><a href="https://blog.csdn.net/dangzhangjing97/article/details/79597435" target="_blank" rel="noopener">https://blog.csdn.net/dangzhangjing97/article/details/79597435</a></p>
+<p><a href="https://www.cnblogs.com/2019wxw/p/11234072.html" target="_blank" rel="noopener">https://www.cnblogs.com/2019wxw/p/11234072.html</a></p>
+<h2 id="直接插入排序法"><a href="#直接插入排序法" class="headerlink" title="直接插入排序法"></a>直接插入排序法</h2><p>直接插入排序的基本思想是：将 n 个有序数存放在数组 a 中，要插入的数为 x，首先确定 x 插在数组中的位置 p，然后将 p 之后的元素都向后移一个位置，空出 a(p)，将 x 放入 a(p)，这样可实现插入 x 后仍然有序。</p>
+<p><a href="https://www.cnblogs.com/2019wxw/" target="_blank" rel="noopener">https://www.cnblogs.com/2019wxw/</a></p>
+<p><a href="https://www.cnblogs.com/menglong1108/" target="_blank" rel="noopener">https://www.cnblogs.com/menglong1108/</a></p>
+<p>idea激活</p>
+<p><a href="https://www.cnblogs.com/menglong1108/p/12111794.html" target="_blank" rel="noopener">https://www.cnblogs.com/menglong1108/p/12111794.html</a></p>
+<p><a href="https://www.jianshu.com/p/3dca2c2f7b11" target="_blank" rel="noopener">https://www.jianshu.com/p/3dca2c2f7b11</a></p>
+<p><a href="https://www.cnblogs.com/ximensama/p/12576449.html" target="_blank" rel="noopener">https://www.cnblogs.com/ximensama/p/12576449.html</a></p>
+<p>动态初始化/静态初始化</p>
+<p><a href="https://www.cnblogs.com/aademeng/articles/6126742.html" target="_blank" rel="noopener">https://www.cnblogs.com/aademeng/articles/6126742.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://twitter.com/username">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+
+                <span class="label">Twitter</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+                <span class="icon">
+                  <i class="fa fa-wechat"></i>
+                </span>
+
+                <span class="label">WeChat</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/16/%5BJava%5D-%E5%86%85%E7%BD%AE%E5%8C%85%E8%A3%85%E7%B1%BB/" rel="prev" title="内置包装类">
+      <i class="fa fa-chevron-left"></i> 内置包装类
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/18/%5BJava%5D-%E6%95%B0%E5%AD%97%E5%A4%84%E7%90%86%E5%92%8C%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/" rel="next" title="数字处理和日期处理">
+      数字处理和日期处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数组简介"><span class="nav-number">1.</span> <span class="nav-text">数组简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一维数组"><span class="nav-number">1.1.</span> <span class="nav-text">一维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分配空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">分配空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.1.2.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二维数组和多维数组"><span class="nav-number">1.2.</span> <span class="nav-text">二维数组和多维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建二维数组"><span class="nav-number">1.2.1.</span> <span class="nav-text">创建二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化二维数组"><span class="nav-number">1.2.2.</span> <span class="nav-text">初始化二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多维数组"><span class="nav-number">1.2.3.</span> <span class="nav-text">多维数组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不规则数组"><span class="nav-number">1.3.</span> <span class="nav-text">不规则数组</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Arrays类"><span class="nav-number">2.</span> <span class="nav-text">Arrays类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数组相等"><span class="nav-number">2.1.</span> <span class="nav-text">数组相等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组填充"><span class="nav-number">2.2.</span> <span class="nav-text">数组填充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找指定元素—-binarySearch"><span class="nav-number">2.3.</span> <span class="nav-text">查找指定元素—-binarySearch()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组复制"><span class="nav-number">2.4.</span> <span class="nav-text">数组复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#copyOf-和-copyOfRange"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">copyOf()  和 copyOfRange()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#arraycopy"><span class="nav-number">2.4.0.2.</span> <span class="nav-text">arraycopy()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clone"><span class="nav-number">2.4.0.3.</span> <span class="nav-text">clone()</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组排序"><span class="nav-number">3.</span> <span class="nav-text">数组排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#冒泡排序法（重要）"><span class="nav-number">3.1.</span> <span class="nav-text">冒泡排序法（重要）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序法"><span class="nav-number">3.2.</span> <span class="nav-text">快速排序法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序法"><span class="nav-number">3.3.</span> <span class="nav-text">选择排序法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接插入排序法"><span class="nav-number">3.4.</span> <span class="nav-text">直接插入排序法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日积硅步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/yourname" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com">友情链接</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+
+
+      <!-- tianqi -->
+      <script type="text/javascript">
+      WIDGET = {FID: 'qGIt0yNpAw'}
+      </script>
+      <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+
+
+<div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1297742167&auto=1&height=66">
+  </iframe>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-node-js-Github/" rel="tag">hexo node.js Github</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memory/" rel="tag">memory</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%AE%B0/" rel="tag">杂记</a><span class="tag-list-count">2</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+</aside>
+<div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35:20</span>
+</div>
+
+<span id="sitetime"></span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2020,02,4,00,00,00); //北京时间2020-2-4 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+	siteTime();
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey: 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script type="text/javascript" src="/js/schemes/crash-cheat.js"></script>
+
+
+</body>
+</html>

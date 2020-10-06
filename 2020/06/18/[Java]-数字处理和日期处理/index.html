@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="在解决实际问题时，对数字和日期的处理是非常普遍的，如数学问题、随机数问题和日期问题等。为了解决这些问题，Java 提供了处理相关问题的类，包括 Math 类、Random 类、BigInteger 类、Date 类等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字处理和日期处理">
+<meta property="og:url" content="http://yoursite.com/2020/06/18/[Java]-%E6%95%B0%E5%AD%97%E5%A4%84%E7%90%86%E5%92%8C%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="在解决实际问题时，对数字和日期的处理是非常普遍的，如数学问题、随机数问题和日期问题等。为了解决这些问题，Java 提供了处理相关问题的类，包括 Math 类、Random 类、BigInteger 类、Date 类等">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-18T12:15:28.000Z">
+<meta property="article:modified_time" content="2020-06-19T12:13:02.311Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/18/[Java]-%E6%95%B0%E5%AD%97%E5%A4%84%E7%90%86%E5%92%8C%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>数字处理和日期处理 | </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7e4557d4ccc5f2373ebada2ff7d42a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title"></span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+        <li class="menu-item menu-item-photos">
+
+    <a href="/photos/" rel="section"><i class="fa fa-fw fa-photo"></i>Photos</a>
+
+  </li>
+        <li class="menu-item menu-item-map">
+
+    <a href="/DiyWeb/" rel="section"><i class="fa fa-fw fa-map-marker"></i>足迹</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+
++ 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/18/[Java]-%E6%95%B0%E5%AD%97%E5%A4%84%E7%90%86%E5%92%8C%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日积硅步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数字处理和日期处理
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-18 20:15:28" itemprop="dateCreated datePublished" datetime="2020-06-18T20:15:28+08:00">2020-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-19 20:13:02" itemprop="dateModified" datetime="2020-06-19T20:13:02+08:00">2020-06-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="热度" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/18/%5BJava%5D-%E6%95%B0%E5%AD%97%E5%A4%84%E7%90%86%E5%92%8C%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/18/%5BJava%5D-%E6%95%B0%E5%AD%97%E5%A4%84%E7%90%86%E5%92%8C%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>21k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>34 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在解决实际问题时，对数字和日期的处理是非常普遍的，如数学问题、随机数问题和日期问题等。为了解决这些问题，Java 提供了处理相关问题的类，包括 Math 类、Random 类、BigInteger 类、Date 类等</p>
+<a id="more"></a>
+
+<h1 id="Math类"><a href="#Math类" class="headerlink" title="Math类"></a><code>Math</code>类</h1><p>Java 中的<code>+、-、*、/</code>和<code>%</code>等基本算术运算符不能进行更复杂的数学运算，例如，三角函数、对数运算、指数运算等。于是 Java 提供了<code>Math</code>工具类来完成这些复杂的运算。</p>
+<p>在 Java 中<code>Math</code>类封装了常用的数学运算，提供了基本的数学操作，如指数、对数、平方根和三角函数等。<code>Math</code>类位于<code>java.lang</code>包，它的构造方法是<code>private</code>的，因此无法创建<code>Math</code> 类的对象，并且<code>Math</code>类中的所有方法都是类方法，可以直接通过类名来调用它们。</p>
+<h2 id="静态常量"><a href="#静态常量" class="headerlink" title="静态常量"></a>静态常量</h2><p><code>Math</code>类中包含<code>E</code>和<code>PI</code>两个静态常量，分别表示<code>e</code>（自然对数）和<code>π</code>（圆周率）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">"E 常量的值："</span> + Math.E);</span><br><span class="line">System.out.println(<span class="string">"PI 常量的值："</span> + Math.PI);</span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">E 常量的值：<span class="number">2.718281828459045</span></span><br><span class="line">PI 常量的值：<span class="number">3.141592653589793</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li><p>求最大值、最小值和绝对值</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>static int/long/float/double abs(a)</code></td>
+<td>返回<code>a</code>的绝对值</td>
+</tr>
+<tr>
+<td><code>statci int/double/long/float max(x,y)</code></td>
+<td>返回<code>x</code>和<code>y</code>中的最大值</td>
+</tr>
+<tr>
+<td><code>statci int/double/long/float min(x,y)</code></td>
+<td>返回<code>x</code>和<code>y</code>中的最小值</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test2</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"10 和 20 的较大值："</span> + Math.max(<span class="number">10</span>, <span class="number">20</span>));</span><br><span class="line">        System.out.println(<span class="string">"15.6 和 15 的较小值："</span> + Math.min(<span class="number">15.6</span>, <span class="number">15</span>));</span><br><span class="line">        System.out.println(<span class="string">"-12 的绝对值："</span> + Math.abs(-<span class="number">12</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>求整运算</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>static double ceil(double a)</code></td>
+<td>返回大于或等于<code>a</code>的最小整数</td>
+</tr>
+<tr>
+<td><code>static double float(double a)</code></td>
+<td>返回小于或等于<code>a</code>的最小整数</td>
+</tr>
+<tr>
+<td><code>static double rint(double a)</code></td>
+<td>返回最接近<code>a</code>的整数值，<font color=red>如果有两个同样接近的整数，则结果取偶数</font></td>
+</tr>
+<tr>
+<td><code>static int round(float a)</code></td>
+<td>将参数加上<code>1/2</code>后返回与参数最接近的整数</td>
+</tr>
+<tr>
+<td><code>static long round(double a)</code></td>
+<td>将参数加上<code>1/2</code>后返回与参数最接近的整数，如何强制转换为长整型</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test03</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        System.outprintln(<span class="string">"请输入一个数字："</span>);</span><br><span class="line">        <span class="keyword">double</span> num = input.nextDouble();</span><br><span class="line">        System.out.println(<span class="string">"大于或等于 "</span>+ num +<span class="string">" 的最小整数："</span> + Math.ceil(num));</span><br><span class="line">        System.out.println(<span class="string">"小于或等于 "</span>+ num +<span class="string">" 的最大整数："</span> + Math.floor(num));</span><br><span class="line">        System.out.println(<span class="string">"将 "</span>+ num +<span class="string">" 加上 0.5 之后最接近的整数："</span> + Math.round(num));</span><br><span class="line">        System.out.println(<span class="string">"最接近 "</span>+num+<span class="string">" 的整数："</span> + Math.rint(num));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三角函数运算</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>static double sin(double a)</code></td>
+<td>返回角的三角正弦值，参数以弧度为单位</td>
+</tr>
+<tr>
+<td><code>static double cos(double a)</code></td>
+<td>返回角的三角余弦值，参数以弧度为单位</td>
+</tr>
+<tr>
+<td><code>static double asin(double a)</code></td>
+<td>返回一个值的反余弦值，参数域在<code>[-1,1]</code>，值域在<code>[-PI/2,PI/2]</code></td>
+</tr>
+<tr>
+<td><code>static double acos(double a)</code></td>
+<td>返回一个值的反余弦值，参数域在<code>[-1,1]</code>，值域在<code>[0,PI]</code></td>
+</tr>
+<tr>
+<td><code>static double tan(double a)</code></td>
+<td>返回角的三角正切值，参数以弧度为单位</td>
+</tr>
+<tr>
+<td><code>static double atan(double a)</code></td>
+<td>返回一个值的反正切值，值域在<code>[-PI/2,PI/2]</code></td>
+</tr>
+<tr>
+<td><code>static double toDegrees(double angrad)</code></td>
+<td>将用弧度表示的角转换为近似相等的用角度表示的角</td>
+</tr>
+<tr>
+<td><code>static double toRadians(double angdeg)</code></td>
+<td>将用角度表示的角转换为近似相等的用弧度表示的角</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test4</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println&#123;<span class="string">"90 度的正弦值："</span> + Math.sin(Math.PI/<span class="number">2</span>));</span><br><span class="line">        System.out.println(<span class="string">"0 度的余弦值："</span> + Math.cos(<span class="number">0</span>));</span><br><span class="line">        System.out.println(<span class="string">"1 的反正切值："</span> + Math.atan(l));</span><br><span class="line">        System.out.println(<span class="string">"120 度的弧度值："</span> + Math.toRadians(<span class="number">120.0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指数运算</p>
+<p>指数运算包括求方根、取对数及其求m次方的运算。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>static double exp(double a)</code></td>
+<td>返回<code>e</code>的<code>a</code>次幂</td>
+</tr>
+<tr>
+<td><code>static double pow(double a, double b)</code></td>
+<td>返回以<code>a</code>为底数，以<code>b</code>为指数的幂值</td>
+</tr>
+<tr>
+<td><code>static double sqrt(double a)</code></td>
+<td>返回<code>a</code>的平方根</td>
+</tr>
+<tr>
+<td><code>static double cbrt(double a)</code></td>
+<td>返回<code>a</code>的立方根</td>
+</tr>
+<tr>
+<td><code>static double log(double a)</code></td>
+<td>返回<code>a</code>的自然对数，即<code>lna</code>的值</td>
+</tr>
+<tr>
+<td><code>static double log10(double a)</code></td>
+<td>返回以<code>10</code>为底的对数</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Test5&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"4 的立方值："</span> + Math.pow(<span class="number">4</span>,<span class="number">3</span>));</span><br><span class="line">        System.out.println(<span class="string">"16 的平方根："</span> + Math.sqrt(<span class="number">16</span>));</span><br><span class="line">        System.out.println(<span class="string">"10 为底 2 的对数："</span> + Math.log1O(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="生成随机数"><a href="#生成随机数" class="headerlink" title="生成随机数"></a>生成随机数</h1><p>要生成一个指定范围之内的随机数字有两种方法：一种是调用<code>Math</code>类的 <code>random()</code>方法，一种是使用<code>Random</code>类。</p>
+<p><code>Random</code>类提供了丰富的随机数生成方法，可以产生<code>boolean</code>、<code>int</code>、<code>long</code>、<code>float</code>、<code>byte 数组</code>以及<code>double</code>类型的随机数，这是它与<code>random()</code>方法最大的不同之处。<code>random()</code> 方法只能产生<code>double</code>类型的 0~1 的随机数。</p>
+<p><code>Random</code>类位于<code>java.util</code>包中，该类常用的有如下两个构造方法。</p>
+<ul>
+<li><code>Random()</code>：该构造方法使用一个和当前系统时间对应的数字作为种子数，然后使用这个种子数构造<code>Random</code>对象。</li>
+<li><code>Random(long seed)</code>：使用单个<code>long</code>类型的参数创建一个新的随机数生成器。</li>
+</ul>
+<p><code>Random</code>类提供的所有方法生成的随机数字都是均匀分布的，也就是说区间内部的数字生成的概率是均等的。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>boolean nextBoolean()</code></td>
+<td>生成一个随机的<code>boolean</code>值</td>
+</tr>
+<tr>
+<td><code>double nextDouble()</code></td>
+<td>生成一个随机的<code>double</code>值，值介于<code>[0,1.0)</code>，含0而不含<code>1.0</code></td>
+</tr>
+<tr>
+<td><code>int nextInt()</code></td>
+<td>生成一个随机的<code>int</code>值，该值介于<code>int</code>的值区间，也就是<code>-2^31~2^31-1</code></td>
+</tr>
+<tr>
+<td><code>int nextInt(int n)</code></td>
+<td>生成一个随机的<code>int</code>值，该值介于<code>[0,n)</code></td>
+</tr>
+<tr>
+<td><code>void setSeed(long seed)</code></td>
+<td>重新设置<code>Random</code>对象中的种子数。设置完种子数以后的<code>Random</code>对象和相同种子数使用<code>new</code>关键字创建出的<code>Random</code>对象相同。</td>
+</tr>
+<tr>
+<td><code>long nextLong()</code></td>
+<td>返回一个随机长整型数字</td>
+</tr>
+<tr>
+<td><code>boolean nextBoolean()</code></td>
+<td>返回一个随机布尔型值</td>
+</tr>
+<tr>
+<td><code>float nextFloat()</code></td>
+<td>返回一个随机浮点型数字</td>
+</tr>
+<tr>
+<td><code>double nextDouble()</code></td>
+<td>返回一个随机双精度值</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test6</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Random r = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">double</span> d1 = r.nextDouble(); <span class="comment">// 生成[0,1.0]区间的小数</span></span><br><span class="line">        <span class="keyword">double</span> d2 = r.nextDouble() * <span class="number">7</span>; <span class="comment">// 生成[0,7.0]区间的小数</span></span><br><span class="line">        <span class="keyword">int</span> i1 = r.nextInt(<span class="number">10</span>); <span class="comment">// 生成[0,10]区间的整数</span></span><br><span class="line">        <span class="keyword">int</span> i2 = r.nextInt(<span class="number">18</span>) - <span class="number">3</span>; <span class="comment">// 生成[-3,15]区间的整数</span></span><br><span class="line">        <span class="keyword">long</span> l1 = r.nextLong(); <span class="comment">// 生成一个随机长整型值</span></span><br><span class="line">        <span class="keyword">boolean</span> b1 = r.nextBoolean(); <span class="comment">// 生成一个随机布尔型值</span></span><br><span class="line">        <span class="keyword">float</span> f1 = r.nextFloat(); <span class="comment">// 生成一个随机浮点型值</span></span><br><span class="line">        System.out.println(<span class="string">"生成的[0,1.0]区间的小数是："</span> + d1);</span><br><span class="line">        System.out.println(<span class="string">"生成的[0,7.0]区间的小数是："</span> + d2);</span><br><span class="line">        System.out.println(<span class="string">"生成的[0,10]区间的整数是："</span> + i1);</span><br><span class="line">        System.out.println(<span class="string">"生成的[-3,15]区间的整数是："</span> + i2);</span><br><span class="line">        System.out.println(<span class="string">"生成一个随机长整型值："</span> + l1);</span><br><span class="line">        System.out.println(<span class="string">"生成一个随机布尔型值："</span> + b1);</span><br><span class="line">        System.out.println(<span class="string">"生成一个随机浮点型值："</span> + f1);</span><br><span class="line">        System.out.print(<span class="string">"下期七星彩开奖号码预测："</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">8</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> num = r.nextInt(<span class="number">9</span>); <span class="comment">// 生成[0,9]区间的整数</span></span><br><span class="line">            System.out.print(num);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><code>Math</code>类的<code>random()</code>方法没有参数，它默认会返回<strong>大于等于</strong><code>0.0</code>、<strong>小于</strong><code>1.0</code>的 <code>double</code>类型随机数，<strong>即<code>0&lt;=随机数&lt;1.0</code></strong>。对<code>random()</code>方法返回的数字稍加处理，即可实现产生任意范围随机数的功能。</p>
+<h1 id="数字格式化"><a href="#数字格式化" class="headerlink" title="数字格式化"></a>数字格式化</h1><p>数字的格式在解决实际问题时使用非常普遍，这时可以使用<code>DecimalFormat</code>类对结果进行格式化处理。例如，将小数位统一成 2 位，不足 2 位的以 0 补齐。</p>
+<p><code>DecimalFormat</code>是<code>NumberFormat</code>的一个子类，用于格式化十进制数字。<code>DecimalFormat</code>类包含一个模式和一组符号。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>显示数字，如果位数不够则补0</td>
+</tr>
+<tr>
+<td>#</td>
+<td>显示数字，如果位数不够不发生变化</td>
+</tr>
+<tr>
+<td>.</td>
+<td>小数分隔符</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减号</td>
+</tr>
+<tr>
+<td>，</td>
+<td>组分隔符</td>
+</tr>
+<tr>
+<td>E</td>
+<td>分隔科学计数法中的尾数和小数</td>
+</tr>
+<tr>
+<td>%</td>
+<td>前缀或后缀，乘以 100 后作为百分比显示</td>
+</tr>
+<tr>
+<td>？</td>
+<td>乘以 1000 后作为千进制货币符显示，用货币符号代替。如果双写，用国际货币符号代替；<br/>如果出现在一个模式中，用货币十进制分隔符代替十进制分隔符</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.text.DecimalFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test08</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 实例化DecimalFormat类的对象，并指定格式</span></span><br><span class="line">        DecimalFormat df1 = <span class="keyword">new</span> DecimalFormat(<span class="string">"0.0"</span>);</span><br><span class="line">        DecimalFormat df2 = <span class="keyword">new</span> DecimalFormat(<span class="string">"#.#"</span>);</span><br><span class="line">        DecimalFormat df3 = <span class="keyword">new</span> DecimalFormat(<span class="string">"000.000"</span>);</span><br><span class="line">        DecimalFormat df4 = <span class="keyword">new</span> DecimalFormat(<span class="string">"###.###"</span>);</span><br><span class="line">        Scanner scan = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        System.out.print(<span class="string">"请输入一个float类型的数字："</span>);</span><br><span class="line">        <span class="keyword">float</span> f = scan.nextFloat();</span><br><span class="line">        <span class="comment">// 对输入的数字应用格式，并输出结果</span></span><br><span class="line">        System.out.println(<span class="string">"0.0 格式："</span> + df1.format(f));</span><br><span class="line">        System.out.println(<span class="string">"#.# 格式："</span> + df2.format(f));</span><br><span class="line">        System.out.println(<span class="string">"000.000 格式："</span> + df3.format(f));</span><br><span class="line">        System.out.println(<span class="string">"###.### 格式："</span> + df4.format(f));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行结果示例</span></span><br><span class="line">请输入一个<span class="keyword">float</span>类型的数字：<span class="number">5487.45697</span></span><br><span class="line"><span class="number">0.0</span> 格式：<span class="number">5487.5</span></span><br><span class="line">#.# 格式：5487.5</span><br><span class="line"><span class="number">000.000</span> 格式：<span class="number">5487.457</span></span><br><span class="line">###.### 格式：5487.457</span><br></pre></td></tr></table></figure>
+
+<h1 id="大数字运算"><a href="#大数字运算" class="headerlink" title="大数字运算"></a>大数字运算</h1><p>在 Java 中提供了用于大数字运算的类，即<code>java.math.BigInteger</code>类和 <code>java.math.BigDecimal</code>类。这两个类用于高精度计算，<strong>其中<code>BigInteger</code>类是针对整型大数字的处理类，而<code>BigDecimal</code>类是针对大小数的处理类。</strong></p>
+<h2 id="BigInteger类"><a href="#BigInteger类" class="headerlink" title="BigInteger类"></a><code>BigInteger</code>类</h2><p>如果要存储比<code>Integer</code>更大的数字，<code>Integer</code>数据类型就无能为力了。因此，Java 中提供<code>BigInteger</code>类来处理更大的数字。<code>BigInteger</code>类型的数字范围较 <code>Integer</code>类型的数字范围要大得多。<code>BigInteger</code>支持任意精度的整数，也就是说在运算中<code>BigInteger</code>类型可以准确地表示任何大小的整数值。</p>
+<p>对<code>BigInteger</code>做运算的时候，只能使用实例方法。</p>
+<p>和<code>long</code>型整数运算比，<code>BigInteger</code>不会有范围限制，但缺点是速度比较慢。也可以把<code>BigInteger</code>转换成<code>long</code>型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BigInteger i = <span class="keyword">new</span> BigInteger(<span class="string">"1234567890"</span>);</span><br><span class="line">System.out.println(i.longValue());</span><br><span class="line">System.out.println(i.multiply(i).longValueExact());<span class="comment">// java.lang.ArithmeticException: BigInteger out of long range</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>longValueExact()</code>方法时，如果超出了<code>long</code>型的范围，会抛出<font color=red><code>ArithmeticException</code></font>。</p>
+<p><code>BigInteger</code>和<code>Integer</code>、<code>Long</code>一样，也是不可变类，并且也继承自<code>Number</code>类。因为<code>Number</code>定义了转换为基本类型的几个方法：</p>
+<ul>
+<li>转换为<code>byte</code>：<code>byteValue()</code></li>
+<li>转换为<code>short</code>：<code>shortValue()</code></li>
+<li>转换为<code>int</code>：<code>intValue()</code></li>
+<li>转换为<code>long</code>：<code>longValue()</code></li>
+<li>转换为<code>float</code>：<code>floatValue()</code></li>
+<li>转换为<code>double</code>：<code>doubleValue()</code></li>
+</ul>
+<p>因此，通过上述方法，可以把<code>BigInteger</code>转换成基本类型。如果<code>BigInteger</code>表示的范围超过了基本类型的范围，转换时将丢失高位信息，即结果不一定是准确的。如果需要准确地转换成基本类型，可以使用<code>intValueExact()</code>、<code>longValueExact()</code>等方法，在转换时如果超出范围，将直接抛出<code>ArithmeticException</code>异常。</p>
+<hr>
+<p>除了基本的加、减、乘、除操作之外，<code>BigInteger</code>类还封装了很多操作，像求绝对值、相反数、最大公约数以及判断是否为质数等。</p>
+<p>要使用<code>BigInteger</code>类，首先要创建一个<code>BigInteger</code>对象。<code>BigInteger</code>类提供了很多种构造方法，其中最直接的一种是参数以字符串形式代表要处理的数字。这个方法语法格式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BigInteger(String val) <span class="comment">//val：是数字十进制的字符串</span></span><br><span class="line"><span class="comment">//将数字5转换为BigInteger对象</span></span><br><span class="line">BigInteger bi = <span class="keyword">new</span> BigIntrger(<span class="string">"5"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>创建<code>BigInteger</code>对象之后，便可以调用<code>BigInteger</code>类提供的方法进行各种数学运算操作：</p>
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>add(BigInteger val)</code></td>
+<td>做加法运算</td>
+</tr>
+<tr>
+<td><code>subtract(BigInteger val)</code></td>
+<td>做减法运算</td>
+</tr>
+<tr>
+<td><code>multiply(BigInteger val)</code></td>
+<td>做乘法运算</td>
+</tr>
+<tr>
+<td><code>divide(BigInteger val)</code></td>
+<td>做除法运算</td>
+</tr>
+<tr>
+<td><code>remainder(BigInteger val)</code></td>
+<td>做取余数运算</td>
+</tr>
+<tr>
+<td><code>divideAndRemainder(BigInteger val)</code></td>
+<td>做除法运算，返回数组的第一个值为商，第二个值为余数</td>
+</tr>
+<tr>
+<td><code>pow(int exponent)</code></td>
+<td>做参数的<code>exponent</code>次方运算</td>
+</tr>
+<tr>
+<td><code>negate()</code></td>
+<td>取相反数</td>
+</tr>
+<tr>
+<td><code>shiftLeft(int n)</code></td>
+<td>将数字左移<code>n</code>位，如果<code>n</code>为负数，则做右移操作</td>
+</tr>
+<tr>
+<td><code>shiftRight(int n)</code></td>
+<td>将数字右移<code>n</code>位，如果<code>n</code>位负数，则做左移操作</td>
+</tr>
+<tr>
+<td><code>and(BigInteger val)</code></td>
+<td>做与运算</td>
+</tr>
+<tr>
+<td><code>or(BigInteger val)</code></td>
+<td>做或运算</td>
+</tr>
+<tr>
+<td><code>compareTo(BigInteger val)</code></td>
+<td>做数字的比较运算</td>
+</tr>
+<tr>
+<td><code>equals(Object obj)</code></td>
+<td>当参数<code>obj</code>是<code>BigInteger</code>类型的数字并且数值相等时返回<code>true</code>，其他返回<code>false</code></td>
+</tr>
+<tr>
+<td><code>min(BigInteger val)</code></td>
+<td>返回较小的数值</td>
+</tr>
+<tr>
+<td><code>max(BigInteger val)</code></td>
+<td>返回较大的数值</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigInteger;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test09</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        System.out.println(<span class="string">"请输入一个整型数字："</span>);</span><br><span class="line">        <span class="comment">// 保存用户输入的数字</span></span><br><span class="line">        <span class="keyword">int</span> num = input.nextInt();</span><br><span class="line">        <span class="comment">// 使用输入的数字创建BigInteger对象</span></span><br><span class="line">        BigInteger bi = <span class="keyword">new</span> BigInteger(num + <span class="string">""</span>);</span><br><span class="line">        <span class="comment">// 计算大数字加上99的结果</span></span><br><span class="line">        System.out.println(<span class="string">"加法操作结果："</span> + bi.add(<span class="keyword">new</span> BigInteger(<span class="string">"99"</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字减去25的结果</span></span><br><span class="line">        System.out.println(<span class="string">"减法操作结果："</span> + bi.subtract(<span class="keyword">new</span> BigInteger(<span class="string">"25"</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字乘以3的结果</span></span><br><span class="line">        System.out.println(<span class="string">"乘法橾作结果："</span> + bi.multiply(<span class="keyword">new</span> BigInteger(<span class="string">"3"</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字除以2的结果</span></span><br><span class="line">        System.out.println(<span class="string">"除法操作结果："</span> + bi.divide(<span class="keyword">new</span> BigInteger(<span class="string">"2"</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字除以3的商</span></span><br><span class="line">        System.out.println(<span class="string">"取商操作结果："</span> + bi.divideAndRemainder(<span class="keyword">new</span> BigInteger(<span class="string">"3"</span>))[<span class="number">0</span>]);</span><br><span class="line">        <span class="comment">// 计算大数字除以3的余数</span></span><br><span class="line">        System.out.println(<span class="string">"取余操作结果："</span> + bi.divideAndRemainder(<span class="keyword">new</span> BigInteger(<span class="string">"3"</span>))[<span class="number">1</span>]);</span><br><span class="line">        <span class="comment">// 计算大数字的2次方</span></span><br><span class="line">        System.out.println(<span class="string">"取 2 次方操作结果："</span> + bi.pow(<span class="number">2</span>));</span><br><span class="line">        <span class="comment">// 计算大数字的相反数</span></span><br><span class="line">        System.out.println(<span class="string">"取相反数操作结果："</span> + bi.negate());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码将用户输入的整型数字保存到 num 变量中，由于 BigInteger 类的构造方法只接收字符串类型的参数，所以使用“new BigInteger(num+””)”代码来创建 BigInteger 对象。</p>
+<h2 id="BigDecimal类"><a href="#BigDecimal类" class="headerlink" title="BigDecimal类"></a><code>BigDecimal</code>类</h2><p><code>BigInteger</code>和<code>BigDecimal</code>都能实现大数字的运算，不同的是<code>BigDecimal</code>加入了小数的概念。一般的<code>float</code>和<code>double</code>类型数据只能用来做科学计算或工程计算，但由于在商业计算中要求数字精度比较高，所以要用到<code>BigDecimal</code>类。<code>BigDecimal</code>类支持任何精度的浮点数，可以用来精确计算货币值。</p>
+<p><code>BigDecimal</code>常用的构造方法如下。</p>
+<ul>
+<li><code>BigDecimal(double val)</code>：实例化时将双精度型转换为<code>BigDecimal</code>类型。</li>
+<li><code>BigDecimal(String val)</code>：实例化时将字符串形式转换为<code>BigDecimal</code>类型。</li>
+</ul>
+<hr>
+<p><code>BigDecimal</code>用<code>scale()</code>表示小数位数，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BigDecimal d1 = <span class="keyword">new</span> BigDecimal(<span class="string">"123.45"</span>);</span><br><span class="line">BigDecimal d2 = <span class="keyword">new</span> BigDecimal(<span class="string">"1234500"</span>);</span><br><span class="line">System.out.println(d1.scale()); <span class="comment">// 2,两位小数</span></span><br><span class="line">System.out.println(d2.scale()); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>通过<code>BigDecimal</code>的<code>stripTrailingZeros()</code>方法，可以将一个<code>BigDecimal</code>格式化为一个相等的，但去掉了末尾0的<code>BigDecimal</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">BigDecimal d1 = <span class="keyword">new</span> BigDecimal(<span class="string">"123.4500"</span>);</span><br><span class="line">BigDecimal d2 = d1.stripTrailingZeros();</span><br><span class="line">System.out.println(d1.scale()); <span class="comment">// 4</span></span><br><span class="line">System.out.println(d2.scale()); <span class="comment">// 2,因为去掉了00</span></span><br><span class="line"></span><br><span class="line">BigDecimal d3 = <span class="keyword">new</span> BigDecimal(<span class="string">"1234500"</span>);</span><br><span class="line">BigDecimal d4 = d3.stripTrailingZeros();</span><br><span class="line">System.out.println(d3.scale()); <span class="comment">// 0</span></span><br><span class="line">System.out.println(d4.scale()); <span class="comment">// -2  表示这个数是个整数，并且末尾有2个0。</span></span><br></pre></td></tr></table></figure>
+
+<p><code>BigDecimal</code>类的方法可以用来做超大浮点数的运算，像加、减、乘和除等。在所有运算中，除法运算是最复杂的，因为在除不尽的情况下，末位小数的处理方式是需要考虑的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BigDecimal <span class="title">add</span><span class="params">(BigDecimal augend)</span></span>; <span class="comment">//加法操作</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">subtract</span><span class="params">(BigDecimal subtrahend)</span></span>; <span class="comment">//减法操作</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">multiply</span><span class="params">(BigDecimal multiplieand)</span></span>; <span class="comment">//乘法操作</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">divide</span><span class="params">(BigDecimal divisor)</span></span>; <span class="comment">//除法操作，存在除不尽的情况  报错：ArithmeticException</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">divide</span><span class="params">(BigDecimal divisor,<span class="keyword">int</span> scale,<span class="keyword">int</span> roundingMode)</span></span>; <span class="comment">//除法运算 （参数分别表示：除数，商的小数点后的位数和近似值处理模式）</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>在比较两个<code>BigDecimal</code>的值是否相等时，要特别注意，使用<code>equals()</code>方法不但要求两个<code>BigDecimal</code>的值相等，还要求它们的<code>scale()</code>相等。必须使用<code>compareTo()</code>方法来比较，它根据两个值的大小分别返回负数、正数和<code>0</code>，分别表示小于、大于和等于。</strong></p>
+<p><code>roundingMode</code>参数支持的处理模式：</p>
+<table>
+<thead>
+<tr>
+<th>模式名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BigDecimal.ROUND_UP</td>
+<td>上的最后一位如果大于0，则向前进位，正负都如此</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_DOWM</td>
+<td>商的最后一位无论是什么数字都能省略</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_CEILING</td>
+<td>商如果是正数，按照<code>ROUND_UP</code>模式处理；如果是负数，按照<code>ROUND_DOWN</code>模式处理</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_FLOOR</td>
+<td>与<code>ROUND_CELING</code>模式相反，商如果是正数，按照<code>ROUND_DOWN</code>模式处理；如果是负数，按照<code>ROUND_UP</code>模式处理</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_DOWN</td>
+<td>对商进行五舍六入操作。如果商最后一位小于等于5，则做舍弃操作，否则对最后一位进行进位操作</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_UP</td>
+<td>对商进行四舍五入操作。如果商最后一位小于5，则做舍弃操作，否则对最后一位进行进位操作</td>
+</tr>
+<tr>
+<td>BigDecimal.ROUND_HALF_EVEN</td>
+<td>如果商的倒数第二位是奇数，则按照<code>ROUND_HALF_UP</code>处理；如果是偶数，则按照<code>ROUND_HALF_DOWN</code>处理</td>
+</tr>
+</tbody></table>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test10</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        System.out.println(<span class="string">"请输入一个数字："</span>);</span><br><span class="line">        <span class="comment">// 保存用户输入的数字</span></span><br><span class="line">        <span class="keyword">double</span> num = input.nextDouble();</span><br><span class="line">        <span class="comment">// 使用输入的数字创建BigDecimal对象</span></span><br><span class="line">        BigDecimal bd = <span class="keyword">new</span> BigDecimal(num);</span><br><span class="line">        <span class="comment">// 计算大数字加上99.154的结果</span></span><br><span class="line">        System.out.println(<span class="string">"加法操作结果："</span> + bd.add(<span class="keyword">new</span> BigDecimal(<span class="number">99.154</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字减去-25.157904的结果</span></span><br><span class="line">        System.out.println(<span class="string">"减法操作结果："</span> + bd.subtract(<span class="keyword">new</span> BigDecimal(-<span class="number">25.157904</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字乘以3.5的结果</span></span><br><span class="line">        System.out.println(<span class="string">"乘法操作结果："</span> + bd.multiply(<span class="keyword">new</span> BigDecimal(<span class="number">3.5</span>)));</span><br><span class="line">        <span class="comment">// 计算大数字除以3.14的结果，并保留小数后2位</span></span><br><span class="line">        System.out.println(<span class="string">"除法操作结果(保留 2 位小数)："</span> + bd.divide(<span class="keyword">new</span> BigDecimal(<span class="number">3.14</span>), <span class="number">2</span>, BigDecimal.ROUND_CEILING));</span><br><span class="line">        <span class="comment">// 计算大数字除以3.14的结果，并保留小数后5位</span></span><br><span class="line">        System.out.println(<span class="string">"除法操作结果(保留 5 位小数)："</span> + bd.divide(<span class="keyword">new</span> BigDecimal(<span class="number">3.14</span>), <span class="number">5</span>, BigDecimal.ROUND_CEILING));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="时间日期的处理"><a href="#时间日期的处理" class="headerlink" title="时间日期的处理"></a>时间日期的处理</h1><p>在 Java 中获取当前时间，可以使用<code>java.util.Date</code>类和<code>java.util.Calendar</code>类完成。其中，<code>Date</code>类主要封装了系统的日期和时间的信息，<code>Calendar</code>类则会根据系统的日历来解释<code>Date</code>对象。</p>
+<h2 id="Date类"><a href="#Date类" class="headerlink" title="Date类"></a><code>Date</code>类</h2><p><code>Date</code>类表示系统特定的时间戳，可以精确到毫秒。<code>Date</code>对象表示时间的默认顺序是星期、月、日、小时、分、秒、年。</p>
+<ol>
+<li><p>构造方法</p>
+<p><code>Date</code>类有如下两个构造方法</p>
+<ul>
+<li><code>Date()</code>：此种形式表示分配<code>Date</code>对象并初始化此对象，以表示分配它的时间（精确到毫秒），使用该构造方法创建的对象可以获取本地的当前时间。</li>
+<li><code>Date(long date)</code>：此种形式表示从<code>GMT</code>时间（格林尼治时间）1970 年 1 月 1 日 0 时 0 分 0 秒开始经过参数 <code>date</code>指定的毫秒数。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Date date1 = <span class="keyword">new</span> Date();    <span class="comment">// 调用无参数构造函数</span></span><br><span class="line">System.out.println(date1.toString());    <span class="comment">// 输出：Thu Jun 18 15:57:06 CST 2020</span></span><br><span class="line">Date date2 = <span class="keyword">new</span> Date(<span class="number">60000</span>);    <span class="comment">// 调用含有一个long类型参数的构造函数</span></span><br><span class="line">System.out.println(date2);    <span class="comment">// 输出：Thu Jan 01 08:01:00 CST 1970</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Date</code>类的无参数构造方法获取的是系统当前的时间，显示的顺序为星期、月、日、小时、分、秒、年。</p>
+<p><code>Date</code>类带<code>long</code>类型参数的构造方法获取的是距离<code>GMT</code>指定毫秒数的时间，60000 毫秒是一分钟，而<code>GMT</code>（格林尼治标准时间）与<code>CST</code>（中央标准时间）相差 8 小时，也就是说 1970 年 1 月 1 日 00:00:00 <code>GMT</code>与 1970 年 1 月 1 日 08:00:00 <code>CST</code> 表示的是同一时间。 因此距离 1970 年 1 月 1 日 00:00:00 <code>CST</code> 一分钟的时间为 1970 年 1 月 1 日 00:01:00 <code>CST</code>，即使用<code>Date</code>对象表示为 Thu Jan 01 08:01:00 CST 1970。</p>
+</li>
+<li><p>常用方法</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>boolean after(Date when)</code></td>
+<td>判断此日期是否在指定日期之后</td>
+</tr>
+<tr>
+<td><code>boolean before(Date when)</code></td>
+<td>判断此日期是否在指定日期之前</td>
+</tr>
+<tr>
+<td><code>int compareTo(Date anotherDate)</code></td>
+<td>比较两个日期的顺序</td>
+</tr>
+<tr>
+<td><code>boolean equals(Object obj)</code></td>
+<td>比较两个日期的相等性</td>
+</tr>
+<tr>
+<td><code>long getTime()</code></td>
+<td>返回自1970年1月1日 00:00:00 GMT以来，此<code>Date</code>对象表示的毫秒数</td>
+</tr>
+<tr>
+<td><code>String toString()</code></td>
+<td>把此<code>Date</code>对象转换为以下形式的String：<code>dow mon dd hh:mm:ss zzz yyy</code>。其中<code>dow</code>是一周中的某一天</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h2 id="calendar类"><a href="#calendar类" class="headerlink" title="calendar类"></a><code>calendar</code>类</h2><p><code>Calendar</code>类是一个抽象类，它为特定瞬间与<code>YEAR</code>、<code>MONTH</code>、<code>DAY_OF--MONTH</code>、<code>HOUR</code>等日历字段之间的转换提供了一些方法，并为操作日历字段提供了一些方法。创建<code>Calendar</code>对象不能使用<code>new</code>关键字，因为<code>Calendar</code>类是一个抽象类，但是它提供了一个<code>getInsatance()</code>方法来获得<code>Calendar</code>类的对象。<code>getInstance()</code>方法返回一个<code>Calendar</code>对象，其日历字段已由当前日期和时间初始化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Calendar c = Calendar.getInstance();</span><br></pre></td></tr></table></figure>
+
+<p><code>Calendar</code>类的常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>void add(int field, int amount)</code></td>
+<td>根据日历的规则，为给定的日历字段<code>field</code>添加或减去指定的时间量<code>amount</code></td>
+</tr>
+<tr>
+<td><code>boolean after(Object when))</code></td>
+<td>判断此<code>Calendar</code>表示的时间是否在指定时间<code>when</code>之后，并返回判断结果</td>
+</tr>
+<tr>
+<td><code>boolean before(Object when)</code></td>
+<td>判断此<code>Calendar</code>表示的时间是否在指定时间<code>when</code>之后，并返回判断结果</td>
+</tr>
+<tr>
+<td><code>void clear()</code></td>
+<td>清空<code>Calendar</code>中的日期时间</td>
+</tr>
+<tr>
+<td><code>int compareTo(Calendar anotherCalendar)</code></td>
+<td>比较两个<code>Calendar</code>对象表示的时间值（从格林威治时间 1970 年 01 月 01 日 00 时 00 分 00 秒至现在的毫秒偏移量），大则返回 1，小则返回 -1，相等返回 0</td>
+</tr>
+<tr>
+<td><code>int get(int field)</code></td>
+<td>返回指定日历字段的值</td>
+</tr>
+<tr>
+<td><code>int getActualMaximum(int field)</code></td>
+<td>返回指定日历可能拥有的最大值</td>
+</tr>
+<tr>
+<td><code>int getActualMinimum(int field)</code></td>
+<td>返回指定日历可能拥有的最小值</td>
+</tr>
+<tr>
+<td><code>int getFirstDayOfWeek()</code></td>
+<td>获取一星期的第一天。根据不同的国家地区，返回不同的值</td>
+</tr>
+<tr>
+<td><code>static Calendar getInstance()</code></td>
+<td>使用默认时区和语言环境获得一个日历</td>
+</tr>
+<tr>
+<td><code>static Calendar getInstance(TimeZone zone)</code></td>
+<td>使用指定时区和默认语言环境获得一个日历</td>
+</tr>
+<tr>
+<td><code>static Calendar getInstance(TimeZone zone,Local aLocale)</code></td>
+<td>使用指定时区和语言环境获得一个日历</td>
+</tr>
+<tr>
+<td><code>Date getTime()</code></td>
+<td>返回一个表示此<code>Calendar</code>时间值（从格林威治时间 1970 年 01 月 01 日 00 时 00 分 00 秒至现在的毫秒偏移量）的<code>Date</code>对象</td>
+</tr>
+<tr>
+<td><code>long getTimeInMillis()</code></td>
+<td>返回<code>Calendar</code>的时间值，以毫秒为单位</td>
+</tr>
+<tr>
+<td><code>void set(int field, int value)</code></td>
+<td>为指定的日历字段设置给定值</td>
+</tr>
+<tr>
+<td><code>void set(int year,int mouth, int date)</code></td>
+<td>使用日历字段<code>YEAR</code>、<code>MONTH</code>、<code>DAY_OF_MONTH HOUR</code>的值</td>
+</tr>
+<tr>
+<td><code>void set(int year,int mouth, int date,int hourOfDay, int minute,int second)</code></td>
+<td>设置字段<code>YEAR</code>、<code>MONTH</code>、<code>DAY_OF_MONTH HOUR</code>、 <code>MINUTE</code> <code>SECOND</code>的值</td>
+</tr>
+<tr>
+<td><code>void setFirstDayOfWeek(int value)</code></td>
+<td>设置一星期的第一天是哪一天</td>
+</tr>
+<tr>
+<td><code>void setTimeInMillis(long millis)</code></td>
+<td>用给定的<code>long</code>值设置此<code>Calendar</code>的当前时间值</td>
+</tr>
+</tbody></table>
+<p><font color=red><code>Calendar</code>对象可以调用<code>set()</code>方法将日历翻到任何一个时间，当参数<code>year</code>取负数时表示公元前。<code>Calendar</code>对象调用<code>get()</code>方法可以获取有关年、月、日等时间信息</font>，参数<code>field</code>的有效值由<code>Calendar</code>静态常量指定。</p>
+<p><code>Calendar</code>类中定义了许多常量。分别表示不同的意义</p>
+<ul>
+<li><code>Calendar.YEAR</code>：年份。</li>
+<li><code>Calendar.Month</code>：月份。</li>
+<li><code>Calendar.DATE</code>：日期</li>
+<li><code>Calendar.DAY_OF_MONTH</code>：日期，和上面的字段意义完全相同</li>
+<li><code>Calendar.HOUR</code>：12小时制的小时</li>
+<li><code>Calendar.HOUR_OF_DAY</code>：24小时制的小时</li>
+<li><code>Calendar.MINUTE</code>：分钟</li>
+<li><code>Calendar.SECOND</code>：秒</li>
+<li><code>Calendar.DAY_OF_WEEK</code>：星期几</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mouth = Calendar.getInstance().get(Calendar.MONTH); <span class="comment">//如果整型变量 month 的值是 0，表示当前日历是在 1 月份；如果值是 11，则表示当前日历在 12 月份。</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>使用<code>Calendar</code>类处理日期时间：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Calendar calendar = Calendar.getInstance(); <span class="comment">// 如果不设置时间，则默认为当前时间</span></span><br><span class="line">calendar.setTime(<span class="keyword">new</span> Date()); <span class="comment">// 将系统当前时间赋值给 Calendar 对象</span></span><br><span class="line">System.out.println(<span class="string">"现在时刻："</span> + calendar.getTime()); <span class="comment">// 获取当前时间</span></span><br><span class="line"><span class="keyword">int</span> year = calendar.get(Calendar.YEAR); <span class="comment">// 获取当前年份</span></span><br><span class="line">System.out.println(<span class="string">"现在是"</span> + year + <span class="string">"年"</span>);</span><br><span class="line"><span class="keyword">int</span> month = calendar.get(Calendar.MONTH) + <span class="number">1</span>; <span class="comment">// 获取当前月份（月份从 0 开始，所以加 1）</span></span><br><span class="line">System.out.print(month + <span class="string">"月"</span>);</span><br><span class="line"><span class="keyword">int</span> day = calendar.get(Calendar.DATE); <span class="comment">// 获取日</span></span><br><span class="line">System.out.print(day + <span class="string">"日"</span>);</span><br><span class="line"><span class="keyword">int</span> week = calendar.get(Calendar.DAY_OF_WEEK) - <span class="number">1</span>; <span class="comment">// 获取今天星期几（以星期日为第一天）</span></span><br><span class="line">System.out.print(<span class="string">"星期"</span> + week);</span><br><span class="line"><span class="keyword">int</span> hour = calendar.get(Calendar.HOUR_OF_DAY); <span class="comment">// 获取当前小时数（24 小时制）</span></span><br><span class="line">System.out.print(hour + <span class="string">"时"</span>);</span><br><span class="line"><span class="keyword">int</span> minute = calendar.get(Calendar.MINUTE); <span class="comment">// 获取当前分钟</span></span><br><span class="line">System.out.print(minute + <span class="string">"分"</span>);</span><br><span class="line"><span class="keyword">int</span> second = calendar.get(Calendar.SECOND); <span class="comment">// 获取当前秒数</span></span><br><span class="line">System.out.print(second + <span class="string">"秒"</span>);</span><br><span class="line"><span class="keyword">int</span> millisecond = calendar.get(Calendar.MILLISECOND); <span class="comment">// 获取毫秒数</span></span><br><span class="line">System.out.print(millisecond + <span class="string">"毫秒"</span>);</span><br><span class="line"><span class="keyword">int</span> dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH); <span class="comment">// 获取今天是本月第几天</span></span><br><span class="line">System.out.println(<span class="string">"今天是本月的第 "</span> + dayOfMonth + <span class="string">" 天"</span>);</span><br><span class="line"><span class="keyword">int</span> dayOfWeekInMonth = calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH); <span class="comment">// 获取今天是本月第几周</span></span><br><span class="line">System.out.println(<span class="string">"今天是本月第 "</span> + dayOfWeekInMonth + <span class="string">" 周"</span>);</span><br><span class="line"><span class="keyword">int</span> many = calendar.get(Calendar.DAY_OF_YEAR); <span class="comment">// 获取今天是今年第几天</span></span><br><span class="line">System.out.println(<span class="string">"今天是今年第 "</span> + many + <span class="string">" 天"</span>);</span><br><span class="line">Calendar c = Calendar.getInstance();</span><br><span class="line">c.set(<span class="number">2012</span>, <span class="number">8</span>, <span class="number">8</span>); <span class="comment">// 设置年月日，时分秒将默认采用当前值</span></span><br><span class="line">System.out.println(<span class="string">"设置日期为 2012-8-8 后的时间："</span> + c.getTime()); <span class="comment">// 输出时间</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>Calendar</code>类来实现日历的打印功能：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalendarDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Calendar calendar = Calendar.getInstance();</span><br><span class="line">        calendar.set(<span class="number">2016</span>, <span class="number">5</span>, <span class="number">1</span>); <span class="comment">// 实际的calendar对象所表示的日期为2016年6月1日</span></span><br><span class="line">        <span class="comment">// 判断2016年6月1日为一周中的第几天</span></span><br><span class="line">        <span class="keyword">int</span> index = calendar.get(Calendar.DAY_OF_WEEK) - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">char</span>[] title = &#123; <span class="string">'日'</span>, <span class="string">'一'</span>, <span class="string">'二'</span>, <span class="string">'三'</span>, <span class="string">'四'</span>, <span class="string">'五'</span>, <span class="string">'六'</span> &#125;; <span class="comment">// 存放曰历的头部</span></span><br><span class="line">        <span class="keyword">int</span> daysArray[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">6</span>][<span class="number">7</span>];<span class="comment">// 存放日历的数据</span></span><br><span class="line">        <span class="keyword">int</span> daysInMonth = <span class="number">31</span>; <span class="comment">// 该月的天数</span></span><br><span class="line">        <span class="keyword">int</span> day = <span class="number">1</span>; <span class="comment">// 自动增长</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt; <span class="number">7</span>; i++) &#123;</span><br><span class="line">            <span class="comment">// 填充第一周的日期数据，即日历中的第一行</span></span><br><span class="line">            daysArray[<span class="number">0</span>][i] = day++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">            <span class="comment">// 填充其他周的日历数据，控制行</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">7</span>; j++) &#123;</span><br><span class="line">                <span class="comment">// 如果当前day表示的是本月最后一天，则停止向数组中继续赋值</span></span><br><span class="line">                <span class="keyword">if</span> (day &gt; daysInMonth) &#123;</span><br><span class="line">                    i = <span class="number">6</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                daysArray[i][j] = day++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"------------------2016 年 6 月--------------------\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; title.length; i++) &#123;</span><br><span class="line">            System.out.print(title[i] + <span class="string">"\t"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">        <span class="comment">// 输出二元数组daysArray中的元素</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">7</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (daysArray[i][j] == <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (i != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="comment">// 如果到月末，则完成显示日历的任务，停止该方法的执行</span></span><br><span class="line">                        <span class="keyword">return</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    System.out.print(<span class="string">"\t"</span>);</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.print(daysArray[i][j] + <span class="string">"\t"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.print(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该程序看似复杂其实很简单。因为<code>Calendar</code>类所表示的时间月份是<code>set()</code>方法中表示月份的参数值 +1，因此<code>Calendar</code>类的实际时间为 2016 年 6 月 1 日。在下面的代码中分别获取 6 月 1 日为本周中的第几天，以便在相应的星期下开始输出 6 月份的日历。程序中的<code>daysArray</code>是一个二元数组，该二元数组控制了日历的格式输出，第一个子数组控制日历的行，第二个子数组控制曰历的列，即可输出二元数组中的每一个元素。</p>
+<h1 id="日期格式化"><a href="#日期格式化" class="headerlink" title="日期格式化"></a>日期格式化</h1><p>格式化日期表示将日期/时间格式转换为预先定义的日期/时间格式。例如将日期“Fri May 18 15:46:24 CST2016” 格式转换为 “2016-5-18 15:46:24 星期五”的格式。在 Java 中，可以使用<code>DateFormat</code>类和<code>SimpleDateFormat</code>类来格式化日期，下面详细介绍这两个格式化日期类的使用。</p>
+<h2 id="DateFormat类"><a href="#DateFormat类" class="headerlink" title="DateFormat类"></a><code>DateFormat</code>类</h2><p><strong><code>DateFormat</code>是日期/时间格式化子类的抽象类，它以与语言无关的方式格式化并解析日期或时间。</strong>日期/时间格式化子类（如<code>SimpleDateFormat</code>）允许进行格式化（也就是日期→文本）、解析（文本→日期）和标准化日期。</p>
+<p>在创建<code>DateFormate</code>对象时不能使用<code>new</code>关键字，而应该使用<code>DateFormat</code>类中的静态方法<code>getDateInstance()</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DateFormat df = DateFormat.getDateInstance();</span><br></pre></td></tr></table></figure>
+
+<p><code>DateFormat</code>类中的常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>String format(Date date)</code></td>
+<td>将<code>Date</code>格式化日期/时间字符串</td>
+</tr>
+<tr>
+<td><code>Calendar getCalendar()</code></td>
+<td>获取与此日期/时间格式相关联的日历</td>
+</tr>
+<tr>
+<td><code>static DateFormat getDateInstance()</code></td>
+<td>获取具有默认格式化风格和默认语言环境的日期格式</td>
+</tr>
+<tr>
+<td><code>static DateFormat getDateInstance(intr style)</code></td>
+<td>获取具有指定格式化风格和默认语言环境的日期格式</td>
+</tr>
+<tr>
+<td><code>static DateFormat getDateInstance(int style,Locale locale)</code></td>
+<td>获取具有指定格式化风格和指定语言环境的日期格式</td>
+</tr>
+<tr>
+<td><code>stattic DateFormate getDateTimeInstance()</code></td>
+<td>获取具有默认格式风格和默认语言环境的日期/时间格式</td>
+</tr>
+<tr>
+<td><code>static DateFormate getDateTimeInstance(int dateStyle,int timeStyle)</code></td>
+<td>获取具有指定日期/时间格式化风格和默认语言环境的日期/时间格式</td>
+</tr>
+<tr>
+<td><code>static DateFormate getDateTimeInstance(int dateStyle,int timeStyle, Locale locale)</code></td>
+<td>获取具有指定日期/时间格式化风格和指定语言环境的日期/时间格式</td>
+</tr>
+<tr>
+<td><code>static DateFormate getTimeInstance()</code></td>
+<td>获取具有默认格式化风格和默认语言环境的时间格式</td>
+</tr>
+<tr>
+<td><code>static DateFormate getTimeInstance(int style)</code></td>
+<td>获取具有指定格式化风格和默认语言环境的时间格式</td>
+</tr>
+<tr>
+<td><code>static DateFormate getTimeInstance(int style, Locale locale)</code></td>
+<td>获取具有指定格式化风格和指定语言环境的时间格式</td>
+</tr>
+<tr>
+<td><code>void setCalendar(Calendar newCalendar)</code></td>
+<td>为此格式设置日历</td>
+</tr>
+<tr>
+<td><code>Date parse(String source)</code></td>
+<td>将给定的字符串解析成日期/时间</td>
+</tr>
+</tbody></table>
+<p>格式化样式主要通过<code>DateFormat</code>常量设置。将不同的常量传入到方法中，以控制结果的长度。<code>DateFormat</code>常量如下：</p>
+<ul>
+<li><code>SHORT</code>：完全为数字</li>
+<li><code>MEDIUM</code>：较长</li>
+<li><code>LONG</code>：更长</li>
+<li><code>FULL</code>：是完全显示</li>
+</ul>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取不同格式化风格和中国环境的日期</span></span><br><span class="line">DateFormat df1 = DateFormat.getDateInstance(DateFormat.SHORT, Locale.CHINA);</span><br><span class="line">DateFormat df2 = DateFormat.getDateInstance(DateFormat.FULL, Locale.CHINA);</span><br><span class="line">DateFormat df3 = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.CHINA);</span><br><span class="line">DateFormat df4 = DateFormat.getDateInstance(DateFormat.LONG, Locale.CHINA);</span><br><span class="line"><span class="comment">// 获取不同格式化风格和中国环境的时间</span></span><br><span class="line">DateFormat df5 = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.CHINA);</span><br><span class="line">DateFormat df6 = DateFormat.getTimeInstance(DateFormat.FULL, Locale.CHINA);</span><br><span class="line">DateFormat df7 = DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.CHINA);</span><br><span class="line">DateFormat df8 = DateFormat.getTimeInstance(DateFormat.LONG, Locale.CHINA);</span><br><span class="line"><span class="comment">// 将不同格式化风格的日期格式化为日期字符串</span></span><br><span class="line">String date1 = df1.format(<span class="keyword">new</span> Date());</span><br><span class="line">String date2 = df2.format(<span class="keyword">new</span> Date());</span><br><span class="line">String date3 = df3.format(<span class="keyword">new</span> Date());</span><br><span class="line">String date4 = df4.format(<span class="keyword">new</span> Date());</span><br><span class="line"><span class="comment">// 将不同格式化风格的时间格式化为时间字符串</span></span><br><span class="line">String time1 = df5.format(<span class="keyword">new</span> Date());</span><br><span class="line">String time2 = df6.format(<span class="keyword">new</span> Date());</span><br><span class="line">String time3 = df7.format(<span class="keyword">new</span> Date());</span><br><span class="line">String time4 = df8.format(<span class="keyword">new</span> Date());</span><br><span class="line"><span class="comment">// 输出日期</span></span><br><span class="line">System.out.println(<span class="string">"SHORT："</span> + date1 + <span class="string">" "</span> + time1);</span><br><span class="line">System.out.println(<span class="string">"FULL："</span> + date2 + <span class="string">" "</span> + time2);</span><br><span class="line">System.out.println(<span class="string">"MEDIUM："</span> + date3 + <span class="string">" "</span> + time3);</span><br><span class="line">System.out.println(<span class="string">"LONG："</span> + date4 + <span class="string">" "</span> + time4);</span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line">SHORT：<span class="number">18</span>-<span class="number">10</span>-<span class="number">15</span> 上午<span class="number">9</span>:<span class="number">30</span></span><br><span class="line">FULL：<span class="number">2018</span>年<span class="number">10</span>月<span class="number">15</span>日 星期一 上午<span class="number">09</span>时<span class="number">30</span>分<span class="number">43</span>秒 CST</span><br><span class="line">MEDIUM：<span class="number">2018</span>-<span class="number">10</span>-<span class="number">15</span> <span class="number">9</span>:<span class="number">30</span>:<span class="number">43</span></span><br><span class="line">LONG：<span class="number">2018</span>年<span class="number">10</span>月<span class="number">15</span>日 上午<span class="number">09</span>时<span class="number">30</span>分<span class="number">43</span>秒</span><br></pre></td></tr></table></figure>
+
+<h2 id="SimpleDateFormat类"><a href="#SimpleDateFormat类" class="headerlink" title="SimpleDateFormat类"></a><code>SimpleDateFormat</code>类</h2><p>如果使用<code>DateFormat</code>类格式化日期/时间并不能满足要求，那么就需要使用<code>DateFormat</code>类的子类——<code>SimpleDateFormat</code>。</p>
+<p><strong><code>SimpleDateFormat</code>是一个以与语言环境有关的方式来格式化和解析日期的具体类，它允许进行格式化（日期→文本）、解析（文本→日期）和规范化。</strong><code>SimpleDateFormat</code>使得可以选择任何用户定义的日期/时间格式的模式。</p>
+<p><code>SimpleDateFormate</code>类主要有如下三种构造方式：</p>
+<ul>
+<li><code>SimpleDateFormat()</code>：用默认的格式和默认的语言环境构造<code>SimpleDateFormat</code>。</li>
+<li><code>SimoleDateFormat(String pattern)</code>：用指定的格式和默认的语言环境构造<code>SimpleDateFormat</code>。</li>
+<li><code>SimpleDateFormat(String pattern, Locale locale)</code>：用指定的格式和语言环境构造<code>SimpleDateFormat</code>。</li>
+</ul>
+<p><code>SimpleDateFormat</code>自定义格式中常用的字母及含义：</p>
+<table>
+<thead>
+<tr>
+<th>字母</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>y</td>
+<td>年份。一般用 yy 表示两位年份， yyyy 表示 4 位年份</td>
+<td>使用 yy 表示的年份，如 11；<br />使用 yyyy 表示的年份，如 2011</td>
+</tr>
+<tr>
+<td>M</td>
+<td>月份。一般用 MM 表示月份，如果使用 MMM ，则会根据语言环境显示不同语言的月份</td>
+<td>使用 MM 表示的月份，如 05；<br/>使用 MMM 表示月份，在 Locale.CHINA语言环境下，如 十月；<br />在 Locale.US&lt;br/语言环境下，如 Oct</td>
+</tr>
+<tr>
+<td>d</td>
+<td>月份中的天数。一般用 dd 表示天数</td>
+<td>使用 dd 表示的天数，如 10</td>
+</tr>
+<tr>
+<td>D</td>
+<td>年份中的天数。表示当天是当年的第几天，用 D 表示</td>
+<td>使用 D 表示的年份中的天数，如 295</td>
+</tr>
+<tr>
+<td>E</td>
+<td>星期几。用 E 表示，会根据语言环境的不同，显示不同语言的星期几</td>
+<td>使用 E 表示星期几，<br />在 Locale.CHINA 语言环境下，如“星期四”；<br />在 Locale.US 语言环境下，如 Thu</td>
+</tr>
+<tr>
+<td>H</td>
+<td>一天中的小时数（0~23）。一般使用 HH 表示小时数</td>
+<td>使用 HH 表示的小时数，如 18</td>
+</tr>
+<tr>
+<td>h</td>
+<td>一天中的小时数（1~12）。一般使用 hh 表示小时数</td>
+<td>使用 hh 表示的小时数，如 10</td>
+</tr>
+<tr>
+<td>m</td>
+<td>分钟数。一般使用 mm 表示分钟数</td>
+<td>使用 mm 表示的分钟数，如 29</td>
+</tr>
+<tr>
+<td>s</td>
+<td>秒数。一般使用 ss 表示秒数</td>
+<td>使用 ss 表示的秒数，如 38</td>
+</tr>
+<tr>
+<td>S</td>
+<td>毫秒数。一般使用 SSS 表示毫秒数</td>
+<td>使用 SSS 表示的毫秒数，如 156</td>
+</tr>
+</tbody></table>
+<hr>
+<p>使用 SimpleDateFormat 类格式化当前日期并打印，日期格式为“xxxx 年 xx 月 xx 日星期 xxx 点 xx 分 xx 秒”：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test13</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Date now = <span class="keyword">new</span> Date(); <span class="comment">// 创建一个Date对象，获取当前时间</span></span><br><span class="line">        <span class="comment">// 指定格式化格式</span></span><br><span class="line">        SimpleDateFormat f = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"今天是 "</span> + <span class="string">"yyyy 年 MM 月 dd 日 E HH 点 mm 分 ss 秒"</span>);</span><br><span class="line">        System.out.println(f.format(now)); <span class="comment">// 将当前时间袼式化为指定的格式</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://twitter.com/username">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+
+                <span class="label">Twitter</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+                <span class="icon">
+                  <i class="fa fa-wechat"></i>
+                </span>
+
+                <span class="label">WeChat</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/17/%5BJava%5D-%E6%95%B0%E7%BB%84%E5%A4%84%E7%90%86/" rel="prev" title="数组处理">
+      <i class="fa fa-chevron-left"></i> 数组处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/19/Static-Method/" rel="next" title="静态工厂方法">
+      静态工厂方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Math类"><span class="nav-number">1.</span> <span class="nav-text">Math类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态常量"><span class="nav-number">1.1.</span> <span class="nav-text">静态常量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">1.2.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成随机数"><span class="nav-number">2.</span> <span class="nav-text">生成随机数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数字格式化"><span class="nav-number">3.</span> <span class="nav-text">数字格式化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大数字运算"><span class="nav-number">4.</span> <span class="nav-text">大数字运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BigInteger类"><span class="nav-number">4.1.</span> <span class="nav-text">BigInteger类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BigDecimal类"><span class="nav-number">4.2.</span> <span class="nav-text">BigDecimal类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时间日期的处理"><span class="nav-number">5.</span> <span class="nav-text">时间日期的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Date类"><span class="nav-number">5.1.</span> <span class="nav-text">Date类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#calendar类"><span class="nav-number">5.2.</span> <span class="nav-text">calendar类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日期格式化"><span class="nav-number">6.</span> <span class="nav-text">日期格式化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DateFormat类"><span class="nav-number">6.1.</span> <span class="nav-text">DateFormat类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SimpleDateFormat类"><span class="nav-number">6.2.</span> <span class="nav-text">SimpleDateFormat类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日积硅步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/yourname" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com">友情链接</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+
+
+      <!-- tianqi -->
+      <script type="text/javascript">
+      WIDGET = {FID: 'qGIt0yNpAw'}
+      </script>
+      <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+
+
+<div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1297742167&auto=1&height=66">
+  </iframe>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-node-js-Github/" rel="tag">hexo node.js Github</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memory/" rel="tag">memory</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%AE%B0/" rel="tag">杂记</a><span class="tag-list-count">2</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+</aside>
+<div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.3m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35:20</span>
+</div>
+
+<span id="sitetime"></span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2020,02,4,00,00,00); //北京时间2020-2-4 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+	siteTime();
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey: 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script type="text/javascript" src="/js/schemes/crash-cheat.js"></script>
+
+
+</body>
+</html>
