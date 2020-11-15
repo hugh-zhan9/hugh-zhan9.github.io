@@ -38,7 +38,7 @@
       appID: '',
       apiKey: '',
       indexName: '',
-      hits: {"per_page":10},
+      hits: {"per_page":20},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
     localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
@@ -414,12 +414,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/21/Java-IO-ByteArrayOutputStream/" rel="prev" title="Java IO之 ByteArrayOutputStream详解">
-      <i class="fa fa-chevron-left"></i> Java IO之 ByteArrayOutputStream详解
+    <a href="/2020/07/22/Java-IO-DataInputStream/" rel="prev" title="Java IO之 DataInputStream详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 DataInputStream详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/22/Java-IO-DataInputStream/" rel="next" title="Java IO之 DataInputStream详解">
-      Java IO之 DataInputStream详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/22/Java-IO-BufferedWriter/" rel="next" title="Java IO之 BufferedWriter详解">
+      Java IO之 BufferedWriter详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -751,7 +751,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       placeholder: "Just go go",
       avatar: 'mm',
       meta: guest,
-      pageSize: '10' || 10,
+      pageSize: '20' || 10,
       visitor: false,
       lang: '' || 'zh-cn',
       path: location.pathname,
