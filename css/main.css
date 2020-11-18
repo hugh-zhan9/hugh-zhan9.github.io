@@ -1155,12 +1155,6 @@ pre .javascript .function {
   padding: 2px;
   border-radius: 50%;
 }
-.site-author-image {
-  transition: transform 1s ease-out;
-}
-.site-author-image:hover {
-  transform: rotateZ(360deg);
-}
 .site-author-name {
   color: #222;
   font-weight: 600;
@@ -1187,7 +1181,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ccb486;
+  background: #39ffbd;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2411,11 +2405,11 @@ ul.breadcrumb li + li:last-child {
   padding: 0;
   position: absolute;
   top: 0;
-  width: 310px;
+  width: 260px;
 }
 @media (min-width: 1200px) {
   .header-inner {
-    width: 310px;
+    width: 260px;
   }
 }
 @media (max-width: 991px) {
@@ -2442,7 +2436,7 @@ ul.breadcrumb li + li:last-child {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
   box-sizing: border-box;
   padding: 40px;
-  width: calc(100% - 322px);
+  width: calc(100% - 272px);
 }
 @media (max-width: 991px) {
   .content-wrap {
@@ -2595,7 +2589,7 @@ ul.breadcrumb li + li:last-child {
   box-shadow: none;
   margin-top: 100%;
   position: static;
-  width: 310px;
+  width: 260px;
 }
 @media (max-width: 991px) {
   .sidebar {
@@ -2620,7 +2614,7 @@ ul.breadcrumb li + li:last-child {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12), 0 -1px 0.5px 0 rgba(0,0,0,0.09);
   box-sizing: border-box;
   color: #555;
-  width: 310px;
+  width: 260px;
   opacity: 0;
 }
 .sidebar-inner.affix {
