@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://www.googlefonts.cn//css?family=Lato:300,300italic,400,400italic,700,700italic|Satisfy:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":20},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Redis入门笔记">
+<meta property="og:url" content="http://yoursite.com/2020/12/14/redis/index.html">
+<meta property="og:site_name">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/hugh-zhan9/pic-go-image-host/raw/master/wallhaven-rd7drw.jpg">
+<meta property="article:published_time" content="2020-12-14T03:11:11.000Z">
+<meta property="article:modified_time" content="2020-12-14T12:32:00.000Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/hugh-zhan9/pic-go-image-host/raw/master/wallhaven-rd7drw.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/14/redis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Redis入门笔记 | </title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7e4557d4ccc5f2373ebada2ff7d42a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title"></span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+        <li class="menu-item menu-item-photos">
+
+    <a href="/photos/" rel="section"><i class="fa fa-fw fa-photo"></i>Photos</a>
+
+  </li>
+        <li class="menu-item menu-item-map">
+
+    <a href="/DiyWeb/" rel="section"><i class="fa fa-fw fa-map-marker"></i>足迹</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+
++ 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/14/redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日积硅步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis入门笔记
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-14 11:11:11 / 修改时间：20:32:00" itemprop="dateCreated datePublished" datetime="2020-12-14T11:11:11+08:00">2020-12-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="热度" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/14/redis/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/14/redis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://gitee.com/hugh-zhan9/pic-go-image-host/raw/master/wallhaven-rd7drw.jpg" alt=""></p>
+<a id="more"></a>
+
+<p>Redis（Remote Dictionary Server）是一种NoSQL型数据库，它不使用表来存储数据，而是使用<code>key-value</code>的形式，将数据存储在内存中，因此不存储海量数据，但是查询效率高。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 商品的描述、评论</span></span><br><span class="line">	文档型数据库中，MongoDB</span><br><span class="line"><span class="comment"># 图片</span></span><br><span class="line">	分布式文件系统 FastDFS</span><br><span class="line">	淘宝自己的	TFS</span><br><span class="line">	谷歌的	GFS</span><br><span class="line">	Hadoop的	HDFS</span><br><span class="line">	阿里云的	OSS	</span><br><span class="line"><span class="comment"># 列存储数据库</span></span><br><span class="line">	HBase</span><br><span class="line"><span class="comment"># 商品的关键字</span></span><br><span class="line">	搜索引擎	solr elasticsearch</span><br><span class="line">	ISerach	多隆手写</span><br><span class="line"><span class="comment"># 商品热门的波段信息</span></span><br><span class="line">	内存型数据库 redis、Tair、Memache...</span><br><span class="line"><span class="comment"># 第三方应用...</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>《阿里巴巴中文架构》</p>
+<hr>
+<p>传统RDBMS和NoSQL的区别</p>
+<p>传统的RDBMS</p>
+<ul>
+<li>结构化组织</li>
+<li>SQL</li>
+<li>数据和关系都存在单一的表中</li>
+<li>严格的一致性</li>
+<li>基础的事务</li>
+</ul>
+<p>NoSQL</p>
+<ul>
+<li>不仅仅是数据</li>
+<li>没有固定的查询语言</li>
+<li>键值对存储，列存储，文档存储，图形数据库（社交关系）</li>
+<li>最终一致性</li>
+<li>CAP定理和BASE（异地多活）</li>
+<li>高性能，高可用，高可扩</li>
+</ul>
+<p>敏捷开发，极限编程</p>
+<p>KV键值对一般使用redis，文档一般使用MongoDB，图像数据库Neo4J，infoGrid</p>
+<p>MongoDB是一个基于分布式文件存储的数据库，C++编写，主要用于处理大量的文档。是一个介于关系型数据库和非关系型数据库中间产品，是非关系型数据库中功能最丰富，最像关系型数据库的。</p>
+<h1 id="Redis的基本知识"><a href="#Redis的基本知识" class="headerlink" title="Redis的基本知识"></a>Redis的基本知识</h1><p><code>Redis-benchmark</code>：原理测试工具，用来测试Redis的高并发性能。（菜鸟教程查看参数）</p>
+<p>在Redis客户端可以使用<code>ping</code>命令查看Redis服务是否正常运行，如果正常则返会<code>pong</code>。</p>
+<p>查看Redis服务器的统计信息，在Redis客户端运行：<code>info</code>。可以使用<code>info [需要查看的信息]</code>来查看指定的信息，例如：使用<code>info Replication</code>命令查看集群信息。</p>
+<p>Redis的数据库实例：类似于MySQL中的数据库实例，但是区别是MySQL的数据库实例可以自己创建自己维护，Redis中的数据库实例只能由Redis创建维护，开发人员不能修改和创建数据库实例。</p>
+<p>默认情况下，Redis默认会创建16个数据库实例，采用编号进行区分（0-15），使用时通过编号来使用，可以通过配置文件指定创建的数据库实例个数。</p>
+<p>默认情况下，链接的是编号为0的数据库，可以使用<code>select [数据库实例编号]</code>切换数据库实例。</p>
+<p>查看当前数据库中实例的多少(key的数量)：<code>dbsize</code></p>
+<p>查看当前数据库中的所有key：<code>keys *</code></p>
+<p>清空当前数据库实例：<code>flushdb</code></p>
+<p>清空所有数据库实例：<code>flushall</code></p>
+<p>查看Redis中的配置信息：<code>config get *</code>(所有的)，使用<code>config get [参数名称]</code>查看指定信息。</p>
+<h1 id="数据类型及主要特性"><a href="#数据类型及主要特性" class="headerlink" title="数据类型及主要特性"></a>数据类型及主要特性</h1><p>Redis提供的数据类型主要分为5种自有类型和一种自定义类型，这5种自有类型包括：String类型、哈希类型、列表类型、集合类型和顺序集合Zset类型。</p>
+<p><strong>String类型：</strong></p>
+<p>它是一个二进制安全的字符串，意味着它不仅能够存储字符串、还能存储图片、视频等多种类型, 最大长度支持512M。</p>
+<p><strong>哈希类型：</strong></p>
+<p>该类型是由<code>field</code>和关联的<code>value</code>组成的map。其中，<code>field</code>和<code>value</code>都是字符串类型的。</p>
+<p><strong>列表类型：</strong></p>
+<p>该类型是一个插入顺序排序的字符串元素集合，基于双链表实现。</p>
+<p><strong>集合类型：</strong></p>
+<p>Set类型是一种无顺序集合, 它和List类型最大的区别是：集合中的元素没有顺序, 且元素是唯一的。</p>
+<p>Set类型主要应用于：在某些场景，如社交场景中，通过交集、并集和差集运算，通过Set类型可以非常方便地查找共同好友、共同关注和共同偏好等社交关系</p>
+<p><strong>顺序集合类型：</strong></p>
+<p>ZSet是一种有序集合类型，每个元素都会关联一个double类型的分数权值，通过这个权值来为集合中的成员进行从小到大的排序。与Set类型一样，其底层也是通过哈希表实现的。</p>
+<h1 id="Redis的五种数据结构"><a href="#Redis的五种数据结构" class="headerlink" title="Redis的五种数据结构"></a>Redis的五种数据结构</h1><p>Java与Redis数据类型模糊对应：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Java中</th>
+<th align="left"></th>
+<th align="center">Redis中</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">String</td>
+<td align="left"><code>zhangsan</code></td>
+<td align="center">String</td>
+<td><code>单key:单value</code>，<code>username:zhangsan</code></td>
+</tr>
+<tr>
+<td align="center">List集合</td>
+<td align="left"><code>[18244838862,hugh@163.com]</code></td>
+<td align="center">List</td>
+<td><code>单key:多有序value</code>，<code>contacts:18244838862,hugh@163.com</code>（顺序和存入顺序有关），列表中的value可以重复。</td>
+</tr>
+<tr>
+<td align="center">Set集合</td>
+<td align="left"><code>{beijin,shanghai,shenzhen}</code></td>
+<td align="center">set</td>
+<td><code>单key:无序value</code>，<code>cities:beijin,shenzhen,shanghai</code></td>
+</tr>
+<tr>
+<td align="center">pojo</td>
+<td align="left"><code>id:1010,name:zhangsan,age:18</code></td>
+<td align="center">hash</td>
+<td><code>单key:对象(属性：值)</code>，<code>student:id:1001,name:zhangsan,age:18</code></td>
+</tr>
+<tr>
+<td align="center">有序集合</td>
+<td align="left">按参考值排序：bj 1000，sh 1500，tj 2000</td>
+<td align="center">zset</td>
+<td><code>单key:有序value</code>，<code>city:1000 bj,1500 sh,2000 tj</code>（默认按照参考值的升序排序），参考值可以重复，元素不能重复</td>
+</tr>
+</tbody></table>
+<h2 id="Redis-关于key的操作命令"><a href="#Redis-关于key的操作命令" class="headerlink" title="Redis 关于key的操作命令"></a>Redis 关于key的操作命令</h2><p>关于key的操作命令：</p>
+<p><strong>查询</strong>：</p>
+<p><code>keys [需要查询的key]</code>查询key，可以使用通配符。例如：<code>keys *</code>：查询当前实例中所有的key，<code>keys k*</code>查询所有以k开头的key，<code>keys k*y</code>….，<code>keys k?y</code>…，<code>keys k[a,e]y</code>匹配为<code>kay/key</code>的key。</p>
+<p><strong>判断key在数据库中是否存在</strong></p>
+<p><code>exists [需要查询的key值]</code>，如果存在返回1，不存在返回0，<code>exists [k1,k2,k3,...]</code>：判断多个key是否存在，返回值是key存在的数量。</p>
+<p><strong>移动指定key到指定的数据库实例</strong></p>
+<p><code>move [指定的key] [数据库实例编号]</code></p>
+<p><strong>查看指定key的剩余生存时间</strong></p>
+<p><code>ttl [指定key]</code>，返回-1表示没有设置最大生命时间，-2表示查询的key不存在</p>
+<p><strong>给key设置最大生存时间</strong></p>
+<p><code>expire [指定key] [生存时间 s]</code></p>
+<p><strong>查看指定key的数据类型</strong></p>
+<p><code>type [指定key]</code></p>
+<p><strong>重命名key</strong></p>
+<p><code>rename [指定key] [新名称]</code></p>
+<p><strong>删除key</strong></p>
+<p>删除指定key：<code>del [指定key]</code>，删除多个key：<code>del [k1 k2 ...]</code>，返回值是实际删除的key数量，<code>flushall</code>，删除当前数据库实例中所有key。</p>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p>添加数据到 Redis 中<code>set [键] [值]</code>，例如<code>set name zhangsan</code>，使用<code>get [键]</code>获取。set设置值时，如果键已存在，则会进行覆盖。</p>
+<p>添加一个string类型的数据到 Redis 中，同时设置他的失效时间：<code>setex [键] [存活时间] [值]</code></p>
+<p>添加一个String类型的数据到 Redis 中，不覆盖之前已存在的key：<code>setnx [键] [值]</code>，返回0表示key值已存在。</p>
+<p>批量添加数据到 Redis 中：<code>mset [k1] [v1] [k2] [v2] .....</code></p>
+<p>批量添加数据到 Redis 中，所有key不存在时成功，否则放弃：<code>msetnx [k1] [v1] [k2] [v2] ...</code></p>
+<p>追加字符：<code>append [指定键] [值]</code>，返回追加之后值的长度。key不存在就会创建一个新的表达式。</p>
+<p>对字符串类型数值进行加运算：<code>incrby [指定key] [offset变化量]</code>，返回计算之后的值。</p>
+<p>对字符串类型数值进行减运算：<code>decrby [指定value] [offset变化量]</code>。</p>
+<p>对字符串类型数值进行自增运算：<code>incr [指定键]</code>。自动进行加1，返回计算之后的结果。如果key不存在则初始化一个对应键值，并对值进行加1操作。如果键对应的值不是数值则报错。</p>
+<p>对字符串类型数值进行自减运算：<code>decr [指定键]</code>，同<code>incr</code>。</p>
+<p>覆盖已有字符串，<code>setrange [指定键] [开始字符下标] [替换值]</code>。返回值为覆盖之后字符串的长度。</p>
+<p>从Redis中批量获取：<code>mget [k1] [k2] [k3] ...</code>，若不存在则返回<code>(nil)</code></p>
+<p>获取指定键对应值的长度：<code>strlen [指定键]</code></p>
+<p>获取指定字符串中指定字段：<code>getrange [指定键] [开始字符下标] [结束字符下标]</code>，返回截取之后的字符。闭区间，下标可以为负数，表示自右向左开始，-1开始。</p>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><p>将一个或者多个值依次插入到列表的表头：<code>lpush [key] [v1] [v2] ...</code>，返回值为列表中值的个数。例如：<code>lpush test 1 2 3</code>得到的列表为<code>3 2 1</code>。</p>
+<p>将一个或者多个值依次插入到列表的表尾：<code>rpush [key] [v1] [v2] ...</code>，返回值为列表中值的个数。例如：<code>lpush test 1 2 3</code>得到的列表为<code>1 2 3</code>。</p>
+<p>获取指定列表中的指定元素：<code>lrange [指定键] [开始下标] [结束下标]</code>。</p>
+<p>获取指定列表中指定下标的元素：<code>lindex [指定键] [指定下标]</code>。</p>
+<p>获取指定列表的长度：<code>llen [指定键]</code></p>
+<p>删除指定列表中的表头元素：<code>lpop [指定键]</code>，返回值为移除的元素</p>
+<p>删除指定列表中的表尾元素：<code>rpop [指定键]</code>，返回值为移除的元素</p>
+<p>删除指定列表中的指定元素：<code>lrem [指定键] [count] [指定值]</code>，<code>count &gt; 0</code>，从表头的左侧移除count个数据，如果<code>count &lt; 0</code>从列表右侧移除count个数据，如果<code>count = 0</code>，则表示全部删除</p>
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><p>向指定键中添加值<code>sadd [指定集合] [元素] ...</code>，例如：<code>sadd test 0 1 2 3</code>，如果元素已存在，则忽略放入操作。</p>
+<p>获取指定set集合中的元素：<code>smembers [指定集合]</code></p>
+<p>获取指定set集合中元素的个数：<code>scard [指定集合]</code></p>
+<p>判断指定元素是否指定set集合中的元素：<code>sismember [指定集合] [指定元素]</code></p>
+<p>随机获取指定集合中的一个元素：<code>srandmember [指定集合] [count]</code>，<code>count</code>表示元素个数，默认为1，<code>count &gt; 0</code>，表示随机获取多个元素不重复，<code>count &lt; 0</code>，随机获取的多个元素可以重复 。</p>
+<p>从集合A移动一个元素到集合B：<code>smove [源集合] [目标集合] [指定元素]</code></p>
+<p>删除集合中的指定元素：<code>srem [指定集合] [指定元素] ...</code></p>
+<p>随机删除元素，并返回：<code>spop [指定键] [元素个数]</code>，默认1个</p>
+<p>求交集<code>sinter [集合1] [集合2] ...</code></p>
+<p>求交集并将交集保存到一个集合中：<code>sinter [目标集合] [集合1] [集合2] ...</code></p>
+<p>求并集：<code>sunion [集合1] [集合2] ...</code></p>
+<p>求并集并将并集保存到一个集合中：<code>sunionstore [目标集合] [集合1] [集合2] ...</code></p>
+<p>求差集：<code>sdiff [集合1] [集合2]</code></p>
+<p>求差集并将差集保存到一个集合中：<code>sdiff [目标集合] [集合1] [集合2] ...</code></p>
+<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><p>添加字段，元素到指定集合：<code>hset [指定集合] [字段] [值] ...</code></p>
+<p>添加多个字段，元素到指定集合：<code>hmset [指定集合] [字段] [值] ...</code></p>
+<p>获取指定集合中指定资源的元素：<code>hget [指定集合] [指定字段]</code> </p>
+<p>获取指定集合中的多个指定元素：<code>hmget[指定集合] [指定字段] ...</code></p>
+<p>获取指定hash集合的长度：<code>hlen [指定集合]</code></p>
+<p>获取指定集合中的所有字段：<code>hkeys [指定集合]</code></p>
+<p>获取指定集合中所有的值：<code>hvals [指定集合]</code></p>
+<p>获取指定集合中所有的键值对：<code>hgetall [指定集合]</code></p>
+<p>判断集合中字段是否存在：<code>hexists [指定集合] [指定字段]</code>，返回1表示存在，返回0表示不存在。</p>
+<p>对指定集合中指定字段的值进行加法运算：<code>hincrby [指定集合] [指定字段] [count]</code>，只能对值为数字的数据进行操作</p>
+<p>删除指定集合中指定字段：<code>hdel [指定集合] [指定字段] ...</code></p>
+<h2 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h2><p>添加指定元素和元素对应分数到指定集合：<code>zadd [指定集合] [元素的分数] [指定元素] ...</code>，如果添加的元素已经存在，则覆盖分数。</p>
+<p>获取指定元素在指定集合中的名次：<code>zrank [指定集合] [指定元素]</code></p>
+<p>获取指定元素降序排列时的排名：<code>zrevrank [指定集合] [指定元素]</code></p>
+<p>获取指定元素的分数：<code>zscore [指定集合] [指定元素]</code></p>
+<p>获取指定集合中元素的个数：<code>zcard [指定集合]</code></p>
+<p>获取指定分数区间中元素的数量：<code>zcount [指定集合] [分数1] [分数2]</code></p>
+<p>获取指定集合中，指定名次内的元素：<code>zrange [指定集合] [起始名次] [结束名次] [wirhsocres]</code>，<code>withscores</code>参数表示同时显示分数。按照反方向：<code>zrevrange...</code></p>
+<p>获取指定集合指定分数区间中的所有元素：<code>zrangebyscore [指定集合] min max [withscores] limit offset count</code>，<code>withscores</code>参数表示同时显示分数。闭区间</p>
+<p>删除指定集合中的元素：<code>zrem [指定集合] [元素1] [元素2] ...</code></p>
+<p>删除指定集合中指定分数范围的元素：<code>zremrangebyscore [指定集合] [分数1] [分数2]</code></p>
+<p>删除指定集合中指定名次氛围的元素：<code>zremrangebyrank [指定集合] [名次1] [名次2]</code></p>
+<p>求交集并将交集保存到另一个集合中：<code>zinterstore [目标集合] numkeys [集合1] [集合2] ... [WEIGHTS weight1 [weight2...]] [AGGREGATE SUM|MIN|MAX]</code></p>
+<blockquote>
+<p>key1，key2的权值分别是weight1，weight2，聚合方法用 <code>sum|min|max</code></p>
+<p>注意：<code>weights</code>，<code>aggregate</code>如何理解？</p>
+<p>答：如果有交集，交集元素又有score，score怎么处理？<code>aggregate num-&gt;score</code>相加，min最小score，max最大score，另外可以通过<code>weights</code>设置不同的key的权重，交集时  <code>score*weight</code></p>
+</blockquote>
+<h1 id="三种特殊的数据类型"><a href="#三种特殊的数据类型" class="headerlink" title="三种特殊的数据类型"></a>三种特殊的数据类型</h1><h2 id="Geospatial"><a href="#Geospatial" class="headerlink" title="Geospatial"></a>Geospatial</h2><h2 id="Hyperloglog"><a href="#Hyperloglog" class="headerlink" title="Hyperloglog"></a>Hyperloglog</h2><h2 id="Bitmaps"><a href="#Bitmaps" class="headerlink" title="Bitmaps"></a>Bitmaps</h2><h1 id="Redis-持久化"><a href="#Redis-持久化" class="headerlink" title="Redis 持久化"></a>Redis 持久化</h1><p>Redis提供了持久化功能：RDB和AOF(Append Only File)持久化方案</p>
+<h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><p>RDB(Redis DateBase)是Redis默认的持久化方案。在指定的时间间隔内执行指定次数的写操作，则会将内存中的数据写入到磁盘，即在指定的目录下生成一个<code>dump.rdb</code>文件。Redis重启时会通过加载该<code>dump.rdb</code>文件恢复数据。</p>
+<p><strong>原理</strong>：Redis会复制一个与当前进程一样的进程，新进程的所有数据（变量、环境变量、程序计数器等）数值都和原进程一致，但是是一个全新的进程，并作为原进程的子进程来进行持久化。整个过程中，主进程时不进行任何IO操作的，这就确保了极高的性能。</p>
+<p>配置</p>
+<p><code>save &lt;seconds&gt; &lt;changes&gt;</code>：配置复合的快照触发条件，即Redis在<code>seconds</code>秒内<code>key</code>改变<code>changes</code>次，Redis把快照内的数据保存到磁盘一次。默认的策略是：</p>
+<ul>
+<li>一分钟内改变一万次</li>
+<li>五分钟内改变了10次</li>
+<li>15分钟内改变了1次</li>
+</ul>
+<p>如果需要禁用Redis的持久化功能，则把所有的 save 配置都注释掉。</p>
+<p><code>stop-writes-on-bgsave-error</code>：当bgsave快照操作出错时停止写数据到磁盘，这样能保证内存数据和磁盘数据一致，但是如果不在乎这种一致性，这里配置no</p>
+<p><code>rdbcompression</code>：设置对于存储到磁盘中快照是否进行压缩，设置yes时，会采用LZF算法进行压缩，可以设置no来关闭这一功能。</p>
+<p><code>rdbchecksum</code>：在存储快照之后，还可以让Redis通过CRC64算法来进行数据校验，这会消耗一定的性能，可以设置no来进行关闭</p>
+<p><code>dbfilename</code>：Redis持久化数据生成的文件名，默认是<code>dump.rdb</code>，也可以自己配置</p>
+<p><code>dir</code>：Redis持久化数据生成文件保存的目录，默认是<code>./</code>，即Redis的启动目录，可以自己指定</p>
+<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p>采用操作日志来记录进行的每一次写操作，效率较低，Redis默认不开启</p>
+<p><code>appendonly</code>：配置是否开启AOF，yes表示开启，no表示关闭，默认为no</p>
+<p><code>appendfilename</code>：AOF保存文件名</p>
+<p><code>appendfsync</code>：AOF 异步持久化策略</p>
+<ul>
+<li><code>always</code>：同步持久化，每次发生数据变化会立刻写入到磁盘中，性能比较差但是数据完整性比较好</li>
+<li><code>everysec</code>：每秒异步记录一次，默认值</li>
+<li><code>no</code>：不即时同步，由操作系统决定何时同步</li>
+</ul>
+<p><code>no-appendfsync-on-rewrite0</code>：重写时是否可以运用<code>appendsync</code>，默认是no，可以保证数据的安全性</p>
+<p><code>auto-aof-rewrite-percentage</code>：设置重写的基准百分比</p>
+<p><code>auto-aof-rewrite-min-size</code>：设置重写的基准值</p>
+<h1 id="Redis的事务"><a href="#Redis的事务" class="headerlink" title="Redis的事务"></a>Redis的事务</h1><p>事务：把一组数据库的事务放在一起执行，保证操作的原子性，要么同时成功，要么同时失败。</p>
+<p>Redis的事务，把一组Redis命令放在一起，命令进行排序依次执行，只能保证部分原子性，严重错误保证原子性（压入事务队列时错误），一般错误不保证原子性（单条语句执行失败，不会导致事务失败）。</p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p><code>multi</code>：用来标记一个事务的开始。会将之后的命令压入队列，等待执行</p>
+<p><code>exec</code>：用来执行事务队列中的所有命令</p>
+<p><code>discard</code>：放弃已压入队列中命令，并且结束事务</p>
+<p><code>watch</code>：用来监控某一个或某几个<code>key</code>，此<code>key</code>对应的<code>value</code>一旦发生改变，则放弃本事务。类比乐观锁</p>
+<p><code>unwatch</code>：放弃监控所有键对事务的影响。</p>
+<h1 id="消息发布与订阅"><a href="#消息发布与订阅" class="headerlink" title="消息发布与订阅"></a>消息发布与订阅</h1><p>Redis多客户端之间的通信，通过订阅频道，消息的发布者往频道上发布消息，这样所有订阅者都可以接收到消息。</p>
+<p><code>publish [频道名] [消息]</code>：将消息发送到指定频道</p>
+<p><code>subscribe [频道名] ...</code>：订阅一个或多个频道的消息</p>
+<p><code>psubscribe [频道名]</code>：订阅一个或多个频道的消息，频道名允许使用通配符</p>
+<p>在实际的生产过程中关于消息发布与订阅一般采用：消息中间件</p>
+<h1 id="搭建Redis集群"><a href="#搭建Redis集群" class="headerlink" title="搭建Redis集群"></a>搭建Redis集群</h1><p>Redis的主从复制：写操作的数据库称为主库，读操作的数据库称为从库<code>master/slave</code></p>
+<h2 id="一主二从"><a href="#一主二从" class="headerlink" title="一主二从"></a>一主二从</h2><p><code>redis-cli -h 127.0.0.1 -p 6379</code>：连接指定ip和端口号的Redis服务</p>
+<p><code>info replication</code>：查看每台Redis客户端在集群中的角色    ——&gt; 主机：<code>role:master</code> 从机：<code>role:slave</code> ，已连接从机数量：<code>connected_slave：1</code></p>
+<p>设置指定主机的从机：<code>slaveof [指定ip] [指定端口]</code></p>
+<p>全量复制：一旦主从关系确定，会自动把主库上已有数据同步复制到从库</p>
+<p>增量复制：主库写数据会自动同步到从库</p>
+<p>如果在从机上进行写操作：会报错<code>You can&#39;t write against a read only replica</code></p>
+<p>主机宕机时从机不会更改主从状态，只会修改主机连接状态：<code>master_link_status:down</code>，从机还是可以进行读操作。一旦主机恢复，从机会自动连接主机：<code>master_link_status: up</code>。</p>
+<p>从机宕机时主机对主从机没有任何影响，恢复之后需要执行<code>slaveof [指定ip] [指定端口]</code>重新设置主从关系。</p>
+<p>从机上位：假如主机宕机，使用某从机代替原主机，将指定从机断开原来的主从关系：<code>slaveof no one</code>，让其它从机与该从机设置主从关系。</p>
+<p>从机下面也可以有从机。</p>
+<p>这个方法虽然减轻了一台主机的压力，但是增加了服务间的延迟时间。</p>
+<h1 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h1><p>主机宕机的时候自动进行从机上位。</p>
+<p>部署哨兵监控主机，哨兵模式配置文件：<code>redis安装目录/sentinel.conf</code></p>
+<p>可以自定义配置文件：<code>redis_sentinel.conf</code></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">sentinel</span> <span class="string">monitor dc-redis 127.0.0.1 6379 1</span></span><br><span class="line"><span class="comment"># 指定哨兵程序需要监视的主机地址</span></span><br><span class="line"><span class="comment"># 1 表示哨兵投票数（当哨兵投票数大于或等于此数时切换主从关系），根据实际情况设置值</span></span><br></pre></td></tr></table></figure>
+
+<p>启动哨兵服务：<code>redis-sentinel redis_sentinel.conf</code></p>
+<p>使用哨兵模式，一旦之前的主机恢复之后，哨兵程序会自动将该服务从属于新的主机成为从机</p>
+<h1 id="Jedis"><a href="#Jedis" class="headerlink" title="Jedis"></a>Jedis</h1><p>添加依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.40.139"</span>, <span class="number">6379</span>);</span><br><span class="line"><span class="comment">// 使用jedis对象操作redis服务</span></span><br><span class="line">String ret = jedis.ping();	<span class="comment">// 如果返回pong则表示连接成功</span></span><br><span class="line">Set&lt;String&gt; keys = redis.keys(<span class="string">"*"</span>); <span class="comment">// 返回所有的key</span></span><br><span class="line">Boolean flag = redis.exists(<span class="string">"key"</span>); <span class="comment">// 查询key是否存在</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 开启事务</span></span><br><span class="line">Transaction tran = jedis.multi();</span><br><span class="line">....</span><br><span class="line"><span class="comment">// 执行事务</span></span><br><span class="line">tran.exec();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>Jedis中的方法与redis中的命令一一对应。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>为什么Redis采用单线程而不是多线程？</p>
+<p>多主机模式？</p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<p><a href="https://www.cnblogs.com/powertoolsteam/p/Redis.html" target="_blank" rel="noopener">https://www.cnblogs.com/powertoolsteam/p/Redis.html</a></p>
+<p><a href="https://www.v2ex.com/t/723217#reply92" target="_blank" rel="noopener">https://www.v2ex.com/t/723217#reply92</a></p>
+<p><a href="https://www.cnblogs.com/fnlingnzb-learner/tag/java/" target="_blank" rel="noopener">https://www.cnblogs.com/fnlingnzb-learner/tag/java/</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://twitter.com/username">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+
+                <span class="label">Twitter</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+                <span class="icon">
+                  <i class="fa fa-wechat"></i>
+                </span>
+
+                <span class="label">WeChat</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/24/%E5%85%B3%E4%BA%8E%E7%86%B5%E5%A2%9E%E7%90%86%E8%AE%BA/" rel="prev" title="关于熵增理论">
+      <i class="fa fa-chevron-left"></i> 关于熵增理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/23/2020/" rel="next" title="2020总结">
+      2020总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis的基本知识"><span class="nav-number">1.</span> <span class="nav-text">Redis的基本知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据类型及主要特性"><span class="nav-number">2.</span> <span class="nav-text">数据类型及主要特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis的五种数据结构"><span class="nav-number">3.</span> <span class="nav-text">Redis的五种数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-关于key的操作命令"><span class="nav-number">3.1.</span> <span class="nav-text">Redis 关于key的操作命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number">3.2.</span> <span class="nav-text">String</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List"><span class="nav-number">3.3.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set"><span class="nav-number">3.4.</span> <span class="nav-text">Set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash"><span class="nav-number">3.5.</span> <span class="nav-text">Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zset"><span class="nav-number">3.6.</span> <span class="nav-text">Zset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三种特殊的数据类型"><span class="nav-number">4.</span> <span class="nav-text">三种特殊的数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Geospatial"><span class="nav-number">4.1.</span> <span class="nav-text">Geospatial</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hyperloglog"><span class="nav-number">4.2.</span> <span class="nav-text">Hyperloglog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitmaps"><span class="nav-number">4.3.</span> <span class="nav-text">Bitmaps</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-持久化"><span class="nav-number">5.</span> <span class="nav-text">Redis 持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB"><span class="nav-number">5.1.</span> <span class="nav-text">RDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF"><span class="nav-number">5.2.</span> <span class="nav-text">AOF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis的事务"><span class="nav-number">6.</span> <span class="nav-text">Redis的事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">6.1.</span> <span class="nav-text">命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息发布与订阅"><span class="nav-number">7.</span> <span class="nav-text">消息发布与订阅</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建Redis集群"><span class="nav-number">8.</span> <span class="nav-text">搭建Redis集群</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一主二从"><span class="nav-number">8.1.</span> <span class="nav-text">一主二从</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#哨兵模式"><span class="nav-number">9.</span> <span class="nav-text">哨兵模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jedis"><span class="nav-number">10.</span> <span class="nav-text">Jedis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">11.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日积硅步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/yourname" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com">友情链接</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+
+
+      <!-- tianqi -->
+      <script type="text/javascript">
+      WIDGET = {FID: 'qGIt0yNpAw'}
+      </script>
+      <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+
+
+<div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1297742167&auto=1&height=66">
+  </iframe>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaSE/" rel="tag">JavaSE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaWeb/" rel="tag">JavaWeb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Memory/" rel="tag">Memory</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%AE%B0/" rel="tag">杂记</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+</aside>
+<div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备2020129632号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">39:44</span>
+</div>
+
+<span id="sitetime"></span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2020,02,4,00,00,00); //北京时间2020-2-4 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+	siteTime();
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey: 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '20' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+<script type="text/javascript" src="/js/schemes/crash-cheat.js"></script>
+
+
+</body>
+</html>
