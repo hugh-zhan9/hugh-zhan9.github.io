@@ -437,8 +437,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/20/Java-IO-FileInputStream-FileOutputStream/" rel="prev" title="Java IO之 FileInputStream/FileOutputStream详解">
-      <i class="fa fa-chevron-left"></i> Java IO之 FileInputStream/FileOutputStream详解
+    <a href="/2020/07/20/Java-IO-FileDescriptor/" rel="prev" title="Java IO之 FileDescriptor详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 FileDescriptor详解
     </a></div>
       <div class="post-nav-item">
     <a href="/2020/07/20/Java-IO-BufferedOutputStream/" rel="next" title="Java IO之 BufferedOutputStream详解">
@@ -668,7 +668,7 @@
 		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
 		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
 		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
-		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
 	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
 	siteTime();
 </script>

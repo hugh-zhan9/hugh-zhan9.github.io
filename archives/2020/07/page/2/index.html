@@ -366,26 +366,6 @@
       </div>
 
       <h2 class="post-title">
-          <a class="post-title-link" href="/2020/07/20/Java-IO-FileInputStream-FileOutputStream/" itemprop="url">
-            <span itemprop="name">Java IO之 FileInputStream/FileOutputStream详解</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-07-20T22:22:28+08:00"
-              content="2020-07-20">
-          07-20
-        </time>
-      </div>
-
-      <h2 class="post-title">
           <a class="post-title-link" href="/2020/07/20/Java-IO-FileDescriptor/" itemprop="url">
             <span itemprop="name">Java IO之 FileDescriptor详解</span>
           </a>
@@ -406,8 +386,8 @@
       </div>
 
       <h2 class="post-title">
-          <a class="post-title-link" href="/2020/07/20/Java-IO-FilterInputStream/" itemprop="url">
-            <span itemprop="name">Java IO之 FilterInputStream详解</span>
+          <a class="post-title-link" href="/2020/07/20/Java-IO-FileInputStream-FileOutputStream/" itemprop="url">
+            <span itemprop="name">Java IO之 FileInputStream/FileOutputStream详解</span>
           </a>
       </h2>
 
@@ -428,6 +408,26 @@
       <h2 class="post-title">
           <a class="post-title-link" href="/2020/07/20/Java-IO-FilterOutputStream/" itemprop="url">
             <span itemprop="name">Java IO之 FilterOutputStream详解</span>
+          </a>
+      </h2>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-07-20T22:22:28+08:00"
+              content="2020-07-20">
+          07-20
+        </time>
+      </div>
+
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/07/20/Java-IO-FilterInputStream/" itemprop="url">
+            <span itemprop="name">Java IO之 FilterInputStream详解</span>
           </a>
       </h2>
 
@@ -859,7 +859,7 @@
 		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
 		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
 		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
-		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
 	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
 	siteTime();
 </script>
