@@ -251,7 +251,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-02-18 12:36:00 / 修改时间：16:25:11" itemprop="dateCreated datePublished" datetime="2021-02-18T12:36:00+08:00">2021-02-18</time>
+              <time title="创建时间：2021-02-18 12:36:00 / 修改时间：16:26:54" itemprop="dateCreated datePublished" datetime="2021-02-18T12:36:00+08:00">2021-02-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -508,7 +508,7 @@
 <p><code>ConcurrentHashMap</code> 不再是 Segment 数组 + <code>HashEntry</code> 数组 + 链表，⽽是 Node 数 组 + 链表 / 红⿊树。不过，Node 只能⽤于链表的情况，红⿊树的情况需要使⽤ <code>TreeNode</code> 。当冲突链表达到⼀定⻓度时，链表会转换成红⿊树。并发控制使用 <code>synchronized</code> 和 CAS 来操作。虽然在Java 8中还能看到 <code>Segement</code> 的数据结构，但是已经简化了属性，只是为了兼容旧版本。</p>
 <p><img src="https://i.loli.net/2021/02/18/QvWZ58IY4cOpBKu.png" alt=""></p>
 <p><code>ConcurrentHashMap</code> 取消了 <code>Segment</code> 分段锁，采用 CAS 和 <code>synchronized</code> 来保证并发安全。数据结构跟 HashMap1.8 的结构类似，数组+链表/红黑二叉树。Java 8 在链表长度超过一定阈值（8）时将链表（寻址时间复杂度为 O(N)）转换为红黑树（寻址时间复杂度为 O(log(N))）。<strong><code>synchronized</code> 只锁定当前链表或红黑二叉树的首节点</strong>，这样只要 hash 不冲突，就不会产生并发，效率又提升 N 倍。</p>
-<h1 id="Callable接口"><a href="#Callable接口" class="headerlink" title="Callable接口"></a>Callable接口</h1><h3 id="创建线程的四种方式"><a href="#创建线程的四种方式" class="headerlink" title="创建线程的四种方式"></a>创建线程的四种方式</h3><p>无返回：</p>
+<h1 id="Callable接口"><a href="#Callable接口" class="headerlink" title="Callable接口"></a>Callable接口</h1><h2 id="创建线程的四种方式"><a href="#创建线程的四种方式" class="headerlink" title="创建线程的四种方式"></a>创建线程的四种方式</h2><p>无返回：</p>
 <ol>
 <li>实现Runnable接口，重写run();</li>
 <li>继承Thread类，重写run();</li>
