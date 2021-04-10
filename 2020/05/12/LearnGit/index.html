@@ -1,56 +1,363 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-CN">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="theme-color" content="#33474d">
-	<title>Git教程 | </title>
-	<link rel="stylesheet" href="/css/style.css" />
-	
-      <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://www.googlefonts.cn//css?family=Lato:300,300italic,400,400italic,700,700italic|Satisfy:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":20},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Git教程">
+<meta property="og:url" content="http://yoursite.com/2020/05/12/LearnGit/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/YQtOqe.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/YQNZIs.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/YlQu1e.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/YlQnpD.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/Yl1BF0.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/Yl1woq.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/YlGAJ0.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/YldDHO.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/Y1EQbT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/Y1EMrV.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/Y1EKK0.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/09/Y1Envq.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YGQjEj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YGQvUs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG3dHg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG3aDS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG30EQ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YGaVOI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG6bHH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG6ojO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG67uD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG6HDe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YG6LEd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YGcKrF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YJB71U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YJBTpT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YJrmZ9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/11/YJrZqJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYH29K.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYHR1O.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYHH4P.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYja1x.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYzu9A.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYzMct.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYzQjP.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYzetH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYzK1I.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYzmhd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YYz1nf.png">
+<meta property="article:published_time" content="2020-05-12T12:15:28.000Z">
+<meta property="article:modified_time" content="2021-01-04T04:32:55.877Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/05/09/YQtOqe.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/05/12/LearnGit/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Git教程 | 日积硅步</title>
+  
+
+
+  <script pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7e4557d4ccc5f2373ebada2ff7d42a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">日积硅步</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-code"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-fw fa-terminal"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-fw fa-server"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fa fa-fw fa-chrome"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-fw fa-comment"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+
++ 
+</div>
+    </header>
+
     
-<meta name="generator" content="Hexo 4.2.0"></head>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
 
-<body>
 
-	<header class="header">
-		<nav class="header__nav">
-			
-				<a href="/archives" class="header__link">Archive</a>
-			
-				<a href="/tags" class="header__link">Tags</a>
-			
-				<a href="/atom.xml" class="header__link">RSS</a>
-			
-		</nav>
-		<h1 class="header__title"><a href="/"></a></h1>
-		<h2 class="header__subtitle"></h2>
-	</header>
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
 
-	<main>
-		<article>
-	
-		<h1>Git教程</h1>
-	
-	<div class="article__infos">
-		<span class="article__date">2020-05-12</span><br />
-		
-			<span class="article__category">
-				<a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
-			</span><br />
-		
-		
-			<span class="article__tags">
-			  	<a class="article__tag-link" href="/tags/Git/" rel="tag">Git</a>
-			</span>
-		
-	</div>
+          <div class="content">
+            
 
-	
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/12/LearnGit/">
 
-	
-		<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/YQtOqe.jpg" alt="YQtOqe.jpg"><figcaption class="figure__caption">YQtOqe.jpg</figcaption></figure></p>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git教程
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-12 20:15:28" itemprop="dateCreated datePublished" datetime="2020-05-12T20:15:28+08:00">2020-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-04 12:32:55" itemprop="dateModified" datetime="2021-01-04T12:32:55+08:00">2021-01-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="热度" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/05/12/LearnGit/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/05/12/LearnGit/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>53k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1:28</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s1.ax1x.com/2020/05/09/YQtOqe.jpg" alt="YQtOqe.jpg"></p>
 <a id="more"></a>
 
 <h1 id="Git简介"><a href="#Git简介" class="headerlink" title="Git简介"></a>Git简介</h1><p>Git是什么？</p>
@@ -59,7 +366,7 @@
 <p>那什么是版本控制系统？</p>
 <p>如果你用Microsoft Word写过长篇大论，那你一定有这样的经历：</p>
 <p>想删除一个段落，又怕将来想恢复找不回来怎么办？有办法，先把当前文件“另存为……”一个新的Word文件，再接着改，改到一定程度，再“另存为……”一个新文件，这样一直改下去，最后你的Word文档变成了这样：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/YQNZIs.jpg" alt="YQNZIs.jpg"><figcaption class="figure__caption">YQNZIs.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/YQNZIs.jpg" alt="YQNZIs.jpg"></p>
 <p>过了一周，你想找回被删除的文字，但是已经记不清删除前保存在哪个文件里了，只好一个一个文件去找，真麻烦。</p>
 <p>看着一堆乱七八糟的文件，想保留最新的一个，然后把其他的删掉，又怕哪天会用上，还不敢删，真郁闷。</p>
 <p>更要命的是，有些部分需要你的财务同事帮助填写，于是你把文件Copy到U盘里给她（也可能通过Email发送一份给她），然后，你继续修改Word文件。一天后，同事再把Word文件传给你，此时，你必须想想，发给她之后到你收到她的文件期间，你作了哪些改动，得把你的改动和她的部分合并，真困难。</p>
@@ -117,12 +424,12 @@
 <p>历史就是这么偶然，如果不是当年BitMover公司威胁Linux社区，可能现在我们就没有免费而超级好用的Git了。</p>
 <h2 id="集中式-VS-分布式"><a href="#集中式-VS-分布式" class="headerlink" title="集中式 VS 分布式"></a>集中式 VS 分布式</h2><p>Linus一直痛恨的CVS及SVN都是集中式的版本控制系统，而Git是分布式版本控制系统，集中式和分布式版本控制系统有什么区别呢？</p>
 <p>先说集中式版本控制系统，版本库是集中存放在中央服务器的，而干活的时候，用的都是自己的电脑，所以要先从中央服务器取得最新的版本，然后开始干活，干完活了，再把自己的活推送给中央服务器。中央服务器就好比是一个图书馆，你要改一本书，必须先从图书馆借出来，然后回到家自己改，改完了，再放回图书馆。</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/YlQu1e.jpg" alt="YlQu1e.jpg"><figcaption class="figure__caption">YlQu1e.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/YlQu1e.jpg" alt="YlQu1e.jpg"></p>
 <p>集中式版本控制系统最大的毛病就是必须联网才能工作，如果在局域网内还好，带宽够大，速度够快，可如果在互联网上，遇到网速慢的话，可能提交一个10M的文件就需要5分钟，这还不得把人给憋死啊。</p>
 <p>那分布式版本控制系统与集中式版本控制系统有何不同呢？首先，分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库，这样，你工作的时候，就不需要联网了，因为版本库就在你自己的电脑上。既然每个人电脑上都有一个完整的版本库，那多个人如何协作呢？比方说你在自己电脑上改了文件A，你的同事也在他的电脑上改了文件A，这时，你们俩之间只需把各自的修改推送给对方，就可以互相看到对方的修改了。</p>
 <p>和集中式版本控制系统相比，分布式版本控制系统的安全性要高很多，因为每个人电脑里都有完整的版本库，某一个人的电脑坏掉了不要紧，随便从其他人那里复制一个就可以了。而集中式版本控制系统的中央服务器要是出了问题，所有人都没法干活了。</p>
 <p>在实际使用分布式版本控制系统的时候，其实很少在两人之间的电脑上推送版本库的修改，因为可能你们俩不在一个局域网内，两台电脑互相访问不了，也可能今天你的同事病了，他的电脑压根没有开机。因此，分布式版本控制系统通常也有一台充当“中央服务器”的电脑，但这个服务器的作用仅仅是用来方便“交换”大家的修改，没有它大家也一样干活，只是交换修改不方便而已。</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/YlQnpD.jpg" alt="YlQnpD.jpg"><figcaption class="figure__caption">YlQnpD.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/YlQnpD.jpg" alt="YlQnpD.jpg"></p>
 <p>当然，Git的优势不单是不必联网这么简单，后面我们还会看到Git极其强大的分支管理，把SVN等远远抛在了后面。</p>
 <p>CVS作为最早的开源而且免费的集中式版本控制系统，直到现在还有不少人在用。由于CVS自身设计的问题，会造成提交文件不完整，版本库莫名其妙损坏的情况。同样是开源而且免费的SVN修正了CVS的一些稳定性问题，是目前用得最多的集中式版本库控制系统。</p>
 <p>除了免费的外，还有收费的集中式版本控制系统，比如IBM的ClearCase（以前是Rational公司的，被IBM收购了），特点是安装比Windows还大，运行比蜗牛还慢，能用ClearCase的一般是世界500强，他们有个共同的特点是财大气粗，或者人傻钱多。</p>
@@ -140,11 +447,11 @@
 <h2 id="在Mac-OS-X上安装Git"><a href="#在Mac-OS-X上安装Git" class="headerlink" title="在Mac OS X上安装Git"></a>在Mac OS X上安装Git</h2><p>如果你正在使用Mac做开发，有两种安装Git的方法。</p>
 <p>一是安装homebrew，然后通过homebrew安装Git，具体方法请参考homebrew的文档：<a href="http://brew.sh/。" target="_blank" rel="noopener">http://brew.sh/。</a></p>
 <p>第二种方法更简单，也是推荐的方法，就是直接从AppStore安装Xcode，Xcode集成了Git，不过默认没有安装，你需要运行Xcode，选择菜单“Xcode”-&gt;“Preferences”，在弹出窗口中找到“Downloads”，选择“Command Line Tools”，点“Install”就可以完成安装了。</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/Yl1BF0.jpg" alt="Yl1BF0.jpg"><figcaption class="figure__caption">Yl1BF0.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/Yl1BF0.jpg" alt="Yl1BF0.jpg"></p>
 <p>Xcode是Apple官方IDE，功能非常强大，是开发Mac和iOS App的必选装备，而且是免费的！</p>
 <h2 id="在Windows上安装Git"><a href="#在Windows上安装Git" class="headerlink" title="在Windows上安装Git"></a>在Windows上安装Git</h2><p>在Windows上使用Git，可以从Git官网直接<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">下载安装程序</a>，然后按默认选项安装即可。</p>
 <p>安装完成后，在开始菜单里找到“Git”-&gt;“Git Bash”，蹦出一个类似命令行窗口的东西，就说明Git安装成功！</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/Yl1woq.jpg" alt="Yl1woq.jpg"><figcaption class="figure__caption">Yl1woq.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/Yl1woq.jpg" alt="Yl1woq.jpg"></p>
 <p>安装完成后，还需要最后一步设置，在命令行输入：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;Your Name&quot;</span><br><span class="line">$ git config --global user.email &quot;email@example.com&quot;</span><br></pre></td></tr></table></figure>
 
@@ -168,7 +475,7 @@
 <p>因为文本是有编码的，比如中文有常用的GBK编码，日文有Shift_JIS编码，如果没有历史遗留问题，强烈建议使用标准的UTF-8编码，所有语言使用同一种编码，既没有冲突，又被所有平台所支持。</p>
 <p><strong>使用Windows的童鞋要特别注意：</strong></p>
 <p>千万不要使用Windows自带的<strong>记事本</strong>编辑任何文本文件。原因是Microsoft开发记事本的团队使用了一个非常弱智的行为来保存UTF-8编码的文件，他们自作聪明地在每个文件开头添加了0xefbbbf（十六进制）的字符，你会遇到很多不可思议的问题，比如，网页第一行可能会显示一个“?”，明明正确的程序一编译就报语法错误，等等，都是由记事本的弱智行为带来的。建议你下载<a href="http://notepad-plus-plus.org/" target="_blank" rel="noopener">Notepad++</a>代替记事本，不但功能强大，而且免费！记得把Notepad++的默认编码设置为UTF-8 without BOM即可：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/YlGAJ0.jpg" alt="YlGAJ0.jpg"><figcaption class="figure__caption">YlGAJ0.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/YlGAJ0.jpg" alt="YlGAJ0.jpg"></p>
 <p>言归正传，现在我们编写一个<code>readme.txt</code>文件，内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Git is a version control system.</span><br><span class="line">Git is free software.</span><br></pre></td></tr></table></figure>
 
@@ -237,7 +544,7 @@
 
 <p>需要友情提示的是，你看到的一大串类似<code>1094adb...</code>的是<code>commit id</code>（版本号），和SVN不一样，Git的<code>commit id</code>不是1，2，3……递增的数字，而是一个SHA1计算出来的一个非常大的数字，用十六进制表示，而且你看到的<code>commit id</code>和我的肯定不一样，以你自己的为准。为什么<code>commit id</code>需要用这么一大串数字表示呢？因为Git是分布式的版本控制系统，后面我们还要研究多人在同一个版本库里工作，如果大家都用1，2，3……作为版本号，那肯定就冲突了。</p>
 <p>每提交一个新版本，实际上Git就会把它们自动串成一条时间线。如果使用可视化工具查看Git历史，就可以更清楚地看到提交历史的时间线：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/YldDHO.jpg" alt="YldDHO.jpg"><figcaption class="figure__caption">YldDHO.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/YldDHO.jpg" alt="YldDHO.jpg"></p>
 <p>好了，现在我们启动时光穿梭机，准备把<code>readme.txt</code>回退到上一个版本，也就是<code>add distributed</code>的那个版本，怎么做呢？</p>
 <p>首先，Git必须知道当前版本是哪个版本，在Git中，用<code>HEAD</code>表示当前版本，也就是最新的提交<code>1094adb...</code>（注意我的提交ID和你的肯定不一样），上一个版本就是<code>HEAD^</code>，上上一个版本就是<code>HEAD^^</code>，当然往上100个版本写100个<code>^</code>比较容易数不过来，所以写成<code>HEAD~100</code>。</p>
 <p>现在，我们要把当前版本<code>append GPL</code>回退到上一个版本<code>add distributed</code>，就可以使用<code>git reset</code>命令：</p>
@@ -275,10 +582,10 @@
 <h2 id="工作区和缓存区"><a href="#工作区和缓存区" class="headerlink" title="工作区和缓存区"></a>工作区和缓存区</h2><p>Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。</p>
 <p>先来看名词解释。</p>
 <h3 id="工作区（Working-Directory）"><a href="#工作区（Working-Directory）" class="headerlink" title="工作区（Working Directory）"></a>工作区（Working Directory）</h3><p>就是你在电脑里能看到的目录，比如我的<code>learngit</code>文件夹就是一个工作区：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/Y1EQbT.png" alt="Y1EQbT.png"><figcaption class="figure__caption">Y1EQbT.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/Y1EQbT.png" alt="Y1EQbT.png"></p>
 <h3 id="版本库（Repository）"><a href="#版本库（Repository）" class="headerlink" title="版本库（Repository）"></a>版本库（Repository）</h3><p>工作区有一个隐藏目录<code>.git</code>，这个不算工作区，而是Git的版本库。</p>
 <p>Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支<code>master</code>，以及指向<code>master</code>的一个指针叫<code>HEAD</code>。</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/Y1EMrV.jpg" alt="Y1EMrV.jpg"><figcaption class="figure__caption">Y1EMrV.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/Y1EMrV.jpg" alt="Y1EMrV.jpg"></p>
 <p>分支和<code>HEAD</code>的概念我们以后再讲。</p>
 <p>前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：</p>
 <p>第一步是用<code>git add</code>把文件添加进去，实际上就是把文件修改添加到暂存区；</p>
@@ -297,7 +604,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   LICENSE</span><br><span class="line">	modified:   readme.txt</span><br></pre></td></tr></table></figure>
 
 <p>现在，暂存区的状态就变成这样了：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/Y1EKK0.jpg" alt="Y1EKK0.jpg"><figcaption class="figure__caption">Y1EKK0.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/Y1EKK0.jpg" alt="Y1EKK0.jpg"></p>
 <p>所以，<code>git add</code>命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行<code>git commit</code>就可以一次性把暂存区的所有修改提交到分支。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &quot;understand how stage works&quot;</span><br><span class="line">[master e43a48b] understand how stage works</span><br><span class="line"> 2 files changed, 2 insertions(+)</span><br><span class="line"> create mode 100644 LICENSE</span><br></pre></td></tr></table></figure>
 
@@ -305,7 +612,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br></pre></td></tr></table></figure>
 
 <p>现在版本库变成了这样，暂存区就没有任何内容了：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/09/Y1Envq.jpg" alt="Y1Envq.jpg"><figcaption class="figure__caption">Y1Envq.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/09/Y1Envq.jpg" alt="Y1Envq.jpg"></p>
 <p>暂存区是Git非常重要的概念，弄明白了暂存区，就弄明白了Git的很多操作到底干了什么。</p>
 <p>没弄明白暂存区是怎么回事的童鞋，请向上滚动页面，再看一次。</p>
 <h2 id="管理修改"><a href="#管理修改" class="headerlink" title="管理修改"></a>管理修改</h2><p>现在，假定你已经完全掌握了暂存区的概念。下面，我们要讨论的就是，为什么Git比其他版本控制系统设计得优秀，因为Git跟踪并管理的是修改，而非文件。</p>
@@ -409,9 +716,9 @@
 <p>如果一切顺利的话，可以在用户主目录里找到<code>.ssh</code>目录，里面有<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件，这两个就是SSH Key的秘钥对，<code>id_rsa</code>是私钥，不能泄露出去，<code>id_rsa.pub</code>是公钥，可以放心地告诉任何人。</p>
 <p>第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：</p>
 <p>然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴<code>id_rsa.pub</code>文件的内容：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YGQjEj.png" alt="YGQjEj.png"><figcaption class="figure__caption">YGQjEj.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YGQjEj.png" alt="YGQjEj.png"></p>
 <p>点“Add Key”，你就应该看到已经添加的Key：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YGQvUs.png" alt="YGQvUs.png"><figcaption class="figure__caption">YGQvUs.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YGQvUs.png" alt="YGQvUs.png"></p>
 <p>为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。</p>
 <p>当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。</p>
 <p>最后友情提示，在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。</p>
@@ -419,9 +726,9 @@
 <p>确保你拥有一个GitHub账号后，我们就即将开始远程仓库的学习。</p>
 <h2 id="添加远程库"><a href="#添加远程库" class="headerlink" title="添加远程库"></a>添加远程库</h2><p>现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。</p>
 <p>首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG3dHg.png" alt="YG3dHg.png"><figcaption class="figure__caption">YG3dHg.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG3dHg.png" alt="YG3dHg.png"></p>
 <p>在Repository name填入<code>learngit</code>，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG3aDS.png" alt="YG3aDS.png"><figcaption class="figure__caption">YG3aDS.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG3aDS.png" alt="YG3aDS.png"></p>
 <p>目前，在GitHub上的这个<code>learngit</code>仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。</p>
 <p>现在，我们根据GitHub的提示，在本地的<code>learngit</code>仓库下运行命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:michaelliao&#x2F;learngit.git</span><br></pre></td></tr></table></figure>
@@ -434,7 +741,7 @@
 <p>把本地库的内容推送到远程，用<code>git push</code>命令，实际上是把当前分支<code>master</code>推送到远程。</p>
 <p>由于远程库是空的，我们第一次推送<code>master</code>分支时，加上了<code>-u</code>参数，Git不但会把本地的<code>master</code>分支内容推送的远程新的<code>master</code>分支，还会把本地的<code>master</code>分支和远程的<code>master</code>分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
 <p>推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG30EQ.png" alt="YG30EQ.png"><figcaption class="figure__caption">YG30EQ.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG30EQ.png" alt="YG30EQ.png"></p>
 <p>从现在起，只要本地作了提交，就可以通过命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
 
@@ -465,25 +772,25 @@
 <p>使用<code>https</code>除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在某些只开放http端口的公司内部就无法使用<code>ssh</code>协议而只能用<code>https</code>。</p>
 <h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><p>分支就是科幻电影里面的平行宇宙，当你正在电脑前努力学习Git的时候，另一个你正在另一个平行宇宙里努力学习SVN。</p>
 <p>如果两个平行宇宙互不干扰，那对现在的你也没啥影响。不过，在某个时间点，两个平行宇宙合并了，结果，你既学会了Git又学会了SVN！</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YGaVOI.png" alt="YGaVOI.png"><figcaption class="figure__caption">YGaVOI.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YGaVOI.png" alt="YGaVOI.png"></p>
 <p>分支在实际中有什么用呢？假设你准备开发一个新功能，但是需要两周才能完成，第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。</p>
 <p>现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活，想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既安全，又不影响别人工作。</p>
 <p>其他版本控制系统如SVN等都有分支管理，但是用过之后你会发现，这些版本控制系统创建和切换分支比蜗牛还慢，简直让人无法忍受，结果分支功能成了摆设，大家都不去用。</p>
 <p>但Git的分支是与众不同的，无论创建、切换和删除分支，Git在1秒钟之内就能完成！无论你的版本库是1个文件还是1万个文件。</p>
 <h2 id="创建与合并分支"><a href="#创建与合并分支" class="headerlink" title="创建与合并分支"></a>创建与合并分支</h2><p>在版本回退里，你已经知道，每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即<code>master</code>分支。<code>HEAD</code>严格来说不是指向提交，而是指向<code>master</code>，<code>master</code>才是指向提交的，所以，<code>HEAD</code>指向的就是当前分支。</p>
 <p>一开始的时候，<code>master</code>分支是一条线，Git用<code>master</code>指向最新的提交，再用<code>HEAD</code>指向<code>master</code>，就能确定当前分支，以及当前分支的提交点：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG6bHH.png" alt="YG6bHH.png"><figcaption class="figure__caption">YG6bHH.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG6bHH.png" alt="YG6bHH.png"></p>
 <p>每次提交，<code>master</code>分支都会向前移动一步，这样，随着你不断提交，<code>master</code>分支的线也越来越长。</p>
 <p>当我们创建新的分支，例如<code>dev</code>时，Git新建了一个指针叫<code>dev</code>，指向<code>master</code>相同的提交，再把<code>HEAD</code>指向<code>dev</code>，就表示当前分支在<code>dev</code>上：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG6ojO.png" alt="YG6ojO.png"><figcaption class="figure__caption">YG6ojO.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG6ojO.png" alt="YG6ojO.png"></p>
 <p>你看，Git创建一个分支很快，因为除了增加一个<code>dev</code>指针，改改<code>HEAD</code>的指向，工作区的文件都没有任何变化！</p>
 <p>不过，从现在开始，对工作区的修改和提交就是针对<code>dev</code>分支了，比如新提交一次后，<code>dev</code>指针往前移动一步，而<code>master</code>指针不变：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG67uD.png" alt="YG67uD.png"><figcaption class="figure__caption">YG67uD.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG67uD.png" alt="YG67uD.png"></p>
 <p>假如我们在<code>dev</code>上的工作完成了，就可以把<code>dev</code>合并到<code>master</code>上。Git怎么合并呢？最简单的方法，就是直接把<code>master</code>指向<code>dev</code>的当前提交，就完成了合并：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG6HDe.png" alt="YG6HDe.png"><figcaption class="figure__caption">YG6HDe.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG6HDe.png" alt="YG6HDe.png"></p>
 <p>所以Git合并分支也很快！就改改指针，工作区内容也不变！</p>
 <p>合并完分支后，甚至可以删除<code>dev</code>分支。删除<code>dev</code>分支就是把<code>dev</code>指针给删掉，删掉后，我们就剩下了一条<code>master</code>分支：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YG6LEd.png" alt="YG6LEd.png"><figcaption class="figure__caption">YG6LEd.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YG6LEd.png" alt="YG6LEd.png"></p>
 <p>真是太神奇了，你看得出来有些提交是通过分支完成的吗？</p>
 <h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>首先，我们创建<code>dev</code>分支，然后切换到<code>dev</code>分支：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b dev</span><br><span class="line">Switched to a new branch &#39;dev&#39;</span><br></pre></td></tr></table></figure>
@@ -505,7 +812,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch &#39;master&#39;</span><br></pre></td></tr></table></figure>
 
 <p>切换回<code>master</code>分支后，再查看一个<code>readme.txt</code>文件，刚才添加的内容不见了！因为那个提交是在<code>dev</code>分支上，而<code>master</code>分支此刻的提交点并没有变：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YGcKrF.png" alt="YGcKrF.png"><figcaption class="figure__caption">YGcKrF.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YGcKrF.png" alt="YGcKrF.png"></p>
 <p>现在，我们把<code>dev</code>分支的工作成果合并到<code>master</code>分支上：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git merge dev</span><br><span class="line">Updating d46f35e..b17d20e</span><br><span class="line">Fast-forward</span><br><span class="line"> readme.txt | 1 +</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br></pre></td></tr></table></figure>
 
@@ -556,7 +863,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git add readme.txt </span><br><span class="line">$ git commit -m &quot;&amp; simple&quot;</span><br><span class="line">[master 5dc6824] &amp; simple</span><br><span class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</span><br></pre></td></tr></table></figure>
 
 <p>现在，<code>master</code>分支和<code>feature1</code>分支各自都分别有新的提交，变成了这样：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YJB71U.png" alt="YJB71U.png"><figcaption class="figure__caption">YJB71U.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YJB71U.png" alt="YJB71U.png"></p>
 <p>这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git merge feature1</span><br><span class="line">Auto-merging readme.txt</span><br><span class="line">CONFLICT (content): Merge conflict in readme.txt</span><br><span class="line">Automatic merge failed; fix conflicts and then commit the result.</span><br></pre></td></tr></table></figure>
 
@@ -573,7 +880,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add readme.txt </span><br><span class="line">$ git commit -m &quot;conflict fixed&quot;</span><br><span class="line">[master cf810e4] conflict fixed</span><br></pre></td></tr></table></figure>
 
 <p>现在，<code>master</code>分支和<code>feature1</code>分支变成了下图所示：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YJBTpT.png" alt="YJBTpT.png"><figcaption class="figure__caption">YJBTpT.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YJBTpT.png" alt="YJBTpT.png"></p>
 <p>用带参数的<code>git log</code>也可以看到分支的合并情况：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">*   cf810e4 (HEAD -&gt; master) conflict fixed</span><br><span class="line">|\  </span><br><span class="line">| * 14096d0 (feature1) AND simple</span><br><span class="line">* | 5dc6824 &amp; simple</span><br><span class="line">|&#x2F;  </span><br><span class="line">* b17d20e branch test</span><br><span class="line">* d46f35e (origin&#x2F;master) remove test.txt</span><br><span class="line">* b84166e add test.txt</span><br><span class="line">* 519219b git tracks changes</span><br><span class="line">* e43a48b understand how stage works</span><br><span class="line">* 1094adb append GPL</span><br><span class="line">* e475afc add distributed</span><br><span class="line">* eaadf4e wrote a readme file</span><br></pre></td></tr></table></figure>
 
@@ -602,13 +909,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git log --graph --pretty&#x3D;oneline --abbrev-commit</span><br><span class="line">*   e1e9c68 (HEAD -&gt; master) merge with no-ff</span><br><span class="line">|\  </span><br><span class="line">| * f52c633 (dev) add merge</span><br><span class="line">|&#x2F;  </span><br><span class="line">*   cf810e4 conflict fixed</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>可以看到，不使用<code>Fast forward</code>模式，merge后就像这样：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YJrmZ9.png" alt="YJrmZ9.png"><figcaption class="figure__caption">YJrmZ9.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YJrmZ9.png" alt="YJrmZ9.png"></p>
 <h3 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h3><p>在实际开发中，我们应该按照几个基本原则进行分支管理：</p>
 <p>首先，<code>master</code>分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；</p>
 <p>那在哪干活呢？干活都在<code>dev</code>分支上，也就是说，<code>dev</code>分支是不稳定的，到某个时候，比如1.0版本发布时，再把<code>dev</code>分支合并到<code>master</code>上，在<code>master</code>分支发布1.0版本；</p>
 <p>你和你的小伙伴们每个人都在<code>dev</code>分支上干活，每个人都有自己的分支，时不时地往<code>dev</code>分支上合并就可以了。</p>
 <p>所以，团队合作的分支看起来就像这样：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/11/YJrZqJ.png" alt="YJrZqJ.png"><figcaption class="figure__caption">YJrZqJ.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/11/YJrZqJ.png" alt="YJrZqJ.png"></p>
 <h2 id="Bug分支"><a href="#Bug分支" class="headerlink" title="Bug分支"></a>Bug分支</h2><p>软件开发中，bug就像家常便饭一样。有了bug就需要修复，在Git中，由于分支是如此的强大，所以，每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。</p>
 <p>当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支<code>issue-101</code>来修复它，但是，等等，当前正在<code>dev</code>上进行的工作还没有提交：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch dev</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line">	new file:   hello.py</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">	modified:   readme.txt</span><br></pre></td></tr></table></figure>
@@ -858,12 +1165,12 @@
 <p>和GitHub相比，Gitee也提供免费的Git仓库。此外，还集成了代码质量检测、项目演示等功能。对于团队协作开发，Gitee还提供了项目管理、代码托管、文档管理的服务，5人以下小团队免费。</p>
 <p> Gitee的免费版本也提供私有库功能，只是有5人的成员上限。</p>
 <p>使用Gitee和使用GitHub类似，我们在Gitee上注册账号并登录后，需要先上传自己的SSH公钥。选择右上角用户头像 -&gt; 菜单“修改资料”，然后选择“SSH公钥”，填写一个便于识别的标题，然后把用户主目录下的<code>.ssh/id_rsa.pub</code>文件的内容粘贴进去：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYH29K.jpg" alt="YYH29K.jpg"><figcaption class="figure__caption">YYH29K.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYH29K.jpg" alt="YYH29K.jpg"></p>
 <p>点击“确定”即可完成并看到刚才添加的Key：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYHR1O.jpg" alt="YYHR1O.jpg"><figcaption class="figure__caption">YYHR1O.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYHR1O.jpg" alt="YYHR1O.jpg"></p>
 <p>如果我们已经有了一个本地的git仓库（例如，一个名为learngit的本地库），如何把它关联到Gitee的远程库上呢？</p>
 <p>首先，我们在Gitee上创建一个新的项目，选择右上角用户头像 -&gt; 菜单“控制面板”，然后点击“创建项目”：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYHH4P.jpg" alt="YYHH4P.jpg"><figcaption class="figure__caption">YYHH4P.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYHH4P.jpg" alt="YYHH4P.jpg"></p>
 <p>项目名称最好与本地库保持一致：</p>
 <p>然后，我们在本地库上使用命令<code>git remote add</code>把它和Gitee的远程库关联：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@gitee.com:liaoxuefeng&#x2F;learngit.git</span><br></pre></td></tr></table></figure>
@@ -980,7 +1287,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.lg &quot;log --color --graph --pretty&#x3D;format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit&quot;</span><br></pre></td></tr></table></figure>
 
 <p>来看看<code>git lg</code>的效果：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYja1x.png" alt="YYja1x.png"><figcaption class="figure__caption">YYja1x.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYja1x.png" alt="YYja1x.png"></p>
 <p>为什么不早点告诉我？别激动，咱不是为了多记几个英文单词嘛！</p>
 <h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>配置Git的时候，加上<code>--global</code>是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用。</p>
 <p>配置文件放哪了？每个仓库的Git配置文件都放在<code>.git/config</code>文件中：</p>
@@ -1031,70 +1338,510 @@
 <p>Git有很多图形界面工具，这里我们推荐<a href="https://www.sourcetreeapp.com/" target="_blank" rel="noopener">SourceTree</a>，它是由<a href="https://www.atlassian.com/" target="_blank" rel="noopener">Atlassian</a>开发的免费Git图形界面工具，可以操作任何Git库。</p>
 <p>首先从<a href="https://www.sourcetreeapp.com/" target="_blank" rel="noopener">官网</a>下载SourceTree并安装，然后直接运行SourceTree。</p>
 <p>第一次运行SourceTree时，SourceTree并不知道我们的Git库在哪。如果本地已经有了Git库，直接从资源管理器把文件夹拖拽到SourceTree上，就添加了一个本地Git库：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYzu9A.jpg" alt="YYzu9A.jpg"><figcaption class="figure__caption">YYzu9A.jpg</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYzu9A.jpg" alt="YYzu9A.jpg"></p>
 <p>也可以选择“New”-“Clone from URL”直接从远程克隆到本地。</p>
 <h3 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h3><p>我们双击<code>learngit</code>这个本地库，SourceTree会打开另一个窗口，展示这个Git库的当前所有分支以及文件状态。选择左侧面板的“WORKSPACE”-“File status”，右侧会列出当前已修改的文件（Unstaged files）：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYzMct.png" alt="YYzMct.png"><figcaption class="figure__caption">YYzMct.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYzMct.png" alt="YYzMct.png"></p>
 <p>选中某个文件，该文件就自动添加到“Staged files”，实际上是执行了<code>git add README.md</code>命令：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYzQjP.png" alt="YYzQjP.png"><figcaption class="figure__caption">YYzQjP.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYzQjP.png" alt="YYzQjP.png"></p>
 <p>然后，我们在下方输入Commit描述，点击“Commit”，就完成了一个本地提交：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYzetH.png" alt="YYzetH.png"><figcaption class="figure__caption">YYzetH.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYzetH.png" alt="YYzetH.png"></p>
 <p>实际上是执行了<code>git commit -m &quot;update README.md&quot;</code>命令。</p>
 <p>使用SourceTree进行提交就是这么简单，它的优势在于可以可视化地观察文件的修改，并以红色和绿色高亮显示。</p>
 <h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>在左侧面板的“BRANCHES”下，列出了当前本地库的所有分支。当前分支会加粗并用○标记。要切换分支，我们只需要选择该分支，例如<code>master</code>，然后点击右键，在弹出菜单中选择“Checkout master”，实际上是执行命令<code>git checkout master</code>：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYzK1I.png" alt="YYzK1I.png"><figcaption class="figure__caption">YYzK1I.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYzK1I.png" alt="YYzK1I.png"></p>
 <p>要合并分支，同样选择待合并分支，例如<code>dev</code>，然后点击右键，在弹出菜单中选择“Merge dev into master”，实际上是执行命令<code>git merge dev</code>：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYzmhd.png" alt="YYzmhd.png"><figcaption class="figure__caption">YYzmhd.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYzmhd.png" alt="YYzmhd.png"></p>
 <h3 id="推送"><a href="#推送" class="headerlink" title="推送"></a>推送</h3><p>在SourceTree的工具栏上，分别有<code>Pull</code>和<code>Push</code>，分别对应命令<code>git pull</code>和<code>git push</code>，只需注意本地和远程分支的名称要对应起来，使用时十分简单。</p>
 <p>注意到使用SourceTree时，我们只是省下了敲命令的麻烦，SourceTree本身还是通过Git命令来执行任何操作。如果操作失败，SourceTree会自动显示执行的Git命令以及错误信息，我们可以通过Git返回的错误信息知道出错的原因：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/05/12/YYz1nf.png" alt="YYz1nf.png"><figcaption class="figure__caption">YYz1nf.png</figcaption></figure></p>
+<p><img src="https://s1.ax1x.com/2020/05/12/YYz1nf.png" alt="YYz1nf.png"></p>
 <p>[Git官网][<a href="https://git-scm.com/]" target="_blank" rel="noopener">https://git-scm.com/]</a></p>
 
-	
+    </div>
 
-	
-		<span class="different-posts"><a href="/2020/05/12/LearnGit/" onclick="window.history.go(-1); return false;">⬅️ Go back </a></span>
+    
+    
+    
 
-	
 
-</article>
-
-	</main>
-
-	<footer class="footer">
-	<div class="footer-content">
-		
-	      <div class="footer__element">
-	<p>Hi there, <br />welcome to my Blog glad you found it. Have a look around, will you?</p>
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
 </div>
 
-	    
-	      <div class="footer__element">
-	<h5>Check out</h5>
-	<ul class="footer-links">
-		<li class="footer-links__link"><a href="/archives">Archive</a></li>
-		
-		  <li class="footer-links__link"><a href="/atom.xml">RSS</a></li>
-	    
-		<li class="footer-links__link"><a href="/about">about page</a></li>
-		<li class="footer-links__link"><a href="/tags">Tags</a></li>
-		<li class="footer-links__link"><a href="/categories">Categories</a></li>
-	</ul>
+      
+    </div>
+
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://twitter.com/username">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+
+                <span class="label">Twitter</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+                <span class="icon">
+                  <i class="fa fa-wechat"></i>
+                </span>
+
+                <span class="label">WeChat</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/09/build-blog/" rel="prev" title="基于Hexo+GitHub搭建个人博客 --美化篇">
+      <i class="fa fa-chevron-left"></i> 基于Hexo+GitHub搭建个人博客 --美化篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/01/%5BJava%5D-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%9F%BA%E7%A1%80/" rel="next" title="程序设计基础">
+      程序设计基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git简介"><span class="nav-number">1.</span> <span class="nav-text">Git简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git诞生"><span class="nav-number">1.1.</span> <span class="nav-text">Git诞生</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集中式-VS-分布式"><span class="nav-number">1.2.</span> <span class="nav-text">集中式 VS 分布式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装Git"><span class="nav-number">2.</span> <span class="nav-text">安装Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在Linux上安装Git"><span class="nav-number">2.1.</span> <span class="nav-text">在Linux上安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Mac-OS-X上安装Git"><span class="nav-number">2.2.</span> <span class="nav-text">在Mac OS X上安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Windows上安装Git"><span class="nav-number">2.3.</span> <span class="nav-text">在Windows上安装Git</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建版本库"><span class="nav-number">3.</span> <span class="nav-text">创建版本库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#将文件添加到版本库"><span class="nav-number">3.1.</span> <span class="nav-text">将文件添加到版本库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时光机穿梭"><span class="nav-number">4.</span> <span class="nav-text">时光机穿梭</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本回退"><span class="nav-number">4.1.</span> <span class="nav-text">版本回退</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作区和缓存区"><span class="nav-number">4.2.</span> <span class="nav-text">工作区和缓存区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作区（Working-Directory）"><span class="nav-number">4.2.1.</span> <span class="nav-text">工作区（Working Directory）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本库（Repository）"><span class="nav-number">4.2.2.</span> <span class="nav-text">版本库（Repository）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理修改"><span class="nav-number">4.3.</span> <span class="nav-text">管理修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#撤销修改"><span class="nav-number">4.4.</span> <span class="nav-text">撤销修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除文件"><span class="nav-number">4.5.</span> <span class="nav-text">删除文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#远程仓库"><span class="nav-number">5.</span> <span class="nav-text">远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加远程库"><span class="nav-number">5.1.</span> <span class="nav-text">添加远程库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH-警告"><span class="nav-number">5.1.1.</span> <span class="nav-text">SSH 警告</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从远程库克隆"><span class="nav-number">5.2.</span> <span class="nav-text">从远程库克隆</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分支管理"><span class="nav-number">6.</span> <span class="nav-text">分支管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建与合并分支"><span class="nav-number">6.1.</span> <span class="nav-text">创建与合并分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实战"><span class="nav-number">6.1.1.</span> <span class="nav-text">实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch"><span class="nav-number">6.1.2.</span> <span class="nav-text">switch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">6.1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决冲突"><span class="nav-number">6.2.</span> <span class="nav-text">解决冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支管理策略"><span class="nav-number">6.3.</span> <span class="nav-text">分支管理策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分支策略"><span class="nav-number">6.3.1.</span> <span class="nav-text">分支策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bug分支"><span class="nav-number">6.4.</span> <span class="nav-text">Bug分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature分支"><span class="nav-number">6.5.</span> <span class="nav-text">Feature分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多人协作"><span class="nav-number">6.6.</span> <span class="nav-text">多人协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#推送分支"><span class="nav-number">6.6.1.</span> <span class="nav-text">推送分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抓取分支"><span class="nav-number">6.6.2.</span> <span class="nav-text">抓取分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rebase"><span class="nav-number">6.7.</span> <span class="nav-text">Rebase</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#标签管理"><span class="nav-number">7.</span> <span class="nav-text">标签管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建标签"><span class="nav-number">7.1.</span> <span class="nav-text">创建标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作标签"><span class="nav-number">7.2.</span> <span class="nav-text">操作标签</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub"><span class="nav-number">8.</span> <span class="nav-text">GitHub</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gitee"><span class="nav-number">9.</span> <span class="nav-text">Gitee</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义Git"><span class="nav-number">10.</span> <span class="nav-text">自定义Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略特殊文件"><span class="nav-number">10.1.</span> <span class="nav-text">忽略特殊文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置别名"><span class="nav-number">10.2.</span> <span class="nav-text">配置别名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件"><span class="nav-number">10.2.1.</span> <span class="nav-text">配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建Git服务器"><span class="nav-number">10.3.</span> <span class="nav-text">搭建Git服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#管理公钥"><span class="nav-number">10.3.1.</span> <span class="nav-text">管理公钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管理权限"><span class="nav-number">10.3.2.</span> <span class="nav-text">管理权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-SourceTree"><span class="nav-number">10.4.</span> <span class="nav-text">使用 SourceTree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提交"><span class="nav-number">10.4.1.</span> <span class="nav-text">提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支"><span class="nav-number">10.4.2.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送"><span class="nav-number">10.4.3.</span> <span class="nav-text">推送</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/yourname" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com">友情链接</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+
+
+      <!-- tianqi -->
+      <script type="text/javascript">
+      WIDGET = {FID: 'qGIt0yNpAw'}
+      </script>
+      <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+
+
+<div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1297742167&auto=1&height=66">
+  </iframe>
 </div>
 
-	    
-
-		<div class="footer-credit">
-			<span>© 2021 深南大道 | Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> | Theme <a href="https://github.com/HoverBaum/meilidu-hexo" target="_blank" rel="noopener">MeiliDu</a></span>
-		</div>
-
-	</div>
 
 
-</footer>
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">27</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
 
+
+
+
+
+
+</div>
+</aside>
+<div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备2020129632号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">39:53</span>
+</div>
+
+<span id="sitetime"></span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2020,02,4,00,00,00); //北京时间2020-2-4 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+	siteTime();
+</script>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey: 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '20' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+
+<script type="text/javascript" src="/js/schemes/crash-cheat.js"></script>
 
 
 </body>
-
 </html>

@@ -1,56 +1,334 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-CN">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="theme-color" content="#33474d">
-	<title>初识MyBatis | </title>
-	<link rel="stylesheet" href="/css/style.css" />
-	
-      <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="http://www.googlefonts.cn//css?family=Lato:300,300italic,400,400italic,700,700italic|Satisfy:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.1',
+    exturl: false,
+    sidebar: {"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":20},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="初识MyBatis">
+<meta property="og:url" content="http://yoursite.com/2020/09/10/[Java]-First-Eyes-MyBatis/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/25/09I7nI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w3NZ0U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w3tvm8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w3NCfs.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w143N9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w156IJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w3nTiT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w31ZPx.png">
+<meta property="og:image" content="https://img-blog.csdn.net/20160614135639431">
+<meta property="og:image" content="https://s1.ax1x.com/2020/09/09/w31S2T.png">
+<meta property="article:published_time" content="2020-09-10T08:29:28.000Z">
+<meta property="article:modified_time" content="2021-01-04T07:50:30.194Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/09/25/09I7nI.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/10/[Java]-First-Eyes-MyBatis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>初识MyBatis | 日积硅步</title>
+  
+
+
+  <script pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7e4557d4ccc5f2373ebada2ff7d42a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+  <!--pjax：防止跳转页面音乐暂停-->
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script> 
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">日积硅步</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-code"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-fw fa-terminal"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-fw fa-server"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fa fa-fw fa-chrome"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-fw fa-comment"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+
++ 
+</div>
+    </header>
+
     
-<meta name="generator" content="Hexo 4.2.0"></head>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
 
-<body>
 
-	<header class="header">
-		<nav class="header__nav">
-			
-				<a href="/archives" class="header__link">Archive</a>
-			
-				<a href="/tags" class="header__link">Tags</a>
-			
-				<a href="/atom.xml" class="header__link">RSS</a>
-			
-		</nav>
-		<h1 class="header__title"><a href="/"></a></h1>
-		<h2 class="header__subtitle"></h2>
-	</header>
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
 
-	<main>
-		<article>
-	
-		<h1>初识MyBatis</h1>
-	
-	<div class="article__infos">
-		<span class="article__date">2020-09-10</span><br />
-		
-			<span class="article__category">
-				<a class="article-category-link" href="/categories/Java/">Java</a>
-			</span><br />
-		
-		
-			<span class="article__tags">
-			  	<a class="article__tag-link" href="/tags/MyBatis/" rel="tag">MyBatis</a>
-			</span>
-		
-	</div>
+          <div class="content">
+            
 
-	
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/10/[Java]-First-Eyes-MyBatis/">
 
-	
-		<p><figure class="figure"><img src="https://s1.ax1x.com/2020/09/25/09I7nI.png" alt=""></figure></p>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初识MyBatis
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-10 16:29:28" itemprop="dateCreated datePublished" datetime="2020-09-10T16:29:28+08:00">2020-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-04 15:50:30" itemprop="dateModified" datetime="2021-01-04T15:50:30+08:00">2021-01-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="热度" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">热度：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/09/10/%5BJava%5D-First-Eyes-MyBatis/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/10/%5BJava%5D-First-Eyes-MyBatis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>48k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1:21</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://s1.ax1x.com/2020/09/25/09I7nI.png" alt=""></p>
 <a id="more"></a>
 
 <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="软件开发常用结构"><a href="#软件开发常用结构" class="headerlink" title="软件开发常用结构"></a>软件开发常用结构</h2><p>三层架构包含的三层：</p>
@@ -93,7 +371,7 @@
 <li>从XML中获取SQL语句并执行，把ResultSet结果转换为Java对象</li>
 <li>t提供了关闭资源的能力，不再需要自己来关闭Connection，Statement，ResultSet</li>
 </ol>
-<h1 id="MyBatis的使用"><a href="#MyBatis的使用" class="headerlink" title="MyBatis的使用"></a>MyBatis的使用</h1><h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><p><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w3NZ0U.png" alt=""></figure></p>
+<h1 id="MyBatis的使用"><a href="#MyBatis的使用" class="headerlink" title="MyBatis的使用"></a>MyBatis的使用</h1><h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><p><img src="https://s1.ax1x.com/2020/09/09/w3NZ0U.png" alt=""></p>
 <h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><ol>
 <li>新建的students表</li>
 <li>加入maven的MyBatis坐标，mysql驱动的坐标</li>
@@ -405,7 +683,7 @@
 <h1 id="高级映射之一对一查询"><a href="#高级映射之一对一查询" class="headerlink" title="高级映射之一对一查询"></a>高级映射之一对一查询</h1><p>建表</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`items`</span>;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`orders`</span>;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`user`</span>;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`orderdetail`</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*items是商品表*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`items`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品名称'</span>,</span><br><span class="line">  <span class="string">`price`</span> <span class="built_in">FLOAT</span>(<span class="number">10</span>,<span class="number">1</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品定价'</span>,</span><br><span class="line">  <span class="string">`detail`</span> <span class="built_in">TEXT</span> <span class="keyword">COMMENT</span> <span class="string">'商品描述'</span>,</span><br><span class="line">  <span class="string">`pic`</span> <span class="built_in">VARCHAR</span>(<span class="number">64</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品图片'</span>,</span><br><span class="line">  <span class="string">`createtime`</span> DATETIME <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'生产日期'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">INNODB</span> AUTO_INCREMENT=<span class="number">4</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*user是用户表*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'用户名称'</span>,</span><br><span class="line">  <span class="string">`birthday`</span> <span class="built_in">DATE</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'生日'</span>,</span><br><span class="line">  <span class="string">`sex`</span> <span class="built_in">CHAR</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'性别'</span>,</span><br><span class="line">  <span class="string">`address`</span> <span class="built_in">VARCHAR</span>(<span class="number">256</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'地址'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">INNODB</span> AUTO_INCREMENT=<span class="number">27</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*orders是订单表*/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`orders`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`user_id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'下单用户id'</span>,</span><br><span class="line">  <span class="string">`number`</span> <span class="built_in">VARCHAR</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'订单号'</span>,</span><br><span class="line">  <span class="string">`createtime`</span> DATETIME <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'创建订单时间'</span>,</span><br><span class="line">  <span class="string">`note`</span> <span class="built_in">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'备注'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`FK_orders_1`</span> (<span class="string">`user_id`</span>),</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`FK_orders_id`</span> <span class="keyword">FOREIGN</span> <span class="keyword">KEY</span> (<span class="string">`user_id`</span>) <span class="keyword">REFERENCES</span> <span class="string">`user`</span> (<span class="string">`id`</span>) <span class="keyword">ON</span> <span class="keyword">DELETE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">INNODB</span> AUTO_INCREMENT=<span class="number">6</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*orderdetail是订单明细表*/</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> orderdetail;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`orderdetail`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`orders_id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'订单id'</span>,</span><br><span class="line">  <span class="string">`items_id`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品id'</span>,</span><br><span class="line">  <span class="string">`items_num`</span> <span class="built_in">INT</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'商品购买数量'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`FK_orderdetail_1`</span> (<span class="string">`orders_id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`FK_orderdetail_2`</span> (<span class="string">`items_id`</span>),</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`FK_orderdetail_1`</span> <span class="keyword">FOREIGN</span> <span class="keyword">KEY</span> (<span class="string">`orders_id`</span>) <span class="keyword">REFERENCES</span> <span class="string">`orders`</span> (<span class="string">`id`</span>) <span class="keyword">ON</span> <span class="keyword">DELETE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span>,</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> <span class="string">`FK_orderdetail_2`</span> <span class="keyword">FOREIGN</span> <span class="keyword">KEY</span> (<span class="string">`items_id`</span>) <span class="keyword">REFERENCES</span> <span class="string">`items`</span> (<span class="string">`id`</span>) <span class="keyword">ON</span> <span class="keyword">DELETE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">NO</span> <span class="keyword">ACTION</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">INNODB</span> AUTO_INCREMENT=<span class="number">5</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br></pre></td></tr></table></figure>
 
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w3tvm8.png" alt=""></figure></p>
+<p><img src="https://s1.ax1x.com/2020/09/09/w3tvm8.png" alt=""></p>
 <p>这一节主要总结mybatis中一对一的映射，所以选择左边orders和user之间的一对一关系来总结，主要是查询订单信息，关联查询创建订单的用户信息。查询结果可以使用resultType，也可以使用resultMap，在这里对比一下各个方法的特点。</p>
 <h2 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h2><h3 id="SQL查询语句"><a href="#SQL查询语句" class="headerlink" title="SQL查询语句"></a>SQL查询语句</h3><p>写查询语句的时候首先得确定查询的主表，这里是订单表，然后关联表是用户表。由于orders表中有一个外键（user_id），通过此外键关联查询用户表只能查询出一条记录，所以使用内连接。查询的sql如下：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> orders.*, user.username, user.sex, user.address <span class="keyword">from</span> orders, <span class="keyword">user</span> <span class="keyword">where</span> oders.user_id = user.id;</span><br></pre></td></tr></table></figure>
@@ -460,7 +738,7 @@
 <p>明确了主表和关联表，下面就可以写sql了，在上一节的sql基础上添加订单明细表的关联即可。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    o.*, u.<span class="string">`username`</span>, u.<span class="string">`sex`</span>, u.<span class="string">`address`</span>, od.<span class="string">`id`</span> orderdetail_id, od.<span class="string">`items_id`</span>, od.<span class="string">`items_num`</span>, od.<span class="string">`orders_id`</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    orders o, <span class="keyword">USER</span> u, orderdetail od</span><br><span class="line"><span class="keyword">WHERE</span> o.<span class="string">`user_id`</span>=u.<span class="string">`id`</span> <span class="keyword">AND</span> o.<span class="string">`id`</span> = od.<span class="string">`orders_id`</span></span><br></pre></td></tr></table></figure>
 
-<p>这样我们就查询出了订单表中的所有字段，user表和orderdetail表的部分字段，当然也可以查询所有字段，这个根据具体需求来定。看一下查询结果：<br><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w3NCfs.png" alt=""></figure><br>　　从结果中可以看出，订单的信息有重复，订单项是不重复的，因为一对多嘛，这很好理解。所以如果我们用resultType来做映射的话就会出现订单信息的重复，我们不希望出现这个结果，即对orders的映射不能出现重复记录的情况。那么我们就需要在<code>Orders.java</code>类中添加一个<code>List&lt;OrderDetail&gt; orderDetails</code>属性来封装订单明细项（比较简单，代码就不贴了），最终会将订单信息映射到Orders中，该订单所对应的订单明细映射到Orders中的<code>orderDetails</code>属性中。</p>
+<p>这样我们就查询出了订单表中的所有字段，user表和orderdetail表的部分字段，当然也可以查询所有字段，这个根据具体需求来定。看一下查询结果：<br><img src="https://s1.ax1x.com/2020/09/09/w3NCfs.png" alt=""><br>　　从结果中可以看出，订单的信息有重复，订单项是不重复的，因为一对多嘛，这很好理解。所以如果我们用resultType来做映射的话就会出现订单信息的重复，我们不希望出现这个结果，即对orders的映射不能出现重复记录的情况。那么我们就需要在<code>Orders.java</code>类中添加一个<code>List&lt;OrderDetail&gt; orderDetails</code>属性来封装订单明细项（比较简单，代码就不贴了），最终会将订单信息映射到Orders中，该订单所对应的订单明细映射到Orders中的<code>orderDetails</code>属性中。</p>
 <h2 id="映射文件"><a href="#映射文件" class="headerlink" title="映射文件"></a>映射文件</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findOrdersAndOrderDetailResultMap"</span> <span class="attr">resultMap</span>=<span class="string">"OrdersAndOrderDetailResultMap"</span>&gt;</span></span><br><span class="line">SELECT</span><br><span class="line">    o.*, u.`username`, u.`sex`, u.`address`, od.`id` orderdetail_id, od.`items_id`, od.`items_num`, od.`orders_id`</span><br><span class="line">FROM</span><br><span class="line">    orders o, USER u, orderdetail od</span><br><span class="line">WHERE o.`user_id`=u.`id` AND o.`id` = od.`orders_id` </span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"OrdersAndOrderDetailResultMap的resultMap"</span> <span class="attr">type</span> = <span class="string">"mybatis.po.Orders"</span> <span class="attr">extends</span>=<span class="string">"OrdersUserResultMap"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置映射订单信息和关联的用户信息和上面的一样，继承上面的即可 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置关联的订单明细信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"orderdetails"</span> <span class="attr">ofType</span>=<span class="string">"mybatis.po.Orderdetail"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"orderdetail_id"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"items_id"</span> <span class="attr">property</span>=<span class="string">"itemsId"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"items_num"</span> <span class="attr">property</span>=<span class="string">"itemsNum"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"orders_id"</span> <span class="attr">property</span>=<span class="string">"ordersId"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>这里看到了一个继承，因为订单信息和关联的用户信息和前面一对一是完全一样的，我们就不需要再写一遍了，<code>&lt;resultMap&gt;</code>支持继承，直接继承那个<code>resultMap</code>即可，然后加上订单明细这部分即可。<code>&lt;collection&gt;</code>是用来处理一对多映射的标签，<code>property</code>属性是<code>Orders.java</code>类中对应的装<code>OrderDetail</code>的<code>List</code>的属性名，就是刚刚定义的那个List，<code>ofType</code>属性表示该List中装的是啥，可以是完全限定名，也可以是别名。</p>
@@ -542,7 +820,7 @@
 <li><strong>二级缓存</strong>与一级缓存其机制相同，默认也是采用 PerpetualCache，HashMap存储，不同在于其<strong>存储作用域为 Mapper(Namespace)</strong>（二级缓存是跨SqlSession的，属于mapper级别的缓存，对于mapper击毙的缓存sqlsession是可以共享的），并且<strong>可自定义存储源</strong>，如 Ehcache。</li>
 <li>对于缓存数据更新机制，当某一个作用域(一级缓存Session/二级缓存Namespaces)的进行了 C/U/D 操作后，默认该作用域下所有 select 中的缓存将被clear。</li>
 </ol>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w143N9.png" alt=""></figure></p>
+<p><img src="https://s1.ax1x.com/2020/09/09/w143N9.png" alt=""></p>
 <p>从图中可以看出：</p>
 <blockquote>
 <ol>
@@ -551,7 +829,7 @@
 </ol>
 </blockquote>
 <h2 id="一级缓存测试"><a href="#一级缓存测试" class="headerlink" title="一级缓存测试"></a>一级缓存测试</h2><p>一级缓存的工作原理：</p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w156IJ.png" alt=""></figure></p>
+<p><img src="https://s1.ax1x.com/2020/09/09/w156IJ.png" alt=""></p>
 <p>从图中可以看出：第一次发起查询用户id为1的用户信息，先去找缓存中是否有id为1的用户信息，如果没有，从数据库查询用户信息。得到用户信息，将用户信息存储到一级缓存中。</p>
 <p>如果中间sqlSession去执行commit操作（执行插入、更新、删除），则会清空SqlSession中的一级缓存，这样做的目的为了让缓存中存储的是最新的信息，避免脏读。</p>
 <p>第二次发起查询用户id为1的用户信息，先去找缓存中是否有id为1的用户信息，缓存中有，直接从缓存中获取用户信息。</p>
@@ -574,7 +852,7 @@
 <p>有些时候，在 Web 工程中会将执行查询操作的方法封装在某个<code>Service</code>方法中，当查询完一次后，<code>Service</code>方法结束，此时<code>SqlSession</code>类的实例对象就会关闭，一级缓存就会被清空。</p>
 </blockquote>
 <p><strong>二级缓存的范围是 mapper 级别（mapper即同一个命名空间），mapper 以命名空间为单位创建缓存数据结构，结构是 map，不同的mapper都有一个二级缓存，也就是说，不同的mapper之间的二级缓存是互不影响的。为了更加清楚的描述二级缓存，先来看一个示意图：</strong></p>
-<p><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w3nTiT.png" alt=""></figure></p>
+<p><img src="https://s1.ax1x.com/2020/09/09/w3nTiT.png" alt=""></p>
 <p>从图中可以看出：</p>
 <blockquote>
 <ol>
@@ -606,7 +884,7 @@
 <p><strong>二级缓存测试：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCache2</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    SqlSession sqlSession1 = <span class="keyword">new</span> MyBatisUtil().getSqlSession();</span><br><span class="line">    SqlSession sqlSession2 = <span class="keyword">new</span> MyBatisUtil().getSqlSession();</span><br><span class="line">    SqlSession sqlSession3 = <span class="keyword">new</span> MyBatisUtil().getSqlSession();</span><br><span class="line">    <span class="comment">// 创建代理对象</span></span><br><span class="line">    UserMapper userMapper1 = sqlSession1.getMapper(UserMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="comment">// 第一次发起请求，查询id为1的用户</span></span><br><span class="line">    User user1 = userMapper1.findUserById(<span class="number">1</span>);</span><br><span class="line">    System.out.println(user1);  </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//执行关闭操作，将sqlsession中的数据写到二级缓存区域</span></span><br><span class="line">    sqlSession1.close();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//sqlSession3用来清空缓存的，如果要测试二级缓存，需要把该部分注释掉</span></span><br><span class="line">    <span class="comment">//使用sqlSession3执行commit()操作</span></span><br><span class="line">    UserMapper userMapper3 = sqlSession3.getMapper(UserMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    User user  = userMapper3.findUserById(<span class="number">1</span>);</span><br><span class="line">    user.setUsername(<span class="string">"hugh"</span>);</span><br><span class="line">    userMapper3.updateUser(user);</span><br><span class="line">    <span class="comment">//执行提交，清空UserMapper下边的二级缓存</span></span><br><span class="line">    sqlSession3.commit();</span><br><span class="line">    sqlSession3.close();</span><br><span class="line"></span><br><span class="line">    UserMapper userMapper2 = sqlSession2.getMapper(UserMapper<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="comment">// 第二次发起请求，查询id为1的用户</span></span><br><span class="line">    User user2 = userMapper2.findUserById(<span class="number">1</span>);</span><br><span class="line">    System.out.println(user2);</span><br><span class="line"></span><br><span class="line">    sqlSession2.close();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>我们先把<code>sqlSession3</code>部分注释掉来测试一下二级缓存的结果：<br><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w31ZPx.png" alt=""></figure>)<figure class="figure"><img src="https://img-blog.csdn.net/20160614135639431" alt="二级缓存"><figcaption class="figure__caption">二级缓存</figcaption></figure><br>当我们把<code>sqlSession3</code>部分加上后，再测试一下二级缓存结果：<br><figure class="figure"><img src="https://s1.ax1x.com/2020/09/09/w31S2T.png" alt=""></figure></p>
+<p>我们先把<code>sqlSession3</code>部分注释掉来测试一下二级缓存的结果：<br><img src="https://s1.ax1x.com/2020/09/09/w31ZPx.png" alt="">)<img src="https://img-blog.csdn.net/20160614135639431" alt="二级缓存"><br>当我们把<code>sqlSession3</code>部分加上后，再测试一下二级缓存结果：<br><img src="https://s1.ax1x.com/2020/09/09/w31S2T.png" alt=""></p>
 </li>
 </ol>
 <hr>
@@ -630,51 +908,491 @@
 <p><a href="https://www.cnblogs.com/a1111/" target="_blank" rel="noopener">https://www.cnblogs.com/a1111/</a></p>
 <p><a href="http://www.mamicode.com/" target="_blank" rel="noopener">http://www.mamicode.com/</a></p>
 
-	
+    </div>
 
-	
-		<span class="different-posts"><a href="/2020/09/10/%5BJava%5D-First-Eyes-MyBatis/" onclick="window.history.go(-1); return false;">⬅️ Go back </a></span>
+    
+    
+    
 
-	
 
-</article>
-
-	</main>
-
-	<footer class="footer">
-	<div class="footer-content">
-		
-	      <div class="footer__element">
-	<p>Hi there, <br />welcome to my Blog glad you found it. Have a look around, will you?</p>
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
 </div>
 
-	    
-	      <div class="footer__element">
-	<h5>Check out</h5>
-	<ul class="footer-links">
-		<li class="footer-links__link"><a href="/archives">Archive</a></li>
-		
-		  <li class="footer-links__link"><a href="/atom.xml">RSS</a></li>
-	    
-		<li class="footer-links__link"><a href="/about">about page</a></li>
-		<li class="footer-links__link"><a href="/tags">Tags</a></li>
-		<li class="footer-links__link"><a href="/categories">Categories</a></li>
-	</ul>
+      
+    </div>
+
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="https://twitter.com/username">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+
+                <span class="label">Twitter</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+                <span class="icon">
+                  <i class="fa fa-wechat"></i>
+                </span>
+
+                <span class="label">WeChat</span>
+              </a>
+            </div>
+
+            <div class="social-item">
+              <a target="_blank" class="social-link" href="/atom.xml">
+                <span class="icon">
+                  <i class="fa fa-rss"></i>
+                </span>
+
+                <span class="label">RSS</span>
+              </a>
+            </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/MyBatis/" rel="tag"><i class="fa fa-tag"></i> MyBatis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/04/SQL/" rel="prev" title="MySQL">
+      <i class="fa fa-chevron-left"></i> MySQL
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/18/%5BJava%5D-First-Eyes-Spring/" rel="next" title="初识Spring">
+      初识Spring <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#软件开发常用结构"><span class="nav-number">1.1.</span> <span class="nav-text">软件开发常用结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么叫框架"><span class="nav-number">1.2.</span> <span class="nav-text">什么叫框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#框架的特点"><span class="nav-number">1.2.1.</span> <span class="nav-text">框架的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDBC编程"><span class="nav-number">1.3.</span> <span class="nav-text">JDBC编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis的概述"><span class="nav-number">1.4.</span> <span class="nav-text">MyBatis的概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能简介"><span class="nav-number">1.4.1.</span> <span class="nav-text">功能简介:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis的使用"><span class="nav-number">2.</span> <span class="nav-text">MyBatis的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用示例"><span class="nav-number">2.1.</span> <span class="nav-text">使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现步骤"><span class="nav-number">2.1.1.</span> <span class="nav-text">实现步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现示例"><span class="nav-number">2.1.2.</span> <span class="nav-text">实现示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置日志功能"><span class="nav-number">2.1.3.</span> <span class="nav-text">配置日志功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本的CURD"><span class="nav-number">2.1.4.</span> <span class="nav-text">基本的CURD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#执行插入操作"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">执行插入操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行更新操作"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">执行更新操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行删除操作"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">执行删除操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mybatis内部对象分析"><span class="nav-number">2.2.</span> <span class="nav-text">mybatis内部对象分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#四个对象"><span class="nav-number">2.2.1.</span> <span class="nav-text">四个对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建工具类"><span class="nav-number">2.2.2.</span> <span class="nav-text">创建工具类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Dao对象"><span class="nav-number">2.3.</span> <span class="nav-text">使用Dao对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Dao接口的实现类"><span class="nav-number">2.3.1.</span> <span class="nav-text">创建Dao接口的实现类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析"><span class="nav-number">2.3.2.</span> <span class="nav-text">分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis框架的动态代理"><span class="nav-number">3.</span> <span class="nav-text">MyBatis框架的动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dao实现CURD"><span class="nav-number">3.1.</span> <span class="nav-text">Dao实现CURD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入理解参数"><span class="nav-number">3.3.</span> <span class="nav-text">深入理解参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parameterType"><span class="nav-number">3.3.1.</span> <span class="nav-text">parameterType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyBatis传递参数"><span class="nav-number">3.3.2.</span> <span class="nav-text">MyBatis传递参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单类型参数"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">一个简单类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个参数"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">多个参数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-Param-“自定义参数名”-传递参数"><span class="nav-number">3.3.2.2.1.</span> <span class="nav-text">使用@Param(“自定义参数名”)传递参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用Java对象传递参数"><span class="nav-number">3.3.2.2.2.</span> <span class="nav-text">使用Java对象传递参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#按参数的位置获取参数"><span class="nav-number">3.3.2.2.3.</span> <span class="nav-text">按参数的位置获取参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用Map传递参数"><span class="nav-number">3.3.2.2.4.</span> <span class="nav-text">使用Map传递参数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#占位符-和字符串拼接符"><span class="nav-number">3.3.2.3.</span> <span class="nav-text">占位符#和字符串拼接符$</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#封装输出结果"><span class="nav-number">3.4.</span> <span class="nav-text">封装输出结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#resultType标签"><span class="nav-number">3.4.1.</span> <span class="nav-text">resultType标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值类型"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">返回值类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resultMap标签"><span class="nav-number">3.4.2.</span> <span class="nav-text">resultMap标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实体类属性名和列名不同的处理方式"><span class="nav-number">3.4.3.</span> <span class="nav-text">实体类属性名和列名不同的处理方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊查询"><span class="nav-number">3.4.4.</span> <span class="nav-text">模糊查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输入映射和输出映射"><span class="nav-number">4.</span> <span class="nav-text">输入映射和输出映射</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入映射"><span class="nav-number">4.1.</span> <span class="nav-text">输入映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义包装类型pojo"><span class="nav-number">4.1.1.</span> <span class="nav-text">定义包装类型pojo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置UserMapper-xml映射文件"><span class="nav-number">4.1.2.</span> <span class="nav-text">配置UserMapper.xml映射文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义Mapper接口"><span class="nav-number">4.1.3.</span> <span class="nav-text">定义Mapper接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出映射"><span class="nav-number">4.2.</span> <span class="nav-text">输出映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义resultMap"><span class="nav-number">4.2.1.</span> <span class="nav-text">定义resultMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置UserMapper-xml映射文件-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">配置UserMapper.xml映射文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义Mapper接口-1"><span class="nav-number">4.2.3.</span> <span class="nav-text">定义Mapper接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis动态SQL"><span class="nav-number">5.</span> <span class="nav-text">MyBatis动态SQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis配置文件"><span class="nav-number">6.</span> <span class="nav-text">MyBatis配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级映射之一对一查询"><span class="nav-number">7.</span> <span class="nav-text">高级映射之一对一查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#resultType"><span class="nav-number">7.1.</span> <span class="nav-text">resultType</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL查询语句"><span class="nav-number">7.1.1.</span> <span class="nav-text">SQL查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建pojo"><span class="nav-number">7.1.2.</span> <span class="nav-text">创建pojo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建mapper-xml文件"><span class="nav-number">7.1.3.</span> <span class="nav-text">创建mapper.xml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建接口文件"><span class="nav-number">7.1.4.</span> <span class="nav-text">创建接口文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resultMap"><span class="nav-number">7.2.</span> <span class="nav-text">resultMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建pojo-1"><span class="nav-number">7.2.1.</span> <span class="nav-text">创建pojo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义resultMap-1"><span class="nav-number">7.2.2.</span> <span class="nav-text">定义resultMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mapper-xml配置文件"><span class="nav-number">7.2.3.</span> <span class="nav-text">Mapper.xml配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建接口文件-1"><span class="nav-number">7.2.4.</span> <span class="nav-text">创建接口文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resultType和resultMap对比"><span class="nav-number">7.3.</span> <span class="nav-text">resultType和resultMap对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级映射之一对多查询"><span class="nav-number">8.</span> <span class="nav-text">高级映射之一对多查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#映射文件"><span class="nav-number">8.1.</span> <span class="nav-text">映射文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口文件"><span class="nav-number">8.2.</span> <span class="nav-text">接口文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高级映射之多对多查询"><span class="nav-number">9.</span> <span class="nav-text">高级映射之多对多查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#映射文件-1"><span class="nav-number">9.1.</span> <span class="nav-text">映射文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapper接口文件"><span class="nav-number">9.2.</span> <span class="nav-text">Mapper接口文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延迟加载"><span class="nav-number">10.</span> <span class="nav-text">延迟加载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是延迟加载"><span class="nav-number">10.1.</span> <span class="nav-text">什么是延迟加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用assocaiation实现延迟加载"><span class="nav-number">10.2.</span> <span class="nav-text">使用assocaiation实现延迟加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个mapper-xml"><span class="nav-number">10.2.1.</span> <span class="nav-text">两个mapper.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟加载的配置"><span class="nav-number">10.2.2.</span> <span class="nav-text">延迟加载的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口文件-1"><span class="nav-number">10.2.3.</span> <span class="nav-text">接口文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyBatis缓存介绍"><span class="nav-number">11.</span> <span class="nav-text">MyBatis缓存介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一级缓存测试"><span class="nav-number">11.1.</span> <span class="nav-text">一级缓存测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二级缓存测试"><span class="nav-number">11.2.</span> <span class="nav-text">二级缓存测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其他配置（useCache和flushCache）"><span class="nav-number">11.2.1.</span> <span class="nav-text">其他配置（useCache和flushCache）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/yourname" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com">友情链接</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+
+
+      <!-- tianqi -->
+      <script type="text/javascript">
+      WIDGET = {FID: 'qGIt0yNpAw'}
+      </script>
+      <script type="text/javascript" src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script>
+
+
+<div id="music163player">
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1297742167&auto=1&height=66">
+  </iframe>
 </div>
 
-	    
-
-		<div class="footer-credit">
-			<span>© 2021 深南大道 | Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> | Theme <a href="https://github.com/HoverBaum/meilidu-hexo" target="_blank" rel="noopener">MeiliDu</a></span>
-		</div>
-
-	</div>
 
 
-</footer>
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">27</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
 
+
+
+
+
+
+</div>
+</aside>
+<div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备2020129632号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">39:53</span>
+</div>
+
+<span id="sitetime"></span>
+<script language=javascript>
+	function siteTime(){
+		window.setTimeout("siteTime()", 1000);
+		var seconds = 1000;
+		var minutes = seconds * 60;
+		var hours = minutes * 60;
+		var days = hours * 24;
+		var years = days * 365;
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = today.getMonth()+1;
+		var todayDate = today.getDate();
+		var todayHour = today.getHours();
+		var todayMinute = today.getMinutes();
+		var todaySecond = today.getSeconds();
+		/* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+		year - 作为date对象的年份，为4位年份值
+		month - 0-11之间的整数，做为date对象的月份
+		day - 1-31之间的整数，做为date对象的天数
+		hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+		minutes - 0-59之间的整数，做为date对象的分钟数
+		seconds - 0-59之间的整数，做为date对象的秒数
+		microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+		var t1 = Date.UTC(2020,02,4,00,00,00); //北京时间2020-2-4 00:00:00
+		var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+		var diff = t2-t1;
+		var diffYears = Math.floor(diff/years);
+		var diffDays = Math.floor((diff/days)-diffYears*365);
+		var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+		var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+		var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+		document.getElementById("sitetime").innerHTML=" 小破站已飘摇了"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+	}/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+	siteTime();
+</script>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='0,0,0' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      script.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+    <script defer src="/lib/three/canvas_sphere.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey: 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '20' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+
+<script type="text/javascript" src="/js/schemes/crash-cheat.js"></script>
 
 
 </body>
-
 </html>
