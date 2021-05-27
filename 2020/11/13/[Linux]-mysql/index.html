@@ -55,8 +55,13 @@
 <meta property="og:image" content="https://s3.ax1x.com/2020/11/13/D9gM2d.jpg">
 <meta property="og:image" content="https://img-blog.csdn.net/2018053119584461">
 <meta property="og:image" content="https://img-blog.csdn.net/20180531201748668">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/7a2928dff61710adf946114ab5fa1c3d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/019f24af52eefef270e59c2cd5463bba.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/7aa5675d2dbce2ebe2b3c37691705a10.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/f30b8cf060081d6fc741a6d88850709d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/53cdeec5a1691cbabead193672cef6f7.png">
 <meta property="article:published_time" content="2020-11-13T15:48:29.000Z">
-<meta property="article:modified_time" content="2021-01-23T15:03:47.070Z">
+<meta property="article:modified_time" content="2021-05-27T13:52:22.535Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="Linux">
@@ -272,7 +277,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-23 23:03:47" itemprop="dateModified" datetime="2021-01-23T23:03:47+08:00">2021-01-23</time>
+                <time title="修改时间：2021-05-27 21:52:22" itemprop="dateModified" datetime="2021-05-27T21:52:22+08:00">2021-05-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -313,14 +318,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.1k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>13 分钟</span>
+              <span>17 分钟</span>
             </span>
 
         </div>
@@ -464,12 +469,73 @@
 
 
 
+<p>———–2021/5/27 更新：一些遇到的问题———–</p>
+<p><strong>学会查看错误日志</strong>发现：安装mysql报错无法创建测试文件<code>cant create test file /usr/local/mysql…</code></p>
+<p>解决方法：删除安装时创建的的data文件夹，赋予权限：<code>chown 777 data路径</code>，重新初始化<code>./mysqld *--initialize --lower-case-table-names=1*</code></p>
+<p><strong>mysql启动：Failed to start mysqld.service: Unit not found.</strong></p>
+<p>解决：</p>
+<p>查询/etc/init.d/下是否存在mysqld</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ll /etc/init.d/ | grep mysqld</span><br></pre></td></tr></table></figure>
+
+<p>发现该目录下并没有mysqld的文件，若存在，请备份一下</p>
+<p>查询mysqld：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name mysqld</span><br></pre></td></tr></table></figure>
+
+<p>执行复制操作，/usr/local/mysql/是我自己的mysql安装目录，大家根据查询出来的结果复制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp mysqld的目录 &#x2F;etc&#x2F;init.d&#x2F;mysqld</span><br></pre></td></tr></table></figure>
+
+<p>然后 service mysqld start 启动成功！</p>
+<p><strong>linux下开启、关闭、重启mysql服务命令</strong><br><strong>一、 启动</strong><br>1、使用 service 启动：service mysql start<br>2、使用 mysqld 脚本启动：/etc/inint.d/mysql start<br>3、使用 safe_mysqld 启动：safe_mysql&amp;</p>
+<p><strong>二、停止</strong><br>1、使用 service 启动：service mysql stop<br>2、使用 mysqld 脚本启动：/etc/inint.d/mysql stop<br>3、mysqladmin shutdown</p>
+<p><strong>三、重启</strong><br>1、使用 service 启动：service mysql restart<br>2、使用 mysqld 脚本启动：/etc/inint.d/mysql restart</p>
+<p><strong>Mysql启动错误：Please read “Security” section of the manual to find out how to run mysqld as root!</strong></p>
+<p>错误：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019<span class="selector-tag">-01-10T15</span><span class="selector-pseudo">:03</span><span class="selector-pseudo">:17.368118Z</span> 0 <span class="selector-attr">[ERROR]</span> <span class="selector-tag">Fatal</span> <span class="selector-tag">error</span>: <span class="selector-tag">Please</span> <span class="selector-tag">read</span> "<span class="selector-tag">Security</span>" <span class="selector-tag">section</span> <span class="selector-tag">of</span> <span class="selector-tag">the</span> <span class="selector-tag">manual</span> <span class="selector-tag">to</span> <span class="selector-tag">find</span> <span class="selector-tag">out</span> <span class="selector-tag">how</span> <span class="selector-tag">to</span> <span class="selector-tag">run</span> <span class="selector-tag">mysqld</span> <span class="selector-tag">as</span> <span class="selector-tag">root</span>!</span><br><span class="line"></span><br><span class="line">2019<span class="selector-tag">-01-10T15</span><span class="selector-pseudo">:03</span><span class="selector-pseudo">:17.368146Z</span> 0 <span class="selector-attr">[ERROR]</span> <span class="selector-tag">Aborting</span></span><br></pre></td></tr></table></figure>
+
+<p>此处 mysql是出于安全考虑，默认拒绝用root账号启动mysql服务。</p>
+<p>解决方案：</p>
+<p>加入启动参数<code>--user=[username]</code>，</p>
+<p>可以通过在命令后面加上<code>--user=root</code>进行强制使用root账号启动。这样是最快的。</p>
+<p>也可以通过前面创建的mysql用户启动<code>--user=mysql</code>参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --user&#x3D;mysql --explicit_defaults_for_timestamp</span><br></pre></td></tr></table></figure>
 
 
 
 
 
+<p><strong>The innodb_system data file ‘ibdata1’ must be writable</strong></p>
+<p>错误日志中看了提示的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The innodb_system data file &#39;ibdata1&#39; must be writable</span><br></pre></td></tr></table></figure>
 
+<p>应该是文件的操作权限不够,可以修改下该文件的读写权限或目录下所有文件的权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod -R 777 &#x2F;usr&#x2F;local&#x2F;mysql&#x2F;data&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>执行上面命令，重启了MySQL就可以了。</p>
+<p><strong>linux未找到目录项，Linux下解决命令未找到的问题</strong></p>
+<p>有时候我们在Linux命令行执行某个命令时，会报命令找不到的错误，这个错误出现的原因是，在执行命令时，系统会从系统环境变量中去寻找，如果找到了就执行，没找都就会报命令未找到。下面我们拿Linux下执行<code>mysql mysqladmin</code>时，报 command not found为例讲解一下解决办法吧。</p>
+<p>查看一下系统目前的环境变量</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/7a2928dff61710adf946114ab5fa1c3d.png" alt=""></p>
+<p>mysql程序安装好后，直接执行<code>mysql</code>或<code>mysqladmin</code>时，系统首先会去<code>/usr/bin</code>下寻找命令，如果不在这个目录中，当然就会找不到了。这个时候我们就需要为这些找不到的命令建立一个链接文件，链接到<code>/usr/bin</code>下。</p>
+<p>首先我们查看一下环境变量中是否存在这个命令，操作如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin bin]# `which mysqladmin</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin bin]# where is mysqladmin</span><br></pre></td></tr></table></figure>
+
+<p>如果环境变量中存在该命令，就会输出存在的具体路径，如下图</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/019f24af52eefef270e59c2cd5463bba.png" alt=""></p>
+<p>如果不存在就会提示命令未找到，如下图</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/7aa5675d2dbce2ebe2b3c37691705a10.png" alt=""></p>
+<p>做链接前，我们必须的知道这个命令所在的完整路径，比如<code>mysqladmin</code></p>
+<p>查找一下这个命令的完整路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin bin]# find / -name mysqladmin</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f30b8cf060081d6fc741a6d88850709d.png" alt=""></p>
+<p>结果可以看出，有两个地方存在<code>mysqladmin</code>，第一个我们不用管他，那是他的原始路径。接下来需要做的是把下面的路径直接链接到<code>/usr/bin</code>下。操作如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@admin bin]# ln -s /usr/local/mysql/bin/mysqladmin /usr/bin</span><br></pre></td></tr></table></figure>
+
+<p>链接成功以后，再次执行一下这个命令就ok了。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/53cdeec5a1691cbabead193672cef6f7.png" alt=""></p>
 <p>注：MySQL和MariaDB的区别：</p>
 <p>LAMP架构盛极一时，这离不开MySQL的免费与易用，但是在Oracle收购了Sun之后，很多公司开始担忧MySQL的开源前景，而最近Oracle进一步闭源的举措更是让人难以安心，众多互联网公司纷纷开始寻求MySQL的替代方案。<br>不得不提的是Apple的远见，在Oracle收购Sun之初就宣布迁移到PostgreSQL。但PostgreSQL的设计初衷就不同于MySQL，并不是使用MySQL的大部分互联网公司合适的解决方案。除了Apple，Google、Facebook、Twitter也大量使用了MySQL，纷纷发布了自己的MySQL分支/补丁集，并为不少公司所采用。同时，MariaDB、Percona等MySQL分支也渐渐步入大众的视野。</p>
 <p>MySQL之父Widenius先生离开了Sun之后，觉得依靠Sun/Oracle来发展MySQL，实在很不靠谱，于是决定另开分支，这个分支的名字叫做MariaDB。<br>MariaDB跟MySQL在绝大多数方面是兼容的，对于开发者来说，几乎感觉不到任何不同。目前MariaDB是发展最快的MySQL分支版本，新版本发布速度已经超过了Oracle官方的MySQL版本。</p>
@@ -746,7 +812,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">41:10</span>
+    <span title="站点阅读时长">41:15</span>
 </div>
 
 <span id="sitetime"></span>
