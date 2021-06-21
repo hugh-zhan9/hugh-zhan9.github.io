@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=E7Yuw4hI34nNHflgejimQIzVZp8HHWzn"></script>
+    <title>足迹</title>
+    <style type="text/css">
+      body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+    </style>
+</head>
+<body>
+    <div id="allmap"></div>
+    <base target="_blank">
+</body>
+</html>
+ 
+<script type = "text/javascript" >
+var map = new BMap.Map("allmap"); // 创建Map实例
+var point = new BMap.Point(110, 30.2); // 创建点坐标
+var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
+var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+var overView = new BMap.OverviewMapControl();
+var overViewOpen = new BMap.OverviewMapControl({isOpen:true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT});
+var top_right_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_RIGHT});// 右上角，添加比例尺
+var myIcon = new BMap.Icon("/images/home.png", new BMap.Size(26, 26));
+
+map.centerAndZoom("长沙", 6); // 初始化地图,设置中心点坐标和地图级别。
+map.enableScrollWheelZoom(); //启用滚轮放大缩小
+map.setCurrentCity("深圳");        //由于有3D图，需要设置城市哦
+map.addControl(mapType2);          //左上角，默认地图控件
+map.addControl(top_right_control); //添加右上角比例尺
+
+// 添加标注功能
+function createMarker(time, things , address ,lng, lat, essay , pic1) {
+var marker = new BMap.Marker(new BMap.Point(lng, lat)); // 创建标注
+map.addOverlay(marker); // 将标注添加到地图中
+var content = time + "&nbsp;&nbsp;" + things + "&nbsp;&nbsp;" + address+ "<br/><a href="+ essay +">文章详情</a>"+"<br/>"+"<br/><img src="+pic1+" style='width:300px;' >"; // 窗口固格式以及样式
+marker.addEventListener("click", function() {
+infoWindow.setContent(content);
+this.openInfoWindow(infoWindow);
+});    //创建信息窗口事件
+} 
+
+
+// 以下是添加数组，依次顺序是：时间，事件，地址，经纬度，文章目录，图片
+var infos = "2019- , 第一份工作, 深圳富士康观澜园区宝源科技园, 114.00309,22.732388,  ,http://u.lushaojun.com/2014/1356_26.jpg,";
+var info = infos.split(";");//创建数组
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); //创建信息窗口
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
+}
+var infos = "2015.9 - 2019.6, 大学生活, 长沙,112.99436499092863,28.131799601275535, https://hugh-zhan9.xyz/2020/10/08/chang-sha/ ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
+}
+var infos = "2018.7 , 大三生产实习, 河南洛阳, 112.51078,34.70431, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
+}
+var infos = "2016.6 , 大一金工实习, 株洲, 113.1722115418701,27.82948612386388, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
+}
+var infos = "2019.7, 公司团建, 惠州黄金海岸,114.67722,22.775198, ,http://u.lushaojun.com/2013/589_4.jpg";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
+}
+var infos = "2020.10.7-2020.10.9, 国庆游, 湖南农大, 113.087105,28.186094, https://hugh-zhan9.xyz/2020/10/08/chang-sha/, http://u.lushaojun.com/2014/1356_26.jpg,";
+var info = infos.split(";");//创建数组
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); //创建信息窗口
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createMarker(information[0], information[1], information[2], information[3], information[4], information[5], information[6]);
+}
+// 添加数组区域结束
+
+
+// 添加home标注功能
+function createHomeMarker(lng, lat, name, time,things,essay, pic1) {
+var marker = new BMap.Marker(new BMap.Point(lng, lat),{icon:myIcon}); // 创建标注
+map.addOverlay(marker); // 将标注添加到地图中
+var content = "<font size=6px>"+name+"</font><br/>"+"&nbsp;&nbsp;"+ time +"&nbsp;&nbsp;"+ things +"&nbsp;&nbsp;"+ "<a href="+ essay +">文章详情</a>"+"<br/><img src="+pic1+" style='width:300px;' >"; // 窗口固格式以及样式
+marker.addEventListener("click", function() {
+infoWindow.setContent(content);
+this.openInfoWindow(infoWindow);
+});    //创建信息窗口事件
+} 
+// home标签修改区
+var infos = "110.594972,27.908316, 家, 1996.12.20-2015.09, 出生-高中毕业, https://hugh-zhan9.xyz/1996/12/20/huai-hua/, ";
+var info = infos.split(";");
+var len = info.length;
+var infoWindow = new BMap.InfoWindow(""); 
+for (var i = 0; i < len; i++) {
+var information = info[i].split(",");
+createHomeMarker(information[0], information[1], information[2],information[3],information[4],information[5],information[6]);
+}
+</script>
+</html>
