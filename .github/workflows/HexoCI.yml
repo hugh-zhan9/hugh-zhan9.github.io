@@ -19,6 +19,17 @@ jobs:
         with:
           args: clean
 
+      - name: 导入配置文件
+        env:
+          GID: ${{ secrets.GITALK_ID }}
+          GSECRET: ${{ secrets.GITALK_SECRET }}
+          VID: ${{ secrets.VALINE_ID }}
+          VKEY: ${{ secrets.VALINE_KEY }}
+        run: |
+          sudo sed -i "${GSECRET}" _config.butterfly.yml
+          sudo sed -i "${GID}" _config.butterfly.yml
+          sudo sed -i "${VKEY}" _config.butterfly.yml
+          sudo sed -i "${VID}" _config.butterfly.yml
       - name: 生成Hexo
         uses: heowc/action-hexo@main
         with:
@@ -28,17 +39,17 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.CI_TOKEN }}
-          external_repository: hugh-zhan9/hugh-zhan9.github.io
+          external_repository: inkdp/inkdp.github.io
           publish_branch: master
           publish_dir: ./public
-          
+
       - name: 部署到个人服务器
         env:
           ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY }}
-          SERVER_DIR: root@8.129.53.152
+          SERVER_DIR: ${{ secrets.SERVER_DIR }}
         run: |
           mkdir -p ~/.ssh/
           echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           mv ./public ./www
-          scp -o StrictHostKeyChecking=no -r ./www root@8.129.53.152:/var/www/hexo
+          scp -o StrictHostKeyChecking=no -r ./www $SERVER_DIR
