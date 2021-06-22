@@ -42,3 +42,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           mv ./public ./www
           scp -o StrictHostKeyChecking=no -r ./www $SERVER_DIR
+          
