@@ -35,10 +35,10 @@ jobs:
       - name: 部署到个人服务器
         env:
           ACTION_DEPLOY_KEY: ${{ secrets.ACTION_DEPLOY_KEY }}
-          SERVER_DIR: root@8.129.53.152:/var/www/hexo
+          # SERVER_DIR: root@8.129.53.152:/var/www/hexo
         run: |
           mkdir -p ~/.ssh/
           echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           mv ./public ./www
-          scp -o StrictHostKeyChecking=no -r ./www $SERVER_DIR
+          # scp -o StrictHostKeyChecking=no -r ./www $SERVER_DIR
