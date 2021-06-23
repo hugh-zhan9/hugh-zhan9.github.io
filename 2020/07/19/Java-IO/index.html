@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Java IO之 总体架构 | 日积硅步</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO之 总体架构">
+<meta property="og:url" content="http://yoursite.com/2020/07/19/Java-IO/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6mRC6.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6mcU1.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6mrDJ.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6mwgU.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6mYEn.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6ezA1.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6eXnJ.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6eRXQ.jpg">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/17/U6e9yQ.jpg">
+<meta property="article:published_time" content="2020-07-19T22:22:28.000Z">
+<meta property="article:modified_time" content="2021-06-23T03:10:24.211Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-IO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/07/17/U6mRC6.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="日积硅步" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">日积硅步</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Java-IO" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/19/Java-IO/" class="article-date">
+  <time class="dt-published" datetime="2020-07-19T22:22:28.000Z" itemprop="datePublished">2020-07-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java IO之 总体架构
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="Java-IO-简介"><a href="#Java-IO-简介" class="headerlink" title="Java IO 简介"></a>Java IO 简介</h1><p><code>Java IO</code>设计的初衷就是为了实现文件、控制台、网络设备这些IO设备的通信。例如：对于一个文件，可以打开文件，然后进行读取和写入。</p>
+<p>在JDK 1.0中，Java提供的类都是以字节(byte)为单位，例如：<code>FileInputStream</code>和<code>FileOutputStream</code>。而到了JDK 1.1，为了与国际化接轨，在<code>Java io</code>中添加了许多以字符(Unicode)为单位进行操作的类。</p>
+<p>在<code>Java IO</code>的称呼中，经常会提到输入流、输出流等等概念。所谓<code>流</code>，就是一种抽象的数据的总称，它的本质是能够进行传输。</p>
+<ul>
+<li>按照流的数据流向，可以将其分为：输入流和输出流。</li>
+<li>按照流中处理数据的单位，可以将其区分为：字节流和字符流。在Java中，字节占1个<code>Byte</code>，即8位；而字符是占2个<code>Byte</code>，即16位。而且，需要注意的是：<strong>Java的字节是有符号类型，而字符是无符号类型。</strong></li>
+</ul>
+<h1 id="Java-IO-框架"><a href="#Java-IO-框架" class="headerlink" title="Java IO 框架"></a>Java IO 框架</h1><h2 id="以字节为单位的输入流的框架图"><a href="#以字节为单位的输入流的框架图" class="headerlink" title="以字节为单位的输入流的框架图"></a>以字节为单位的输入流的框架图</h2><p>下面是以字节为单位的输入流的框架图。</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6mRC6.jpg"></p>
+<p>从中我们可以看出：</p>
+<ul>
+<li><p><code>InputStream</code>是以字节为单位的输入流的超类。<code>InputStream</code>提供了<code>read()</code>方法从输入流中读取字节数据。</p>
+</li>
+<li><p><code>ByteArrayInputStream</code>是字节数组输入流。它包含一个内部缓冲区，该缓冲区包含从流中读取的字节；通俗点说，它的内部缓冲区就是一个字节数组，而<code>ByteArrayInputStream</code>本质就是通过字节数组来实现的。</p>
+</li>
+<li><p><code>PipedInputStream</code>是管道输入流，它和<code>PipedOutPutStram</code>一起使用，能实现多线程的管道通信。</p>
+</li>
+<li><p><code>FilterInputStream</code>是过滤输入流。它是<code>DataInputStream</code>和<code>BufferedInputStream</code>的超类。</p>
+</li>
+<li><p><code>DataInputStream</code>是数据输入流。它是用来装饰其它输入流，它允许应用程序以与机器无关方式从底层输入流中读取基本 Java数据类型。</p>
+</li>
+<li><p><code>BufferedInputStream</code>是缓冲输入流。它的作用是为另一个输入流添加缓冲功能。</p>
+</li>
+<li><p><code>File</code>是文件和目录路径名的抽象表示形式。关于File，注意以下两点：</p>
+<p><code>File</code>不仅仅只是表示文件，它也可以表示是目录。</p>
+<p><code>File</code>虽然在<code>IO</code>定义，但是它的超类是<code>Object</code>，而不是<code>InputStream</code>。</p>
+</li>
+<li><p><code>FileDescriptor</code>是文件描述符。它可以被用来表示开放文件、开放套接字等。</p>
+</li>
+<li><p><code>FileInputStream</code>是文件输入流。它通常用于对文件进行读取操作。</p>
+</li>
+<li><p><code>ObjectInputStream</code>是对象输入流。它和<code>ObjectOutputStream</code>一起用来提供对基本数据或对象的持久存储。</p>
+</li>
+</ul>
+<h2 id="以字节为单位的输出流的框架图"><a href="#以字节为单位的输出流的框架图" class="headerlink" title="以字节为单位的输出流的框架图"></a>以字节为单位的输出流的框架图</h2><p>下面是以字节为单位的输出流的框架图。</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6mcU1.jpg"></p>
+<p>从中我们可以看出：</p>
+<ul>
+<li><code>OutputStream</code>是以字节为单位的输出流的超类。<code>OutputStream</code>提供了<code>write()</code>接口从输入流中读取字节数据。</li>
+<li><code>ByteArrayOutputStream</code>是字节数组输出流。写入<code>ByteArrayOutputStream</code>的数据被写入一个<code>byte</code>数组。缓冲区会随着数据不断写入而自动增长。可使用<code>toByteArray()</code>和<code>toString()</code>获取数据。</li>
+<li><code>PipedOutputStream</code>是管道输出流，它和<code>PipedInputStream</code>一起使用，能实现多线程的通信管道。</li>
+<li><code>FilterOutputStream</code>是过滤输出流。它是<code>DataOutputStream</code>，<code>BufferedOutputStream</code>和<code>PrintStream</code>的超类。</li>
+<li><code>DataOutputStream</code>是数据输出流，它是用来装饰其它输出流，它允许应用程序以与机器无关方式向底层写入基本Java数据类型。</li>
+<li><code>BufferedOutputStream</code>是缓冲输出流，它的作用是为另一个输出流添加缓冲功能。</li>
+<li><code>PrintStream</code>是打印输出流。它是用来装饰其它输出流，能为其它输出流添加功能，使它们能够方便地打印各种数据值表示形式。</li>
+<li><code>FileOutputStream</code>是文件输出流，它通常用于向文件进行写入操纵。</li>
+<li><code>ObjectOutputStream</code>是对象输出流，它和<code>ObjectInputStream</code>一起，用来提供对基本数据或对象的持久存储。</li>
+</ul>
+<h2 id="以字节为单位的输入流和输出流关联的框架图"><a href="#以字节为单位的输入流和输出流关联的框架图" class="headerlink" title="以字节为单位的输入流和输出流关联的框架图"></a>以字节为单位的输入流和输出流关联的框架图</h2><p>输入流和输出流都有对应的关系，下面是将以字节为单位的输入流和输出流关联起来的图片</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6mrDJ.jpg"></p>
+<h2 id="以字符为单位的输入流的框架图"><a href="#以字符为单位的输入流的框架图" class="headerlink" title="以字符为单位的输入流的框架图"></a>以字符为单位的输入流的框架图</h2><p>下面是以字符为单位的输入流的框架图</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6mwgU.jpg"></p>
+<p>从中可以看到：</p>
+<ul>
+<li><code>Reader</code>是以字符为单位的输入流的超类，它提供了<code>read()</code>接口来获取字符数据。</li>
+<li><code>CharArrayReader</code>是字符数组输入流，它用于读取字符数组，它继承于<code>Readrt</code>。操作的数据是以字符为单位。</li>
+<li><code>PipedReader</code>是字符类型的管道输入流。它和<code>PipedWriter</code>一起可以进行多线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedReader</code>配套使用。</li>
+<li><code>FilterReader</code>是字符类型的过滤输入流。</li>
+<li><code>BufferedReader</code>是字符缓冲输入流。它的作用是为另一个输入流添加缓冲功能。</li>
+<li><code>InputStreamReader</code>是字节转字符的输入流。它是字节流通向字符流的桥梁。它使用指定的<code>charset</code>读取字节并将其解码为字符。</li>
+<li><code>FileReader</code>是字符类型的文件输入流。它通常用于对文件进行读取操作。</li>
+</ul>
+<h2 id="以字符为单位的输出流的框架图"><a href="#以字符为单位的输出流的框架图" class="headerlink" title="以字符为单位的输出流的框架图"></a>以字符为单位的输出流的框架图</h2><p>下面是以字符为单位的输出流的框架图</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6mYEn.jpg"></p>
+<ul>
+<li><code>Writer</code>是以字符为单位的输出流的超类。它提供了<code>write()</code>接口往其中写入数据</li>
+<li><code>CharArrayWriter</code>是字符数组输出流。它用于读取字符数组，它继承于<code>Writer</code>。操作的数据是以字符为单位！</li>
+<li><code>PipedWriter</code>是字符类型的管道输出流。它和<code>PipedReader</code>一起是可以通过管道进行线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedWriter</code>配套使用。</li>
+<li><code>FilterWriter</code>是字符类型的过滤输出流。</li>
+<li><code>BufferedWriter</code>是字符缓冲输出流。它的作用是为另一个输出流添加缓冲功能。</li>
+<li><code>OutputStreamWriter</code>是字节转字符的输出流。它是字节流通向字符流的桥梁：它使用指定的 <code>charset</code>将字节转换为字符并写入。</li>
+<li><code>FileWriter</code>是字符类型的文件输出流。它通常用于对文件进行读取操作。</li>
+<li><code>PrintWriter</code>是字符类型的打印输出流。它是用来装饰其它输出流，能为其他输出流添加了功能，使它们能够方便地打印各种数据值表示形式。</li>
+</ul>
+<h2 id="以字符为单位的输入流和输出流关联的框架图"><a href="#以字符为单位的输入流和输出流关联的框架图" class="headerlink" title="以字符为单位的输入流和输出流关联的框架图"></a>以字符为单位的输入流和输出流关联的框架图</h2><p>下面是将以字符为单位的输入流和输出流关联起来的图片。</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6ezA1.jpg"></p>
+<h2 id="字节转换为字符流的框架图"><a href="#字节转换为字符流的框架图" class="headerlink" title="字节转换为字符流的框架图"></a>字节转换为字符流的框架图</h2><p>在Java中，字节流能转换为字符流，下面是它们的转换关系图。</p>
+<p><img src="https://s1.ax1x.com/2020/07/17/U6eXnJ.jpg"></p>
+<p>从中我们可以看出：</p>
+<ul>
+<li><code>FileReader</code>继承于<code>InputStreamReader</code>，而<code>InputStreamReader</code>依赖于<code>InputStream</code>。具体表现在<code>InputStreamReader</code>的构造函数是以<code>InputStream</code>为参数。我们传入<code>InputStream</code>，在<code>InputStreamReader</code>内部通过转码，将字节转换成字符。</li>
+<li><code>FileWriter</code>继承于<code>OutputStreamWriter</code>，而<code>OutputStreamWriter</code>依赖于<code>OutputStream</code>。具体表现在<code>OutputStreamWriter</code>的构造函数是以<code>OutputStream</code>为参数。我们传入<code>OutputStream</code>，在<code>OutputStreamWriter</code>内部通过转码，将字节转换成字符。</li>
+</ul>
+<h2 id="字节和字符的输入流对应关系"><a href="#字节和字符的输入流对应关系" class="headerlink" title="字节和字符的输入流对应关系"></a>字节和字符的输入流对应关系</h2><p><img src="https://s1.ax1x.com/2020/07/17/U6eRXQ.jpg"></p>
+<h2 id="字节和字符的输出流对应关系"><a href="#字节和字符的输出流对应关系" class="headerlink" title="字节和字符的输出流对应关系"></a>字节和字符的输出流对应关系</h2><p><img src="https://s1.ax1x.com/2020/07/17/U6e9yQ.jpg"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/19/Java-IO/" data-id="ckq8wfpry001t0anu6f4507jw" data-title="Java IO之 总体架构" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/20/Java-IO-FileInputStream-FileOutputStream/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Java IO之 FileInputStream/FileOutputStream详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/19/Java-IO-Serializable-Externalizable/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Java IO之 序列化(Serializable和Externalizable)详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/">LeetCode笔记与总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/link/">link</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/EL/" style="font-size: 10px;">EL</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/Github/" style="font-size: 11.67px;">Github</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/JSP/" style="font-size: 10px;">JSP</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java-IO/" style="font-size: 18.33px;">Java-IO</a> <a href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 15px;">Java-多线程</a> <a href="/tags/Java-%E9%9B%86%E5%90%88/" style="font-size: 16.67px;">Java-集合</a> <a href="/tags/LeetCode/" style="font-size: 10px;">LeetCode</a> <a href="/tags/Linux/" style="font-size: 11.67px;">Linux</a> <a href="/tags/MyBatis/" style="font-size: 11.67px;">MyBatis</a> <a href="/tags/MyBatis-plus/" style="font-size: 10px;">MyBatis-plus</a> <a href="/tags/MySQL/" style="font-size: 11.67px;">MySQL</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/tags/Shiro/" style="font-size: 10px;">Shiro</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 13.33px;">SpringBoot</a> <a href="/tags/SpringMVC/" style="font-size: 10px;">SpringMVC</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/hexo/" style="font-size: 13.33px;">hexo</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/node-js/" style="font-size: 11.67px;">node.js</a> <a href="/tags/%E5%9B%BE%E5%BA%8A/" style="font-size: 11.67px;">图床</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 10px;">数据结构与算法</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 10px;">转载</a> <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">逆向工程</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/23/test/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">Spring中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/19/Git%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%EF%BC%9AOpenSSL%20SSL_read%20Connection%20was%20reset,%20error%2010054/">git error 10054</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 深南大道<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

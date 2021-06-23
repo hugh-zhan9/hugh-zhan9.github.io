@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>JSP &amp; EL表达式 | 日积硅步</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="JSP &amp; EL表达式">
+<meta property="og:url" content="http://yoursite.com/2020/09/25/[Java]-JSP&EL/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg">
+<meta property="article:published_time" content="2020-09-25T16:09:28.000Z">
+<meta property="article:modified_time" content="2021-06-23T03:10:24.223Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="JSP">
+<meta property="article:tag" content="EL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="日积硅步" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">日积硅步</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-[Java]-JSP&amp;EL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/09/25/%5BJava%5D-JSP&EL/" class="article-date">
+  <time class="dt-published" datetime="2020-09-25T16:09:28.000Z" itemprop="datePublished">2020-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      JSP &amp; EL表达式
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://imgchr.com/i/ByLY5j"><img src="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg"></a></p>
+<span id="more"></span>
+
+<h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h2 id="JSP规范介绍"><a href="#JSP规范介绍" class="headerlink" title="JSP规范介绍"></a>JSP规范介绍</h2><ul>
+<li>来自于JavaEE规范中一种</li>
+<li>JSP规范制定了如何开发JSP文件代替响应对象将处理结果写入到响应体的开发流程</li>
+<li>JSP规范制定Http服务器应该如何调用管理JSP文件</li>
+<li>JSP文件在执行时，自动将文件所有内容写入到响应体，从而不用书写<code>respone.getWriter().print();</code></li>
+</ul>
+<p><strong>优势：</strong></p>
+<ul>
+<li>JSP文件在互谅网通信过程，是响应对象代替品</li>
+<li>降低将处理结果写入到响应体的开发工作量降低处理结果维护难度</li>
+<li>在JSP文件开发时，可以直接将处理结果写入到JSP文件不需要手写<code>respone.getWriter().print();</code>命令，在Http服务器调用JSP文件时，根据JSP规范要求自动的将JSP文件书写的所有内容通过输出流写入到响应体</li>
+</ul>
+<h2 id="响应对象存在的弊端"><a href="#响应对象存在的弊端" class="headerlink" title="响应对象存在的弊端"></a>响应对象存在的弊端</h2><ul>
+<li>适合将数据量较少的处理结果写入到响应体</li>
+<li>如果处理数量过多，使用响应对象增加开发难度</li>
+</ul>
+<h2 id="JSP文件内置对象"><a href="#JSP文件内置对象" class="headerlink" title="JSP文件内置对象"></a>JSP文件内置对象</h2><h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>类型：HttpServletRequst</p>
+<p>作用：在JSP文件运行时，读取请求包信息与Servlet在请求转发过程中实现数据共享</p>
+<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>类型：HTTPSession</p>
+<p>作用：在JSP文件运行时，session可以指向当前用户私人储物柜，添加共享数据或者读取共享数据</p>
+<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><p>类型：ServletContext()</p>
+<p>作用：在JSP文件运行时，通过全局作用域对象实现数据共享</p>
+<h2 id="Servlet-与-JSP分工"><a href="#Servlet-与-JSP分工" class="headerlink" title="Servlet 与 JSP分工"></a>Servlet 与 JSP分工</h2><p><strong>Servlet：</strong>负责处理业务并得到处理结果 — 大厨师</p>
+<p><strong>JSP：</strong>不负责处理业务，主要任务将Servlet中处理结果写入到响应体 — 传菜员</p>
+<p><strong>Servlet</strong> 与 <strong>JSP</strong>之间的调用关系：Servlet工作完毕后，一般通过【请求转发】方式向Tomcat申请调用JSP</p>
+<h2 id="Servlet与JSP之间如何实现数据共享"><a href="#Servlet与JSP之间如何实现数据共享" class="headerlink" title="Servlet与JSP之间如何实现数据共享"></a>Servlet与JSP之间如何实现数据共享</h2><ol>
+<li><p>使用【请求作用域对象】实现数据共享</p>
+</li>
+<li><p>使用【全局作用对象】实现数据共享</p>
+</li>
+</ol>
+<p>Servlet将处理结果添加到【请求作用域对象(request)】</p>
+<p>JSP文件在运行时从【请求作用域对象(request)】得到处理结果</p>
+<p>代码示例：</p>
+<p>在Servlet接口实现类下(OneServlet.java)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Person p1 = <span class="keyword">new</span> Person(<span class="number">1</span>,<span class="string">&quot;a&quot;</span>);</span><br><span class="line">Person p2 = <span class="keyword">new</span> Person(<span class="number">2</span>,<span class="string">&quot;b&quot;</span>);</span><br><span class="line">List&lt;Person&gt; personList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">personList.add(p1);</span><br><span class="line">personList.add(p2);</span><br><span class="line"><span class="comment">// 将处理结果添加到请求作用域对象</span></span><br><span class="line">request.setAttribute(<span class="string">&quot;key&quot;</span>,personList);</span><br><span class="line"><span class="comment">// 通过请求转发方案，向Tomcat申请调用user_show.jsp，同时将request与response通过Tomcat交给user_show.jsp使用</span></span><br><span class="line">request.getRequestDispatcher(<span class="string">&quot;/user_show.jsp&quot;</span>).forward(request,response);</span><br></pre></td></tr></table></figure>
+
+<p>在JSP文件中读取：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=</span><br><span class="line">    List&lt;Person&gt; personList = (List&lt;Person&gt;) application.getAttributee(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Http服务器调用JSP文件步骤-面试题"><a href="#Http服务器调用JSP文件步骤-面试题" class="headerlink" title="Http服务器调用JSP文件步骤(面试题)"></a>Http服务器调用JSP文件步骤(面试题)</h2><ol>
+<li><p>Http服务器将JSP文件内容【编辑】为一个Servlet接口实现类(.java)</p>
+</li>
+<li><p>Http服务器将Servlet接口实现类【编译】为class文件(.class)</p>
+</li>
+<li><p>Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象</p>
+</li>
+<li><p>Http服务器通过Servlet实例对象调用<code>jsp_service</code>方法，将JSP文件内容写入到响应体</p>
+</li>
+</ol>
+<p><strong>Http服务器【编辑】与【编译】JSP文件位置：</strong></p>
+<p><code>tomcat\[网站工作空间]\work\Catalina\localhost\[网站别名]\org\apache\jsp</code></p>
+<h1 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h1><h2 id="El工具包介绍"><a href="#El工具包介绍" class="headerlink" title="El工具包介绍"></a>El工具包介绍</h2><ul>
+<li>由Java技术开发的一个jar包</li>
+<li>作用降低JSP文件开发时Java命令开发强度</li>
+<li>Tomcat服务器本身自带了EL工具包(在Tomcat安装地址<code>/lib/el-api.jar</code>)</li>
+<li>JSP文件作用：代替响应对象将Servlet中<code>doGet/doPost</code>的执行结果写入到响应体</li>
+</ul>
+<h2 id="EL表达式与作用域对象别名"><a href="#EL表达式与作用域对象别名" class="headerlink" title="EL表达式与作用域对象别名"></a>EL表达式与作用域对象别名</h2><ol>
+<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据&#125;</code>  例子：<code>$&#123;applicationScope.key&#125;</code></p>
+</li>
+<li><p>命令作用：</p>
+<ul>
+<li>EL表达式是EL工具包提供一种特殊命令格式【表达式命令格式】</li>
+<li>EL表达式在JSP文件上使用，负责在JSP文件上从作用域对象读取指定的共享数据并输出到响应体</li>
+</ul>
+</li>
+<li><p>JSP文件可以使用的作用域对象</p>
+<ul>
+<li><p>全局作用域对象(application)：<code>ServletContext application = new ServletContext();</code></p>
+</li>
+<li><p>会话作用域对象(session)：<code>HttpSession session = new HttpSession();</code></p>
+</li>
+<li><p>请求作用域对象(request)：<code>HttpServletRequest request = new HttpServletRequest();</code></p>
+</li>
+<li><p>当前页作用域对象(pageContext)：<code>PageContext pageContext = new PageContext();</code></p>
+<p>这是JSP文件独有的作用域对象，Servlet中不存在。在【当前作用域对象】存放的共享数据仅能在当前JSP文件中使用，不能共享给其他Servlet或者其他JSP文件。在真实开发过程中，主要用于JSTL标签与JSP文件之间数据共享。<code>JSTL---&gt;数据---&gt; pageContex---&gt; JSP</code></p>
+</li>
+</ul>
+</li>
+<li><p>EL表达式提供作用域对象别名</p>
+<table>
+<thead>
+<tr>
+<th align="center">JSP</th>
+<th align="center">EL表达式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">application</td>
+<td align="center">${applicationScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">session</td>
+<td align="center">${sessionScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">request</td>
+<td align="center">${requestScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">pageContex</td>
+<td align="center">${pageScope.共享数据}</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h2 id="用EL表达式将引用对象属性写入到响应体"><a href="#用EL表达式将引用对象属性写入到响应体" class="headerlink" title="用EL表达式将引用对象属性写入到响应体"></a>用EL表达式将引用对象属性写入到响应体</h2><ol>
+<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据名.属性名&#125;</code></p>
+<p>例如：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Student student = <span class="keyword">new</span> Student(<span class="number">100</span>,<span class="string">&quot;alex&quot;</span>);</span><br><span class="line">　　request.setAttribute(<span class="string">&quot;key&quot;</span>,student);</span><br><span class="line">　　&lt;body&gt;</span><br><span class="line">　　　　学号：$&#123;requestScope.key.studentNumber&#125; &lt;!--studentNumber来自于Student类属性,大小完全一致--&gt;</span><br><span class="line">　　　　姓名：$&#123;requestScope.key.studentName&#125;</span><br><span class="line">　　&lt;/body&gt;</span><br><span class="line">　　$&#123;<span class="string">&quot;A&quot;</span> == requestScope.key.answer?<span class="string">&quot;cheched&quot;</span>:<span class="string">&quot;&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令作用：从作用域对象读取指定共享数据关联的引用对象的属性值，并自动将属性的结果写入到响应体</p>
+</li>
+<li><p>属性名：一定要与类中的属性名一致</p>
+</li>
+<li><p>EL表达式没有提供遍历集合方法，因此无法从作用域对象读取集合内容输出</p>
+</li>
+</ol>
+<h2 id="EL表达式简化版"><a href="#EL表达式简化版" class="headerlink" title="EL表达式简化版"></a>EL表达式简化版</h2><ol>
+<li><p>命令格式：<code>$&#123;共享数据名&#125;</code></p>
+</li>
+<li><p>命令作用：EL表达式允许开发人员开发时省略作用域对象别名</p>
+</li>
+<li><p>工作原理：</p>
+<p>EL表达式简化版由于没有指定作用域对象，所以在执行时采用【猜】算法，首先到<code>pageContext</code>定位共享数据，如果存在直接输出并结束执行，如果在<code>pageContext</code>没有定位成功，到<code>request</code>定位共享数据，如果存在直接输出并结束执行，由此类推，再到<code>session、application</code>。如果都没定位成功则返回null。</p>
+<p>总结：查找顺序(自上而下)<code>pageContext --&gt; request --&gt; session --&gt; application --&gt; null</code></p>
+</li>
+<li><p>存在隐患：</p>
+<p>容易降低程序执行的速度（南辕北辙），容易导致数据定位错误</p>
+</li>
+<li><p>应用场景：</p>
+<p>简化从<code>pageContext</code>读取共享数据并输出难度</p>
+</li>
+<li><p><strong>EL表达式简化版尽管存在很多隐患，但是在实际开发过程中，为了节省时间，一般都使用简化版，拒绝使用标准版</strong></p>
+</li>
+</ol>
+<h2 id="EL表达式-–-支持运算表达式"><a href="#EL表达式-–-支持运算表达式" class="headerlink" title="EL表达式 – 支持运算表达式"></a>EL表达式 – 支持运算表达式</h2><ol>
+<li><p>前提：在JSP文件有时需要将读取共享数据进行一番运算之后，将运算结果写入到响应体</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--传统的Java命令--&gt;</span><br><span class="line">&lt;%</span><br><span class="line">　　String num1 = (String) request.getAttribute(<span class="string">&quot;key1&quot;</span>);</span><br><span class="line">　　Integer num2 = (Integer) request.getAttribute(<span class="string">&quot;key2&quot;</span>);</span><br><span class="line">　　<span class="keyword">int</span> sum = Integer.valueOf(num1) + num2;</span><br><span class="line">%&gt;</span><br><span class="line">sum=&lt;%=sum%&gt;</span><br></pre></td></tr></table></figure>
+
+<p>El表达式简化版(支持运算)</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--不用写读取语句直接就可以获取--&gt;</span><br><span class="line">sum=$&#123;key1+key2&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运算表达式（JSP只做简单输出，复杂判断一般交给Servlet）</p>
+<ul>
+<li><p>数学运算</p>
+</li>
+<li><p>关系运算：&gt; &lt; = &gt;= &lt;= !=</p>
+<p>部分代码示例：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">request.setAttribute(<span class="string">&quot;age&quot;</span>,<span class="number">22</span>);</span><br><span class="line">--------------------------------</span><br><span class="line">$&#123;age&gt;<span class="number">18</span>?<span class="string">&quot;欢迎光临&quot;</span>:<span class="string">&quot;谢绝入内&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>逻辑运算： &amp;&amp; || !</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="EL表达式提供的内置对象"><a href="#EL表达式提供的内置对象" class="headerlink" title="EL表达式提供的内置对象"></a>EL表达式提供的内置对象</h2><ol>
+<li><p>命令格式：<code>$&#123;param.请求参数名&#125;</code></p>
+</li>
+<li><p>命令作用：通过请求对象读取当前请求包中请求参数内容，并将请求参数内容写入到响应体</p>
+</li>
+<li><p>代替命令：浏览器发送请求Http://localhost:8080/myWeb/index.jsp?userName=alex&amp;passWord=123时获取请求参数的值</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--JSP命令获取--&gt;</span><br><span class="line">&lt;%</span><br><span class="line">	String userName = request.getParameter(<span class="string">&quot;userName&quot;</span>);</span><br><span class="line">	String passWord = request.getParameter(<span class="string">&quot;passWord&quot;</span>);</span><br><span class="line">%&gt;</span><br><span class="line">用户名：&lt;%=userName%&gt;</span><br><span class="line">密  码：&lt;%=passWord%&gt;</span><br><span class="line">------------------------------------------------------</span><br><span class="line">&lt;!--EL表达式获取--&gt;</span><br><span class="line">用户名：$&#123;param.userName&#125;</span><br><span class="line">密  码：$&#123;param.passWord&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令格式：<code>$&#123;paramValues.请求参数名[下标]&#125;</code></p>
+</li>
+<li><p>命令作用：如果浏览器发送的请求参数时，一个请求参数关联多个值，此时可以通过<code>paramValues</code>读取请求参数下指定位置的值，并写入到响应体</p>
+</li>
+<li><p>代替命令：浏览器发送请求<a target="_blank" rel="noopener" href="http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3%EF%BC%8C%E6%AD%A4%E6%97%B6page%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%9C%A8%E3%80%90http%E8%AF%B7%E6%B1%82%E5%8C%85%E3%80%91%E4%BB%A5%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E5%AD%98%E5%9C%A8----%60page:%5B1,2,3%5D%60">http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3，此时page请求参数在【http请求包】以数组形式存在----`page:[1,2,3]`</a></p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--JSP命令获取--&gt;</span><br><span class="line">&lt;%</span><br><span class="line">　　　　String[] array = request.getParameterValues(<span class="string">&quot;page&quot;</span>);</span><br><span class="line">%&gt;</span><br><span class="line">第一个值：&lt;%=array[<span class="number">0</span>]%&gt;</span><br><span class="line">第二个值：&lt;%=array[<span class="number">1</span>]%&gt;</span><br><span class="line">第三个值：&lt;%=array[<span class="number">2</span>]%&gt;</span><br><span class="line">-----------------------------------------</span><br><span class="line">&lt;!--EL表达式获取--&gt;</span><br><span class="line">第一个值：$&#123;paramValues.page[<span class="number">0</span>]&#125;</span><br><span class="line">第二个值：$&#123;paramValues.page[<span class="number">1</span>]&#125;</span><br><span class="line">第三个值：$&#123;paramValues.page[<span class="number">2</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h2 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h2><p><code>javax.el.PropertyNotFoundException</code>：在对象中没有找到指定属性。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/25/[Java]-JSP&EL/" data-id="ckq8wfpsu003p0anu2w2ycxm6" data-title="JSP &amp; EL表达式" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EL/" rel="tag">EL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSP/" rel="tag">JSP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/25/%5BJava%5D-First-Eyes-SpringMVC/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          初识SpringMVC
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/25/%5BJava%5D-Servlet/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Servlet</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Go/">Go</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/">LeetCode笔记与总结</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/link/">link</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E8%B0%88/">杂谈</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/EL/" style="font-size: 10px;">EL</a> <a href="/tags/FastDFS/" style="font-size: 10px;">FastDFS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/Github/" style="font-size: 11.67px;">Github</a> <a href="/tags/Go/" style="font-size: 10px;">Go</a> <a href="/tags/JSP/" style="font-size: 10px;">JSP</a> <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/JWT/" style="font-size: 10px;">JWT</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java-IO/" style="font-size: 18.33px;">Java-IO</a> <a href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 15px;">Java-多线程</a> <a href="/tags/Java-%E9%9B%86%E5%90%88/" style="font-size: 16.67px;">Java-集合</a> <a href="/tags/LeetCode/" style="font-size: 10px;">LeetCode</a> <a href="/tags/Linux/" style="font-size: 11.67px;">Linux</a> <a href="/tags/MyBatis/" style="font-size: 11.67px;">MyBatis</a> <a href="/tags/MyBatis-plus/" style="font-size: 10px;">MyBatis-plus</a> <a href="/tags/MySQL/" style="font-size: 11.67px;">MySQL</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Servlet/" style="font-size: 10px;">Servlet</a> <a href="/tags/Shiro/" style="font-size: 10px;">Shiro</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 13.33px;">SpringBoot</a> <a href="/tags/SpringMVC/" style="font-size: 10px;">SpringMVC</a> <a href="/tags/Swagger2/" style="font-size: 10px;">Swagger2</a> <a href="/tags/Thymeleaf/" style="font-size: 10px;">Thymeleaf</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/blog/" style="font-size: 13.33px;">blog</a> <a href="/tags/hexo/" style="font-size: 13.33px;">hexo</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/node-js/" style="font-size: 11.67px;">node.js</a> <a href="/tags/%E5%9B%BE%E5%BA%8A/" style="font-size: 11.67px;">图床</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 10px;">数据结构与算法</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 10px;">转载</a> <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">逆向工程</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/23/test/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">Spring中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/19/Git%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%EF%BC%9AOpenSSL%20SSL_read%20Connection%20was%20reset,%20error%2010054/">git error 10054</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 深南大道<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
