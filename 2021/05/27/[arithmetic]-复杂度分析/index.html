@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true}};
+  </script>
+<meta property="og:type" content="article">
+<meta property="og:title" content="复杂度分析">
+<meta property="og:url" content="http://yoursite.com/2021/05/27/[arithmetic]-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images8.alphacoders.com/114/thumb-1920-1146750.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/22/ef/22900968aa2b190072c985a08b0e92ef.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/37/0a/3723793cc5c810e9d5b06bc95325bf0a.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/9b/9a/9b1c88264e7a1a20b5954be9bc4bec9a.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/d8/2f/d889a358b8eccc5bbb90fc16e327a22f.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/36/7f/36c0aabdac69032f8a43368f5e90c67f.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/6d/ed/6df62366a60336d9de3bc34f488d8bed.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/49/04/497a3f120b7debee07dc0d03984faf04.jpg">
+<meta property="article:published_time" content="2021-05-27T20:10:00.000Z">
+<meta property="article:modified_time" content="2021-06-23T09:03:33.923Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="数据结构与算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images8.alphacoders.com/114/thumb-1920-1146750.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2021/05/27/[arithmetic]-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>复杂度分析 | 日积硅步</title>
+  
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">日积硅步</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7-O-%E5%A4%8D%E6%9D%82%E5%BA%A6%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">大 O 复杂度表示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">时间复杂度分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E5%B8%B8%E8%A7%81%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">几个常见时间复杂度实例分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#O-1"><span class="nav-number">3.1.</span> <span class="nav-text">O(1)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#O-logn-%E3%80%81O-nlogn"><span class="nav-number">3.2.</span> <span class="nav-text">O(logn)、O(nlogn)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#O-m-n-%E3%80%81O-m-n"><span class="nav-number">3.3.</span> <span class="nav-text">O(m+n)、O(m*n)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">空间复杂度分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%A5%BD%E3%80%81%E6%9C%80%E5%9D%8F%E6%83%85%E5%86%B5%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">最好、最坏情况时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E6%83%85%E5%86%B5%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">6.</span> <span class="nav-text">平均情况时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9D%87%E6%91%8A%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">7.</span> <span class="nav-text">均摊时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">小结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A0%E9%A2%98"><span class="nav-number">8.1.</span> <span class="nav-text">习题</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/yourname" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/27/[arithmetic]-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          复杂度分析
+        </h1>
+
+        <div class="post-meta-container">
+          
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://images8.alphacoders.com/114/thumb-1920-1146750.png"></p>
+<span id="more"></span>
+
+<blockquote>
+<p>课程地址：<a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/40447">极客时间</a></p>
+</blockquote>
+<p>执行效率是算法一个非常重要的考量标准，那如何来衡量算法代码的执行效率呢？这就牵涉到时间、空间复杂度分析。时间、空间复杂度分析是一种不需要具体的测试数据测试就可以粗略估计算法的执行效率的方法。</p>
+<h1 id="大-O-复杂度表示"><a href="#大-O-复杂度表示" class="headerlink" title="大 O 复杂度表示"></a>大 O 复杂度表示</h1><p>代码的执行效率粗略的讲就是算法代码的执行时间。这里有一段简单的代码：求1，2，3…n 的累加和。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (; i &lt;= n; ++i) &#123;</span><br><span class="line">	sum = sum + i;</span><br><span class="line">&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从 CPU 的角度来看，这段代码的每一行都执行着类似的操作：<strong>读数据-运算-写数据</strong>。尽管每行代码对应的 CPU 执行的个数、执行的时间都不一样，但是我们这里只是粗略估计，所以可以假设每行代码执行的时间都一样，为<code>unit_time</code>。在这个假设的基础之上，这段代码的总执行时间是多少呢？</p>
+<p>第 2、3 行代码分别需要 1 个<code>unit_time</code>的执行时间，第 4、5 行都运行了 n 遍，所以需要<code>2n * unit_time</code>的执行时间，所以这段代码总的执行时间就是<code>(2n+2) * unit_time</code>。可以看出来，所有代码的执行时间<code>T(n)</code>与每行代码的执行次数成正比。</p>
+<p>按照这个分析思路，我们再来看这段代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; i &lt;= n; ++i) &#123;</span><br><span class="line">		j = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (; j &lt;= n; ++j) &#123;</span><br><span class="line">			sum = sum +  i * j;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>依旧假设每个语句的执行时间是<code>unit_time</code>。那这段代码的总执行时间<code>T(n)</code>是多少呢？</p>
+<p>第 2、3、4 行代码，每行都需要 1 个<code>unit_time</code>的执行时间，第 5、6 行代码循环执行了 n 遍，需要<code>2n * unit_time</code>的执行时间，第 7、8 行代码循环执行了<code>n²</code>遍，所以需要<code>2n² * unit_time</code>的执行时间。所以，整段代码总的执行时间<code>T(n) = (2n²+2n+3) * unit_time</code>。</p>
+<p>尽管我们不知道<code>unit_time</code>的具体值，但是通过这两段代码执行时间的推导过程，我们可以得到一个非常重要的规律，那就是，所有代码的执行时间<code>T(n)</code>与每行代码的执行次数<code>f(n)</code>成正比。我们可以把这个规律总结成一个公式。注意，大 O 就要登场了！</p>
+<p><img src="https://static001.geekbang.org/resource/image/22/ef/22900968aa2b190072c985a08b0e92ef.png"></p>
+<p><code>T(n)</code>表示代码执行的时间；n 表示数据规模的大小；<code>f(n)</code>表示每行代码执行的次数总和。公式中的<code>O</code>，表示代码的执行时间<code>T(n)</code>与<code>f(n)</code>表达式成正比。</p>
+<p>所以，第一个例子中的<code>T(n) = O(2n+2)</code>，第二个例子中的<code>T(n) = O(2n2+2n+3)</code>。这就是大 O 时间复杂度表示法。<strong>大 O 时间复杂度实际上并不具体表示代码真正的执行时间，而是表示代码执行时间随数据规模增长的变化趋势</strong>，所以也叫作<strong>渐进时间复杂度（asymptotic time complexity），简称时间复杂度。</strong></p>
+<h1 id="时间复杂度分析"><a href="#时间复杂度分析" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h1><ol>
+<li>只关注循环执行次数最多的一段代码</li>
+</ol>
+<p>大 O 这种复杂度表示方法只是表示一种变化趋势，所以通常会忽略掉公式中的常量、低阶、系数，只需要记录一个最大阶的量级就可以了。</p>
+<p>所以在分析一个算法、一段代码的时间复杂度的时候，只需要关注循环执行次数最多的那一段代码就好了。这段核心代码执行次数 n 的量级，就是整段代码的时间复杂度。比如第一个例子的时间复杂度就是<code>O(n)</code>。</p>
+<ol>
+<li>加法法则：总时间复杂度等于量级最大的那段代码的复杂度<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sum_1 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> p = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; p &lt; <span class="number">100</span>; ++p) &#123;</span><br><span class="line">		sum_1 = sum_1 + p;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> sum_2 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> q = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; q &lt; n; ++q) &#123;</span><br><span class="line">		sum_2 = sum_2 + q;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> sum_3 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; i &lt;= n; ++i) &#123;</span><br><span class="line">		j = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (; j &lt;= n; ++j) &#123;</span><br><span class="line">			sum_3 = sum_3 +  i * j;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> sum_1 + sum_2 + sum_3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这个代码分为三个部分，分别是求<code>sum_1</code>、<code>sum_2</code>、<code>sum_3</code>。可以分别分析每一个部分的时间复杂度，再取一个最大量级的作为整段代码的复杂度。</li>
+</ol>
+<p>这里我要再强调一下，即便这段代码循环 10000 次、100000 次，只要是一个已知的数，跟 n 无关，照样也是常量级的执行时间。当 n 无限大的时候，就可以忽略。尽管对代码的执行时间会有很大影响，但是<strong>回到时间复杂度的概念来说，它表示的是一个算法执行效率与数据规模增长的变化趋势，所以不管常量的执行时间多大，我们都可以忽略掉。因为它本身对增长趋势并没有影响。</strong></p>
+<p>那第二段代码和第三段代码的时间复杂度分别是<code>O(n)</code>和<code>O(n²)</code>。综合这三段代码的时间复杂度，我们取其中最大的量级。所以，整段代码的时间复杂度就为<code>O(n²)</code>。也就是说：<strong>总的时间复杂度就等于量级最大的那段代码的时间复杂度。</strong>那我们将这个规律抽象成公式就是：</p>
+<p>如果<code>T1(n) = O(f(n))</code>，<code>T2(n)=O(g(n))</code>；那么<code>T(n) = T1(n) + T2(n) = max(O(f(n)), O(g(n))) = O(max(f(n), g(n)))</code>。</p>
+<ol>
+<li>乘法法则：嵌套代码的复杂度等于嵌套内外代码的复杂度的乘积</li>
+</ol>
+<p><code>T(n) = T1(n) + T2(n) = max(O(f(n)), O(g(n))) = O(max(f(n), g(n)))</code>。</p>
+<p>也就是说：假设<code>T1(n) = O(n)，T2(n) = O(n2)，则 T1(n) * T2(n) = O(n3)</code>。落实到具体的代码上，可以把乘法法则看成是<strong>嵌套循环</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; i &lt; n; i++) &#123;</span><br><span class="line">		ret = ret + f(i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (; i &lt; n; ++i) &#123;</span><br><span class="line">		sum = sum + i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以单独<code>cal()</code>函数。假设<code>f()</code>只是一个普通的操作，那第4~6行的时间复杂度就是：<code>T1(n) = O(n)</code>。但<code>f()</code>函数本身不是一个简单的操作，它的时间复杂度是<code>T2(n) = O(n)</code>，所以整个<code>cal()</code>函数的实际复杂度就是：<code>T(n) = T1(n)</code><em><code>T2(n) = O(n</code></em><code>n) = O(n²)</code></p>
+<h1 id="几个常见时间复杂度实例分析"><a href="#几个常见时间复杂度实例分析" class="headerlink" title="几个常见时间复杂度实例分析"></a>几个常见时间复杂度实例分析</h1><p>常见的复杂度量级并不多，下面这些复杂度量级几乎涵盖了你今后可以接触的所有代码的复杂度量级。</p>
+<p><img src="https://static001.geekbang.org/resource/image/37/0a/3723793cc5c810e9d5b06bc95325bf0a.jpg"></p>
+<p>可以粗略地分为两类，多项式量级和非多项式量级。其中，非多项式量级只有两个：<code>O(2^n)</code>和<code>O(n!)</code>。</p>
+<p>时间复杂度为非多项式量级的算法问题被称作 NP（Non-Deterministic Polynomial，非确定多项式）问题。</p>
+<blockquote>
+<p>多项式：非多项式量级只有两个：<code>O(2^n)</code> （2的n次方）和 <code>O(n!)</code>。 当数据规模 n 越来越大时，非多项式量级算法的执行时间会急剧增加，求解问题的执行时间会无限增长。所以，非多项式时间复杂度的算法其实是非常低效的算法</p>
+<p>多项式（英语：Polynomial）是代数学中的基础概念，是由称为未知数的变量和称为系数的常数通过有限次加减法、乘法以及自然数幂次的乘方运算得到的代数表达式。多项式是整式的一种。</p>
+</blockquote>
+<p>随着 n 的变大，非多项式量级算法的执行时间会迅速增大，所以这种算法是非常低效的算法。</p>
+<h2 id="O-1"><a href="#O-1" class="headerlink" title="O(1)"></a>O(1)</h2><p>首先你必须明确一个概念，<code>O(1)</code>只是常量级时间复杂度的一种表示方法，并不是指只执行了一行代码。一段代码，即便有 3 行，它的时间复杂度也是 O(1），而不是 O(3)。</p>
+<p>只要代码的执行时间不随着 n 的增长而增长，这样的代码的时间复杂度都是<code>O(1)</code>。<strong>一般情况下，只要算法中不存在循环语句、递归语句，即使有成千上万行的代码，其时间复杂度也是<code>Ο(1)</code>。</strong></p>
+<h2 id="O-logn-、O-nlogn"><a href="#O-logn-、O-nlogn" class="headerlink" title="O(logn)、O(nlogn)"></a>O(logn)、O(nlogn)</h2><p>对数阶时间复杂度非常常见，同时也是最难分析的一种时间复杂度。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">i=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (i &lt;= n)  &#123;</span><br><span class="line">    i = i * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三行代码是循环执行次数最多的。所以，我们只要能计算出这行代码被执行了多少次，就能知道整段代码的时间复杂度。</p>
+<p>从代码中可以看出，变量 <code>i</code> 的值从 1 开始取，每循环一次就乘以 2。当大于 n 时，循环结束。还记得我们高中学过的等比数列吗？实际上，变量 i 的取值就是一个等比数列。如果我把它一个一个列出来，就应该是这个样子的：</p>
+<p><img src="https://static001.geekbang.org/resource/image/9b/9a/9b1c88264e7a1a20b5954be9bc4bec9a.jpg"></p>
+<p>所以，我们只要知道 x 值是多少，就知道这行代码执行的次数了。通过 <code>2^x=n</code> 求解 x ，<code>x=log₂n</code>，所以，这段代码的时间复杂度就是 <code>O(log₂n)</code>。</p>
+<p>修改一下上面的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">i=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (i &lt;= n)  &#123;</span><br><span class="line">    i = i * <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复杂度就变成了<code>O(log₃n)</code>。实际上，不管以2还是3甚至100为底，我们通常把所有对数阶的时间复杂度都记为<code>O(logn)</code>。</p>
+<p>我们知道，对数之间是可以互相转换的，<code>log₃n = log₃² * log₂n</code>，所以 <code>O(log₃n) = O(C *  log₂n)</code>，其中 <code>C = log₃²</code> 是一个常量。基于我们前面的一个理论：<strong>在采用大 O 标记复杂度的时候，可以忽略系数，即 <code>O(Cf(n)) = O(f(n))</code>。</strong>所以，<code>O(log₂n)</code> 就等于 <code>O(log₃n)</code>。因此，在对数阶时间复杂度的表示方法里统一表示为 <code>O(logn)</code>。</p>
+<p>如果理解了 <code>O(logn)</code>，那 <code>O(nlogn)</code> 就很容易理解了。根据乘法法则，如果一段代码的时间复杂度是 <code>O(logn)</code>，循环执行 n 遍，时间复杂度就是 <code>O(nlogn)</code> 了。而且<code>O(nlogn)</code> 是一种非常常见的算法时间复杂度。比如，归并排序、快速排序的时间复杂度都是 <code>O(nlogn)</code>。</p>
+<h2 id="O-m-n-、O-m-n"><a href="#O-m-n-、O-m-n" class="headerlink" title="O(m+n)、O(m*n)"></a>O(m+n)、O(m*n)</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum_1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; i &lt; m; ++i) &#123;</span><br><span class="line">        sum_1 = sum_1 + i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> sum_2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; j &lt; n; ++j) &#123;</span><br><span class="line">        sum_2 = sum_2 + j;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> sum_1 + sum_2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>从代码中可以看出，m 和 n 是表示两个数据规模。我们无法事先评估 m 和 n 谁的量级大，所以我们在表示复杂度的时候，就不能简单地利用加法法则，省略掉其中一个。所以，上面代码的时间复杂度就是 <code>O(m+n)</code>。</p>
+<p>针对这种情况，原来的加法法则就不正确了，我们需要将加法规则改为：<code>T1(m) + T2(n) = O(f(m) + g(n))</code>。但是乘法法则继续有效：<code>T1(m)*T2(n) = O(f(m) * f(n))</code>。</p>
+<h1 id="空间复杂度分析"><a href="#空间复杂度分析" class="headerlink" title="空间复杂度分析"></a>空间复杂度分析</h1><p>时间复杂度的全称是<strong>渐进时间复杂度，表示算法的执行时间与数据规模之间的增长关系。</strong>类比一下，空间复杂度全称就是<strong>渐进空间复杂度</strong>（asymptotic space complexity），<strong>表示算法的存储空间与数据规模之间的增长关系。</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    <span class="keyword">for</span> (i; i &lt;n; ++i) &#123;</span><br><span class="line">        a[i] = i * i;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">        print out a[i]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>跟时间复杂度分析一样，我们可以看到，第 2 行代码中，我们申请了一个空间存储变量 <code>i</code>，但是它是常量阶的，跟数据规模 n 没有关系，所以我们可以忽略。第 3 行申请了一个大小为 n 的 <code>int</code> 类型数组，除此之外，剩下的代码都没有占用更多的空间，所以整段代码的空间复杂度就是 <code>O(n)</code>。</p>
+<p>我们常见的空间复杂度就是 <code>O(1)</code>、<code>O(n)</code>、<code>O(n2 )</code>，像 <code>O(logn)</code>、<code>O(nlogn)</code> 这样的对数阶复杂度平时都用不到。而且，空间复杂度分析比时间复杂度分析要简单很多。</p>
+<h1 id="最好、最坏情况时间复杂度"><a href="#最好、最坏情况时间复杂度" class="headerlink" title="最好、最坏情况时间复杂度"></a>最好、最坏情况时间复杂度</h1><p>来分析一下这段代码的时间复杂度</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// n表示数组array的长度</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>, <span class="keyword">int</span> n, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> pos = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; i &lt; n; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[i] == x) pos = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码要实现的功能是在一个无序的数组（array）中，查找变量 <code>x</code> 出现的位置。如果没有找到，就返回 -1。按照上节课讲的分析方法，这段代码的复杂度是 O(n)，其中，n 代表数组的长度。</p>
+<p>我们在数组中查找一个数据，并不需要每次都把整个数组都遍历一遍，因为有可能中途找到就可以提前结束循环了。这段代码写得不够高效。可以这样优化一下这段查找代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// n表示数组array的长度</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span>[] <span class="built_in">array</span>, <span class="keyword">int</span> n, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">  	<span class="keyword">int</span> pos = <span class="number">-1</span>;</span><br><span class="line">  	<span class="keyword">for</span> (; i &lt; n; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[i] == x) &#123;</span><br><span class="line">            pos = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">  	&#125;</span><br><span class="line">  	<span class="keyword">return</span> pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个时候，问题就来了。我们优化完之后，这段代码的时间复杂度还是 <code>O(n)</code> 吗？很显然，前面的分析方法，解决不了这个问题。</p>
+<p>因为，要查找的变量 x 可能出现在数组的任意位置。如果数组中第一个元素正好是要查找的变量 x，那就不需要继续遍历剩下的 n-1 个数据了，那时间复杂度就是 <code>O(1)</code>。但如果数组中不存在变量 x，那我们就需要把整个数组都遍历一遍，时间复杂度就成了 <code>O(n)</code>。所以，不同的情况下，这段代码的时间复杂度是不一样的。</p>
+<p>为了表示代码在不同情况下的不同时间复杂度，我们需要引入三个概念：<strong>最好情况时间复杂度、最坏情况时间复杂度和平均情况时间复杂度。</strong></p>
+<p>顾名思义，<strong>最好情况时间复杂度就是，在最理想的情况下，执行这段代码的时间复杂度。</strong>就像我们刚刚讲到的，在最理想的情况下，要查找的变量 x 正好是数组的第一个元素，这个时候对应的时间复杂度就是最好情况时间复杂度。<strong>最坏情况时间复杂度就是，在最糟糕的情况下，执行这段代码的时间复杂度。</strong>就像刚举的那个例子，如果数组中没有要查找的变量 x，我们需要把整个数组都遍历一遍才行，所以这种最糟糕情况下对应的时间复杂度就是最坏情况时间复杂度。</p>
+<h1 id="平均情况时间复杂度"><a href="#平均情况时间复杂度" class="headerlink" title="平均情况时间复杂度"></a>平均情况时间复杂度</h1><p>最好情况和最坏情况其实都是对应的极端情况下的复杂度分析结果，为了更好的表示一般情况下的复杂度，需要引入另一个概念：<strong>平均情况时间复杂度</strong></p>
+<p>还是之前的例子，要查找的变量 x 在数组中的位置，有 n+1 种情况：<strong>在数组的 0～n-1 位置中</strong>和<strong>不在数组中</strong>。我们把每种情况下，查找需要遍历的元素个数累加起来，然后再除以 n+1，就可以得到需要遍历的元素个数的平均值，即：</p>
+<p><img src="https://static001.geekbang.org/resource/image/d8/2f/d889a358b8eccc5bbb90fc16e327a22f.jpg"></p>
+<p>在时间复杂度的大 O 标记法中，可以省略掉系数、低阶、常量，所以，咱们把刚刚这个公式简化之后，得到的平均时间复杂度就是 <code>O(n)</code>。</p>
+<p>这个结论虽然是正确的，但是计算过程稍微有点儿问题：我们刚讲的这 n+1 种情况，其实出现的概率并不是一样的。</p>
+<p>我们知道，要查找的变量 x，要么在数组里，要么就不在数组里。这两种情况对应的概率统计起来很麻烦，为了方便你理解，我们假设在数组中与不在数组中的概率都为 1/2。另外，要查找的数据出现在 0～n-1 这 n 个位置的概率也是一样的，为 1/n。所以，根据概率乘法法则，要查找的数据出现在 0～n-1 中任意位置的概率就是 <code>1/(2n)</code>。</p>
+<p>因此，前面的推导过程中存在的最大问题就是，没有将各种情况发生的概率考虑进去。如果我们把每种情况发生的概率也考虑进去，那平均时间复杂度的计算过程就变成了这样：</p>
+<p><img src="https://static001.geekbang.org/resource/image/36/7f/36c0aabdac69032f8a43368f5e90c67f.jpg"></p>
+<p>这个值就是概率论中的<strong>加权平均值</strong>，也叫作<strong>期望值</strong>，所以平均时间复杂度的全称应该叫<strong>加权平均时间复杂度</strong>或者<strong>期望时间复杂度</strong>。</p>
+<p>引入概率之后，前面那段代码的加权平均值为 <code>(3n+1)/4</code>。用大 O 表示法来表示，去掉系数和常量，这段代码的加权平均时间复杂度仍然是 <code>O(n)</code>。</p>
+<p>你可能会说，平均时间复杂度分析好复杂啊，还要涉及概率论的知识。实际上，在大多数情况下，我们并不需要区分最好、最坏、平均情况时间复杂度三种情况。很多时候，我们使用一个复杂度就可以满足需求了。只有同一块代码在不同的情况下，时间复杂度有量级的差距，我们才会使用这三种复杂度表示法来区分。</p>
+<h1 id="均摊时间复杂度"><a href="#均摊时间复杂度" class="headerlink" title="均摊时间复杂度"></a>均摊时间复杂度</h1><p>均摊时间复杂度的分析方法叫做：<strong>摊还分析（或者叫平摊分析）</strong>。均摊时间复杂度，听起来跟平均时间复杂度有点儿像。对于初学者来说，这两个概念确实非常容易弄混。</p>
+<p>前面说了，大部分情况下并不需要区分最好、最坏、平均三种复杂度。平均复杂度只在某些特殊情况下才会用到，而均摊时间复杂度应用的场景比它更加特殊、更加有限。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array表示一个长度为n的数组</span></span><br><span class="line"><span class="comment">// 代码中的array.length就等于n</span></span><br><span class="line"><span class="keyword">int</span>[] <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="built_in">array</span>.length) &#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">array</span>.length; ++i) &#123;</span><br><span class="line">            sum = sum + <span class="built_in">array</span>[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[<span class="number">0</span>] = sum;</span><br><span class="line">        count = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">array</span>[count] = val;</span><br><span class="line">    ++count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释一下这段代码。这段代码实现了一个往数组中插入数据的功能。当数组满了之后，也就是代码中的 <code>count == array.length</code> 时，我们用 for 循环遍历数组求和，并清空数组，将求和之后的 sum 值放到数组的第一个位置，然后再将新的数据插入。但如果数组一开始就有空闲空间，则直接将数据插入数组。</p>
+<p>最理想的情况下，数组中有空闲空间，我们只需要将数据插入到数组下标为 count 的位置就可以了，所以最好情况时间复杂度为 <code>O(1)</code>。</p>
+<p>最坏的情况下，数组中没有空闲空间了，我们需要先做一次数组的遍历求和，然后再将数据插入，所以最坏情况时间复杂度为 <code>O(n)</code>。</p>
+<p>那平均时间复杂度是多少呢？答案是 <code>O(1)</code>。我们还是可以通过前面讲的概率论的方法来分析。假设数组的长度是 n，根据数据插入的位置的不同，我们可以分为 n 种情况，每种情况的时间复杂度是 <code>O(1)</code>。</p>
+<p>除此之外，还有一种“额外”的情况，就是在数组没有空闲空间时插入一个数据，这个时候的时间复杂度是 O(n)。而且，这 n+1 种情况发生的概率一样，都是 1/(n+1)。所以，根据加权平均的计算方法，我们求得的平均时间复杂度就是：</p>
+<p><img src="https://static001.geekbang.org/resource/image/6d/ed/6df62366a60336d9de3bc34f488d8bed.jpg"></p>
+<p>至此为止，前面的最好、最坏、平均时间复杂度的计算，理解起来应该都没有问题。但是这个例子里的平均复杂度分析其实并不需要这么复杂，不需要引入概率论的知识。这是为什么呢？我们先来对比一下这个 <code>insert()</code> 的例子和前面那个 <code>find()</code> 的例子，你就会发现这两者有很大差别。</p>
+<p>首先，<code>find()</code> 函数在极端情况下，复杂度才为 <code>O(1)</code>。但 <code>insert()</code> 在大部分情况下，时间复杂度都为 <code>O(1)</code>。只有个别情况下，复杂度才比较高，为 <code>O(n)</code>。这是 <code>insert()</code>第一个区别于 <code>find()</code> 的地方。</p>
+<p>我们再来看第二个不同的地方。对于 insert() 函数来说，<code>O(1)</code> 时间复杂度的插入和 <code>O(n)</code> 时间复杂度的插入，出现的频率是非常有规律的，而且有一定的前后时序关系，一般都是一个 <code>O(n)</code> 插入之后，紧跟着 n-1 个 <code>O(1)</code> 的插入操作，循环往复。</p>
+<p>所以，针对这样一种特殊场景的复杂度分析，我们并不需要像之前讲平均复杂度分析方法那样，找出所有的输入情况及相应的发生概率，然后再计算加权平均值。</p>
+<p>针对这种特殊的场景，我们引入了一种更加简单的分析方法：<strong>摊还分析法</strong>，通过摊还分析得到的时间复杂度我们起了一个名字，叫<strong>均摊时间复杂度</strong>。</p>
+<p>那究竟如何使用摊还分析法来分析算法的均摊时间复杂度呢？我们还是继续看在数组中插入数据的这个例子。每一次 <code>O(n)</code> 的插入操作，都会跟着 n-1 次 <code>O(1)</code> 的插入操作，所以把耗时多的那次操作均摊到接下来的 n-1 次耗时少的操作上，均摊下来，这一组连续的操作的均摊时间复杂度就是 <code>O(1)</code>。这就是均摊分析的大致思路。</p>
+<p>均摊时间复杂度和摊还分析应用场景比较特殊，所以并不会经常用到。为了方便你理解、记忆，我这里简单总结一下它们的应用场景。如果你遇到了，知道是怎么回事儿就行了。</p>
+<p>对一个数据结构进行一组连续操作中，大部分情况下时间复杂度都很低，只有个别情况下时间复杂度比较高，而且这些操作之间存在前后连贯的时序关系，这个时候，我们就可以将这一组操作放在一块儿分析，看是否能将较高时间复杂度那次操作的耗时，平摊到其他那些时间复杂度比较低的操作上。而且，在能够应用均摊时间复杂度分析的场合，一般均摊时间复杂度就等于最好情况时间复杂度。</p>
+<p>尽管很多数据结构和算法书籍都花了很大力气来区分平均时间复杂度和均摊时间复杂度，但其实我个人认为，均摊时间复杂度就是一种特殊的平均时间复杂度，没必要花太多精力去区分它们。你最应该掌握的是它的分析方法，摊还分析。至于分析出来的结果是叫平均还是叫均摊，这只是个说法，并不重要。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>复杂度也叫渐进复杂度，包括时间复杂度和空间复杂度，用来分析算法执行效率与数据规模之间的增长关系，可以粗略地表示，越高阶复杂度的算法，执行效率越低。</p>
+<p><img src="https://static001.geekbang.org/resource/image/49/04/497a3f120b7debee07dc0d03984faf04.jpg"></p>
+<h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><p>分析一下下面这 <code>add()</code> 函数的时间复杂度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局变量，大小为10的数组array，长度len，下标i。</span></span><br><span class="line"><span class="keyword">int</span> array[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]; </span><br><span class="line"><span class="keyword">int</span> len = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往数组中添加一个元素</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> element)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= len) &#123; <span class="comment">// 数组空间不够了</span></span><br><span class="line">        <span class="comment">// 重新申请一个2倍大小的数组空间</span></span><br><span class="line">        <span class="keyword">int</span> new_array[] = <span class="keyword">new</span> <span class="keyword">int</span>[len*<span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 把原来array数组中的数据依次copy到new_array</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; ++j) &#123;</span><br><span class="line">            new_array[j] = array[j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// new_array复制给array，array现在大小就是2倍len了</span></span><br><span class="line">        array = new_array;</span><br><span class="line">        len = <span class="number">2</span> * len;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将element放到下标为i的位置，下标i加一</span></span><br><span class="line">    array[i] = element;</span><br><span class="line">    ++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>答案：</p>
+<ol>
+<li><p>最好情况时间复杂度为 <code>O(1)</code></p>
+</li>
+<li><p>最坏情况分析：<br>最坏情况代码执行的次数跟每次数组的长度有关。第1次调用insert的执行的次数为 <code>n</code>，第2次调用insert的执行的次数为 <code>2n</code> ，第3次调用insert的执行的次数为 <code>2^2 * n</code>，第k次调用insert的执行的次数为 <code>2^(k-1) * n</code>，所以最坏时间复杂度为 <code>O(n)</code>。</p>
+</li>
+<li><p>平均情况分析：<br>当每次遇到最坏情况时数组会进行2倍扩容，原数组被导入新数组，虽然数组的长度变大了，但是插入操作落在的区间的长度是一样的，分别是<code>0~len-1</code>，<code>len~(2len-1)</code>,….；插入的情况仍是<code>len+1</code>种：<code>0~len-1</code>和插满之后的<code>O(len)</code>；所以每次插入的概率是：<code>p= 1/len+1</code>，<br>最后求出加权平均时间复杂度为 <code>1*p + 2*p+ ▪▪▪ + len*p + len * p = O(1) </code>;</p>
+</li>
+<li><p>均摊时间复杂度 <code>O(1)</code><br>而均摊复杂度由于每次<code>O(len)</code>的出现都跟着<code>len</code>次<code>O(1)</code>，是前后连贯的，因而将<code>O(len)</code>平摊到前<code>len</code>次上，得出平摊复杂度是<code>O(1)</code></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag"># 数据结构与算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/10/%5BServer%5D-FastDFS/" rel="prev" title="FastDFS分布式文件系统 —— 单体安装">
+                  <i class="fa fa-chevron-left"></i> FastDFS分布式文件系统 —— 单体安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/28/%5Barithmetic%5D-%E6%95%B0%E7%BB%84/" rel="next" title="基本数据结构 - 数组">
+                  基本数据结构 - 数组 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+<script src="/js/local-search.js"></script>
+
+  <script>
+    (function(d, w, c) {
+      w.ChatraID = '';
+      var s = d.createElement('script');
+      w[c] = w[c] || function() {
+        (w[c].q = w[c].q || []).push(arguments);
+      };
+      s.async = true;
+      s.src = 'https://call.chatra.io/chatra.js';
+      if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+  </script>
+
+  <script src="//code.tidio.co/.js"></script>
+
+
+
+
+  
+
+
+
+
+
+  <script src="//cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink.listen({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://yoursite.com/2021/05/27/[arithmetic]-%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
