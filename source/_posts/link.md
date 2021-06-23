@@ -175,9 +175,6 @@ top: 1
 [久曲健的测试窝](https://www.cnblogs.com/longronglang/)
 
 
-# Golang
-
-[墨殇的技术博客](https://inkdp.github.io/)
 
 
 
