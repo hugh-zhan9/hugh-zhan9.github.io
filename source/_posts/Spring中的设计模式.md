@@ -1,3 +1,17 @@
+---
+title: Spring 中的设计模式
+tags: [Java, Spring]
+categories: Java
+date: 2021-06-21 19:50:00
+
+
+
+---
+
+![](http://47.98.158.110:8888/group1/M00/00/00/L2KebmDS7ouAEqg4AAVAvHjWlwM276.jpg)
+
+<!--more-->
+
 # 简单工厂模式（非23种设计模式）
 
 ## 实现方式
