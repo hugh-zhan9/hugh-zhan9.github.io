@@ -100,7 +100,7 @@ symbols_count_time:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: landscape
 # theme: meilidu-hexo
 
 # Deployment
@@ -109,6 +109,7 @@ deploy:
   type: git
   repo: root@8.129.53.152:/var/repo/blog.git
   branch: master
+
 
 # search
 search:
