@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java集合之Map总结">
+<meta property="og:url" content="http://example.com/2020/07/16/Java-Map-conclusion/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-16T22:22:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.198Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-集合">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/07/16/Java-Map-conclusion/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java集合之Map总结 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/16/Java-Map-conclusion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java集合之Map总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-16 22:22:28" itemprop="dateCreated datePublished" datetime="2020-07-16T22:22:28+00:00">2020-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/16/Java-Map-conclusion/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/16/Java-Map-conclusion/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="Map-概括"><a href="#Map-概括" class="headerlink" title="Map 概括"></a>Map 概括</h1><ol>
+<li><code>Map</code>：键值对映射的抽象接口。</li>
+<li><code>AbstractMap</code>实现了<code>Map</code>中的绝大部分函数接口。它减少了<code>Map</code>的实现类的重复编码。</li>
+<li><code>SortedMap</code>：有序的键值对映射及接口。</li>
+<li><code>NavigableMap</code>是继承于<code>SortedMap</code>的，支持导航函数的接口。</li>
+<li><code>HashMap</code>、<code>TreeMap</code>、<code>WeakHashMap</code>这三个类是键值对映射的实现类。它们各有区别：<ul>
+<li><code>HashMap</code>是基于拉链法实现的散列表，属于线程不安全型，一般用于单线程程序中。</li>
+<li><code>WeakHashMap</code>也是基于拉链法实现的散列表，它一般也用于单线程程序中。相比<code>HashMap</code>，<code>WeakHashMap</code>中的键是弱键，当弱键被<code>GC</code>回收时，它对应的键值对也会被从<code>WeakHashMap</code>中删除；而<code>HashMap</code>中的键是强键。</li>
+<li><code>TreeMap</code>是有序的散列表，它是基于红黑树实现的，它一般用于单线程中存储有序的映射。</li>
+</ul>
+</li>
+</ol>
+<h1 id="HashMap-和-Hashtable-的区别"><a href="#HashMap-和-Hashtable-的区别" class="headerlink" title="HashMap 和 Hashtable 的区别"></a>HashMap 和 Hashtable 的区别</h1><h2 id="HashMap-和-Hashtable-的相同点"><a href="#HashMap-和-Hashtable-的相同点" class="headerlink" title="HashMap 和 Hashtable 的相同点"></a>HashMap 和 Hashtable 的相同点</h2><p><code>HashMap</code>和<code>Hashtable</code>都是存储键值对（key-value）的散列表，而且都是采用拉链法实现的。</p>
+<p>存储的思路都是：通过数组存储，数组的每一个元素都是一个<code>Entry</code>；而一个<code>Entry</code>就是一个单向链表，<code>Entry</code>链表中的每一个节点就保存了<code>key-value</code>键值对数据。</p>
+<p>添加<code>key-value</code>键值对：首先，根据<code>key</code>值计算出哈希表，再计算出数组索引(即，该<code>key-value</code>在数组中的索引)。然后根据数组索引找到<code>Entry</code>（即，单向链表），再遍历单向链表，将<code>key</code>和链表中的每一个节点的<code>key</code>进行对比。若<code>key</code>已经存在<code>Entry</code>链表中，则用该<code>value</code>值取代旧的<code>value</code>值；若<code>key</code>不存在<code>Entry</code>链表中，则新建一个<code>key-value</code>节点，并将该节点插入<code>Entry</code>链表的表头位置。</p>
+<p>删除<code>key-value</code>键值对：删除键值对，相比于添加键值对来说，简单很多。首先，还是根据<code>key</code>值计算出哈希值，再计算出数组索引(即，该key-value在table中的索引)。然后，根据索引找出<code>Entry</code>(即，单向链表)。若节点<code>key-value</code>存在与链表<code>Entry</code>中，则删除链表中的节点即可。</p>
+<h2 id="HashMap-和-Hashtable-的不同点"><a href="#HashMap-和-Hashtable-的不同点" class="headerlink" title="HashMap 和 Hashtable 的不同点"></a>HashMap 和 Hashtable 的不同点</h2><h3 id="继承和实现方式不同"><a href="#继承和实现方式不同" class="headerlink" title="继承和实现方式不同"></a>继承和实现方式不同</h3><p><code>HashMap</code>继承于<code>AbstractMap</code>，实现了<code>Map</code>、<code>Cloneable</code>、<code>java.io.Serializable</code>接口。</p>
+<p><code>Hashtable</code>继承于<code>Dictionary</code>，实现了<code>Map</code>、<code>Cloneable</code>、<code>java.io.Serializable</code>接口。</p>
+<p><code>HashMap</code>的定义：</p>
+<pre><code class="java">public class HashMap&lt;K,V&gt;
+    extends AbstractMap&lt;K,V&gt;
+    implements Map&lt;K,V&gt;, Cloneable, Serializable &#123;...&#125;
+</code></pre>
+<p><code>Hashtable</code>的定义：</p>
+<pre><code class="java">public class Hashtable&lt;K,V&gt;
+    extends Dictionary&lt;K,V&gt;
+    implements Map&lt;K,V&gt;, Cloneable, Serializable &#123;...&#125;
+</code></pre>
+<p>从中可以看到：</p>
+<p><code>HashMap</code>和<code>Hashtable</code>都实现了<code>Map</code>、<code>Cloneable</code>、<code>java.io.Serializable</code>接口。</p>
+<p>实现<code>Map</code>接口意味着他们都支持<code>key-value</code>键值对操作。支持添加<code>key-value</code>键值对、获取<code>key</code>、获取<code>value</code>、获取<code>map</code>大小、清空<code>map</code>等基本的<code>key-value</code>键值对操作。</p>
+<p>实现了<code>Cloneable</code>接口意味着它能被克隆。</p>
+<p>实现了<code>java.io.Serializable</code>接口，意味着他们支持序列化，能通过序列化去传输。</p>
+<p><code>HashMap</code>继承于<code>AbstractMap</code>，而<code>Hashtable</code>继承于<code>Dictionary</code>。</p>
+<p><code>Dictionary</code>是一个抽象类，它直接继承于<code>Object</code>类，没有实现任何接口。<code>Dictionary</code>类是JDK 1.0引入的。虽然<code>Dictionary</code>也支持添加key-value键值对、获取value、获取大小等基本操作，但它的API函数比<code>Map</code>少；</p>
+<p>而且<code>Dictionary</code>一般是通过<code>Enumeration</code>(枚举类)去遍历，<code>Map</code>则是通过<code>Iterator</code>(迭代器)去遍历。然而，由于<code>Hashtable</code>也实现了<code>Map</code>接口，所以，它即支持<code>Enumeration</code>遍历，又支持<code>Iterator</code>遍历。</p>
+<p><code>AbstractMap</code>是一个抽象类，它实现了<code>Map</code>接口的绝大部分API函数，为<code>Map</code>的具体实现类提供了极大的便利。它是JDK 1.2新增的类。</p>
+<h3 id="线程安全不同"><a href="#线程安全不同" class="headerlink" title="线程安全不同"></a>线程安全不同</h3><p><code>Hashtable</code>中几乎所有的函数都是同步的，即它是线程安全的，支持多线程。而<code>HashMap</code>的函数则是非同步的，它不是线程安全的。若要在多线程中使用<code>HashMap</code>，需要我们额外的进行同步处理。</p>
+<p>对<code>HashMap</code>的同步处理可以使用<code>Collections</code>类提供的<code>synchronizedMap</code>静态方法，或者使用 JDK 1.5之后提供的<code>java.util.concurrent</code>包中的<code>ConcurrentHashMap</code>类。</p>
+<h3 id="对-null-值的处理不同"><a href="#对-null-值的处理不同" class="headerlink" title="对 null 值的处理不同"></a>对 null 值的处理不同</h3><p><code>HashMap</code>的<code>key</code>，<code>value</code>都可以为<code>null</code></p>
+<p><code>Hashtable</code>的<code>key</code>，<code>value</code>都不可以为<code>null</code></p>
+<p><code>HashMap</code>中添加<code>key</code>，<code>value</code>的方法</p>
+<pre><code class="java">// 将key-value添加到HashMap中
+public V put (K key, V value) &#123;
+    return putVal(hash(key), key, value, false, true);
+&#125;
+public void putAll(Map&lt;? extends K, ? extends V&gt; m) &#123;
+    putMapEntries(m, true);
+&#125;
+</code></pre>
+<p><code>Hashtable</code>中添加<code>key</code>，<code>value</code>的方法</p>
+<pre><code class="java">public synchronized V put(K key, V value) &#123;
+    if (value == null) &#123;
+        throw new NullPointerException();
+    &#125;
+    Emtry&lt;?,?&gt; tab[] = table;
+    int hash = key.hashCode();
+    int index = (hash &amp; 0x7FFFFFFF) % tab.length;
+    @SuppressWarnings(&quot;unchecked&quot;)
+    Entry&lt;K,V&gt; entry = (Entry&lt;K,V&gt;)tab[index];
+    for (; entry != null ; entry = entry.next) &#123;
+        if ((entry.hash == hash) &amp;&amp; entry.key.equals(key)) &#123;
+            V old = entry.value;
+            entry.value = value;
+            return old;
+        &#125;
+    &#125;
+    addEntry(hash, key, value, index);
+    return null;
+&#125;
+</code></pre>
+<p>根据上面的代码，我们可以看出：</p>
+<p><code>Hashtable</code>的<code>key</code>或<code>value</code>，都不能为<code>null</code>。否则，会抛出异常<code>NullPointerException</code>。</p>
+<p><code>HashMap</code>的<code>key</code>、<code>value</code>都可以为<code>null</code>。 当<code>HashMap</code>的<code>key</code>为<code>null</code>时，<code>HashMap</code>会将其固定的插入<code>table[0]</code>位置(即<code>HashMap</code>散列表的第一个位置)；而且<code>table[0]</code>处只会容纳一个<code>key</code>为<code>null</code>的值，当有多个<code>key</code>为<code>null</code>的值插入的时候，<code>table[0]</code>会保留最后插入的<code>value</code>。</p>
+<h3 id="支持的遍历种类不同"><a href="#支持的遍历种类不同" class="headerlink" title="支持的遍历种类不同"></a>支持的遍历种类不同</h3><p><code>HashMap</code>只支持<code>Iterator</code>遍历</p>
+<p><code>Hashtable</code>支持<code>Iterator</code>和<code>Enumeration</code>两种方式遍历</p>
+<p><code>Enumeration</code>是JDK 1.0才添加的接口，只有<code>hasMoreElements()</code>、<code>nextElement()</code>两个API接口，不能通过<code>Enumeration()</code>对元素进行修改。</p>
+<p><code>Iterator</code>是JDK 1.2才添加的接口，支持<code>hasNext()</code>、<code>next()</code>、<code>remove()</code>三个API接口。<code>HashMap</code>也是JDK 1.2才添加的，所以<code>Iterator</code>取代<code>Enumeration</code>，<code>HashMap</code>只支持<code>Iterator</code>遍历。</p>
+<h3 id="通过-Iterator-迭代器遍历时，遍历的顺序不同"><a href="#通过-Iterator-迭代器遍历时，遍历的顺序不同" class="headerlink" title="通过 Iterator 迭代器遍历时，遍历的顺序不同"></a>通过 Iterator 迭代器遍历时，遍历的顺序不同</h3><p><code>HashMap</code>是从前往后的遍历数组，再对数据具体某项对应的链表，从表头开始遍历。</p>
+<p><code>Hashtable</code>是从后往前遍历数组，再对数组具体某项对应的链表，从表头开始遍历。</p>
+<p><code>HashMap</code>和<code>Hashtable</code>遍历<code>key-value</code>集合的方式是：</p>
+<ul>
+<li>通过<code>entrySet()</code>获取<code>Map.Entry</code>集合。 </li>
+<li>通过<code>iterator()</code>获取<code>Map.Entry</code>集合的迭代器，再进行遍历。</li>
+</ul>
+<h3 id="容量的初始值和增长方式不同"><a href="#容量的初始值和增长方式不同" class="headerlink" title="容量的初始值和增长方式不同"></a>容量的初始值和增长方式不同</h3><p><code>HashMap</code>默认的容量大小是16，增加容量时，每次将容量变为。。。</p>
+<p><code>Hashtable</code>默认的容量大小是11，增加容量时，每次将容量变为。。</p>
+<h1 id="HashMap-和-WeakHashMap-的区别"><a href="#HashMap-和-WeakHashMap-的区别" class="headerlink" title="HashMap 和 WeakHashMap 的区别"></a>HashMap 和 WeakHashMap 的区别</h1><h2 id="HashMap-和-WeakHashMap-的相同点"><a href="#HashMap-和-WeakHashMap-的相同点" class="headerlink" title="HashMap 和 WeakHashMap 的相同点"></a>HashMap 和 WeakHashMap 的相同点</h2><ol>
+<li>它们都是散列表，存储的是键值对映射。</li>
+<li>它们都继承于<code>AbstractMap</code>，并且实现<code>Map</code>基础。</li>
+<li>它们的构造函数都一样。都包含4个构造函数，而且函数的参数都一样。</li>
+<li>默认的容量大小是16，默认的加载因子是0.75</li>
+<li>它们的键和值都允许为null</li>
+<li>它们都是非同步的。</li>
+</ol>
+<h2 id="HashMap-和-WeakHashMap-的不同点"><a href="#HashMap-和-WeakHashMap-的不同点" class="headerlink" title="HashMap 和 WeakHashMap 的不同点"></a>HashMap 和 WeakHashMap 的不同点</h2><ol>
+<li><p><code>HashMap</code>实现了<code>Cloneable</code>和<code>Serializable</code>接口，而<code>WeakHashMap</code>没有。</p>
+<p><code>HashMap</code>实现了<code>Cloneable</code>，意味着它能通过<code>clone()</code>克隆自己。</p>
+<p><code>HashMap</code>实现<code>Serializable</code>意味着它支持序列化，能通过序列化去传输。</p>
+</li>
+<li><p><code>HashMap</code>的键是强引用(StrongReference)，而<code>WeakHashMap</code>的键是弱引用(WeakReference)。</p>
+<p><code>WeakHashMap</code>的弱键能实现WeakReference对键值对的动态回收。当弱键不再被使用时，GC会回收它，<code>WeakHashMap</code>也会将弱键对应的键值对删除。</p>
+<p>这里的弱键回收实际上是通过<code>WeakReference</code>(弱引用)和<code>ReferenceQueue</code>(引用队列)实现的。首先<code>WeakHashMap</code>中:</p>
+<ul>
+<li>键是<code>WeakReference</code>，即<code>key</code>是弱键。</li>
+<li><code>ReferenceQueue</code>是一个引用队列，它是和<code>WeakHashMap</code>联合使用的。当弱引用所引用的对象被垃圾回收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。<code>WeakHashMap</code>中的<code>ReferenceQueue</code>是<code>queue</code>。</li>
+<li><code>WeakHashMap</code>是通过数组实现的，我们假设这个数组是<code>table</code></li>
+</ul>
+</li>
+</ol>
+<p>接下来说说动态回收的步骤</p>
+<ol>
+<li><p>新建<code>WeakHashMap</code>，将键值对添加到<code>WeakHashMap</code>中。将键值对添加到<code>WeakHashMap</code>中时，添加的键都是弱键。实际上，<code>WeakHashMap</code>是通过数组<code>table</code>保存<code>Entry(键值对)</code>。每一个<code>Entry</code>实际上是一个单向链表，即<code>Entry</code>是键值对链表。</p>
+</li>
+<li><p>当某弱键不再被其他对象引用，并被GC回收时，这个弱键也同时会被添加到<code>queue</code>队列中。</p>
+<p>例如：当我们在将弱键<code>key</code>添加到<code>WeakHashMap</code>之后，将<code>key</code>设为<code>null</code>。这时便没有外部对象再引用该<code>key</code>了。接着当Java虚拟机的GC回收内存时，会回收<code>key</code>的相关内存，同时将<code>key</code>添加到<code>queue</code>队列中。</p>
+</li>
+<li><p>当下一次我们需要操作<code>WeakHashMap</code>时，会先同步<code>table</code>和<code>queue</code>。<code>table</code>中保存了全部的键值对，而<code>queue</code>中保存被GC回收的弱键。同步它们就是删除<code>table</code>中被GC回收的弱键对应的键值对。</p>
+<p>例如：当我们读取<code>WeakHashMap</code>中的元素或获取<code>WeakReference</code>得到大小时，他会先同步<code>table</code>和<code>queue</code>。目的是删除<code>table</code>中被GC回收的弱键对应的键值对。删除的方法就是逐个比较<code>table</code>中元素的键和<code>queue</code>中的键。若它们相当，则删除<code>table</code>中的该键值对。</p>
+</li>
+</ol>
+<h2 id="HashMap-和-WeakHashMap-的比较测试程序"><a href="#HashMap-和-WeakHashMap-的比较测试程序" class="headerlink" title="HashMap 和 WeakHashMap 的比较测试程序"></a>HashMap 和 WeakHashMap 的比较测试程序</h2><pre><code class="java">import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.Date;
+import java.lang.ref.WeakReference;
+
+public class CompareHashmapAndWeakHashmap &#123;
+
+    public static void main(String[] args) throws Exception &#123;
+
+        // 当弱键是String时，比较HashMap和WeakHashMap
+        compareWithString();
+        // 当弱键是自定义类型时，比较HashMap和WeakHashMap
+        compareWithSelfClass();
+    &#125;
+
+    /**
+     * 遍历map，并打印map的大小
+     */
+    private static void iteratorAndCountMap(Map map) &#123;
+        // 遍历map
+        for (Iterator iter = map.entrySet().iterator(); iter.hasNext(); ) &#123;
+            Map.Entry en = (Map.Entry)iter.next();
+            System.out.printf(&quot;map entry : %s - %s\n &quot;,en.getKey(), en.getValue());
+        &#125;
+        // 打印HashMap的实际大小
+        System.out.printf(&quot; map size:%s\n\n&quot;, map.size());
+    &#125;
+
+    // 通过String对象测试HashMap和WeakHashMap
+    private static void compareWithString() &#123;
+        // 新建4个String字符串
+        String w1 = new String(&quot;W1&quot;);
+        String w2 = new String(&quot;W2&quot;);
+        String h1 = new String(&quot;H1&quot;);
+        String h2 = new String(&quot;H2&quot;);
+
+        // 新建 WeakHashMap对象，并将w1,w2添加到 WeakHashMap中
+        Map wmap = new WeakHashMap();
+        wmap.put(w1, &quot;w1&quot;);
+        wmap.put(w2, &quot;w2&quot;);
+
+        // 新建 HashMap对象，并将h1,h2添加到 WeakHashMap中
+        Map hmap = new HashMap();
+        hmap.put(h1, &quot;h1&quot;);
+        hmap.put(h2, &quot;h2&quot;);
+
+        // 删除HashMap中的“h1”。
+        // 结果：删除“h1”之后，HashMap中只有 h2 ！
+        hmap.remove(h1);
+
+        // 将WeakHashMap中的w1设置null，并执行gc()。系统会回收w1
+        // 结果：w1是“弱键”，被GC回收后，WeakHashMap中w1对应的键值对，也会被从WeakHashMap中删除。
+        //       w2是“弱键”，但它不是null，不会被GC回收；也就不会被从WeakHashMap中删除。
+        // 因此，WeakHashMap中只有 w2
+        // 注意：若去掉“w1=null” 或者“System.gc()”，结果都会不一样！
+        w1 = null;
+        System.gc();
+
+        // 遍历并打印HashMap的大小
+        System.out.printf(&quot; -- HashMap --\n&quot;);
+        iteratorAndCountMap(hmap);
+
+        // 遍历并打印WeakHashMap的大小
+        System.out.printf(&quot; -- WeakHashMap --\n&quot;);
+        iteratorAndCountMap(wmap);
+    &#125;
+
+    // 通过自定义类测试HashMap和WeakHashMap
+    private static void compareWithSelfClass() &#123;
+        // 新建4个自定义对象
+        Self s1 = new Self(10);
+        Self s2 = new Self(20);
+        Self s3 = new Self(30);
+        Self s4 = new Self(40);
+
+        // 新建 WeakHashMap对象，并将s1,s2添加到 WeakHashMap中
+        Map wmap = new WeakHashMap();
+        wmap.put(s1, &quot;s1&quot;);
+        wmap.put(s2, &quot;s2&quot;);
+
+        // 新建 HashMap对象，并将s3,s4添加到 WeakHashMap中
+        Map hmap = new HashMap();
+        hmap.put(s3, &quot;s3&quot;);
+        hmap.put(s4, &quot;s4&quot;);
+
+        // 删除HashMap中的s3。
+        // 结果：删除s3之后，HashMap中只有 s4 ！
+        hmap.remove(s3);
+
+        // 将WeakHashMap中的s1设置null，并执行gc()。系统会回收w1
+        // 结果：s1是“弱键”，被GC回收后，WeakHashMap中s1对应的键值对，也会被从WeakHashMap中删除。
+        //       w2是“弱键”，但它不是null，不会被GC回收；也就不会被从WeakHashMap中删除。
+        // 因此，WeakHashMap中只有 s2
+        // 注意：若去掉“s1=null” 或者“System.gc()”，结果都会不一样！
+        s1 = null;
+        System.gc();
+
+        /*
+        // 休眠500ms
+        try &#123;
+            Thread.sleep(500);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        // */
+
+        // 遍历并打印HashMap的大小
+        System.out.printf(&quot; -- Self-def HashMap --\n&quot;);
+        iteratorAndCountMap(hmap);
+
+        // 遍历并打印WeakHashMap的大小
+        System.out.printf(&quot; -- Self-def WeakHashMap --\n&quot;);
+        iteratorAndCountMap(wmap);
+    &#125;
+
+
+    private static class Self &#123; 
+        int id;
+
+        public Self(int id) &#123;
+            this.id = id;
+        &#125;
+
+        // 覆盖finalize()方法
+        // 在GC回收时会被执行
+        protected void finalize() throws Throwable &#123;
+            super.finalize();
+            System.out.printf(&quot;GC Self: id=%d addr=0x%s)\n&quot;, id, this);
+        &#125;   
+    &#125;
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag"><i class="fa fa-tag"></i> Java-集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/15/Java-Map-TreeMap/" rel="prev" title="Java集合之TreeMap">
+      <i class="fa fa-chevron-left"></i> Java集合之TreeMap
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/16/Java-Category-index/" rel="next" title="Java集合目录">
+      Java集合目录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Map-%E6%A6%82%E6%8B%AC"><span class="nav-text">Map 概括</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">HashMap 和 Hashtable 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-%E5%92%8C-Hashtable-%E7%9A%84%E7%9B%B8%E5%90%8C%E7%82%B9"><span class="nav-text">HashMap 和 Hashtable 的相同点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-%E5%92%8C-Hashtable-%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="nav-text">HashMap 和 Hashtable 的不同点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E5%92%8C%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E4%B8%8D%E5%90%8C"><span class="nav-text">继承和实现方式不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%B8%8D%E5%90%8C"><span class="nav-text">线程安全不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9-null-%E5%80%BC%E7%9A%84%E5%A4%84%E7%90%86%E4%B8%8D%E5%90%8C"><span class="nav-text">对 null 值的处理不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E7%9A%84%E9%81%8D%E5%8E%86%E7%A7%8D%E7%B1%BB%E4%B8%8D%E5%90%8C"><span class="nav-text">支持的遍历种类不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-Iterator-%E8%BF%AD%E4%BB%A3%E5%99%A8%E9%81%8D%E5%8E%86%E6%97%B6%EF%BC%8C%E9%81%8D%E5%8E%86%E7%9A%84%E9%A1%BA%E5%BA%8F%E4%B8%8D%E5%90%8C"><span class="nav-text">通过 Iterator 迭代器遍历时，遍历的顺序不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E9%87%8F%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E5%92%8C%E5%A2%9E%E9%95%BF%E6%96%B9%E5%BC%8F%E4%B8%8D%E5%90%8C"><span class="nav-text">容量的初始值和增长方式不同</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HashMap-%E5%92%8C-WeakHashMap-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">HashMap 和 WeakHashMap 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-%E5%92%8C-WeakHashMap-%E7%9A%84%E7%9B%B8%E5%90%8C%E7%82%B9"><span class="nav-text">HashMap 和 WeakHashMap 的相同点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-%E5%92%8C-WeakHashMap-%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="nav-text">HashMap 和 WeakHashMap 的不同点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap-%E5%92%8C-WeakHashMap-%E7%9A%84%E6%AF%94%E8%BE%83%E6%B5%8B%E8%AF%95%E7%A8%8B%E5%BA%8F"><span class="nav-text">HashMap 和 WeakHashMap 的比较测试程序</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

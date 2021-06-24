@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO之 PrintStream详解">
+<meta property="og:url" content="http://example.com/2020/07/23/Java-IO-PrintStream/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-23T22:22:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.194Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/07/23/Java-IO-PrintStream/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java IO之 PrintStream详解 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/23/Java-IO-PrintStream/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java IO之 PrintStream详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-23 22:22:28" itemprop="dateCreated datePublished" datetime="2020-07-23T22:22:28+00:00">2020-07-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/23/Java-IO-PrintStream/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/23/Java-IO-PrintStream/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="PrintStream-简介"><a href="#PrintStream-简介" class="headerlink" title="PrintStream 简介"></a>PrintStream 简介</h1><p><code>PrintStream</code>是打印输出流，继承于<code>FilterOutputStream</code>。</p>
+<p><code>PrintStream</code>是用来装饰其他输出流的。它能为其他输出流添加功能，使其能够方便地打印出各种数据值表示形式。与<code>PrintStream</code>不同的是：<code>PrintStream</code>永远不会抛出<code>IOException</code>。它产生的<code>IOException</code>会被自身的函数所捕获并设置错误标记，用户可以通过<code>checkError()</code>返回错误标记，从而查看<code>PrintStream</code>内部是否产生了<code>IOException</code>。另外，<code>PrintStream</code>提供了自动刷新和字符集设置功能。</p>
+<p>PrintStream 函数列表</p>
+<pre><code class="java">// 构造方法
+PrintStream(OutputStream out)
+PrintStream(OutputStream out, boolean autoFlash)
+PrintStream(OutputStream out, boolean autoFlash, string encoding)
+PrintStream(String fileName)
+    // 创建fileName对应的FileOutputStream，然后将该FileOutputStream作为PrintStream的输出流，采用csn字符集。
+PrintStream(String fileName, String csn)
+PrintStream(File file)
+PrintStream(File file, String csn)
+
+// 常用方法
+void flush()
+void close()
+void checkError()
+void setError()
+void clearError()
+void write(int b)
+void write(byte buf[], int off, int len)
+void print(boolean b)
+void print(char c)
+void print(int i)
+void print(long l)
+void print(float f)
+void print(double d)
+void print(char s[])
+void print(String s)
+void print(Object obj)
+void println()
+void print(boolean x)
+void print(char x)
+void print(int x)
+void print(long x)
+void print(float x)
+void print(double x)
+void print(char x)
+void print(String x)
+void print(Object x)
+    // 将数据args根据默认Locale值按照format格式化，并写入到PrintStream输出流中
+PrintStream printf(String format, Object...args)
+    // 将数据args根据Locale值(区域属性)按照format格式化，并写入到PrintStream输出流中
+PrintStream printf(Locale l, String format, Object...args)
+    // 根据默认的Locale值(区域属性)来格式化数据
+PrintStream format(Locale l, String format, Object...args)
+    // 根据Locale值(区域属性)来格式化数据
+PrintStream format(String format, Object...args)
+    // 将字符序列追加到PrintStream输出流中
+PrintStream append(CharSequence csq)
+    // 将字符序列从start(包括)到end(不包括)的全部字符追加到PrintStream输出流中
+PrintStream append(CharSequence csq, int start, int end)
+    // 将字符c追加到PrintStream输出流中
+PrintStream append(char c)
+</code></pre>
+<blockquote>
+<p>注意：</p>
+<p><code>print())</code>和<code>println()</code>都是将其中参数转换成字符串之后，再写入到输入流。</p>
+</blockquote>
+<p>例如：</p>
+<pre><code class="java">print(0x61);
+</code></pre>
+<p>等价于</p>
+<pre><code class="java">write(String.valueOf(0x61));
+</code></pre>
+<p>上面语句是将字符串<code>97</code>写入到输出流。<code>0x61</code>对应十进制数是<code>97</code>。</p>
+<pre><code class="java">write(0x61)
+</code></pre>
+<p>上面语句是将字符<code>a</code>写入到输出流。因为<code>0x61</code>对应的ASCII码的字母<code>a</code>。</p>
+<h1 id="PrintStream-和-DataOutputStream-异同点"><a href="#PrintStream-和-DataOutputStream-异同点" class="headerlink" title="PrintStream 和 DataOutputStream 异同点"></a>PrintStream 和 DataOutputStream 异同点</h1><h2 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h2><p>都是继承于<code>FileOutputStream</code>，用于包装其它输出流。</p>
+<h2 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h2><ol>
+<li><p>目的不同</p>
+<p><code>DataOutputStream</code>的作用时用来装饰其它的输出流，它和<code>DataInputStream</code>配合使用，允许应用程序以与机器无关的方式从底层输入流中读取Java数据类型。</p>
+<p><code>PrintStream</code>的作用虽然也是装饰其他的输出流，但是它的目的不是以与机器无关的方式从底层输入流中读取Java数据类型，而是为其他输出流提供打印各种数据值表示形式，使其它输出流能方便地通过<code>print()</code>、<code>println()</code>或<code>printf()</code>等输出各种格式的数据。</p>
+</li>
+<li><p>构造函数不同</p>
+<p><code>DataOutputStream</code>的构造函数只有一个：<code>DataOutputStream(OutputStream out)</code>。即：它只支持以输出流<code>out</code>作为<code>DataOutputStream</code>的输出流。</p>
+<p><code>PrintStream</code>的构造函数有很多，和<code>DataOutputStream</code>一样，支持以输出流<code>out</code>作为<code>PrintStream</code>输出流的构造函数，还支持以<code>File</code>对象或者<code>Stirng</code>类型的文件名对象的构造函数。</p>
+<p>而且在<code>PrintStream</code>的构造函数中，能指定字符集和是否支持自动刷新操作。</p>
+</li>
+<li><p>输出字符串时的编码不同</p>
+<p><code>DataOutputStream</code>和<code>PrintStream</code>都可以将数据格式化输出。</p>
+<p><code>PrintStream</code>是输出时采用的用户指定的编码(创建<code>PrintStream</code>时指定)，若没有指定，则采用系统默认的字符编码。而<code>DataOutputStream</code>则采用的是<code>UTF-8</code>。</p>
+</li>
+<li><p>异常处理机制不同</p>
+<p><code>DataOutputStream</code>在通过<code>write()</code>向输出流中写入数据时，若产生<code>IOException</code>，会抛出。</p>
+<p><code>PrintStream</code>在通过<code>writr()</code>向输出流中写入数据时，若产生<code>IOException</code>，则会在<code>write()</code>中进行捕获处理；并设置<code>trouble</code>标记(用于表示产生了异常)为<code>true</code>。用户可以通过<code>checkError()</code>返回<code>trouble</code>值，从而检查输出流中是否产生了异常。</p>
+</li>
+</ol>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.PrintStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+
+public class PrintStreamTest &#123;
+
+    public static void main(String[] args) &#123;
+
+        // 下面3个函数的作用都是一样：都是将字母abcde写入到文件file.txt中。
+        // 任选一个执行即可！
+        testPrintStreamConstrutor1() ;
+        //testPrintStreamConstrutor2() ;
+        //testPrintStreamConstrutor3() ;
+
+        // 测试write(), print(), println(), printf()等接口。
+        testPrintStreamAPIS() ;
+    &#125;
+
+    /**
+     * PrintStream(OutputStream out) 的测试函数
+     * 函数的作用，就是将字母abcde写入到文件file.txt中
+     */
+    private static void testPrintStreamConstrutor1() &#123;
+        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;; // abced
+        try &#123;
+            File file = new File(&quot;file.txt&quot;);
+            PrintStream out = new PrintStream(new FileOutputStream(file));
+            out.write(arr);
+            out.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    /**
+     * PrintStream(File file) 的测试函数
+     * 函数的作用，就是将字母abcde写入到文件file.txt中
+     */
+    private static void testPrintStreamConstrutor2() &#123;
+        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;;
+        try &#123;
+            File file = new File(&quot;file.txt&quot;);
+            PrintStream out = new PrintStream(file);
+            out.write(arr);
+            out.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    /**
+     * PrintStream(String fileName) 的测试函数
+     * 函数的作用，就是将字母abcde写入到文件file.txt”中
+     */
+    private static void testPrintStreamConstrutor3() &#123;
+        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;;
+        try &#123;
+            PrintStream out = new PrintStream(&quot;file.txt&quot;);
+            out.write(arr);
+            out.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    /**
+     * 测试write(), print(), println(), printf()等接口。
+     */
+    private static void testPrintStreamAPIS() &#123;
+        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;; // abced
+        try &#123;
+            PrintStream out = new PrintStream(&quot;other.txt&quot;);
+            out.println(&quot;hello PrintStream&quot;);
+            out.write(0x41);  // A
+            // out.print(0x41); 等价于 out.write(String.valueOf(0x41));
+            out.print(0x41);
+            out.append(&#39;B&#39;);
+            // 将&quot;CDE is 5&quot; + 回车  写入到输出流中
+            String str = &quot;CDE&quot;;
+            int num = 5;
+            out.printf(&quot;%s is %d\n&quot;, str, num);
+
+            out.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行上面的代码，会在源码所在目录生成两个文件<code>file.txt</code>和<code>other.txt</code>。</p>
+<p><code>file.txt</code>的内容如下：</p>
+<pre><code>abcde
+</code></pre>
+<p><code>other.txt</code>的内容如下：</p>
+<pre><code>hello PrintStream
+A65BCDE is 5
+</code></pre>
+<h1 id="System-out-println-详解"><a href="#System-out-println-详解" class="headerlink" title="System.out.println 详解"></a>System.out.println 详解</h1><p>我们初学的第一个程序就是输出一个<code>Hello World</code>。那么它是如何实现的呢？</p>
+<p>先看看<code>System.java</code>中<code>out</code>的定义，源码如下：</p>
+<pre><code class="java">public final class System &#123;
+    ...
+    public final static PrintStream out = null;
+    ...
+&#125;
+</code></pre>
+<p>从中可以看到：<code>out</code>是<code>System</code>的静态变量，所以可以通过<code>System.out</code>来进行调用，而<code>System.out</code>返回类型为<code>PrintStrem</code>类型。</p>
+<p>那么可以定义如下代码：</p>
+<pre><code class="java">PrintStream ps = System.out;
+ps.println(&quot;Hello World&quot;);
+// 等价于
+System.out.println(&quot;Hello World&quot;);
+</code></pre>
+<p>所以实际上<code>System.out.println()</code>是调用了<code>PrintStream</code>对象的<code>println</code>方法进行输出。</p>
+<h1 id="PrintStream-源码"><a href="#PrintStream-源码" class="headerlink" title="PrintStream 源码"></a>PrintStream 源码</h1><pre><code class="java">import java.util.Formatter;
+import java.util.Locale;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
+
+
+public class PrintStream extends FilterOutputStream
+    implements Appendable, Closeable
+&#123;
+
+    private final boolean autoFlush;
+    private boolean trouble = false;
+    private Formatter formatter;
+
+   
+    private BufferedWriter textOut;
+    private OutputStreamWriter charOut;
+
+ 
+    private static &lt;T&gt; T requireNonNull(T obj, String message) &#123;
+        if (obj == null)
+            throw new NullPointerException(message);
+        return obj;
+    &#125;
+
+    
+    private static Charset toCharset(String csn)
+        throws UnsupportedEncodingException
+    &#123;
+        requireNonNull(csn, &quot;charsetName&quot;);
+        try &#123;
+            return Charset.forName(csn);
+        &#125; catch (IllegalCharsetNameException|UnsupportedCharsetException unused) &#123;
+            
+            throw new UnsupportedEncodingException(csn);
+        &#125;
+    &#125;
+
+    
+    private PrintStream(boolean autoFlush, OutputStream out) &#123;
+        super(out);
+        this.autoFlush = autoFlush;
+        this.charOut = new OutputStreamWriter(this);
+        this.textOut = new BufferedWriter(charOut);
+    &#125;
+
+    private PrintStream(boolean autoFlush, OutputStream out, Charset charset) &#123;
+        super(out);
+        this.autoFlush = autoFlush;
+        this.charOut = new OutputStreamWriter(this, charset);
+        this.textOut = new BufferedWriter(charOut);
+    &#125;
+
+    
+    private PrintStream(boolean autoFlush, Charset charset, OutputStream out)
+        throws UnsupportedEncodingException
+    &#123;
+        this(autoFlush, out, charset);
+    &#125;
+
+    
+    public PrintStream(OutputStream out) &#123;
+        this(out, false);
+    &#125;
+
+   
+    public PrintStream(OutputStream out, boolean autoFlush) &#123;
+        this(autoFlush, requireNonNull(out, &quot;Null output stream&quot;));
+    &#125;
+
+   
+    public PrintStream(OutputStream out, boolean autoFlush, String encoding)
+        throws UnsupportedEncodingException
+    &#123;
+        this(autoFlush,
+             requireNonNull(out, &quot;Null output stream&quot;),
+             toCharset(encoding));
+    &#125;
+
+    
+    public PrintStream(String fileName) throws FileNotFoundException &#123;
+        this(false, new FileOutputStream(fileName));
+    &#125;
+
+    
+    public PrintStream(String fileName, String csn)
+        throws FileNotFoundException, UnsupportedEncodingException
+    &#123;
+        this(false, toCharset(csn), new FileOutputStream(fileName));
+    &#125;
+
+    
+    public PrintStream(File file) throws FileNotFoundException &#123;
+        this(false, new FileOutputStream(file));
+    &#125;
+
+ 
+    public PrintStream(File file, String csn)
+        throws FileNotFoundException, UnsupportedEncodingException
+    &#123;
+        
+        this(false, toCharset(csn), new FileOutputStream(file));
+    &#125;
+
+    
+    private void ensureOpen() throws IOException &#123;
+        if (out == null)
+            throw new IOException(&quot;Stream closed&quot;);
+    &#125;
+
+ 
+    
+    public void flush() &#123;
+        synchronized (this) &#123;
+            try &#123;
+                ensureOpen();
+                out.flush();
+            &#125;
+            catch (IOException x) &#123;
+                trouble = true;
+            &#125;
+        &#125;
+    &#125;
+
+    private boolean closing = false; 
+
+    
+    public void close() &#123;
+        synchronized (this) &#123;
+            if (! closing) &#123;
+                closing = true;
+                try &#123;
+                    textOut.close();
+                    out.close();
+                &#125;
+                catch (IOException x) &#123;
+                    trouble = true;
+                &#125;
+                textOut = null;
+                charOut = null;
+                out = null;
+            &#125;
+        &#125;
+    &#125;
+
+    
+    public boolean checkError() &#123;
+        if (out != null)
+            flush();
+        if (out instanceof java.io.PrintStream) &#123;
+            PrintStream ps = (PrintStream) out;
+            return ps.checkError();
+        &#125;
+        return trouble;
+    &#125;
+
+    
+    protected void setError() &#123;
+        trouble = true;
+    &#125;
+
+   
+    protected void clearError() &#123;
+        trouble = false;
+    &#125;
+
+    
+    public void write(int b) &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                out.write(b);
+                if ((b == &#39;\n&#39;) &amp;&amp; autoFlush)
+                    out.flush();
+            &#125;
+        &#125;
+        catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+        catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+    &#125;
+
+    
+    public void write(byte buf[], int off, int len) &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                out.write(buf, off, len);
+                if (autoFlush)
+                    out.flush();
+            &#125;
+        &#125;
+        catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+        catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+    &#125;
+    
+
+    private void write(char buf[]) &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                textOut.write(buf);
+                textOut.flushBuffer();
+                charOut.flushBuffer();
+                if (autoFlush) &#123;
+                    for (int i = 0; i &lt; buf.length; i++)
+                        if (buf[i] == &#39;\n&#39;)
+                            out.flush();
+                &#125;
+            &#125;
+        &#125;
+        catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+        catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+    &#125;
+
+    private void write(String s) &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                textOut.write(s);
+                textOut.flushBuffer();
+                charOut.flushBuffer();
+                if (autoFlush &amp;&amp; (s.indexOf(&#39;\n&#39;) &gt;= 0))
+                    out.flush();
+            &#125;
+        &#125;
+        catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+        catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+    &#125;
+
+    private void newLine() &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                textOut.newLine();
+                textOut.flushBuffer();
+                charOut.flushBuffer();
+                if (autoFlush)
+                    out.flush();
+            &#125;
+        &#125;
+        catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+        catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+    &#125;
+
+    
+    public void print(boolean b) &#123;
+        write(b ? &quot;true&quot; : &quot;false&quot;);
+    &#125;
+
+    
+    public void print(char c) &#123;
+        write(String.valueOf(c));
+    &#125;
+
+    
+    public void print(int i) &#123;
+        write(String.valueOf(i));
+    &#125;
+
+    
+    public void print(long l) &#123;
+        write(String.valueOf(l));
+    &#125;
+
+    
+    public void print(float f) &#123;
+        write(String.valueOf(f));
+    &#125;
+
+    
+    public void print(double d) &#123;
+        write(String.valueOf(d));
+    &#125;
+
+    
+    public void print(char s[]) &#123;
+        write(s);
+    &#125;
+
+    
+    public void print(String s) &#123;
+        if (s == null) &#123;
+            s = &quot;null&quot;;
+        &#125;
+        write(s);
+    &#125;
+
+   
+    public void print(Object obj) &#123;
+        write(String.valueOf(obj));
+    &#125;
+
+
+    
+    public void println() &#123;
+        newLine();
+    &#125;
+
+   
+    public void println(boolean x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+  
+    public void println(char x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+
+    public void println(int x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+
+    public void println(long x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+  
+    public void println(float x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+
+    public void println(double x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+
+    public void println(char x[]) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+    
+    public void println(String x) &#123;
+        synchronized (this) &#123;
+            print(x);
+            newLine();
+        &#125;
+    &#125;
+
+
+    public void println(Object x) &#123;
+        String s = String.valueOf(x);
+        synchronized (this) &#123;
+            print(s);
+            newLine();
+        &#125;
+    &#125;
+
+
+
+    public PrintStream printf(String format, Object ... args) &#123;
+        return format(format, args);
+    &#125;
+
+
+    public PrintStream printf(Locale l, String format, Object ... args) &#123;
+        return format(l, format, args);
+    &#125;
+
+
+    public PrintStream format(String format, Object ... args) &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                if ((formatter == null)
+                    || (formatter.locale() != Locale.getDefault()))
+                    formatter = new Formatter((Appendable) this);
+                formatter.format(Locale.getDefault(), format, args);
+            &#125;
+        &#125; catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125; catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+        return this;
+    &#125;
+
+
+    public PrintStream format(Locale l, String format, Object ... args) &#123;
+        try &#123;
+            synchronized (this) &#123;
+                ensureOpen();
+                if ((formatter == null)
+                    || (formatter.locale() != l))
+                    formatter = new Formatter(this, l);
+                formatter.format(l, format, args);
+            &#125;
+        &#125; catch (InterruptedIOException x) &#123;
+            Thread.currentThread().interrupt();
+        &#125; catch (IOException x) &#123;
+            trouble = true;
+        &#125;
+        return this;
+    &#125;
+
+
+    public PrintStream append(CharSequence csq) &#123;
+        if (csq == null)
+            print(&quot;null&quot;);
+        else
+            print(csq.toString());
+        return this;
+    &#125;
+
+
+    public PrintStream append(CharSequence csq, int start, int end) &#123;
+        CharSequence cs = (csq == null ? &quot;null&quot; : csq);
+        write(cs.subSequence(start, end).toString());
+        return this;
+    &#125;
+
+    public PrintStream append(char c) &#123;
+        print(c);
+        return this;
+    &#125;
+
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-IO/" rel="tag"><i class="fa fa-tag"></i> Java-IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/23/Java-IO-BufferedReader/" rel="prev" title="Java IO之 BufferedReader详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 BufferedReader详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/24/Java-IO-InputStreamReader-OutputStreamWriter/" rel="next" title="Java IO之 InputStreamReader和OutputStreamWriter详解">
+      Java IO之 InputStreamReader和OutputStreamWriter详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PrintStream-%E7%AE%80%E4%BB%8B"><span class="nav-text">PrintStream 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PrintStream-%E5%92%8C-DataOutputStream-%E5%BC%82%E5%90%8C%E7%82%B9"><span class="nav-text">PrintStream 和 DataOutputStream 异同点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%90%8C%E7%82%B9"><span class="nav-text">相同点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="nav-text">不同点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#System-out-println-%E8%AF%A6%E8%A7%A3"><span class="nav-text">System.out.println 详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PrintStream-%E6%BA%90%E7%A0%81"><span class="nav-text">PrintStream 源码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

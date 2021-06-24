@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="异常处理">
+<meta property="og:url" content="http://example.com/2020/06/04/[Java]-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/06/04/tBB3Nj.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/30/tMDtE9.jpg">
+<meta property="article:published_time" content="2020-06-04T20:00:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.206Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/06/04/tBB3Nj.png">
+
+<link rel="canonical" href="http://example.com/2020/06/04/[Java]-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>异常处理 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/04/[Java]-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          异常处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-04 20:00:28" itemprop="dateCreated datePublished" datetime="2020-06-04T20:00:28+00:00">2020-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/04/%5BJava%5D-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/04/%5BJava%5D-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://s1.ax1x.com/2020/06/04/tBB3Nj.png"></p>
+<span id="more"></span>
+
+<p>什么叫异常？</p>
+<p>异常是程序在运行过程中的遇到的一些阻止程序继续运行的错误</p>
+<p>为了能及时有效地处理程序中的运行错误，Java专门设置了异常类。在Java中所有异常类型都是内置类<code>java.lang.Throwable</code>类的子类，分别是<code>Error</code>类和<code>Exception</code>类。</p>
+<p><img data-src="https://s1.ax1x.com/2020/05/30/tMDtE9.jpg"></p>
+<p>如图，<code>Throwable</code>类是异常体系的根，继承自<code>Object</code>类。其余所有的异常类都源于或间接源于此。他的两个子类：</p>
+<ol>
+<li><p><strong><code>Error</code></strong></p>
+<p>表示严重的错误，任何处理技术都无法恢复的情况，肯定会导致程序非正常终止。属于未检查类型。比如：</p>
+<ul>
+<li><code>OutOfMemoryError</code>：内存耗尽。</li>
+<li><code>NoClassDefFoundError</code>：无法加载某个Class。</li>
+<li><code>StackOverflowError</code>：栈溢出。</li>
+<li><code>NoClassDefFoubdError</code> ：找不到Class定义错误。</li>
+</ul>
+</li>
+<li><p><strong><code>Exception</code></strong></p>
+<p>又分为可检查(<code>checked</code>)异常和不检查(<code>unchecked</code>)异常，可检查异常在源码里<strong>必须</strong>显示的进行捕获处理，是编译期检查的一部分。</p>
+<p>不检查异常就是所谓的运行时异常(<code>RuntimeException</code>)，通常是可以编码避免的逻辑错误，具体根据需要来判断是否需要捕获，并不会在编译器强制要求。</p>
+<p>1). 运行时异常(<code>RuntimeException</code>)：</p>
+<ul>
+<li><code>NullPointerException</code> ：对某个<code>null</code>对象调用方法或字段。</li>
+<li><code>ClassCastException</code> ：类型强制转换异常。</li>
+<li><code>IllegalArgumentException</code> ：传递非法参数异常</li>
+<li><code>IndexOutOfBoundsException</code> ：下标越界异常</li>
+<li><code>NumberFormatException</code> ：数字格式异常</li>
+</ul>
+<p>2). 非运行时异常</p>
+<ul>
+<li><code>ClassNotFoundException</code> ：找不到指定的类</li>
+<li><code>IOException</code> ：IO操作异常</li>
+</ul>
+</li>
+</ol>
+<p>Java 通过面向对象的方法来处理异常。在一个方法的运行过程中，如果发生了异常，则这个方法会产生代表该异常的一个对象，并把它交给运行时的系统，运行时系统寻找相应的代码来处理这一异常。我们把生成异常对象，并把它提交给运行时系统的过程称为拋出（throw）异常。运行时系统在方法的调用栈中查找，直到找到能够处理该类型异常的对象，这一个过程称为捕获（catch）异常。</p>
+<h1 id="声明异常"><a href="#声明异常" class="headerlink" title="声明异常"></a>声明异常</h1><p>当一个方法产生一个它不处理的异常时，那么就需要在该方法的头部声明这个异常，以便将该异常传递到方法的外部进行处理。使用 throws 声明的方法表示此方法不处理异常。throws 具体格式如下：</p>
+<pre><code class="java">returnType method_name(paramList) throws Exception 1,Exception2,…&#123;…&#125;
+</code></pre>
+<p>其中，<code>returnType</code>表示返回值类型，<code>method_name</code>表示方法名，<code>paramList</code>表示参数列表；<code>Exception 1，Exception2，… </code>表示异常类。如果有多个异常类，它们之间用逗号分隔。这些异常类可以是方法中调用了可能抛出异常的方法而产生的异常，也可以是方法体中生成并抛出的异常。</p>
+<p>使用<code>throws</code>声明异常的思路是：当前方法不知道如何处理这种类型的异常，该异常由上一级的调用者处理，如果<code>main()</code>方法也不知道如何处理，也可以使用<code>throws</code>将该声明抛出异常，将该异常交给JVM处理。JVM对异常的处理方法是：打印异常的追踪栈信息，并中止程序运行，这程序遇到异常后自动结束的原因。</p>
+<p><strong>方法重写时声明抛出异常的限制</strong></p>
+<p><font color=Red>子类方法声明抛出的异常类型应该是父类声明抛出的异常类型的子类或者相同异常类型，不允许子类抛出的异常类型比父类多</font></p>
+<h2 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h2><p>如果Java提供的内置异常类型不能满足程序设计的需求，这时我们可以自己设计Java类库或框架，其中包括异常类型。实现自定义异常类需要继承<code>Exception</code>类或其子类，如果自定义运行时异常类需继承 <code>RuntimeException</code>类或其子类。语法：</p>
+<pre><code class="java">public class NameException extends Exception;
+</code></pre>
+<p><font color=red>自定义异常类一般包含两个构造方法：一个是无参的默认构造方法，另一个构造方法以字符串的形式接收一个定制的异常信息，并将该消息传递给超类的构造方法</font></p>
+<pre><code class="java">// 自定义异常类示例
+import java.util.InputMismatchException;
+import java.util.Scanner;
+public class Test07 &#123;
+    public static void main(String[] args) &#123;
+        int age;
+        System.out.println(&quot;请输入您的年龄： &quot;);
+        Scanner input = new Scanner(System.in);
+        try &#123;
+            age = input.nextInt();  //获取年龄
+            if(age &lt; 0) &#123;
+                throw new AgeException(&quot;您输入的年龄为负数！输入有误！&quot;);
+            &#125; else if(age &gt; 100) &#123;
+                throw new AgeException(&quot;您输入的年龄大于100！输入有误！&quot;);
+            &#125; else &#123;
+                System.out.println(&quot;您的年龄为：&quot;+age);
+            &#125;
+        &#125; catch(InputMismatchException e1) &#123;
+            System.out.println(&quot;输入的年龄不是数字！&quot;);
+        &#125; catch(AgeException e2) &#123;
+            System.out.println(e2.getMessage());
+        &#125;
+    &#125;
+&#125;
+public class AgeException extends Exception &#123;
+    public AgeException() &#123;
+        super();
+    &#125;
+    public AgeException(String str) &#123;
+        super(str);
+    &#125;
+&#125;
+</code></pre>
+<h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>实现抛出异常和声明异常的关键字非常相似，它们是<code>throw</code>和<code>throws</code>。可以通过 throws 关键字在方法上声明该方法要拋出的异常，然后在方法内部通过 throw 拋出异常对象。</p>
+<p>与<code>throws</code>不同的是：<font color=Red><code>throw</code>语句用来直接抛出一个异常</font>，后接一个可抛出的异常类对象，语法格式如下：</p>
+<pre><code class="java">throw ExceptionObject;
+</code></pre>
+<p>其中<code>ExceptionObject</code>必须是<code>Throwable</code>类或其子类的对象。如果是自定义异常类，也必须是 <code>Throwable</code>的直接或间接子类。例如，以下语句在编译时将会产生语法错误：</p>
+<pre><code class="java">throw new String(&quot;抛出异常&quot;); //String不是Throwable类的子类
+</code></pre>
+<p>所以抛出异常的基本步骤就是：</p>
+<ol>
+<li>创建某个<code>Exception</code>实例</li>
+<li>用<code>throw</code>抛出</li>
+</ol>
+<p>实际上这两步可以合并在一块完成： <code>throw new NullPointerException();</code></p>
+<p><strong><code>throws</code>关键字和<code>throw</code>关键字在使用上的几点区别如下</strong>：</p>
+<ul>
+<li><code>throws</code>用来声明一个方法可能抛出的所有异常信息，表示出现异常的一种可能性，但并不一定会发生这些异常；<code>throw</code>则是指拋出的一个具体的异常类型，执行<code>throw</code>则一定抛出了某种异常对象。</li>
+<li>通常在一个方法（类）的声明处通过<code>throws</code>声明方法（类）可能拋出的异常信息，而在方法（类）内部通过<code>throw</code>声明一个具体的异常信息。</li>
+<li><code>throws</code>通常不用显示地捕获异常，可由系统自动将所有捕获的异常信息抛给上级方法；<code>throw</code>则需要用户自己捕获相关的异常，而后再对其进行相关包装，最后将包装后的异常信息抛出。</li>
+</ul>
+<h1 id="捕获-处理异常"><a href="#捕获-处理异常" class="headerlink" title="捕获/处理异常"></a>捕获/处理异常</h1><p>异常的产生是不可避免的，那么为了保证程序有效地执行，需要对发生的异常进行相应的处理。Java的异常处理通过 5 个关键字来实现：<code>try、catch、throw、throws</code>和<code>finally</code>。<code>try catch</code>语句用于捕获并处理异常，<code>finally</code>语句用于在任何情况下（除特殊情况外）都必须执行的代码，<code>throw</code>语句用于拋出异常，<code>throws</code>语句用于声明可能会出现的异常。</p>
+<h2 id="异常处理的机制"><a href="#异常处理的机制" class="headerlink" title="异常处理的机制"></a>异常处理的机制</h2><p>Java 的异常处理机制提供了一种结构性和控制性的方式来处理程序执行期间发生的事件。异常处理的机制如下：</p>
+<ul>
+<li>在方法中用 try catch 语句捕获并处理异常，catch 语句可以有多个，用来匹配多个异常。</li>
+<li>对于处理不了的异常或者要转型的异常，在方法的声明处通过 throws 语句拋出异常，即由上层的调用方法来处理。</li>
+</ul>
+<h2 id="try…catch语句"><a href="#try…catch语句" class="headerlink" title="try…catch语句"></a>try…catch语句</h2><p>捕获异常通常使用<code>try...catch</code>语句，把可能发生异常的代码放到<code>try&#123;...&#125;</code>中，然后使用<code>catch</code>捕获对应的<code>Exception</code>及其子类：</p>
+<pre><code class="java">try &#123;
+    // 可能发生异常的语句
+&#125; catch(ExceptionType e) &#123;
+    // 处理异常语句
+&#125;
+</code></pre>
+<blockquote>
+<p><code>try</code>语句块中声明的变量只是代码块内的局部变量，其他地方不能访问。</p>
+</blockquote>
+<p>如果 try 语句块中发生异常，那么一个相应的异常对象就会被拋出，然后 catch 语句就会依据所拋出异常对象的类型进行捕获，并处理。处理之后，程序会跳过 try 语句块中剩余的语句，转到 catch 语句块后面的第一条语句开始执行。如果 try 语句块中没有异常发生，那么 try 块正常结束，后面的 catch 语句块被跳过，程序将从 catch 语句块后的第一条语句开始执行。</p>
+<h2 id="多catch语句"><a href="#多catch语句" class="headerlink" title="多catch语句"></a>多catch语句</h2><p>如果 try 代码块中有很多语句会发生异常，而且发生的异常种类又很多。那么可以在 try 后面跟有多个 catch 代码块。多 catch 代码块语法如下：</p>
+<pre><code class="java">try &#123;
+    // 可能会发生异常的语句
+&#125; catch(ExceptionType e) &#123;
+    // 处理异常语句
+&#125; catch(ExceptionType e) &#123;
+    // 处理异常语句
+&#125; catch(ExceptionType e) &#123;
+    // 处理异常语句
+...
+&#125;
+</code></pre>
+<p>JVM在捕获到异常后，会从上到下匹配<code>catch</code>语句，匹配到某个<code>catch</code>后，执行<code>catch</code>代码块，然后不再继续匹配。即多个<code>catch</code>只会有一个被执行。**<font color=red>所以存在多个<code>catch</code>的时候，<code>catch</code>的顺序非常重要：子类必须写在前面。</font>**</p>
+<pre><code class="java">public static void main(String[] args)&#123;
+    try&#123;
+        process1();
+        process2();
+        process3();
+    &#125;catch (IOException)&#123;
+        System.out.println(&quot;IO error&quot;);
+    &#125;catch (UnsupportedEncodingException)&#123; //永远捕获不到
+        System.out.println(&quot;Bad encoding&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>因为<code>UnsupportedEncodingException</code>是<code>IOException</code>的子类。当抛出<code>IOException</code>时，<code>UnsupportedEncodingException</code>就不会被捕获。正确的做法是把子类放在前面。</p>
+<h2 id="try…catch…finally"><a href="#try…catch…finally" class="headerlink" title="try…catch…finally"></a>try…catch…finally</h2><pre><code class="java">try&#123;
+    //可能会发生异常的语句
+&#125;catch(Exception e)&#123;
+    //处理异常语句
+&#125;finally&#123;
+    //清理代码块
+&#125;
+</code></pre>
+<p>无论是否发生异常（除特殊情况外），finally 语句块中的代码都会被执行。</p>
+<p>使用 try-catch-finally 语句时需注意以下几点：</p>
+<ol>
+<li><p>异常处理语法结构中只有 try 块是必需的，也就是说，如果没有 try 块，则不能有后面的 catch 块和 finally 块；</p>
+</li>
+<li><p>catch 块和 finally 块都是可选的，但 catch 块和 finally 块至少出现其中之一，也可以同时出现；</p>
+</li>
+<li><p>可以有多个 catch 块，捕获父类异常的 catch 块必须位于捕获子类异常的后面；</p>
+</li>
+<li><p>不能只有 try 块，既没有 catch 块，也没有 finally 块；</p>
+</li>
+<li><p>多个 catch 块必须位于 try 块之后，finally 块必须位于所有的 catch 块之后。</p>
+</li>
+<li><p>finally 与 try 语句块匹配的语法格式，此种情况会导致异常丢失，所以不常见。(当方法声明了可能抛出的异常时可以不用<code>catch</code>语句块。)</p>
+</li>
+</ol>
+<h2 id="异常的转型"><a href="#异常的转型" class="headerlink" title="异常的转型"></a>异常的转型</h2><p>如果一个方法捕获了某个异常后，又在<code>catch</code>子句中抛出新的异常，就相当于把抛出的异常类型“转换”了：</p>
+<pre><code class="java">public class Main &#123;
+    public static void main(String[] args) &#123;
+        try &#123;
+            process1();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+    static void process1() &#123;
+        try &#123;
+            process2();
+        &#125; catch (NullPointerException e) &#123;
+            throw new IllegalArgumentException(); //异常转型
+        &#125;
+    &#125;
+    static void process2() &#123;
+        throw new NullPointerException();
+    &#125;
+&#125;
+</code></pre>
+<p>打印出的异常栈类似：</p>
+<pre><code>java.lang.IllegalArgumentException
+    at Main.process1(Main.java:15)
+    at Main.main(Main.java:5)
+</code></pre>
+<p>这说明新的异常丢失了原始异常信息，我们已经看不到原始异常<code>NullPointerException</code>的信息了。为了能追踪到完整的异常栈，在构造异常的时候，把原始的<code>Exception</code>实例传进去，新的<code>Exception</code>就可以持有原始<code>Exception</code>信息。对上述代码改进如下：</p>
+<pre><code class="java">public class Main &#123;
+    public static void main(String[] args) &#123;
+        try &#123;
+            process1();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+    static void process1() &#123;
+        try &#123;
+            process2();
+        &#125; catch (NullPointerException e) &#123;
+            throw new IllegalArgumentException(e);
+        &#125;
+    &#125;
+    static void process2() &#123;
+        throw new NullPointerException();
+    &#125;
+&#125;
+</code></pre>
+<p>运行上述代码，打印出的异常栈类似：</p>
+<pre><code>java.lang.IllegalArgumentException: java.lang.NullPointerException
+    at Main.process1(Main.java:15)
+    at Main.main(Main.java:5)
+Caused by: java.lang.NullPointerException
+    at Main.process2(Main.java:20)
+    at Main.process1(Main.java:13)
+</code></pre>
+<p>注意到<code>Caused by: Xxx</code>，说明捕获的<code>IllegalArgumentException</code>并不是造成问题的根源，根源在于<code>NullPointerException</code>，是在<code>Main.process2()</code>方法抛出的。</p>
+<p>在代码中获取原始异常可以使用<code>Throwable.getCause()</code>方法。如果返回<code>null</code>，说明已经是“根异常”了。</p>
+<h2 id="异常屏蔽"><a href="#异常屏蔽" class="headerlink" title="异常屏蔽"></a>异常屏蔽</h2><p>如果在执行<code>finally</code>语句时抛出异常，那么，<code>catch</code>语句的异常还能否继续抛出？</p>
+<pre><code class="java">public class Main &#123;
+    public static void main(String[] args) &#123;
+        try &#123;
+            Integer.parseInt(&quot;abc&quot;);
+        &#125; catch (Exception e) &#123;
+            System.out.println(&quot;catched&quot;);
+            throw new RuntimeException(e);
+        &#125; finally &#123;
+            System.out.println(&quot;finally&quot;);
+            throw new IllegalArgumentException();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>执行上述代码，发现异常信息如下：</p>
+<pre><code>catched
+finally
+Exception in thread &quot;main&quot; java.lang.IllegalArgumentException
+    at Main.main(Main.java:11)
+</code></pre>
+<p>这说明<code>finally</code>抛出异常后，原来在<code>catch</code>中准备抛出的异常就“消失”了，因为只能抛出一个异常。没有被抛出的异常称为“被屏蔽”的异常（Suppressed Exception）。</p>
+<p>在极少数的情况下，我们需要获知所有的异常。如何保存所有的异常信息？方法是先用<code>origin</code>变量保存原始异常，然后调用<code>Throwable.addSuppressed()</code>，把原始异常添加进来，最后在<code>finally</code>抛出：</p>
+<pre><code class="java">public class Main &#123;
+    public static void main(String[] args) throws Exception &#123;
+        Exception origin = null;
+        try &#123;
+            System.out.println(Integer.parseInt(&quot;abc&quot;));
+        &#125; catch (Exception e) &#123;
+            origin = e;
+            throw e;
+        &#125; finally &#123;
+            Exception e = new IllegalArgumentException();
+            if (origin != null) &#123;
+                e.addSuppressed(origin);
+            &#125;
+            throw e;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>当<code>catch</code>和<code>finally</code>都抛出了异常时，虽然<code>catch</code>的异常被屏蔽了，但是，<code>finally</code>抛出的异常仍然包含了它：</p>
+<pre><code>Exception in thread &quot;main&quot; java.lang.IllegalArgumentException
+    at Main.main(Main.java:11)
+Suppressed: java.lang.NumberFormatException: For input string: &quot;abc&quot;
+    at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+    at java.base/java.lang.Integer.parseInt(Integer.java:652)
+    at java.base/java.lang.Integer.parseInt(Integer.java:770)
+    at Main.main(Main.java:6)
+</code></pre>
+<p>通过<code>Throwable.getSuppressed()</code>可以获取所有的<code>Suppressed Exception</code>。</p>
+<p>绝大多数情况下，在<code>finally</code>中不要抛出异常。因此，我们通常不需要关心<code>Suppressed Exception</code>。</p>
+<h1 id="记录异常"><a href="#记录异常" class="headerlink" title="记录异常"></a>记录异常</h1><h2 id="异常跟踪栈"><a href="#异常跟踪栈" class="headerlink" title="异常跟踪栈"></a>异常跟踪栈</h2><p>异常对象的<code>printStackTrace()</code>方法用于打印异常的跟踪栈信息，根据<code>printStackTrace()</code>方法输出的结果可以找到异常的源头，并跟踪到异常一路触发的过程。</p>
+<p>异常跟踪栈信息的第一行一般详细显示异常的类型和异常的详细消息，接下来是所有异常的发生点，各行显示被调用方法中执行的停止位置，并标明类、类中的方法名、与故障点对应的文件的行。一行行地往下看，跟踪栈总是最内部的被调用方法逐渐上传，直到最外部业务操作的起点，通常就是程序的入口 main 方法或 Thread 类的 run 方法（多线程的情形）。</p>
+<pre><code class="java">public class Main&#123;
+    public static void main(String[] args)&#123;
+        try&#123;
+            process1();
+        &#125;catch(Exception e)&#123;
+            e.printStackTrace(); //printStackTrace()可以打印出方法的调用栈。
+        &#125;
+    &#125;
+    static void process1()&#123;
+        prcess2();
+    &#125;
+    static void process2()&#123;
+        Integer.parseInt(null); //会抛出NumberFormatException。
+    &#125;
+&#125;
+</code></pre>
+<p>上面的代码会抛出如下错误：</p>
+<pre><code class="java">java.lang.NumberFormatException: null
+    at java.base/java.lang.Integer.parseInt(Integer.java:614)
+    at java.base/java.lang.Integer.parseInt(Integer.java:770)
+    at Main.process2(Main.java:16)
+    at Main.process1(Main.java:12)
+    at Main.main(Main.java:5)
+</code></pre>
+<p><code>printStackTrace()</code>对于调试错误十分有用，上述信息表示<code>NumberFormatException</code>是在<code>java.lang.Integer.parseInt()</code>方法中抛出的，从下往上看调用关系依次是：</p>
+<ol>
+<li><code>main()</code>调用<code>process1()</code>；</li>
+<li><code>process1()</code>调用<code>process2()</code>;</li>
+<li><code>process2()</code>调用<code>Integer.parseInt(String)</code>;</li>
+<li><code>Integer.parseInt(String)</code>调用<code>Integer.parseInt(String, int)</code>。</li>
+</ol>
+<h2 id="日志记录异常"><a href="#日志记录异常" class="headerlink" title="日志记录异常"></a>日志记录异常</h2><p>如果要生成简单的日志记录，可以使用全局日志记录器并调用其 info 方法</p>
+<pre><code class="java">Logger.getGlobal().info(&quot;打印信息&quot;);
+</code></pre>
+<p>JDK Logging 把日志分为如下表 7 个级别，等级依次降低。</p>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>SEVERE</th>
+<th>WARNING</th>
+<th>INFO</th>
+<th>CONFIG</th>
+<th>FINE</th>
+<th>FINER</th>
+<th>FINEST</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>调用方法</td>
+<td>severe()</td>
+<td>warning()</td>
+<td>info()</td>
+<td>config()</td>
+<td>fine()</td>
+<td>finer()</td>
+<td>finest()</td>
+</tr>
+<tr>
+<td>含义</td>
+<td>严重</td>
+<td>警告</td>
+<td>信息</td>
+<td>配置</td>
+<td>良好</td>
+<td>较好</td>
+<td>最好</td>
+</tr>
+</tbody></table>
+<p><code>Logger</code>的默认级别是<code>INFO</code>，比<code>INFO</code>级别低的日志将不显示。<code>Logger</code>的默认级别定义在<code>jre</code>安装目录的<code>lib</code>下。</p>
+<pre><code class="java">#Limit the message that are printed on the console to INFO and above.
+java.util.logging.ConsoleHandler.level = INFO    
+</code></pre>
+<p>所以在默认情况下，日志只显示前三个级别，对于所有级别有下面几种记录方法：</p>
+<pre><code class="java">logger.warning(message);
+logger.fine(message);
+// 还可以使用log方法指定级别：
+logger.log(Level.FINE, mesage);
+</code></pre>
+<p>可以使用<code>setLevel</code>方法设置级别，例如<code>logger.setLevel(Level.FINE);</code>可以将<code>FINE</code>和更高级别的都记录下来。另外，还可以使用<code>Level.ALL</code>开启所有级别的记录，或者使用<code>Level.OFF</code>关闭所有级别的记录。</p>
+<blockquote>
+<p>如果将记录级别设计为<code>INFO</code>或者更低，则需要修改日志处理器的配置，默认的日志处理器不会处理低于<code>INFO</code>级别的信息。</p>
+</blockquote>
+<p>修改日志管理器配置</p>
+<p>可以通过编辑配置文件来修改日志系统的各种属性。在默认情况下，配置文件存在于<code>jre</code>安装目录下<code>jre/lib/logging.properties</code>。要想使用另一个配置文件，就要将<code>java.util.logging.config.file</code>特性设置为配置文件的存储位置，并用以下命令启动应用程序。</p>
+<pre><code class="java">java-Djava.util.logging.config.file = &lt;config-file-name&gt;
+</code></pre>
+<p>日志管理器在JVM启动过程中初始化，在<code>main()</code>执行之前完成，一旦开始运行<code>main()</code>方法就无法修改配置。如果在<code>main()</code>方法中调用<code>System.setProperty(&quot;java.util.logging.config.file&quot;,file)</code>，也会调用<code>LogManager.readConfiguration()</code>来重新初始化日志管理器。</p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/01/%5BJava%5D-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%9F%BA%E7%A1%80/" rel="prev" title="程序设计基础">
+      <i class="fa fa-chevron-left"></i> 程序设计基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/14/%5BJava%5D-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86/" rel="next" title="字符串处理">
+      字符串处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%82%E5%B8%B8"><span class="nav-text">声明异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="nav-text">自定义异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8"><span class="nav-text">抛出异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7-%E5%A4%84%E7%90%86%E5%BC%82%E5%B8%B8"><span class="nav-text">捕获&#x2F;处理异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%84%E6%9C%BA%E5%88%B6"><span class="nav-text">异常处理的机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try%E2%80%A6catch%E8%AF%AD%E5%8F%A5"><span class="nav-text">try…catch语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9Acatch%E8%AF%AD%E5%8F%A5"><span class="nav-text">多catch语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try%E2%80%A6catch%E2%80%A6finally"><span class="nav-text">try…catch…finally</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E7%9A%84%E8%BD%AC%E5%9E%8B"><span class="nav-text">异常的转型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%B1%8F%E8%94%BD"><span class="nav-text">异常屏蔽</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%BC%82%E5%B8%B8"><span class="nav-text">记录异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E8%B7%9F%E8%B8%AA%E6%A0%88"><span class="nav-text">异常跟踪栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%BC%82%E5%B8%B8"><span class="nav-text">日志记录异常</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

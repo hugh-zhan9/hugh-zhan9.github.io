@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO之 BufferedReader详解">
+<meta property="og:url" content="http://example.com/2020/07/23/Java-IO-BufferedReader/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-23T19:52:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.190Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/07/23/Java-IO-BufferedReader/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java IO之 BufferedReader详解 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/23/Java-IO-BufferedReader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java IO之 BufferedReader详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-23 19:52:28" itemprop="dateCreated datePublished" datetime="2020-07-23T19:52:28+00:00">2020-07-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/23/Java-IO-BufferedReader/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/23/Java-IO-BufferedReader/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="BufferedReader-简介"><a href="#BufferedReader-简介" class="headerlink" title="BufferedReader 简介"></a>BufferedReader 简介</h1><p><code>BufferedReader</code>是缓冲字符输入流。它继承于<code>Reader</code>。</p>
+<p><code>BufferedReader</code>的作用是为其他字符输入流添加一些缓冲功能。</p>
+<h2 id="函数列表"><a href="#函数列表" class="headerlink" title="函数列表"></a>函数列表</h2><pre><code class="java">// 构造函数
+BufferedReader(Reader in, int se)
+BufferedReader(Reader in)
+// 常用方法
+int             read()
+int             read(char cbuf[], int off, int len)
+String          readLine(boolean ignoreLF)
+String          readLine()
+long            skip(long n)
+boolean         ready()
+boolean         markSupported()
+void            mark(int readAheadLimit)
+void            rest()
+void            close()
+Stream&lt;String&gt;  lines()
+</code></pre>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.lang.SecurityException;
+
+public class BufferedReaderTest &#123;
+
+    private static final int LEN = 5;
+
+    public static void main(String[] args) &#123;
+        testBufferedReader() ;
+    &#125;
+
+
+    private static void testBufferedReader() &#123;
+
+        try &#123;
+            File file = new File(&quot;bufferedreader.txt&quot;);
+            BufferedReader in =new BufferedReader(new FileReader(file));
+
+            // 从字符流中读取5个字符。abcde
+            for (int i=0; i&lt;LEN; i++) &#123;
+                if (in.ready()) &#123;
+                    int tmp = in.read();
+                    System.out.printf(&quot;%d : %c\n&quot;, i, tmp);
+                &#125;
+            &#125;
+
+            // 若该字符流不支持标记功能，则直接退出
+            if (!in.markSupported()) &#123;
+                System.out.println(&quot;make not supported!&quot;);
+                return ;
+            &#125;
+
+            // 标记当前索引位置，即标记第6个位置的元素--f
+            // 1024对应marklimit
+            in.mark(1024);
+
+            // 跳过22个字符。
+            in.skip(22);
+
+            // 读取5个字符
+            char[] buf = new char[LEN];
+            in.read(buf, 0, LEN);
+            System.out.printf(&quot;buf=%s\n&quot;, String.valueOf(buf));
+            // 读取该行剩余的数据
+            System.out.printf(&quot;readLine=%s\n&quot;, in.readLine());
+
+            in.reset();
+            in.read(buf, 0, LEN);
+            System.out.printf(&quot;buf=%s\n&quot;, String.valueOf(buf));
+
+            in.close();
+       &#125; catch (FileNotFoundException e) &#123;
+           e.printStackTrace();
+       &#125; catch (SecurityException e) &#123;
+           e.printStackTrace();
+       &#125; catch (IOException e) &#123;
+           e.printStackTrace();
+       &#125;
+    &#125;
+</code></pre>
+<h1 id="BufferedReader-源码"><a href="#BufferedReader-源码" class="headerlink" title="BufferedReader 源码"></a>BufferedReader 源码</h1><pre><code class="java">package java.io;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+
+public class BufferedReader extends Reader &#123;
+
+    private Reader in;
+
+    private char cb[];
+    private int nChars, nextChar;
+
+    private static final int INVALIDATED = -2;
+    private static final int UNMARKED = -1;
+    private int markedChar = UNMARKED;
+    private int readAheadLimit = 0; /* Valid only when markedChar &gt; 0 */
+
+    /** If the next character is a line feed, skip it */
+    private boolean skipLF = false;
+
+    /** The skipLF flag when the mark was set */
+    private boolean markedSkipLF = false;
+
+    private static int defaultCharBufferSize = 8192;
+    private static int defaultExpectedLineLength = 80;
+
+    public BufferedReader(Reader in, int sz) &#123;
+        super(in);
+        if (sz &lt;= 0)
+            throw new IllegalArgumentException(&quot;Buffer size &lt;= 0&quot;);
+        this.in = in;
+        cb = new char[sz];
+        nextChar = nChars = 0;
+    &#125;
+
+  
+    public BufferedReader(Reader in) &#123;
+        this(in, defaultCharBufferSize);
+    &#125;
+
+    /** Checks to make sure that the stream has not been closed */
+    private void ensureOpen() throws IOException &#123;
+        if (in == null)
+            throw new IOException(&quot;Stream closed&quot;);
+    &#125;
+
+    private void fill() throws IOException &#123;
+        int dst;
+        if (markedChar &lt;= UNMARKED) &#123;
+            /* No mark */
+            dst = 0;
+        &#125; else &#123;
+            /* Marked */
+            int delta = nextChar - markedChar;
+            if (delta &gt;= readAheadLimit) &#123;
+                /* Gone past read-ahead limit: Invalidate mark */
+                markedChar = INVALIDATED;
+                readAheadLimit = 0;
+                dst = 0;
+            &#125; else &#123;
+                if (readAheadLimit &lt;= cb.length) &#123;
+                    /* Shuffle in the current buffer */
+                    System.arraycopy(cb, markedChar, cb, 0, delta);
+                    markedChar = 0;
+                    dst = delta;
+                &#125; else &#123;
+                    /* Reallocate buffer to accommodate read-ahead limit */
+                    char ncb[] = new char[readAheadLimit];
+                    System.arraycopy(cb, markedChar, ncb, 0, delta);
+                    cb = ncb;
+                    markedChar = 0;
+                    dst = delta;
+                &#125;
+                nextChar = nChars = delta;
+            &#125;
+        &#125;
+
+        int n;
+        do &#123;
+            n = in.read(cb, dst, cb.length - dst);
+        &#125; while (n == 0);
+        if (n &gt; 0) &#123;
+            nChars = dst + n;
+            nextChar = dst;
+        &#125;
+    &#125;
+
+    public int read() throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            for (;;) &#123;
+                if (nextChar &gt;= nChars) &#123;
+                    fill();
+                    if (nextChar &gt;= nChars)
+                        return -1;
+                &#125;
+                if (skipLF) &#123;
+                    skipLF = false;
+                    if (cb[nextChar] == &#39;\n&#39;) &#123;
+                        nextChar++;
+                        continue;
+                    &#125;
+                &#125;
+                return cb[nextChar++];
+            &#125;
+        &#125;
+    &#125;
+
+    private int read1(char[] cbuf, int off, int len) throws IOException &#123;
+        if (nextChar &gt;= nChars) &#123;
+            if (len &gt;= cb.length &amp;&amp; markedChar &lt;= UNMARKED &amp;&amp; !skipLF) &#123;
+                return in.read(cbuf, off, len);
+            &#125;
+            fill();
+        &#125;
+        if (nextChar &gt;= nChars) return -1;
+        if (skipLF) &#123;
+            skipLF = false;
+            if (cb[nextChar] == &#39;\n&#39;) &#123;
+                nextChar++;
+                if (nextChar &gt;= nChars)
+                    fill();
+                if (nextChar &gt;= nChars)
+                    return -1;
+            &#125;
+        &#125;
+        int n = Math.min(len, nChars - nextChar);
+        System.arraycopy(cb, nextChar, cbuf, off, n);
+        nextChar += n;
+        return n;
+    &#125;
+
+    public int read(char cbuf[], int off, int len) throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            if ((off &lt; 0) || (off &gt; cbuf.length) || (len &lt; 0) ||
+                ((off + len) &gt; cbuf.length) || ((off + len) &lt; 0)) &#123;
+                throw new IndexOutOfBoundsException();
+            &#125; else if (len == 0) &#123;
+                return 0;
+            &#125;
+
+            int n = read1(cbuf, off, len);
+            if (n &lt;= 0) return n;
+            while ((n &lt; len) &amp;&amp; in.ready()) &#123;
+                int n1 = read1(cbuf, off + n, len - n);
+                if (n1 &lt;= 0) break;
+                n += n1;
+            &#125;
+            return n;
+        &#125;
+    &#125;
+
+
+    String readLine(boolean ignoreLF) throws IOException &#123;
+        StringBuilder s = null;
+        int startChar;
+
+        synchronized (lock) &#123;
+            ensureOpen();
+            boolean omitLF = ignoreLF || skipLF;
+
+        bufferLoop:
+            for (;;) &#123;
+
+                if (nextChar &gt;= nChars)
+                    fill();
+                if (nextChar &gt;= nChars) &#123; /* EOF */
+                    if (s != null &amp;&amp; s.length() &gt; 0)
+                        return s.toString();
+                    else
+                        return null;
+                &#125;
+                boolean eol = false;
+                char c = 0;
+                int i;
+
+                /* Skip a leftover &#39;\n&#39;, if necessary */
+                if (omitLF &amp;&amp; (cb[nextChar] == &#39;\n&#39;))
+                    nextChar++;
+                skipLF = false;
+                omitLF = false;
+
+            charLoop:
+                for (i = nextChar; i &lt; nChars; i++) &#123;
+                    c = cb[i];
+                    if ((c == &#39;\n&#39;) || (c == &#39;\r&#39;)) &#123;
+                        eol = true;
+                        break charLoop;
+                    &#125;
+                &#125;
+
+                startChar = nextChar;
+                nextChar = i;
+
+                if (eol) &#123;
+                    String str;
+                    if (s == null) &#123;
+                        str = new String(cb, startChar, i - startChar);
+                    &#125; else &#123;
+                        s.append(cb, startChar, i - startChar);
+                        str = s.toString();
+                    &#125;
+                    nextChar++;
+                    if (c == &#39;\r&#39;) &#123;
+                        skipLF = true;
+                    &#125;
+                    return str;
+                &#125;
+
+                if (s == null)
+                    s = new StringBuilder(defaultExpectedLineLength);
+                s.append(cb, startChar, i - startChar);
+            &#125;
+        &#125;
+    &#125;
+
+    public String readLine() throws IOException &#123;
+        return readLine(false);
+    &#125;
+
+    public long skip(long n) throws IOException &#123;
+        if (n &lt; 0L) &#123;
+            throw new IllegalArgumentException(&quot;skip value is negative&quot;);
+        &#125;
+        synchronized (lock) &#123;
+            ensureOpen();
+            long r = n;
+            while (r &gt; 0) &#123;
+                if (nextChar &gt;= nChars)
+                    fill();
+                if (nextChar &gt;= nChars) /* EOF */
+                    break;
+                if (skipLF) &#123;
+                    skipLF = false;
+                    if (cb[nextChar] == &#39;\n&#39;) &#123;
+                        nextChar++;
+                    &#125;
+                &#125;
+                long d = nChars - nextChar;
+                if (r &lt;= d) &#123;
+                    nextChar += r;
+                    r = 0;
+                    break;
+                &#125;
+                else &#123;
+                    r -= d;
+                    nextChar = nChars;
+                &#125;
+            &#125;
+            return n - r;
+        &#125;
+    &#125;
+
+
+    public boolean ready() throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+
+         
+            if (skipLF) &#123;
+                if (nextChar &gt;= nChars &amp;&amp; in.ready()) &#123;
+                    fill();
+                &#125;
+                if (nextChar &lt; nChars) &#123;
+                    if (cb[nextChar] == &#39;\n&#39;)
+                        nextChar++;
+                    skipLF = false;
+                &#125;
+            &#125;
+            return (nextChar &lt; nChars) || in.ready();
+        &#125;
+    &#125;
+
+    public boolean markSupported() &#123;
+        return true;
+    &#125;
+
+    public void mark(int readAheadLimit) throws IOException &#123;
+        if (readAheadLimit &lt; 0) &#123;
+            throw new IllegalArgumentException(&quot;Read-ahead limit &lt; 0&quot;);
+        &#125;
+        synchronized (lock) &#123;
+            ensureOpen();
+            this.readAheadLimit = readAheadLimit;
+            markedChar = nextChar;
+            markedSkipLF = skipLF;
+        &#125;
+    &#125;
+
+   
+    public void reset() throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            if (markedChar &lt; 0)
+                throw new IOException((markedChar == INVALIDATED)
+                                      ? &quot;Mark invalid&quot;
+                                      : &quot;Stream not marked&quot;);
+            nextChar = markedChar;
+            skipLF = markedSkipLF;
+        &#125;
+    &#125;
+
+    public void close() throws IOException &#123;
+        synchronized (lock) &#123;
+            if (in == null)
+                return;
+            try &#123;
+                in.close();
+            &#125; finally &#123;
+                in = null;
+                cb = null;
+            &#125;
+        &#125;
+    &#125;
+
+    
+    public Stream&lt;String&gt; lines() &#123;
+        Iterator&lt;String&gt; iter = new Iterator&lt;String&gt;() &#123;
+            String nextLine = null;
+
+            @Override
+            public boolean hasNext() &#123;
+                if (nextLine != null) &#123;
+                    return true;
+                &#125; else &#123;
+                    try &#123;
+                        nextLine = readLine();
+                        return (nextLine != null);
+                    &#125; catch (IOException e) &#123;
+                        throw new UncheckedIOException(e);
+                    &#125;
+                &#125;
+            &#125;
+
+            @Override
+            public String next() &#123;
+                if (nextLine != null || hasNext()) &#123;
+                    String line = nextLine;
+                    nextLine = null;
+                    return line;
+                &#125; else &#123;
+                    throw new NoSuchElementException();
+                &#125;
+            &#125;
+        &#125;;
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+                iter, Spliterator.ORDERED | Spliterator.NONNULL), false);
+    &#125;
+&#125;
+</code></pre>
+<p>说明： </p>
+<p>想读懂<code>BufferReader</code>的源码，就要先理解它的思想。<code>BufferReader</code>的作用是为其它<code>Reader</code>提供缓冲功能。创建<code>BufferReader</code>时，我们会通过它的构造函数指定某个<code>Reader</code>为参数。<code>BufferReader</code>会将该<code>Reader</code>中的数据分批读取，每次读取一部分到缓冲中；操作完缓冲中的这部分数据之后，再从<code>Reader</code>中读取下一部分的数据。</p>
+<p>为什么需要缓冲呢？原因很简单，效率问题！缓冲中的数据实际上是保存在内存中，而原始数据可能是保存在硬盘或<code>NandFlash</code>中；而我们知道，从内存中读取数据的速度比从硬盘读取数据的速度至少快10倍以上。那干嘛不干脆一次性将全部数据都读取到缓冲中呢？第一，读取全部的数据所需要的时间可能会很长。第二，内存价格很贵，容量不像硬盘那么大。</p>
+<p><code>BufferReader</code>中最重要的函数<code>fill()</code>的源码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    int dst;
+    if (markedChar &lt;= UNMARKED) &#123;
+        /* No mark */
+        dst = 0;
+    &#125; else &#123;
+        /* Marked */
+        int delta = nextChar - markedChar;
+        if (delta &gt;= readAheadLimit) &#123;
+            /* Gone past read-ahead limit: Invalidate mark */
+            markedChar = INVALIDATED;
+            readAheadLimit = 0;
+            dst = 0;
+        &#125; else &#123;
+            if (readAheadLimit &lt;= cb.length) &#123;
+                /* Shuffle in the current buffer */
+                System.arraycopy(cb, markedChar, cb, 0, delta);
+                markedChar = 0;
+                dst = delta;
+            &#125; else &#123;
+                /* Reallocate buffer to accommodate read-ahead limit */
+                char ncb[] = new char[readAheadLimit];
+                System.arraycopy(cb, markedChar, ncb, 0, delta);
+                cb = ncb;
+                markedChar = 0;
+                dst = delta;
+            &#125;
+            nextChar = nChars = delta;
+        &#125;
+    &#125;
+
+    int n;
+    do &#123;
+        n = in.read(cb, dst, cb.length - dst);
+    &#125; while (n == 0);
+    if (n &gt; 0) &#123;
+        nChars = dst + n;
+        nextChar = dst;
+    &#125;
+&#125;
+</code></pre>
+<p>根据<code>fill()</code>中的<code>if...else...</code>，将<code>fill()</code>分为4种情况进行说明。</p>
+<p><strong>情况1</strong>：读取完缓冲区的数据，并且缓冲区没有被标记</p>
+<p>执行流程如下，</p>
+<ol>
+<li>其它函数调用<code>fill()</code>，来更新缓冲区的数据</li>
+<li><code>fill()</code>执行代码<code>if (markedChar &lt;= UNMARKED) &#123; ... &#125;</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    int dst;
+    if (markedChar &lt;= UNMARKED) &#123;
+        /* No mark */
+        dst = 0;
+    &#125; 
+
+    int n;
+    do &#123;
+        n = in.read(cb, dst, cb.length - dst);
+    &#125; while (n == 0);
+
+    if (n &gt; 0) &#123;
+        nChars = dst + n;
+        nextChar = dst;
+    &#125;
+&#125;
+</code></pre>
+<p>说明：</p>
+<p>这种情况发生的情况是： <code>Reader</code>中有很长的数据，我们每次从中读取一部分数据到缓冲中进行操作。每次当我们读取完缓冲中的数据之后，并且此时<code>BufferedReader</code>没有被标记；那么，就接着从<code>Reader</code>中读取下一部分的数据到缓冲中。</p>
+<p>其中，判断是否读完缓冲区中的数据，是通过比较<code>nextChar</code>和<code>nChars</code>之间大小来判断的。其中，<code>nChars</code>是缓冲区中字符的总的个数，而<code>nextChar</code>是缓冲区中下一个要读取的字符的位置。</p>
+<p>判断<code>BufferedReader</code>有没有被标记，是通过<code>markedChar</code>来判断的。<br>理解这个思想之后，再对这种情况下的<code>fill()</code>的代码进行分析，就特别容易理解了。</p>
+<ol>
+<li><code>if (markedChar &lt;= UNMARKED)</code>它的作用是判断<code>BufferedReader</code>是否被标记。若被标记，则<code>dst=0</code>。</li>
+<li><code>in.read(cb, dst, cb.length - dst)</code>等价于<code>in.read(cb, 0, cb.length)</code>，意思是从<code>Reader</code>对象<code>in</code>中读取<code>cb.length</code>个数据，并存储到缓冲区<code>cb</code>中，而且从缓冲区<code>cb</code>的位置0开始存储。该函数返回值等于n，也就是n表示实际读取的字符个数。若<code>n=0</code>(即没有读取到数据)，则继续读取，直到读到数据为止。</li>
+<li><code>nChars=dst+n</code>等价于<code>nChars=n</code>；意味着，更新缓冲区数据<code>cb</code>之后，设置<code>nChars</code>(缓冲区的数据个数)为n。</li>
+<li><code>nextChar=dst</code>等价于<code>nextChar=0</code>；意味着，更新缓冲区数据<code>cb</code>之后，设置<code>nextChar</code>(缓冲区中下一个会被读取的字符的索引值)为0。</li>
+</ol>
+<p><strong>情况2</strong>：读取完缓冲区的数据，缓冲区的标记位置&gt;0，并且“当前标记的长度超过标记上限(readAheadLimit)</p>
+<p>执行流程如下，</p>
+<ol>
+<li>其它函数调用<code>fill()</code>，来更新缓冲区的数据</li>
+<li><code>fill()</code>执行代码<code>if (delta &gt;= readAheadLimit) &#123; ... &#125;</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    int dst;
+    if (markedChar &gt; UNMARKED) &#123;
+        int delta = nextChar - markedChar;
+        if (delta &gt;= readAheadLimit) &#123;
+            markedChar = INVALIDATED;
+            readAheadLimit = 0;
+            dst = 0;
+        &#125; 
+    &#125;
+
+    int n;
+    do &#123;
+        n = in.read(cb, dst, cb.length - dst);
+    &#125; while (n == 0);
+    if (n &gt; 0) &#123;
+        nChars = dst + n;
+        nextChar = dst;
+    &#125;
+&#125;
+</code></pre>
+<p>说明：<br>这种情况发生的情况是：<code>BufferedReader</code>中有很长的数据，我们每次从中读取一部分数据到缓冲区中进行操作。当我们读取完缓冲区中的数据之后，并且此时，<code>BufferedReader</code>存在标记时，同时，当前标记的长度大于标记上限；那么，就发生情况2。此时，我们会丢弃标记并更新缓冲区。</p>
+<ol>
+<li><p><code>delta = nextChar - markedChar</code>；其中，<code>delta</code>就是当前标记的长度，它是下一个被读取字符的位置减去被标记的位置的差值。</p>
+</li>
+<li><p><code>if (delta &gt;= readAheadLimit)</code>；其中，当<code>delta &gt;= readAheadLimit</code>，就意味着，当前标记的长度 &gt;= 标记上限。为什么要有标记上限，即<code>readAheadLimit</code>的值到底有何意义呢？</p>
+<p>我们标记一个位置之后，更新缓冲区的时候，被标记的位置会被保存；当我们不停的更新缓冲区的时候，被标记的位置会被不停的放大。然后内存的容量是有效的，我们不可能不限制长度的存储标记。所以，需要<code>readAheadLimit</code>来限制标记长度！</p>
+</li>
+<li><p><code>in.read(cb, dst, cb.length - dst)</code>等价于<code>in.read(cb, 0, cb.length)</code>，意思是从<code>Reader</code>对象<code>in</code>中读取<code>cb.length</code>个数据，并存储到缓冲区<code>cb</code>中，而且从缓冲区<code>cb</code>的位置0开始存储。该函数返回值等于n，也就是n表示实际读取的字符个数。若n=0(即没有读取到数据)，则继续读取，直到读到数据为止。</p>
+</li>
+<li><p><code>nChars=dst+n</code>等价于 <code>nChars=n</code>；意味着，更新缓冲区数据<code>cb</code>之后，设置<code>nChars</code>(缓冲区的数据个数)为n。</p>
+</li>
+<li><p><code>nextChar=dst</code>等价于<code>nextChar=0</code>；意味着，更新缓冲区数据<code>cb</code>之后，设置<code>nextChar</code>(缓冲区中下一个会被读取的字符的索引值)为0。</p>
+</li>
+</ol>
+<p><strong>情况3</strong>：读取完缓冲区的数据，缓冲区的标记位置&gt;0，当前标记的长度没超过标记上限(readAheadLimit)，并且标记上限(readAheadLimit)小于/等于缓冲的长度；</p>
+<p>执行流程如下，</p>
+<ol>
+<li>其它函数调用<code>fill()</code>，来更新缓冲区的数据</li>
+<li><code>fill()</code>执行代码<code>if (readAheadLimit &lt;= cb.length) &#123; ... &#125;</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    int dst;
+    if (markedChar &gt; UNMARKED) &#123;
+        int delta = nextChar - markedChar;
+        if ((delta &lt; readAheadLimit) &amp;&amp;  (readAheadLimit &lt;= cb.length) ) &#123;
+            System.arraycopy(cb, markedChar, cb, 0, delta);
+            markedChar = 0;
+            dst = delta;
+
+            nextChar = nChars = delta;
+        &#125;
+    &#125;
+
+    int n;
+    do &#123;
+        n = in.read(cb, dst, cb.length - dst);
+    &#125; while (n == 0);
+    if (n &gt; 0) &#123;
+        nChars = dst + n;
+        nextChar = dst;
+    &#125;
+&#125;
+</code></pre>
+<p>说明：</p>
+<p>这种情况发生的情况是 ：<code>BufferedReader</code>中有很长的数据，我们每次从中读取一部分数据到缓冲区中进行操作。当我们读取完缓冲区中的数据之后，并且此时，<code>BufferedReader</code>存在标记时，同时，当前标记的长度小于标记上限，并且标记上限小于/等于缓冲区长度；那么，就发生情况3。此时，我们保留被标记的位置(即，保留被标记位置开始的数据)，并更新缓冲区(将新增的数据，追加到保留的数据之后)。</p>
+<p><strong>情况4</strong>：读取完缓冲区的数据，缓冲区的标记位置&gt;0，当前标记的长度没超过标记上限(readAheadLimit)，并且标记上限(readAheadLimit)大于缓冲的长度；</p>
+<p>执行流程如下，</p>
+<ol>
+<li>其它函数调用<code>fill()</code>，来更新缓冲区的数据</li>
+<li><code>fill()</code>执行代码<code>else &#123; char ncb[] = new char[readAheadLimit]; ... &#125;</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    int dst;
+    if (markedChar &gt; UNMARKED) &#123;
+        int delta = nextChar - markedChar;
+        if ((delta &lt; readAheadLimit) &amp;&amp;  (readAheadLimit &gt; cb.length) ) &#123;
+            char ncb[] = new char[readAheadLimit];
+            System.arraycopy(cb, markedChar, ncb, 0, delta);
+            cb = ncb;
+            markedChar = 0;
+            dst = delta;
+
+            nextChar = nChars = delta;
+        &#125;
+    &#125;
+
+    int n;
+    do &#123;
+        n = in.read(cb, dst, cb.length - dst);
+    &#125; while (n == 0);
+    if (n &gt; 0) &#123;
+        nChars = dst + n;
+        nextChar = dst;
+    &#125;
+&#125;
+</code></pre>
+<p>说明：</p>
+<p>这种情况发生的情况是：<code>BufferedReader</code>中有很长的数据，我们每次从中读取一部分数据到缓冲区中进行操作。当我们读取完缓冲区中的数据之后，并且此时，<code>BufferedReader</code>存在标记时，同时，当前标记的长度小于标记上限，并且标记上限大于缓冲区长度；那么，就发生情况4。此时，我们要先更新缓冲区的大小，然后再保留被标记的位置(即，保留被标记位置开始的数据)，并更新缓冲区数据(将新增的数据，追加到保留的数据之后)。</p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-IO/" rel="tag"><i class="fa fa-tag"></i> Java-IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/22/Java-IO-PipedOutputStream-PipedInputStream/" rel="prev" title="Java IO之 PipedOutputStream/PipedInputStream详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 PipedOutputStream/PipedInputStream详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/23/Java-IO-PrintStream/" rel="next" title="Java IO之 PrintStream详解">
+      Java IO之 PrintStream详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BufferedReader-%E7%AE%80%E4%BB%8B"><span class="nav-text">BufferedReader 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%88%97%E8%A1%A8"><span class="nav-text">函数列表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BufferedReader-%E6%BA%90%E7%A0%81"><span class="nav-text">BufferedReader 源码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

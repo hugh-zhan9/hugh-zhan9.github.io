@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO之 DataInputStream详解">
+<meta property="og:url" content="http://example.com/2020/07/22/Java-IO-DataInputStream/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-22T20:22:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.194Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/07/22/Java-IO-DataInputStream/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java IO之 DataInputStream详解 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/22/Java-IO-DataInputStream/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java IO之 DataInputStream详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-22 20:22:28" itemprop="dateCreated datePublished" datetime="2020-07-22T20:22:28+00:00">2020-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/22/Java-IO-DataInputStream/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/22/Java-IO-DataInputStream/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>25k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>22 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="DataInputStream-简介"><a href="#DataInputStream-简介" class="headerlink" title="DataInputStream 简介"></a>DataInputStream 简介</h1><p><code>DataInputStream</code>是数据输入流。它继承于<code>FilterInputStream</code>。</p>
+<p><code>DataInputStream</code>是用来装饰其他输入流的，它允许应用程序以与机器无关方式从底层输入流中读取基本Java数据类型。应用程序可以使用<code>DataOutputStream</code>(数据输出流)写入由<code>DataInputStream</code>(数据输入流)读取的数据。</p>
+<p>DataInputStream 函数列表</p>
+<pre><code class="java">// 构造函数
+DataInputStream(InputStream in)
+// 常用方法
+int         read(byte[] buffer, int offset, int length)
+int         read(byte[] buffer)
+boolean     readBoolean()
+byte        readByte()
+char        readChar()
+double      readDouble()
+float       readFloat()
+void        readFully(byte[] dst)
+void        readFully(byte[] dst, int offset, int byteCount)
+int         readInt()
+String      readLine()    // 已弃用
+long        readLong()
+short       readShort()
+String      readUTF(DataInput in)
+String      readUTF()
+int         readUnsignedByte()
+int         readUnsignedShort()
+int         skipBytes(int count)
+</code></pre>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.lang.SecurityException;
+
+public class DataInputStreamTest &#123;
+
+    private static final int LEN = 5;
+
+    public static void main(String[] args) &#123;
+        // 测试DataOutputStream，将数据写入到输出流中。
+        testDataOutputStream() ;
+        // 测试DataInputStream，从上面的输出流结果中读取数据。
+        testDataInputStream() ;
+    &#125;
+
+    
+    private static void testDataOutputStream() &#123;
+
+        try &#123;
+            File file = new File(&quot;file.txt&quot;);
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
+
+            out.writeBoolean(true);
+            out.writeByte((byte)0x41);
+            out.writeChar((char)0x4243);
+            out.writeShort((short)0x4445);
+            out.writeInt(0x12345678);
+            out.writeLong(0x0FEDCBA987654321L);
+
+            out.writeUTF(&quot;abcdefghijklmnopqrstuvwxyz严12&quot;);
+
+            out.close();
+       &#125; catch (FileNotFoundException e) &#123;
+           e.printStackTrace();
+       &#125; catch (SecurityException e) &#123;
+           e.printStackTrace();
+       &#125; catch (IOException e) &#123;
+           e.printStackTrace();
+       &#125;
+    &#125;
+
+    
+    private static void testDataInputStream() &#123;
+
+        try &#123;
+            File file = new File(&quot;file.txt&quot;);
+            DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+            System.out.printf(&quot;byteToHexString(0x8F):0x%s\n&quot;, byteToHexString((byte)0x8F));
+            System.out.printf(&quot;charToHexString(0x8FCF):0x%s\n&quot;, charToHexString((char)0x8FCF));
+
+            System.out.printf(&quot;readBoolean():%s\n&quot;, in.readBoolean());
+            System.out.printf(&quot;readByte():0x%s\n&quot;, byteToHexString(in.readByte()));
+            System.out.printf(&quot;readChar():0x%s\n&quot;, charToHexString(in.readChar()));
+            System.out.printf(&quot;readShort():0x%s\n&quot;, shortToHexString(in.readShort()));
+            System.out.printf(&quot;readInt():0x%s\n&quot;, Integer.toHexString(in.readInt()));
+            System.out.printf(&quot;readLong():0x%s\n&quot;, Long.toHexString(in.readLong()));
+            System.out.printf(&quot;readUTF():%s\n&quot;, in.readUTF());
+
+            in.close();
+       &#125; catch (FileNotFoundException e) &#123;
+           e.printStackTrace();
+       &#125; catch (SecurityException e) &#123;
+           e.printStackTrace();
+       &#125; catch (IOException e) &#123;
+           e.printStackTrace();
+       &#125;
+    &#125;
+
+    // 打印byte对应的16进制的字符串
+    private static String byteToHexString(byte val) &#123;
+        return Integer.toHexString(val &amp; 0xff);
+    &#125;
+
+    // 打印char对应的16进制的字符串
+    private static String charToHexString(char val) &#123;
+        return Integer.toHexString(val);
+    &#125;
+
+    // 打印short对应的16进制的字符串
+    private static String shortToHexString(short val) &#123;
+        return Integer.toHexString(val &amp; 0xffff);
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code class="java">byteToHexString(0x8F):0x8f
+charToHexString(0x8FCF):0x8fcf
+readBoolean():true
+readByte():0x41
+readChar():0x4243
+readShort():0x4445
+readInt():0x12345678
+readLong():0xfedcba987654321
+readUTF():abcdefghijklmnopqrstuvwxyz严12
+</code></pre>
+<p>结果说明：</p>
+<ol>
+<li>查看<code>file.txt</code>文本。16进制的数据显示如下：</li>
+</ol>
+<p><img data-src="" alt="img"></p>
+<p><code>001f</code>对应的<code>int</code>值是31。它表示的含义是后面的UTF-8数据的长度。字符串<code>abcdefghijklmnopqrstuvwxyz严12</code>中字母<code>ab...xyz</code>的长度是26，<code>严</code>对应的UTF-8数据长度是3；<code>12</code>长度是2。总的长度=26+3+2=31。</p>
+<ol start="2">
+<li>返回<code>byte</code>对应的16进制的字符串</li>
+</ol>
+<p>源码如下：</p>
+<pre><code class="java">private static String byteToHexString(byte val) &#123;
+    return Integer.toHexString(val &amp; 0xff);
+&#125;
+</code></pre>
+<p>想想为什么代码是：</p>
+<pre><code class="java">return Integer.toHexString(val &amp; 0xff);
+</code></pre>
+<p>而不是</p>
+<pre><code class="java">return Integer.toHexString(val);
+</code></pre>
+<p>我们先看看<code>byteToHexString((byte)0x8F); </code>在上面两种情况下的输出结果。</p>
+<blockquote>
+<p><code>return Integer.toHexString(val &amp; 0xff);</code>对应的输出是<code>0xffffff8f</code><br><code>return Integer.toHexString(val);</code>对应的输出是<code>0x8f</code></p>
+</blockquote>
+<p>为什么会这样呢？</p>
+<p>原因其实很简单，就是<code>byte</code>类型转换成<code>int</code>类型导致的问题。<br><code>byte</code>类型的<code>0x8F</code>是一个负数，它对应的2进制是<code>10001111</code>；将一个负数的<code>byte</code>转换成<code>int</code>类型时，执行的是有符号转型(新增位都填充符号位的数字)。<code>0x8F</code>的符号位是1，因为将它转换成<code>int</code>时，填充1；转型后的结果(2进制)是<code>11111111 11111111 11111111 10001111</code>，对应的16进制为<code>0xffffff8f</code>。</p>
+<p>因此当我们执行<code>Integer.toHexString(val);</code>时，返回的就是<code>0xffffff8f</code>。</p>
+<p>在<code>Integer.toHexString(val &amp; 0xff)</code>中，相当于<code>0xffffff8f &amp; 0xff</code>，得到的结果是<code>0x8f</code>。</p>
+<ol start="3">
+<li>返回<code>char</code>和<code>short</code>对应的16进制的字符串</li>
+</ol>
+<p>返回char对应的16进制的字符串对应的源码如下：</p>
+<pre><code class="java">private static String charToHexString(char val) &#123;
+    return Integer.toHexString(val);
+&#125;
+</code></pre>
+<p>返回<code>short</code>对应的16进制的字符串对应源码如下：</p>
+<pre><code class="java">private static String shortToHexString(short val) &#123;
+    return Integer.toHexString(val &amp; 0xffff);
+&#125;
+</code></pre>
+<p>比较上面的两个函数，为什么一个是<code>val</code>，而另一个是<code>val &amp; 0xffff</code>？<br> 通过2的分析，我们类似的推出为什么返回<code>short</code>对应的16进制的字符串要执行<code>val &amp; 0xffff</code>。<br> 但是，为什么返回<code>char</code>对应的16进制的字符串只需要执行<code>val</code>即可。原因也很简单，Java中<code>char</code>是无符号类型，占两个字节。将<code>char</code>转换为<code>int</code>类型，执行的是无符号转型，新增位都填充0。</p>
+<h1 id="DataInputStream-源码"><a href="#DataInputStream-源码" class="headerlink" title="DataInputStream 源码"></a>DataInputStream 源码</h1><pre><code class="java">package java.io;
+
+
+public class DataInputStream extends FilterInputStream implements DataInput &#123;
+
+    public DataInputStream(InputStream in) &#123;
+        super(in);
+    &#125;
+
+    private byte bytearr[] = new byte[80];
+    private char chararr[] = new char[80];
+
+    // 从数据输入流中读取一个字节
+    public final int read(byte b[]) throws IOException &#123;
+        return in.read(b, 0, b.length);
+    &#125;
+
+     // 从数据输入流中读取数据并存储到字节数组b中。
+    // off是字节数组b中开始存储元素的起始位置。
+    // len是读取字节的个数。
+    public final int read(byte b[], int off, int len) throws IOException &#123;
+        return in.read(b, off, len);
+    &#125;
+
+    // 从数据输入流中读取数据并填满字节数组b中；没有填满数组b则一直读取，直到填满位置。
+    // 从字节数组b的位置0开始存储，并且读取的字节个数等于b的长度。
+    public final void readFully(byte b[]) throws IOException &#123;
+        readFully(b, 0, b.length);
+    &#125;
+
+    // 从数据输入流中读取数据并存储到字节数组b中；若没读取len个字节，直到一直读取直到读取完len个字节为止。
+    public final void readFully(byte b[], int off, int len) throws IOException &#123;
+        if (len &lt; 0)
+            throw new IndexOutOfBoundsException();
+        int n = 0;
+        while (n &lt; len) &#123;
+            int count = in.read(b, off + n, len - n);
+            if (count &lt; 0)
+                throw new EOFException();
+            n += count;
+        &#125;
+    &#125;
+
+    // 从数据输入流中读取数据并存储到字节数组b中；若没读取len个字节，直到一直读取直到读取完len个字节为止。
+    public final int skipBytes(int n) throws IOException &#123;
+        int total = 0;
+        int cur = 0;
+
+        while ((total&lt;n) &amp;&amp; ((cur = (int) in.skip(n-total)) &gt; 0)) &#123;
+            total += cur;
+        &#125;
+
+        return total;
+    &#125;
+
+    // 从数据输入流中读取数据并存储到字节数组b中；若没读取len个字节，直到一直读取直到读取完len个字节为止。
+    public final boolean readBoolean() throws IOException &#123;
+        int ch = in.read();
+        if (ch &lt; 0)
+            throw new EOFException();
+        return (ch != 0);
+    &#125;
+
+    // 从数据输入流中读取Byte类型的值
+    public final byte readByte() throws IOException &#123;
+        int ch = in.read();
+        if (ch &lt; 0)
+            throw new EOFException();
+        return (byte)(ch);
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readUnsignedByte&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next byte of this input stream, interpreted as an
+     *             unsigned 8-bit number.
+     * @exception  EOFException  if this input stream has reached the end.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see         java.io.FilterInputStream#in
+     */
+    public final int readUnsignedByte() throws IOException &#123;
+        int ch = in.read();
+        if (ch &lt; 0)
+            throw new EOFException();
+        return ch;
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readShort&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next two bytes of this input stream, interpreted as a
+     *             signed 16-bit number.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading two bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.FilterInputStream#in
+     */
+    public final short readShort() throws IOException &#123;
+        int ch1 = in.read();
+        int ch2 = in.read();
+        if ((ch1 | ch2) &lt; 0)
+            throw new EOFException();
+        return (short)((ch1 &lt;&lt; 8) + (ch2 &lt;&lt; 0));
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readUnsignedShort&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next two bytes of this input stream, interpreted as an
+     *             unsigned 16-bit integer.
+     * @exception  EOFException  if this input stream reaches the end before
+     *             reading two bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.FilterInputStream#in
+     */
+    public final int readUnsignedShort() throws IOException &#123;
+        int ch1 = in.read();
+        int ch2 = in.read();
+        if ((ch1 | ch2) &lt; 0)
+            throw new EOFException();
+        return (ch1 &lt;&lt; 8) + (ch2 &lt;&lt; 0);
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readChar&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next two bytes of this input stream, interpreted as a
+     *             &lt;code&gt;char&lt;/code&gt;.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading two bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.FilterInputStream#in
+     */
+    public final char readChar() throws IOException &#123;
+        int ch1 = in.read();
+        int ch2 = in.read();
+        if ((ch1 | ch2) &lt; 0)
+            throw new EOFException();
+        return (char)((ch1 &lt;&lt; 8) + (ch2 &lt;&lt; 0));
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readInt&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next four bytes of this input stream, interpreted as an
+     *             &lt;code&gt;int&lt;/code&gt;.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading four bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.FilterInputStream#in
+     */
+    public final int readInt() throws IOException &#123;
+        int ch1 = in.read();
+        int ch2 = in.read();
+        int ch3 = in.read();
+        int ch4 = in.read();
+        if ((ch1 | ch2 | ch3 | ch4) &lt; 0)
+            throw new EOFException();
+        return ((ch1 &lt;&lt; 24) + (ch2 &lt;&lt; 16) + (ch3 &lt;&lt; 8) + (ch4 &lt;&lt; 0));
+    &#125;
+
+    private byte readBuffer[] = new byte[8];
+
+    /**
+     * See the general contract of the &lt;code&gt;readLong&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next eight bytes of this input stream, interpreted as a
+     *             &lt;code&gt;long&lt;/code&gt;.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading eight bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.FilterInputStream#in
+     */
+    public final long readLong() throws IOException &#123;
+        readFully(readBuffer, 0, 8);
+        return (((long)readBuffer[0] &lt;&lt; 56) +
+                ((long)(readBuffer[1] &amp; 255) &lt;&lt; 48) +
+                ((long)(readBuffer[2] &amp; 255) &lt;&lt; 40) +
+                ((long)(readBuffer[3] &amp; 255) &lt;&lt; 32) +
+                ((long)(readBuffer[4] &amp; 255) &lt;&lt; 24) +
+                ((readBuffer[5] &amp; 255) &lt;&lt; 16) +
+                ((readBuffer[6] &amp; 255) &lt;&lt;  8) +
+                ((readBuffer[7] &amp; 255) &lt;&lt;  0));
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readFloat&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next four bytes of this input stream, interpreted as a
+     *             &lt;code&gt;float&lt;/code&gt;.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading four bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.DataInputStream#readInt()
+     * @see        java.lang.Float#intBitsToFloat(int)
+     */
+    public final float readFloat() throws IOException &#123;
+        return Float.intBitsToFloat(readInt());
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readDouble&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     the next eight bytes of this input stream, interpreted as a
+     *             &lt;code&gt;double&lt;/code&gt;.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading eight bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @see        java.io.DataInputStream#readLong()
+     * @see        java.lang.Double#longBitsToDouble(long)
+     */
+    public final double readDouble() throws IOException &#123;
+        return Double.longBitsToDouble(readLong());
+    &#125;
+
+    private char lineBuffer[];
+
+    /**
+     * See the general contract of the &lt;code&gt;readLine&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @deprecated This method does not properly convert bytes to characters.
+     * As of JDK&amp;nbsp;1.1, the preferred way to read lines of text is via the
+     * &lt;code&gt;BufferedReader.readLine()&lt;/code&gt; method.  Programs that use the
+     * &lt;code&gt;DataInputStream&lt;/code&gt; class to read lines can be converted to use
+     * the &lt;code&gt;BufferedReader&lt;/code&gt; class by replacing code of the form:
+     * &lt;blockquote&gt;&lt;pre&gt;
+     *     DataInputStream d =&amp;nbsp;new&amp;nbsp;DataInputStream(in);
+     * &lt;/pre&gt;&lt;/blockquote&gt;
+     * with:
+     * &lt;blockquote&gt;&lt;pre&gt;
+     *     BufferedReader d
+     *          =&amp;nbsp;new&amp;nbsp;BufferedReader(new&amp;nbsp;InputStreamReader(in));
+     * &lt;/pre&gt;&lt;/blockquote&gt;
+     *
+     * @return     the next line of text from this input stream.
+     * @exception  IOException  if an I/O error occurs.
+     * @see        java.io.BufferedReader#readLine()
+     * @see        java.io.FilterInputStream#in
+     */
+    @Deprecated
+    public final String readLine() throws IOException &#123;
+        char buf[] = lineBuffer;
+
+        if (buf == null) &#123;
+            buf = lineBuffer = new char[128];
+        &#125;
+
+        int room = buf.length;
+        int offset = 0;
+        int c;
+
+loop:   while (true) &#123;
+            switch (c = in.read()) &#123;
+              case -1:
+              case &#39;\n&#39;:
+                break loop;
+
+              case &#39;\r&#39;:
+                int c2 = in.read();
+                if ((c2 != &#39;\n&#39;) &amp;&amp; (c2 != -1)) &#123;
+                    if (!(in instanceof PushbackInputStream)) &#123;
+                        this.in = new PushbackInputStream(in);
+                    &#125;
+                    ((PushbackInputStream)in).unread(c2);
+                &#125;
+                break loop;
+
+              default:
+                if (--room &lt; 0) &#123;
+                    buf = new char[offset + 128];
+                    room = buf.length - offset - 1;
+                    System.arraycopy(lineBuffer, 0, buf, 0, offset);
+                    lineBuffer = buf;
+                &#125;
+                buf[offset++] = (char) c;
+                break;
+            &#125;
+        &#125;
+        if ((c == -1) &amp;&amp; (offset == 0)) &#123;
+            return null;
+        &#125;
+        return String.copyValueOf(buf, 0, offset);
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;readUTF&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     * &lt;p&gt;
+     * Bytes
+     * for this operation are read from the contained
+     * input stream.
+     *
+     * @return     a Unicode string.
+     * @exception  EOFException  if this input stream reaches the end before
+     *               reading all the bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @exception  UTFDataFormatException if the bytes do not represent a valid
+     *             modified UTF-8 encoding of a string.
+     * @see        java.io.DataInputStream#readUTF(java.io.DataInput)
+     */
+    public final String readUTF() throws IOException &#123;
+        return readUTF(this);
+    &#125;
+
+    /**
+     * Reads from the
+     * stream &lt;code&gt;in&lt;/code&gt; a representation
+     * of a Unicode  character string encoded in
+     * &lt;a href=&quot;DataInput.html#modified-utf-8&quot;&gt;modified UTF-8&lt;/a&gt; format;
+     * this string of characters is then returned as a &lt;code&gt;String&lt;/code&gt;.
+     * The details of the modified UTF-8 representation
+     * are  exactly the same as for the &lt;code&gt;readUTF&lt;/code&gt;
+     * method of &lt;code&gt;DataInput&lt;/code&gt;.
+     *
+     * @param      in   a data input stream.
+     * @return     a Unicode string.
+     * @exception  EOFException            if the input stream reaches the end
+     *               before all the bytes.
+     * @exception  IOException   the stream has been closed and the contained
+     *             input stream does not support reading after close, or
+     *             another I/O error occurs.
+     * @exception  UTFDataFormatException  if the bytes do not represent a
+     *               valid modified UTF-8 encoding of a Unicode string.
+     * @see        java.io.DataInputStream#readUnsignedShort()
+     */
+    public static final String readUTF(DataInput in) throws IOException &#123;
+        int utflen = in.readUnsignedShort();
+        byte[] bytearr = null;
+        char[] chararr = null;
+        if (in instanceof DataInputStream) &#123;
+            DataInputStream dis = (DataInputStream)in;
+            if (dis.bytearr.length &lt; utflen)&#123;
+                dis.bytearr = new byte[utflen*2];
+                dis.chararr = new char[utflen*2];
+            &#125;
+            chararr = dis.chararr;
+            bytearr = dis.bytearr;
+        &#125; else &#123;
+            bytearr = new byte[utflen];
+            chararr = new char[utflen];
+        &#125;
+
+        int c, char2, char3;
+        int count = 0;
+        int chararr_count=0;
+
+        in.readFully(bytearr, 0, utflen);
+
+        while (count &lt; utflen) &#123;
+            c = (int) bytearr[count] &amp; 0xff;
+            if (c &gt; 127) break;
+            count++;
+            chararr[chararr_count++]=(char)c;
+        &#125;
+
+        while (count &lt; utflen) &#123;
+            c = (int) bytearr[count] &amp; 0xff;
+            switch (c &gt;&gt; 4) &#123;
+                case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+                    /* 0xxxxxxx*/
+                    count++;
+                    chararr[chararr_count++]=(char)c;
+                    break;
+                case 12: case 13:
+                    /* 110x xxxx   10xx xxxx*/
+                    count += 2;
+                    if (count &gt; utflen)
+                        throw new UTFDataFormatException(
+                            &quot;malformed input: partial character at end&quot;);
+                    char2 = (int) bytearr[count-1];
+                    if ((char2 &amp; 0xC0) != 0x80)
+                        throw new UTFDataFormatException(
+                            &quot;malformed input around byte &quot; + count);
+                    chararr[chararr_count++]=(char)(((c &amp; 0x1F) &lt;&lt; 6) |
+                                                    (char2 &amp; 0x3F));
+                    break;
+                case 14:
+                    /* 1110 xxxx  10xx xxxx  10xx xxxx */
+                    count += 3;
+                    if (count &gt; utflen)
+                        throw new UTFDataFormatException(
+                            &quot;malformed input: partial character at end&quot;);
+                    char2 = (int) bytearr[count-2];
+                    char3 = (int) bytearr[count-1];
+                    if (((char2 &amp; 0xC0) != 0x80) || ((char3 &amp; 0xC0) != 0x80))
+                        throw new UTFDataFormatException(
+                            &quot;malformed input around byte &quot; + (count-1));
+                    chararr[chararr_count++]=(char)(((c     &amp; 0x0F) &lt;&lt; 12) |
+                                                    ((char2 &amp; 0x3F) &lt;&lt; 6)  |
+                                                    ((char3 &amp; 0x3F) &lt;&lt; 0));
+                    break;
+                default:
+                    /* 10xx xxxx,  1111 xxxx */
+                    throw new UTFDataFormatException(
+                        &quot;malformed input around byte &quot; + count);
+            &#125;
+        &#125;
+        // The number of chars produced may be less than utflen
+        return new String(chararr, 0, chararr_count);
+    &#125;
+&#125;
+</code></pre>
+<p>说明：DataInputStream 的作用就是“允许应用程序以与机器无关方式从底层输入流中读取基本 Java 数据类型。应用程序可以使用数据输出流写入稍后由数据输入流读取的数据。”<br>DataInputStream 中比较难以理解的函数就只有 readUTF(DataInput in)；下面，对这个函数进行详细的介绍，其它的函数请参考源码中的注释。</p>
+<p>readUTF(DataInput in)源码如下：</p>
+<pre><code>public final static String readUTF(DataInput in) throws IOException &#123;
+    // 从“数据输入流”中读取“无符号的short类型”的值：
+    // 注意：UTF-8输入流的前2个字节是数据的长度
+    int utflen = in.readUnsignedShort();
+    byte[] bytearr = null;
+    char[] chararr = null;
+
+    // 如果in本身是“数据输入流”，
+    // 则，设置字节数组bytearr = &quot;数据输入流&quot;的成员bytearr
+    //     设置字符数组chararr = &quot;数据输入流&quot;的成员chararr
+    // 否则的话，新建数组bytearr和chararr
+    if (in instanceof DataInputStream) &#123;
+        DataInputStream dis = (DataInputStream)in;
+        if (dis.bytearr.length &lt; utflen)&#123;
+            dis.bytearr = new byte[utflen*2];
+            dis.chararr = new char[utflen*2];
+        &#125;
+        chararr = dis.chararr;
+        bytearr = dis.bytearr;
+    &#125; else &#123;
+        bytearr = new byte[utflen];
+        chararr = new char[utflen];
+    &#125;
+
+    int c, char2, char3;
+    int count = 0;
+    int chararr_count=0;
+
+    // 从“数据输入流”中读取数据并存储到字节数组bytearr中；从bytearr的位置0开始存储，存储长度为utflen。
+    // 注意，这里是存储到字节数组！而且读取的是全部的数据。
+    in.readFully(bytearr, 0, utflen);
+
+    // 将“字节数组bytearr”中的数据 拷贝到 “字符数组chararr”中
+    // 注意：这里相当于“预处理的输入流中单字节的符号”，因为UTF-8是1-4个字节可变的。
+    while (count &lt; utflen) &#123;
+        // 将每个字节转换成int值
+        c = (int) bytearr[count] &amp; 0xff;
+        // UTF-8的每个字节的值都不会超过127；所以，超过127，则退出。
+        if (c &gt; 127) break;
+        count++;
+        // 将c保存到“字符数组chararr”中
+        chararr[chararr_count++]=(char)c;
+    &#125;
+
+    // 处理完输入流中单字节的符号之后，接下来我们继续处理。
+    while (count &lt; utflen) &#123;
+        // 下面语句执行了2步操作。
+        // (01) 将字节由 “byte类型” 转换成 “int类型”。
+        //      例如， “11001010” 转换成int之后，是 “00000000 00000000 00000000 11001010”
+        // (02) 将 “int类型” 的数据左移4位
+        //      例如， “00000000 00000000 00000000 11001010” 左移4位之后，变成 “00000000 00000000 00000000 00001100”
+        c = (int) bytearr[count] &amp; 0xff;
+        switch (c &gt;&gt; 4) &#123;
+            // 若 UTF-8 是单字节，即 bytearr[count] 对应是 “0xxxxxxx” 形式；
+            // 则 bytearr[count] 对应的int类型的c的取值范围是 0-7。
+            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+                /* 0xxxxxxx*/
+                count++;
+                chararr[chararr_count++]=(char)c;
+                break;
+
+            // 若 UTF-8 是双字节，即 bytearr[count] 对应是 “110xxxxx  10xxxxxx” 形式中的第一个，即“110xxxxx”
+            // 则 bytearr[count] 对应的int类型的c的取值范围是 12-13。
+            case 12: case 13:
+                /* 110x xxxx   10xx xxxx*/
+                count += 2;
+                if (count &gt; utflen)
+                    throw new UTFDataFormatException(
+                        &quot;malformed input: partial character at end&quot;);
+                char2 = (int) bytearr[count-1];
+                if ((char2 &amp; 0xC0) != 0x80)
+                    throw new UTFDataFormatException(
+                        &quot;malformed input around byte &quot; + count);
+                chararr[chararr_count++]=(char)(((c &amp; 0x1F) &lt;&lt; 6) |
+                                                (char2 &amp; 0x3F));
+                break;
+
+            // 若 UTF-8 是三字节，即 bytearr[count] 对应是 “1110xxxx  10xxxxxx  10xxxxxx” 形式中的第一个，即“1110xxxx”
+            // 则 bytearr[count] 对应的int类型的c的取值是14 。
+            case 14:
+                /* 1110 xxxx  10xx xxxx  10xx xxxx */
+                count += 3;
+                if (count &gt; utflen)
+                    throw new UTFDataFormatException(
+                        &quot;malformed input: partial character at end&quot;);
+                char2 = (int) bytearr[count-2];
+                char3 = (int) bytearr[count-1];
+                if (((char2 &amp; 0xC0) != 0x80) || ((char3 &amp; 0xC0) != 0x80))
+                    throw new UTFDataFormatException(
+                        &quot;malformed input around byte &quot; + (count-1));
+                chararr[chararr_count++]=(char)(((c     &amp; 0x0F) &lt;&lt; 12) |
+                                                ((char2 &amp; 0x3F) &lt;&lt; 6)  |
+                                                ((char3 &amp; 0x3F) &lt;&lt; 0));
+                break;
+
+            // 若 UTF-8 是四字节，即 bytearr[count] 对应是 “11110xxx 10xxxxxx  10xxxxxx  10xxxxxx” 形式中的第一个，即“11110xxx”
+            // 则 bytearr[count] 对应的int类型的c的取值是15 
+            default:
+                /* 10xx xxxx,  1111 xxxx */
+                throw new UTFDataFormatException(
+                    &quot;malformed input around byte &quot; + count);
+        &#125;
+    &#125;
+    // The number of chars produced may be less than utflen
+    return new String(chararr, 0, chararr_count);
+&#125;
+</code></pre>
+<p>说明：<br>(01) readUTF()的作用，是从输入流中读取UTF-8编码的数据，并以String字符串的形式返回。<br>(02) 知道了readUTF()的作用之后，下面开始介绍readUTF()的流程：</p>
+<p><strong>第1步</strong>，读取出输入流中的UTF-8数据的长度。代码如下：</p>
+<pre><code>int utflen = in.readUnsignedShort();
+</code></pre>
+<p>UTF-8数据的长度包含在它的前两个字节当中；我们通过readUnsignedShort()读取出前两个字节对应的正整数就是UTF-8数据的长度。</p>
+<p><strong>第2步</strong>，创建2个数组：字节数组bytearr 和 字符数组chararr。代码如下：</p>
+<pre><code>if (in instanceof DataInputStream) &#123;
+    DataInputStream dis = (DataInputStream)in;
+    if (dis.bytearr.length &lt; utflen)&#123;
+        dis.bytearr = new byte[utflen*2];
+        dis.chararr = new char[utflen*2];
+    &#125;
+    chararr = dis.chararr;
+    bytearr = dis.bytearr;
+&#125; else &#123;
+    bytearr = new byte[utflen];
+    chararr = new char[utflen];
+&#125;
+</code></pre>
+<p>首先，判断该输入流本身是不是DataInputStream，即数据输入流；若是的话，<br> 则，设置字节数组bytearr = “数据输入流”的成员bytearr；设置字符数组chararr = “数据输入流”的成员chararr。<br> 否则的话，新建数组bytearr和chararr。</p>
+<p><strong>第3步</strong>，将UTF-8数据全部读取到“字节数组bytearr”中。代码如下：</p>
+<pre><code>in.readFully(bytearr, 0, utflen);
+</code></pre>
+<p>注意: 这里是存储到字节数组，而不是字符数组！而且读取的是全部的数据。</p>
+<p><strong>第4步</strong>，对UTF-8中的单字节数据进行预处理。代码如下：</p>
+<pre><code>while (count &lt; utflen) &#123;
+    // 将每个字节转换成int值
+    c = (int) bytearr[count] &amp; 0xff;
+    // UTF-8的单字节数据的值都不会超过127；所以，超过127，则退出。
+    if (c &gt; 127) break;
+    count++;
+    // 将c保存到“字符数组chararr”中
+    chararr[chararr_count++]=(char)c;
+&#125;
+</code></pre>
+<p>UTF-8的数据是变长的，可以是1-4个字节；在readUTF()中，我们最终是将全部的UTF-8数据保存到“字符数组(而不是字节数组)”中，再将其转换为String字符串。<br> 由于UTF-8的单字节和ASCII相同，所以这里就将它们进行预处理，直接保存到“字符数组chararr”中。对于其它的UTF-8数据，则在后面进行处理。</p>
+<p><strong>第5步</strong>，对“第4步 预处理”之后的数据，接着进行处理。代码如下：</p>
+<pre><code>// 处理完输入流中单字节的符号之后，接下来我们继续处理。
+while (count &lt; utflen) &#123;
+    // 下面语句执行了2步操作。
+    // (01) 将字节由 “byte类型” 转换成 “int类型”。
+    //      例如， “11001010” 转换成int之后，是 “00000000 00000000 00000000 11001010”
+    // (02) 将 “int类型” 的数据左移4位
+    //      例如， “00000000 00000000 00000000 11001010” 左移4位之后，变成 “00000000 00000000 00000000 00001100”
+    c = (int) bytearr[count] &amp; 0xff;
+    switch (c &gt;&gt; 4) &#123;
+        // 若 UTF-8 是单字节，即 bytearr[count] 对应是 “0xxxxxxx” 形式；
+        // 则 bytearr[count] 对应的int类型的c的取值范围是 0-7。
+        case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+            /* 0xxxxxxx*/
+            count++;
+            chararr[chararr_count++]=(char)c;
+            break;
+
+        // 若 UTF-8 是双字节，即 bytearr[count] 对应是 “110xxxxx  10xxxxxx” 形式中的第一个，即“110xxxxx”
+        // 则 bytearr[count] 对应的int类型的c的取值范围是 12-13。
+        case 12: case 13:
+            /* 110x xxxx   10xx xxxx*/
+            count += 2;
+            if (count &gt; utflen)
+                throw new UTFDataFormatException(
+                    &quot;malformed input: partial character at end&quot;);
+            char2 = (int) bytearr[count-1];
+            if ((char2 &amp; 0xC0) != 0x80)
+                throw new UTFDataFormatException(
+                    &quot;malformed input around byte &quot; + count);
+            chararr[chararr_count++]=(char)(((c &amp; 0x1F) &lt;&lt; 6) |
+                                            (char2 &amp; 0x3F));
+            break;
+
+        // 若 UTF-8 是三字节，即 bytearr[count] 对应是 “1110xxxx  10xxxxxx  10xxxxxx” 形式中的第一个，即“1110xxxx”
+        // 则 bytearr[count] 对应的int类型的c的取值是14 。
+        case 14:
+            /* 1110 xxxx  10xx xxxx  10xx xxxx */
+            count += 3;
+            if (count &gt; utflen)
+                throw new UTFDataFormatException(
+                    &quot;malformed input: partial character at end&quot;);
+            char2 = (int) bytearr[count-2];
+            char3 = (int) bytearr[count-1];
+            if (((char2 &amp; 0xC0) != 0x80) || ((char3 &amp; 0xC0) != 0x80))
+                throw new UTFDataFormatException(
+                    &quot;malformed input around byte &quot; + (count-1));
+            chararr[chararr_count++]=(char)(((c     &amp; 0x0F) &lt;&lt; 12) |
+                                            ((char2 &amp; 0x3F) &lt;&lt; 6)  |
+                                            ((char3 &amp; 0x3F) &lt;&lt; 0));
+            break;
+
+        // 若 UTF-8 是四字节，即 bytearr[count] 对应是 “11110xxx 10xxxxxx  10xxxxxx  10xxxxxx” 形式中的第一个，即“11110xxx”
+        // 则 bytearr[count] 对应的int类型的c的取值是15 
+        default:
+            /* 10xx xxxx,  1111 xxxx */
+            throw new UTFDataFormatException(
+                &quot;malformed input around byte &quot; + count);
+    &#125;
+&#125;
+</code></pre>
+<p>(a) 我们将下面的两条语句一起进行说明</p>
+<pre><code>c = (int) bytearr[count] &amp; 0xff;
+switch (c &gt;&gt; 4) &#123; ... &#125;
+</code></pre>
+<p>首先，我们必须要理解 为什么要这么做(执行上面2条语句)呢？<br> 原因很简单，这么做的目的就是为了区分UTF-8数据是几位的；因为UTF-8的数据是1～4字节不等。</p>
+<p>我们先看看UTF-8在1～4位情况下的格式。</p>
+<pre><code>--------------------+---------------------------------------------
+1字节 UTF-8的通用格式  | 0xxxxxxx
+2字节 UTF-8的通用格式  | 110xxxxx 10xxxxxx
+3字节 UTF-8的通用格式  | 1110xxxx 10xxxxxx 10xxxxxx
+4字节 UTF-8的通用格式  | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+</code></pre>
+<p>执行 c = (int) bytearr[count] &amp; 0xff; 和 c&gt;&gt;4 这2项操作之后，上面的数据变成</p>
+<pre><code>--------------------+---------------------------------------------
+1字节 UTF-8的变换后对应的int类型值  | 00000000 00000000 00000000 00000xxx    (范围是0~7) 
+2字节 UTF-8的变换后对应的int类型值  | 00000000 00000000 00000000 0000110x    (范围是12~13) 
+3字节 UTF-8的变换后对应的int类型值  | 00000000 00000000 00000000 00001110    (范围是14) 
+4字节 UTF-8的变换后对应的int类型值  | 00000000 00000000 00000000 00001111    (范围是15) 
+</code></pre>
+<p><strong>为什么会是这样呢？</strong></p>
+<p>我们以“2字节 UTF-8的通用格式”来说明。<br> 它的通用格式是 “110xxxxx 10xxxxxx”，我们在操作时，只会操作第1个字节，即只会操作“110xxxxx”<br>(a.1) 在执行 c = (int) bytearr[count] &amp; 0xff; 时，首先将 bytearr[count] 转换成int。</p>
+<pre><code>“110xxxxx”
+</code></pre>
+<p>转成int类型之后，变成</p>
+<pre><code>“11111111 11111111 11111111 110xxxxx”
+</code></pre>
+<p>因为“110xxxxx”是负数(第1为是1)，所以转换成int类型时多出来的位补1。</p>
+<p>(a.2) 接着 c = (int) bytearr[count] &amp; 0xff; 中，会将 “转换成int类型后的bytearr[count]” 与 “0xff”进行 逻辑与(即&amp;) 操作。结果如下：</p>
+<pre><code>“00000000 00000000 00000000 110xxxxx”
+</code></pre>
+<p>(a.3) 执行 c&gt;&gt;4 时，会将上面的结果左移4位。得到的结果如下：</p>
+<pre><code>“00000000 00000000 00000000 0000110x”
+</code></pre>
+<p>(b) 上面的理解之后，swicth (c&gt;&gt;4) { … } 其中的省略号部分就相当容易理解了。</p>
+<p>我们还是以“2字节 UTF-8的通用格式”来说明。<br> 它会执行 case 12 和 case 13；源码如下：</p>
+<pre><code>count += 2;
+if (count &gt; utflen)
+    throw new UTFDataFormatException(
+        &quot;malformed input: partial character at end&quot;);
+char2 = (int) bytearr[count-1];
+if ((char2 &amp; 0xC0) != 0x80)
+    throw new UTFDataFormatException(
+        &quot;malformed input around byte &quot; + count);
+chararr[chararr_count++]=(char)(((c &amp; 0x1F) &lt;&lt; 6) | (char2 &amp; 0x3F));
+</code></pre>
+<p>(b.1) 由于这种情况对应的UTF-8数据是“2字节”的，因此，执行count+2；直接跳过2个字节。<br>(b.2) 由于chararr的元素是字符类型，而一个字符正好占2个字节；因为正好将(((c &amp; 0x1F) &lt;&lt; 6) | (char2 &amp; 0x3F)); 的结果转换成char，然后保存在chararr数组中。</p>
+<p><strong>第6步</strong>，将字符数组转换成String字符串，并返回。代码如下：</p>
+<pre><code>return new String(chararr, 0, chararr_count);
+</code></pre>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-IO/" rel="tag"><i class="fa fa-tag"></i> Java-IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/21/Java-IO-ObjectInputStream-ObjectOutPutStream/" rel="prev" title="Java IO之 ObjectInputStream/ObjectOutPutStream详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 ObjectInputStream/ObjectOutPutStream详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/22/Java-IO-DataOutputStream/" rel="next" title="Java IO之 DataOutputSream详解">
+      Java IO之 DataOutputSream详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DataInputStream-%E7%AE%80%E4%BB%8B"><span class="nav-text">DataInputStream 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DataInputStream-%E6%BA%90%E7%A0%81"><span class="nav-text">DataInputStream 源码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO之 BufferedInputStream详解">
+<meta property="og:url" content="http://example.com/2020/07/21/Java-IO-BufferedInputStream/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-21T20:22:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.190Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/07/21/Java-IO-BufferedInputStream/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java IO之 BufferedInputStream详解 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/21/Java-IO-BufferedInputStream/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java IO之 BufferedInputStream详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-21 20:22:28" itemprop="dateCreated datePublished" datetime="2020-07-21T20:22:28+00:00">2020-07-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/21/Java-IO-BufferedInputStream/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/21/Java-IO-BufferedInputStream/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>21k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="BufferedInputStream-简介"><a href="#BufferedInputStream-简介" class="headerlink" title="BufferedInputStream 简介"></a>BufferedInputStream 简介</h1><p><code>BufferedInputStream</code>是缓冲输入流。它继承于<code>FilterInputStream</code>。</p>
+<p><code>BufferedInputStream</code>的作用是为另一个输入流添加一些功能，例如：提供缓存功能以及支持<code>mark()</code>标记和<code>reset()</code>重置方法。</p>
+<p><code>BufferedInputStream</code>的本质是通过一个内部缓冲区数组四线的。例如：在新建某输入流对应的<code>BufferedInputStream</code>后，当我们通过<code>read()</code>读取输入流的数据时，<code>BufferedInputStream</code>会将该输入流的数据分批地填入到缓冲区中。每当缓冲区中地数据被读完之后，输入流会再次填充数据缓冲区；如此反复，知道读完输入流数据位置。</p>
+<p><code>BufferedInputStream</code>函数列表</p>
+<pre><code class="java">// 构造方法
+BufferedInputStream(InputStream in)
+BufferedInputStream(InputStream in, int size)
+// 常用方法
+synchronized int      available()
+void                  close()
+synchronized void     mark(int readlimit)
+boolean               markSupported()
+synchronized int      read(byte[] buffer, int off, int len)
+synchronized int      read()
+synchronized void     reset()
+synchronized long     skip(long n)
+</code></pre>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.lang.SecurityException;
+
+
+public class BufferedInputStreamTest &#123;
+
+    private static final int LEN = 5;
+
+    public static void main(String[] args) &#123;
+        testBufferedInputStream() ;
+    &#125;
+
+    
+    private static void testBufferedInputStream() &#123;
+
+        // 创建BufferedInputStream字节流，内容是ArrayLetters数组
+        try &#123;
+            File file = new File(&quot;bufferedinputstream.txt&quot;);
+            InputStream in = new BufferedInputStream(new FileInputStream(file), 512);
+
+            // 从字节流中读取5个字节。“abcde”，a对应0x61，b对应0x62，依次类推...
+            for (int i=0; i&lt;LEN; i++) &#123;
+                // 若能继续读取下一个字节，则读取下一个字节
+                if (in.available() &gt;= 0) &#123;
+                    // 读取“字节流的下一个字节”
+                    int tmp = in.read();
+                    System.out.printf(&quot;%d : 0x%s\n&quot;, i, Integer.toHexString(tmp));
+                &#125;
+            &#125;
+
+            // 若该字节流不支持标记功能，则直接退出
+            if (!in.markSupported()) &#123;
+                System.out.println(&quot;make not supported!&quot;);
+                return ;
+            &#125;
+
+            // 标记当前索引位置，即标记第6个位置的元素--“f”
+            // 1024对应marklimit
+            in.mark(1024);
+
+            // 跳过22个字节。
+            in.skip(22);
+
+            // 读取5个字节
+            byte[] buf = new byte[LEN];
+            in.read(buf, 0, LEN);
+            // 将buf转换为String字符串。
+            String str1 = new String(buf);
+            System.out.printf(&quot;str1=%s\n&quot;, str1);
+
+            // 重置输入流的索引为mark()所标记的位置，即重置到“f”处。
+            in.reset();
+            // 从重置后的字节流中读取5个字节到buf中。即读取“fghij”
+            in.read(buf, 0, LEN);
+            // 将buf转换为String字符串。
+            String str2 = new String(buf);
+            System.out.printf(&quot;str2=%s\n&quot;, str2);
+
+            in.close();
+       &#125; catch (FileNotFoundException e) &#123;
+           e.printStackTrace();
+       &#125; catch (SecurityException e) &#123;
+           e.printStackTrace();
+       &#125; catch (IOException e) &#123;
+           e.printStackTrace();
+       &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>程序中读取的<code>bufferedinputstream.txt</code>的内容如下：</p>
+<pre><code>abcdefghijklmnopqrstuvwxyz
+0123456789
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+</code></pre>
+<p>运行结果：</p>
+<pre><code>0 : 0x61
+1 : 0x62
+2 : 0x63
+3 : 0x64
+4 : 0x65
+str1=01234
+str2=fghij
+</code></pre>
+<h1 id="BufferedInputStream-源码分析"><a href="#BufferedInputStream-源码分析" class="headerlink" title="BufferedInputStream 源码分析"></a>BufferedInputStream 源码分析</h1><pre><code class="java">package java.io;
+
+import jdk.internal.misc.Unsafe;
+
+
+public
+class BufferedInputStream extends FilterInputStream &#123;
+
+    private static int DEFAULT_BUFFER_SIZE = 8192;
+
+    /**
+     * The maximum size of array to allocate.
+     * Some VMs reserve some header words in an array.
+     * Attempts to allocate larger arrays may result in
+     * OutOfMemoryError: Requested array size exceeds VM limit
+     */
+    private static int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
+
+    /**
+     * As this class is used early during bootstrap, it&#39;s motivated to use
+     * Unsafe.compareAndSetObject instead of AtomicReferenceFieldUpdater
+     * (or VarHandles) to reduce dependencies and improve startup time.
+     */
+    private static final Unsafe U = Unsafe.getUnsafe();
+
+    private static final long BUF_OFFSET
+            = U.objectFieldOffset(BufferedInputStream.class, &quot;buf&quot;);
+
+    /**
+     * The internal buffer array where the data is stored. When necessary,
+     * it may be replaced by another array of
+     * a different size.
+     */
+    /*
+     * We null this out with a CAS on close(), which is necessary since
+     * closes can be asynchronous. We use nullness of buf[] as primary
+     * indicator that this stream is closed. (The &quot;in&quot; field is also
+     * nulled out on close.)
+     */
+    protected volatile byte[] buf;
+
+    /**
+     * The index one greater than the index of the last valid byte in
+     * the buffer.
+     * This value is always
+     * in the range &lt;code&gt;0&lt;/code&gt; through &lt;code&gt;buf.length&lt;/code&gt;;
+     * elements &lt;code&gt;buf[0]&lt;/code&gt;  through &lt;code&gt;buf[count-1]
+     * &lt;/code&gt;contain buffered input data obtained
+     * from the underlying  input stream.
+     */
+    protected int count;
+
+    /**
+     * The current position in the buffer. This is the index of the next
+     * character to be read from the &lt;code&gt;buf&lt;/code&gt; array.
+     * &lt;p&gt;
+     * This value is always in the range &lt;code&gt;0&lt;/code&gt;
+     * through &lt;code&gt;count&lt;/code&gt;. If it is less
+     * than &lt;code&gt;count&lt;/code&gt;, then  &lt;code&gt;buf[pos]&lt;/code&gt;
+     * is the next byte to be supplied as input;
+     * if it is equal to &lt;code&gt;count&lt;/code&gt;, then
+     * the  next &lt;code&gt;read&lt;/code&gt; or &lt;code&gt;skip&lt;/code&gt;
+     * operation will require more bytes to be
+     * read from the contained  input stream.
+     *
+     * @see     java.io.BufferedInputStream#buf
+     */
+    protected int pos;
+
+    /**
+     * The value of the &lt;code&gt;pos&lt;/code&gt; field at the time the last
+     * &lt;code&gt;mark&lt;/code&gt; method was called.
+     * &lt;p&gt;
+     * This value is always
+     * in the range &lt;code&gt;-1&lt;/code&gt; through &lt;code&gt;pos&lt;/code&gt;.
+     * If there is no marked position in  the input
+     * stream, this field is &lt;code&gt;-1&lt;/code&gt;. If
+     * there is a marked position in the input
+     * stream,  then &lt;code&gt;buf[markpos]&lt;/code&gt;
+     * is the first byte to be supplied as input
+     * after a &lt;code&gt;reset&lt;/code&gt; operation. If
+     * &lt;code&gt;markpos&lt;/code&gt; is not &lt;code&gt;-1&lt;/code&gt;,
+     * then all bytes from positions &lt;code&gt;buf[markpos]&lt;/code&gt;
+     * through  &lt;code&gt;buf[pos-1]&lt;/code&gt; must remain
+     * in the buffer array (though they may be
+     * moved to  another place in the buffer array,
+     * with suitable adjustments to the values
+     * of &lt;code&gt;count&lt;/code&gt;,  &lt;code&gt;pos&lt;/code&gt;,
+     * and &lt;code&gt;markpos&lt;/code&gt;); they may not
+     * be discarded unless and until the difference
+     * between &lt;code&gt;pos&lt;/code&gt; and &lt;code&gt;markpos&lt;/code&gt;
+     * exceeds &lt;code&gt;marklimit&lt;/code&gt;.
+     *
+     * @see     java.io.BufferedInputStream#mark(int)
+     * @see     java.io.BufferedInputStream#pos
+     */
+    protected int markpos = -1;
+
+    /**
+     * The maximum read ahead allowed after a call to the
+     * &lt;code&gt;mark&lt;/code&gt; method before subsequent calls to the
+     * &lt;code&gt;reset&lt;/code&gt; method fail.
+     * Whenever the difference between &lt;code&gt;pos&lt;/code&gt;
+     * and &lt;code&gt;markpos&lt;/code&gt; exceeds &lt;code&gt;marklimit&lt;/code&gt;,
+     * then the  mark may be dropped by setting
+     * &lt;code&gt;markpos&lt;/code&gt; to &lt;code&gt;-1&lt;/code&gt;.
+     *
+     * @see     java.io.BufferedInputStream#mark(int)
+     * @see     java.io.BufferedInputStream#reset()
+     */
+    protected int marklimit;
+
+    /**
+     * Check to make sure that underlying input stream has not been
+     * nulled out due to close; if not return it;
+     */
+    private InputStream getInIfOpen() throws IOException &#123;
+        InputStream input = in;
+        if (input == null)
+            throw new IOException(&quot;Stream closed&quot;);
+        return input;
+    &#125;
+
+    /**
+     * Check to make sure that buffer has not been nulled out due to
+     * close; if not return it;
+     */
+    private byte[] getBufIfOpen() throws IOException &#123;
+        byte[] buffer = buf;
+        if (buffer == null)
+            throw new IOException(&quot;Stream closed&quot;);
+        return buffer;
+    &#125;
+
+    /**
+     * Creates a &lt;code&gt;BufferedInputStream&lt;/code&gt;
+     * and saves its  argument, the input stream
+     * &lt;code&gt;in&lt;/code&gt;, for later use. An internal
+     * buffer array is created and  stored in &lt;code&gt;buf&lt;/code&gt;.
+     *
+     * @param   in   the underlying input stream.
+     */
+    public BufferedInputStream(InputStream in) &#123;
+        this(in, DEFAULT_BUFFER_SIZE);
+    &#125;
+
+    /**
+     * Creates a &lt;code&gt;BufferedInputStream&lt;/code&gt;
+     * with the specified buffer size,
+     * and saves its  argument, the input stream
+     * &lt;code&gt;in&lt;/code&gt;, for later use.  An internal
+     * buffer array of length  &lt;code&gt;size&lt;/code&gt;
+     * is created and stored in &lt;code&gt;buf&lt;/code&gt;.
+     *
+     * @param   in     the underlying input stream.
+     * @param   size   the buffer size.
+     * @exception IllegalArgumentException if &#123;@code size &lt;= 0&#125;.
+     */
+    public BufferedInputStream(InputStream in, int size) &#123;
+        super(in);
+        if (size &lt;= 0) &#123;
+            throw new IllegalArgumentException(&quot;Buffer size &lt;= 0&quot;);
+        &#125;
+        buf = new byte[size];
+    &#125;
+
+    /**
+     * Fills the buffer with more data, taking into account
+     * shuffling and other tricks for dealing with marks.
+     * Assumes that it is being called by a synchronized method.
+     * This method also assumes that all data has already been read in,
+     * hence pos &gt; count.
+     */
+    private void fill() throws IOException &#123;
+        byte[] buffer = getBufIfOpen();
+        if (markpos &lt; 0)
+            pos = 0;            /* no mark: throw away the buffer */
+        else if (pos &gt;= buffer.length)  /* no room left in buffer */
+            if (markpos &gt; 0) &#123;  /* can throw away early part of the buffer */
+                int sz = pos - markpos;
+                System.arraycopy(buffer, markpos, buffer, 0, sz);
+                pos = sz;
+                markpos = 0;
+            &#125; else if (buffer.length &gt;= marklimit) &#123;
+                markpos = -1;   /* buffer got too big, invalidate mark */
+                pos = 0;        /* drop buffer contents */
+            &#125; else if (buffer.length &gt;= MAX_BUFFER_SIZE) &#123;
+                throw new OutOfMemoryError(&quot;Required array size too large&quot;);
+            &#125; else &#123;            /* grow buffer */
+                int nsz = (pos &lt;= MAX_BUFFER_SIZE - pos) ?
+                        pos * 2 : MAX_BUFFER_SIZE;
+                if (nsz &gt; marklimit)
+                    nsz = marklimit;
+                byte[] nbuf = new byte[nsz];
+                System.arraycopy(buffer, 0, nbuf, 0, pos);
+                if (!U.compareAndSetObject(this, BUF_OFFSET, buffer, nbuf)) &#123;
+                    // Can&#39;t replace buf if there was an async close.
+                    // Note: This would need to be changed if fill()
+                    // is ever made accessible to multiple threads.
+                    // But for now, the only way CAS can fail is via close.
+                    // assert buf == null;
+                    throw new IOException(&quot;Stream closed&quot;);
+                &#125;
+                buffer = nbuf;
+            &#125;
+        count = pos;
+        int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+        if (n &gt; 0)
+            count = n + pos;
+    &#125;
+
+    /**
+     * See
+     * the general contract of the &lt;code&gt;read&lt;/code&gt;
+     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+     *
+     * @return     the next byte of data, or &lt;code&gt;-1&lt;/code&gt; if the end of the
+     *             stream is reached.
+     * @exception  IOException  if this input stream has been closed by
+     *                          invoking its &#123;@link #close()&#125; method,
+     *                          or an I/O error occurs.
+     * @see        java.io.FilterInputStream#in
+     */
+    public synchronized int read() throws IOException &#123;
+        if (pos &gt;= count) &#123;
+            fill();
+            if (pos &gt;= count)
+                return -1;
+        &#125;
+        return getBufIfOpen()[pos++] &amp; 0xff;
+    &#125;
+
+    /**
+     * Read characters into a portion of an array, reading from the underlying
+     * stream at most once if necessary.
+     */
+    private int read1(byte[] b, int off, int len) throws IOException &#123;
+        int avail = count - pos;
+        if (avail &lt;= 0) &#123;
+            /* If the requested length is at least as large as the buffer, and
+               if there is no mark/reset activity, do not bother to copy the
+               bytes into the local buffer.  In this way buffered streams will
+               cascade harmlessly. */
+            if (len &gt;= getBufIfOpen().length &amp;&amp; markpos &lt; 0) &#123;
+                return getInIfOpen().read(b, off, len);
+            &#125;
+            fill();
+            avail = count - pos;
+            if (avail &lt;= 0) return -1;
+        &#125;
+        int cnt = (avail &lt; len) ? avail : len;
+        System.arraycopy(getBufIfOpen(), pos, b, off, cnt);
+        pos += cnt;
+        return cnt;
+    &#125;
+
+    /**
+     * Reads bytes from this byte-input stream into the specified byte array,
+     * starting at the given offset.
+     *
+     * &lt;p&gt; This method implements the general contract of the corresponding
+     * &lt;code&gt;&#123;@link InputStream#read(byte[], int, int) read&#125;&lt;/code&gt; method of
+     * the &lt;code&gt;&#123;@link InputStream&#125;&lt;/code&gt; class.  As an additional
+     * convenience, it attempts to read as many bytes as possible by repeatedly
+     * invoking the &lt;code&gt;read&lt;/code&gt; method of the underlying stream.  This
+     * iterated &lt;code&gt;read&lt;/code&gt; continues until one of the following
+     * conditions becomes true: &lt;ul&gt;
+     *
+     *   &lt;li&gt; The specified number of bytes have been read,
+     *
+     *   &lt;li&gt; The &lt;code&gt;read&lt;/code&gt; method of the underlying stream returns
+     *   &lt;code&gt;-1&lt;/code&gt;, indicating end-of-file, or
+     *
+     *   &lt;li&gt; The &lt;code&gt;available&lt;/code&gt; method of the underlying stream
+     *   returns zero, indicating that further input requests would block.
+     *
+     * &lt;/ul&gt; If the first &lt;code&gt;read&lt;/code&gt; on the underlying stream returns
+     * &lt;code&gt;-1&lt;/code&gt; to indicate end-of-file then this method returns
+     * &lt;code&gt;-1&lt;/code&gt;.  Otherwise this method returns the number of bytes
+     * actually read.
+     *
+     * &lt;p&gt; Subclasses of this class are encouraged, but not required, to
+     * attempt to read as many bytes as possible in the same fashion.
+     *
+     * @param      b     destination buffer.
+     * @param      off   offset at which to start storing bytes.
+     * @param      len   maximum number of bytes to read.
+     * @return     the number of bytes read, or &lt;code&gt;-1&lt;/code&gt; if the end of
+     *             the stream has been reached.
+     * @exception  IOException  if this input stream has been closed by
+     *                          invoking its &#123;@link #close()&#125; method,
+     *                          or an I/O error occurs.
+     */
+    public synchronized int read(byte b[], int off, int len)
+        throws IOException
+    &#123;
+        getBufIfOpen(); // Check for closed stream
+        if ((off | len | (off + len) | (b.length - (off + len))) &lt; 0) &#123;
+            throw new IndexOutOfBoundsException();
+        &#125; else if (len == 0) &#123;
+            return 0;
+        &#125;
+
+        int n = 0;
+        for (;;) &#123;
+            int nread = read1(b, off + n, len - n);
+            if (nread &lt;= 0)
+                return (n == 0) ? nread : n;
+            n += nread;
+            if (n &gt;= len)
+                return n;
+            // if not closed but no bytes available, return
+            InputStream input = in;
+            if (input != null &amp;&amp; input.available() &lt;= 0)
+                return n;
+        &#125;
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;skip&lt;/code&gt;
+     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+     *
+     * @throws IOException  if this input stream has been closed by
+     *                      invoking its &#123;@link #close()&#125; method,
+     *                      &#123;@code in.skip(n)&#125; throws an IOException,
+     *                      or an I/O error occurs.
+     */
+    public synchronized long skip(long n) throws IOException &#123;
+        getBufIfOpen(); // Check for closed stream
+        if (n &lt;= 0) &#123;
+            return 0;
+        &#125;
+        long avail = count - pos;
+
+        if (avail &lt;= 0) &#123;
+            // If no mark position set then don&#39;t keep in buffer
+            if (markpos &lt;0)
+                return getInIfOpen().skip(n);
+
+            // Fill in buffer to save bytes for reset
+            fill();
+            avail = count - pos;
+            if (avail &lt;= 0)
+                return 0;
+        &#125;
+
+        long skipped = (avail &lt; n) ? avail : n;
+        pos += skipped;
+        return skipped;
+    &#125;
+
+    /**
+     * Returns an estimate of the number of bytes that can be read (or
+     * skipped over) from this input stream without blocking by the next
+     * invocation of a method for this input stream. The next invocation might be
+     * the same thread or another thread.  A single read or skip of this
+     * many bytes will not block, but may read or skip fewer bytes.
+     * &lt;p&gt;
+     * This method returns the sum of the number of bytes remaining to be read in
+     * the buffer (&lt;code&gt;count&amp;nbsp;- pos&lt;/code&gt;) and the result of calling the
+     * &#123;@link java.io.FilterInputStream#in in&#125;.available().
+     *
+     * @return     an estimate of the number of bytes that can be read (or skipped
+     *             over) from this input stream without blocking.
+     * @exception  IOException  if this input stream has been closed by
+     *                          invoking its &#123;@link #close()&#125; method,
+     *                          or an I/O error occurs.
+     */
+    public synchronized int available() throws IOException &#123;
+        int n = count - pos;
+        int avail = getInIfOpen().available();
+        return n &gt; (Integer.MAX_VALUE - avail)
+                    ? Integer.MAX_VALUE
+                    : n + avail;
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;mark&lt;/code&gt;
+     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+     *
+     * @param   readlimit   the maximum limit of bytes that can be read before
+     *                      the mark position becomes invalid.
+     * @see     java.io.BufferedInputStream#reset()
+     */
+    public synchronized void mark(int readlimit) &#123;
+        marklimit = readlimit;
+        markpos = pos;
+    &#125;
+
+    /**
+     * See the general contract of the &lt;code&gt;reset&lt;/code&gt;
+     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+     * &lt;p&gt;
+     * If &lt;code&gt;markpos&lt;/code&gt; is &lt;code&gt;-1&lt;/code&gt;
+     * (no mark has been set or the mark has been
+     * invalidated), an &lt;code&gt;IOException&lt;/code&gt;
+     * is thrown. Otherwise, &lt;code&gt;pos&lt;/code&gt; is
+     * set equal to &lt;code&gt;markpos&lt;/code&gt;.
+     *
+     * @exception  IOException  if this stream has not been marked or,
+     *                  if the mark has been invalidated, or the stream
+     *                  has been closed by invoking its &#123;@link #close()&#125;
+     *                  method, or an I/O error occurs.
+     * @see        java.io.BufferedInputStream#mark(int)
+     */
+    public synchronized void reset() throws IOException &#123;
+        getBufIfOpen(); // Cause exception if closed
+        if (markpos &lt; 0)
+            throw new IOException(&quot;Resetting to invalid mark&quot;);
+        pos = markpos;
+    &#125;
+
+    /**
+     * Tests if this input stream supports the &lt;code&gt;mark&lt;/code&gt;
+     * and &lt;code&gt;reset&lt;/code&gt; methods. The &lt;code&gt;markSupported&lt;/code&gt;
+     * method of &lt;code&gt;BufferedInputStream&lt;/code&gt; returns
+     * &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @return  a &lt;code&gt;boolean&lt;/code&gt; indicating if this stream type supports
+     *          the &lt;code&gt;mark&lt;/code&gt; and &lt;code&gt;reset&lt;/code&gt; methods.
+     * @see     java.io.InputStream#mark(int)
+     * @see     java.io.InputStream#reset()
+     */
+    public boolean markSupported() &#123;
+        return true;
+    &#125;
+
+    /**
+     * Closes this input stream and releases any system resources
+     * associated with the stream.
+     * Once the stream has been closed, further read(), available(), reset(),
+     * or skip() invocations will throw an IOException.
+     * Closing a previously closed stream has no effect.
+     *
+     * @exception  IOException  if an I/O error occurs.
+     */
+    public void close() throws IOException &#123;
+        byte[] buffer;
+        while ( (buffer = buf) != null) &#123;
+            if (U.compareAndSetObject(this, BUF_OFFSET, buffer, null)) &#123;
+                InputStream input = in;
+                in = null;
+                if (input != null)
+                    input.close();
+                return;
+            &#125;
+            // Else retry in case a new buf was CASed in fill()
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>说明：<br>要想读懂<code>BufferedInputStream</code>的源码，就要先理解它的思想。<code>BufferedInputStream</code>的作用是为其它输入流提供缓冲功能。创建<code>BufferedInputStream</code>时，我们会通过它的构造函数指定某个输入流为参数。<code>BufferedInputStream</code>会将该输入流数据分批读取，每次读取一部分到缓冲中；操作完缓冲中的这部分数据之后，再从输入流中读取下一部分的数据。</p>
+<p>为什么需要缓冲呢？原因很简单，效率问题！缓冲中的数据实际上是保存在内存中，而原始数据可能是保存在硬盘或<code>NandFlash</code>等存储介质中；而我们知道，从内存中读取数据的速度比从硬盘读取数据的速度至少快10倍以上。<br>那干嘛不干脆一次性将全部数据都读取到缓冲中呢？第一，读取全部的数据所需要的时间可能会很长。第二，内存价格很贵，容量不像硬盘那么大。</p>
+<p>下面，是<code>BufferedInputStream</code>中最重要的函数<code>fill()</code>进行说明。<code>fill()</code>源码如下：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    byte[] buffer = getBufIfOpen();
+    if (markpos &lt; 0)
+        pos = 0;            /* no mark: throw away the buffer */
+    else if (pos &gt;= buffer.length)  /* no room left in buffer */
+        if (markpos &gt; 0) &#123;  /* can throw away early part of the buffer */
+            int sz = pos - markpos;
+            System.arraycopy(buffer, markpos, buffer, 0, sz);
+            pos = sz;
+            markpos = 0;
+        &#125; else if (buffer.length &gt;= marklimit) &#123;
+            markpos = -1;   /* buffer got too big, invalidate mark */
+            pos = 0;        /* drop buffer contents */
+        &#125; else if (buffer.length &gt;= MAX_BUFFER_SIZE) &#123;
+            throw new OutOfMemoryError(&quot;Required array size too large&quot;);
+        &#125; else &#123;            /* grow buffer */
+            int nsz = (pos &lt;= MAX_BUFFER_SIZE - pos) ?
+                   pos * 2 : MAX_BUFFER_SIZE;
+            if (nsz &gt; marklimit)
+               nsz = marklimit;
+            byte[] nbuf = new byte[nsz];
+            System.arraycopy(buffer, 0, nbuf, 0, pos);
+            if (!U.compareAndSetObject(this, BUF_OFFSET, buffer, nbuf)) &#123;
+                // Can&#39;t replace buf if there was an async close.
+                // Note: This would need to be changed if fill()
+                // is ever made accessible to multiple threads.
+                // But for now, the only way CAS can fail is via close.
+                // assert buf == null;
+                throw new IOException(&quot;Stream closed&quot;);
+            &#125;
+            buffer = nbuf;
+        &#125;
+    count = pos;
+    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+    if (n &gt; 0)
+       count = n + pos;
+&#125;
+</code></pre>
+<p>根据<code>fill()</code>中的<code>if...else...</code>，下面我们将<code>fill</code>分为5种情况进行说明。</p>
+<h2 id="1-读取完-buffer-中的数据，并且-buffer-没有被标记"><a href="#1-读取完-buffer-中的数据，并且-buffer-没有被标记" class="headerlink" title="1. 读取完 buffer 中的数据，并且 buffer 没有被标记"></a>1. 读取完 buffer 中的数据，并且 buffer 没有被标记</h2><p>执行流程如下：</p>
+<ol>
+<li><code>read()</code>函数中调用<code>fill()</code></li>
+<li><code>fill()</code>中的<code>if (markpos &lt; 0) ...</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    byte[] buffer = getBufIfOpen();
+    if (markpos &lt; 0)
+        pos = 0;
+
+    count = pos;
+    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+    if (n &gt; 0)
+        count = n + pos;
+&#125;
+</code></pre>
+<p>说明：<br>这种情况发生的情况是 —— 输入流中有很长的数据，我们每次从中读取一部分数据到<code>buffer</code>中进行操作。每次当我们读取完<code>buffer</code>中的数据之后，并且此时输入流没有被标记；那么，就接着从输入流中读取下一部分的数据到<code>buffer</code>中。</p>
+<blockquote>
+<p>判断是否读完<code>buffer</code>中的数据，是通过<code>if (pos &gt;= count)</code>来判断的；<br>判断输入流有没有被标记，是通过<code>if (markpos &lt; 0)</code>来判断的。</p>
+</blockquote>
+<p>理解这个思想之后，我们再对这种情况下的<code>fill()</code>的代码进行分析，就特别容易理解了。</p>
+<ul>
+<li><code>if (markpos &lt; 0)</code>它的作用是判断输入流是否被标记。若被标记，则<code>markpos</code>大于/等于0；否则<code>markpos</code>等于<code>-1</code>。</li>
+<li>在这种情况下：通过<code>getInIfOpen()</code>获取输入流，然后接着从输入流中读取<code>buffer.length</code>个字节到<code>buffer</code>中。</li>
+<li><code>count = n + pos</code>，这是根据从输入流中读取的实际数据的多少，来更新<code>buffer</code>中数据的实际大小。</li>
+</ul>
+<h2 id="2-读取完-buffer-中的数据，buffer-的标记位置-gt-0，并且-buffer-中没有多余的空间"><a href="#2-读取完-buffer-中的数据，buffer-的标记位置-gt-0，并且-buffer-中没有多余的空间" class="headerlink" title="2. 读取完 buffer 中的数据，buffer 的标记位置&gt;0，并且 buffer 中没有多余的空间"></a>2. 读取完 buffer 中的数据，buffer 的标记位置&gt;0，并且 buffer 中没有多余的空间</h2><p>执行流程如下：</p>
+<ol>
+<li><code>read()</code>函数中调用`fill()``</li>
+<li><code>fill()</code>中的<code>else if (pos &gt;= buffer.length) ...</code></li>
+<li><code>fill()</code>中的<code>if (markpos &gt; 0) ...</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下fill()执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    byte[] buffer = getBufIfOpen();
+    if (markpos &gt;= 0 &amp;&amp; pos &gt;= buffer.length) &#123;
+        if (markpos &gt; 0) &#123;
+            int sz = pos - markpos;
+            System.arraycopy(buffer, markpos, buffer, 0, sz);
+            pos = sz;
+            markpos = 0;
+        &#125;
+    &#125;
+
+    count = pos;
+    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+    if (n &gt; 0)
+        count = n + pos;
+&#125;
+</code></pre>
+<p>说明：<br>这种情况发生的情况是 —— 输入流中有很长的数据，我们每次从中读取一部分数据到<code>buffer</code>中进行操作。当我们读取完<code>buffer</code>中的数据之后，并且此时输入流存在标记时；那么，就发生情况2。此时，我们要保留被标记位置到<code>buffer</code>末尾的数据，然后再从输入流中读取下一部分的数据到<code>buffer</code>中。</p>
+<blockquote>
+<p>其中，判断是否读完<code>buffer</code>中的数据，是通过<code>if (pos &gt;= count)</code>来判断的；<br>判断输入流有没有被标记，是通过<code>if (markpos &lt; 0)</code>来判断的。<br>判断<code>buffer</code>中没有多余的空间，是通过<code>if (pos &gt;= buffer.length)</code>来判断的。</p>
+</blockquote>
+<p>理解这个思想之后，我们再对这种情况下的<code>fill()</code>代码进行分析，就特别容易理解了。</p>
+<ul>
+<li> <code>int sz = pos - markpos</code>; 作用是获取被标记位置到<code>buffer</code>末尾的数据长度。</li>
+<li><code>System.arraycopy(buffer, markpos, buffer, 0, sz)</code>; 作用是将<code>buffer</code>中从<code>markpos</code>开始的数据拷贝到<code>buffer</code>中(从位置0开始填充，填充长度是<code>sz</code>)。接着，将<code>sz</code>赋值给<code>pos</code>，即<code>pos</code>就是被标记位置到<code>buffer</code>末尾的数据长度。</li>
+<li><code>int n = getInIfOpen().read(buffer, pos, buffer.length - pos)</code>; 从输入流中读取出<code>buffer.length - pos</code>的数据，然后填充到<code>buffer</code>中。</li>
+<li>通过第2和第3步组合起来的<code>buffer</code>，就是包含了原始<code>buffer</code>被标记位置到<code>buffer</code>末尾的数据，也包含了从输入流中新读取的数据。</li>
+</ul>
+<p>注意：<strong>执行过情况2之后，<code>markpos</code>的值由大于0变成了等于0！</strong></p>
+<h2 id="3-读取完-buffer-中的数据，buffer-被标记位置-0，buffer-中没有多余的空间，并且-buffer-length-gt-marklimit"><a href="#3-读取完-buffer-中的数据，buffer-被标记位置-0，buffer-中没有多余的空间，并且-buffer-length-gt-marklimit" class="headerlink" title="3. 读取完 buffer 中的数据，buffer 被标记位置=0，buffer 中没有多余的空间，并且 buffer.length&gt;=marklimit"></a>3. 读取完 buffer 中的数据，buffer 被标记位置=0，buffer 中没有多余的空间，并且 buffer.length&gt;=marklimit</h2><p>执行流程如下：</p>
+<ul>
+<li><code>read()</code>函数中调用<code>fill()</code></li>
+<li><code>fill()</code>中的<code>else if (pos &gt;= buffer.length) ...</code></li>
+<li><code>fill()</code>中的<code>else if (buffer.length &gt;= marklimit) ...</code></li>
+</ul>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    byte[] buffer = getBufIfOpen();
+    if (markpos &gt;= 0 &amp;&amp; pos &gt;= buffer.length) &#123;
+        if ( (markpos &lt;= 0) &amp;&amp; (buffer.length &gt;= marklimit) ) &#123;
+            markpos = -1;   /* buffer got too big, invalidate mark */
+            pos = 0;        /* drop buffer contents */
+        &#125;
+    &#125;
+
+    count = pos;
+    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+    if (n &gt; 0)
+        count = n + pos;
+&#125;
+</code></pre>
+<p>说明：这种情况的处理非常简单。首先，就是取消标记，即<code>markpos = -1</code>；然后，设置初始化位置为0，即<code>pos=0</code>；最后，再从输入流中读取下一部分数据到<code>buffer</code>中。</p>
+<h2 id="4-读取完-buffer-中的数据，buffer-被标记位置-0，buffer-中没有多余的空间，并且-buffer-length-lt-marklimit"><a href="#4-读取完-buffer-中的数据，buffer-被标记位置-0，buffer-中没有多余的空间，并且-buffer-length-lt-marklimit" class="headerlink" title="4. 读取完 buffer 中的数据，buffer 被标记位置=0，buffer 中没有多余的空间，并且 buffer.length&lt;marklimit"></a>4. 读取完 buffer 中的数据，buffer 被标记位置=0，buffer 中没有多余的空间，并且 buffer.length&lt;marklimit</h2><p>执行流程如下：</p>
+<ul>
+<li><code>read()</code>函数中调用<code>fill()</code></li>
+<li><code>fill()</code>中的<code>else if (pos &gt;= buffer.length) ...</code></li>
+<li><code>fill()</code>中的<code>else &#123; int nsz = pos * 2; ... &#125;</code></li>
+</ul>
+<p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    byte[] buffer = getBufIfOpen();
+    if (markpos &gt;= 0 &amp;&amp; pos &gt;= buffer.length) &#123;
+        if ( (markpos &lt;= 0) &amp;&amp; (buffer.length &lt; marklimit) ) &#123;
+            int nsz = pos * 2;
+            if (nsz &gt; marklimit)
+                nsz = marklimit;
+            byte nbuf[] = new byte[nsz];
+            System.arraycopy(buffer, 0, nbuf, 0, pos);
+            if (!bufUpdater.compareAndSet(this, buffer, nbuf)) &#123;
+                throw new IOException(&quot;Stream closed&quot;);
+            &#125;
+            buffer = nbuf;
+        &#125;
+    &#125;
+
+    count = pos;
+    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+    if (n &gt; 0)
+        count = n + pos;
+&#125;
+</code></pre>
+<p>说明：<br>这种情况的处理非常简单。</p>
+<ul>
+<li>新建一个字节数组<code>nbuf</code>。<code>nbuf</code>的大小是<code>pos*2</code>和<code>marklimit</code>中较小的那个数。</li>
+</ul>
+<pre><code class="java">int nsz = pos * 2;
+if (nsz &gt; marklimit)
+    nsz = marklimit;
+byte nbuf[] = new byte[nsz];
+</code></pre>
+<ul>
+<li>接着，将<code>buffer</code>中的数据拷贝到新数组<code>nbuf</code>中。通过<code>System.arraycopy(buffer, 0, nbuf, 0, pos)</code></li>
+<li>最后，从输入流读取部分新数据到<code>buffer</code>中。通过<code>getInIfOpen().read(buffer, pos, buffer.length - pos)</code>；</li>
+</ul>
+<p>注意：<strong>在这里，思考一个问题，为什么需要<code>marklimit</code>，它的存在到底有什么意义？结合情况2、情况3、情况4的情况来分析。</strong></p>
+<p>假设，<code>marklimit</code>是无限大的，而且我们设置了<code>markpos</code>。当我们从输入流中每读完一部分数据并读取下一部分数据时，都需要保存<code>markpos</code>所标记的数据；这就意味着，我们需要不断执行情况4中的操作，要将<code>buffer</code>的容量扩大……随着读取次数的增多，<code>buffer</code>会越来越大；这会导致我们占据的内存越来越大。所以，我们需要给出一个<code>marklimit</code>；当<code>buffer&gt;=marklimit</code>时，就不再保存<code>markpos</code>的值了。</p>
+<h2 id="5-除了上面4种情况之外的情况"><a href="#5-除了上面4种情况之外的情况" class="headerlink" title="5. 除了上面4种情况之外的情况"></a>5. 除了上面4种情况之外的情况</h2><p>执行流程如下，</p>
+<ol>
+<li><code> read()</code>函数中调用<code>fill()</code></li>
+<li><code>fill()</code>中的<code>count = pos...</code></li>
+</ol>
+<p>为了方便分析，我们将这种情况下fill()执行的操作等价于以下代码：</p>
+<pre><code class="java">private void fill() throws IOException &#123;
+    byte[] buffer = getBufIfOpen();
+
+    count = pos;
+    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
+    if (n &gt; 0)
+        count = n + pos;
+&#125;
+</code></pre>
+<p>说明：这种情况的处理非常简单。直接从输入流读取部分新数据到<code>buffer</code>中。</p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-IO/" rel="tag"><i class="fa fa-tag"></i> Java-IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/20/Java-IO-BufferedOutputStream/" rel="prev" title="Java IO之 BufferedOutputStream详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 BufferedOutputStream详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/21/Java-IO-ByteArrayOutputStream/" rel="next" title="Java IO之 ByteArrayOutputStream详解">
+      Java IO之 ByteArrayOutputStream详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BufferedInputStream-%E7%AE%80%E4%BB%8B"><span class="nav-text">BufferedInputStream 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BufferedInputStream-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-text">BufferedInputStream 源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AF%BB%E5%8F%96%E5%AE%8C-buffer-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%B9%B6%E4%B8%94-buffer-%E6%B2%A1%E6%9C%89%E8%A2%AB%E6%A0%87%E8%AE%B0"><span class="nav-text">1. 读取完 buffer 中的数据，并且 buffer 没有被标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%AF%BB%E5%8F%96%E5%AE%8C-buffer-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8Cbuffer-%E7%9A%84%E6%A0%87%E8%AE%B0%E4%BD%8D%E7%BD%AE-gt-0%EF%BC%8C%E5%B9%B6%E4%B8%94-buffer-%E4%B8%AD%E6%B2%A1%E6%9C%89%E5%A4%9A%E4%BD%99%E7%9A%84%E7%A9%BA%E9%97%B4"><span class="nav-text">2. 读取完 buffer 中的数据，buffer 的标记位置&gt;0，并且 buffer 中没有多余的空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AF%BB%E5%8F%96%E5%AE%8C-buffer-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8Cbuffer-%E8%A2%AB%E6%A0%87%E8%AE%B0%E4%BD%8D%E7%BD%AE-0%EF%BC%8Cbuffer-%E4%B8%AD%E6%B2%A1%E6%9C%89%E5%A4%9A%E4%BD%99%E7%9A%84%E7%A9%BA%E9%97%B4%EF%BC%8C%E5%B9%B6%E4%B8%94-buffer-length-gt-marklimit"><span class="nav-text">3. 读取完 buffer 中的数据，buffer 被标记位置&#x3D;0，buffer 中没有多余的空间，并且 buffer.length&gt;&#x3D;marklimit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%AF%BB%E5%8F%96%E5%AE%8C-buffer-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8Cbuffer-%E8%A2%AB%E6%A0%87%E8%AE%B0%E4%BD%8D%E7%BD%AE-0%EF%BC%8Cbuffer-%E4%B8%AD%E6%B2%A1%E6%9C%89%E5%A4%9A%E4%BD%99%E7%9A%84%E7%A9%BA%E9%97%B4%EF%BC%8C%E5%B9%B6%E4%B8%94-buffer-length-lt-marklimit"><span class="nav-text">4. 读取完 buffer 中的数据，buffer 被标记位置&#x3D;0，buffer 中没有多余的空间，并且 buffer.length&lt;marklimit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%99%A4%E4%BA%86%E4%B8%8A%E9%9D%A24%E7%A7%8D%E6%83%85%E5%86%B5%E4%B9%8B%E5%A4%96%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-text">5. 除了上面4种情况之外的情况</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

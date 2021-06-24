@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java集合之List总结">
+<meta property="og:url" content="http://example.com/2020/07/04/Java-List-conclusion/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/15/U0dEOf.jpg">
+<meta property="article:published_time" content="2020-07-04T20:26:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.194Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-集合">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/07/15/U0dEOf.jpg">
+
+<link rel="canonical" href="http://example.com/2020/07/04/Java-List-conclusion/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java集合之List总结 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/04/Java-List-conclusion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java集合之List总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-04 20:26:28" itemprop="dateCreated datePublished" datetime="2020-07-04T20:26:28+00:00">2020-07-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/04/Java-List-conclusion/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/04/Java-List-conclusion/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="List-概括"><a href="#List-概括" class="headerlink" title="List 概括"></a>List 概括</h1><p>先回顾一下<code>List</code>的框架图</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/15/U0dEOf.jpg"></p>
+<ol>
+<li><code>List</code>是一个接口，它继承于<code>Collection</code>的接口。它代表着有序的队列。</li>
+<li><code>AbstractList</code>是一个抽象类，它继承于<code>AbstractCollection</code>。<code>AbstractList</code>实现了<code>List</code>接口中除了<code>size()</code>、<code>get(int index)</code>之外的函数。</li>
+<li><code>AbstractSequentialList</code>是一个抽象类，它继承于<code>AbstractList</code>。<code>AbstractSequentialList</code>实现了链表中，根据<code>index</code>索引值操作链表的全部函数。</li>
+<li><code>ArrayList</code>, <code>LinkedList</code>, <code>Vector</code>, <code>Stack</code>是<code>List</code>的4个实现类。</li>
+</ol>
+<blockquote>
+<p><code>ArrayList</code>是一个数组队列，相当于动态数组，随机访问效率高，随即插入、随机删除效率低。</p>
+<p><code>LinkedList</code>是一个双向链表。它也可以被当作堆栈】队列或双端队列进行操作。<code>LinkedList</code>随机访问效率低，但随机插入、随机删除效率低。</p>
+<p><code>Vector</code>是矢量队列，和<code>ArrayList</code>一样，它也是一个动态数组，由数组实现。但是<code>ArrayList</code>是非线程安全的，而<code>Vector</code>是线程安全的。<br><code>Stack</code>是栈，它继承于<code>Vector</code>。它的特性是：先进后出(<code>FILO</code>, <code>First In Last Out</code>)，这两个实现类已经弃用。</p>
+</blockquote>
+<h1 id="List-使用场景"><a href="#List-使用场景" class="headerlink" title="List 使用场景"></a>List 使用场景</h1><p>学东西的最终目的是为了能够连接、使用它。先说明一下各个<code>List</code>的使用场景，后面再分析原因。</p>
+<p>如果涉及到栈、队列、链表等操作，应该考虑用<code>List</code>，具体是选择哪个<code>List</code>，可以根据下面的标准来取舍。</p>
+<ul>
+<li>对于需要快速插入、删除元素，应该使用<code>LinkedList</code>。</li>
+<li>对于需要快速随机访问元素，应该使用<code>ArrayList</code>。</li>
+</ul>
+<p>通过下面的测试程序，可以验证上面的结论。相关代码如下：</p>
+<pre><code class="java">import java.util.*;
+import java.lang.Class;
+
+/**
+* @desc 对比ArrayList和LinkedList的插入、随机读取效率、删除效率
+*/
+public class ListCompareTest &#123;
+    private static final int COUNT = 100000;
+    private static LinkedList linkedList = new LinkedList();
+    private static ArrayList arrayList = new ArrayList();
+    
+    public static void main(String[] args) &#123;
+        System.out.println();
+        // 插入
+        insertByPosition(linkedList);
+        insertByPosition(arrayList);
+        System.out.println();
+        // 随机读取
+        readByPosition(linkedList);
+        readByPosition(arrayList);
+        System.out.println();
+        // 删除
+        deleteByPosition(linkedList);
+        deleteByPosition(arrayList);
+        System.out.println();
+    &#125;
+    private static String getListName(List list) &#123;
+        if (list instanceof LinkedList) &#123;
+            return &quot;LinkedList&quot;;
+        &#125; else &#123;
+            return &quot;ArrayList&quot;;
+        &#125;
+    &#125;
+    // 向list的指定位置插入COUNT个元素，并统计时间
+    private static void insertByPosition(List list) &#123;
+        long startTime = System.currentTimeMillis();
+        // 向list的位置0插入COUNT个数
+        for (int i=0; i&lt;COUNT; i++)
+            list.add(0, i);
+        long endTime = System.currentTimeMillis();
+        long interval = endTime - startTime;
+        System.out.println(getListName(list) + &quot; : insert &quot;+COUNT+&quot; elements into the 1st position use time：&quot; + interval+&quot; ms&quot;);
+    &#125;
+    // 从list的指定位置删除COUNT个元素，并统计时间
+    private static void deleteByPosition(List list) &#123;
+        long startTime = System.currentTimeMillis();
+        // 删除list第一个位置元素
+        for (int i=0; i&lt;COUNT; i++)
+            list.remove(0);
+        long endTime = System.currentTimeMillis();
+        long interval = endTime - startTime;
+        System.out.println(getListName(list) + &quot; : delete &quot;+COUNT+&quot; elements into the 1st position use time：&quot; + interval+&quot; ms&quot;);
+    &#125;
+    // 根据position，不断从list中读取元素，并统计时间
+    private static void readByPosition(List list) &#123;
+        long startTime = System.currentTimeMillis();
+        for (int i=0; i&lt;COUNT; i++) 
+            list.get(i);
+        long endTime = System.currentTimeMillis();
+        long interval = endTime - startTime;
+        System.out.println(getListName(list) + &quot; : read &quot;+COUNT+&quot; elements into the 1st position use time：&quot; + interval+&quot; ms&quot;);    
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果如下：</p>
+<pre><code class="java">LinkedList : insert 100000 elements into the 1st position use time：7 ms
+ArrayList : insert 100000 elements into the 1st position use time：549 ms
+
+LinkedList : read 100000 elements into the 1st position use time：3841 ms
+ArrayList : read 100000 elements into the 1st position use time：2 ms
+
+LinkedList : delete 100000 elements into the 1st position use time：5 ms
+ArrayList : delete 100000 elements into the 1st position use time：428 ms
+</code></pre>
+<p>从运行结果中可以看到：</p>
+<ul>
+<li>插入10万个元素，<code>LinkedList</code>所花时间最短：<code>7ms</code>。</li>
+<li>删除10万个元素，<code>LinkedList</code>所花时间最短：<code>5ms</code>。</li>
+<li>遍历10万个元素，<code>LinkedList</code>所花时间最长：<code>3841ms</code>。</li>
+</ul>
+<p>可以的到结论：</p>
+<ul>
+<li>需要快速插入，删除元素，应该使用<code>LinkedList</code>。</li>
+<li>需要快速随机访问元素，应该使用<code>ArrayList</code>。</li>
+</ul>
+<h1 id="LinkedList-和-ArrayList-性能差异分析"><a href="#LinkedList-和-ArrayList-性能差异分析" class="headerlink" title="LinkedList 和 ArrayList 性能差异分析"></a>LinkedList 和 ArrayList 性能差异分析</h1><p>下面分析以下为什么<code>LinkedList</code>中插入元素很快，而<code>ArrayList</code>中插入元素很慢。<code>LinkedList</code>源码中向指定位置插入元素的代码如下：</p>
+<pre><code class="java">// 在index前添加节点，且节点的值为element
+public void add(int index, E element) &#123;
+    checkPositionIndex(index);
+    if (inedx == size)
+        linkLast(element);
+    else
+        linkBefore(element, node(index));
+&#125;
+// 获取双向链表中指定位置的节点
+Node&lt;E&gt; node(int index) &#123;
+    // assert isElementIndex(index);
+    if (index &lt; (size &gt;&gt; 1)) &#123;
+        Node&lt;E&gt; x = first;
+        for (int i = o; i &lt; index; i++)
+            x = x.next;
+        return x;
+    &#125; else &#123;
+        Node&lt;E&gt; x = last;
+        for (int i =size -1; i &gt; index; i--)
+            x = x.prev;
+        return x;
+    &#125;
+&#125;
+void linkBefore(E e, Node&lt;E&gt; succ) &#123;
+    // assert succ != null;
+    final Node&lt;E&gt; pred = succ.prev;
+    final Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, succ);
+    succ.prev = newNode;
+    if (pred == null)
+        first = newNode;
+    else
+        pred.next = newNode;
+    size++;
+    modCount++;
+&#125;
+</code></pre>
+<p>从中可以看到：通过<code>add(int index, E element)</code>向<code>LinkedList</code>插入元素时。先是在双向链表中找到要插入节点的位置<code>index</code>；找到之后，再插入一个新的节点。</p>
+<p>双向链表查找<code>index</code>位置的节点时，有一个加速动作；若<code>index &lt; 双向链表长度的1/2</code>，则从前往后查找。否则从后往前查找。</p>
+<p>再看看<code>ArrayList</code>源码中向指定位置插入元素的代码如下：</p>
+<pre><code class="java">// 将e添加到ArrayList的指定位置
+public void add(int index, E element) &#123;
+    rangeCheckForAdd(index);
+    modeCount++;
+    final int s;
+    Object[] elementData;
+    if ((s = size) == (elementData = this.elementData).length)
+        elementData = grow();
+    System.arraycopy(elementData, index,
+                     elementData, index + 1,
+                     s - index);
+    elementData[index] = element;
+    size = s + 1;
+&#125;
+</code></pre>
+<p><code>arraycopy()</code>是个<code>JNI</code>函数，它是在<code>JVM</code>中实现的。sunJDK中看不到源码，不过可以在OpenJDK中看到源码。网上有对<code>arraycopy()</code>的分析说明，可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011642663/article/details/49512643">System.arraycopy源码分析</a></p>
+<p>实际上只需要了解：<code>System.arraycopy(elementData, index, elementData, index + 1, size - index)</code>。会移动<code>index</code>之后所有元素即可。这就意味着，<code>ArrayList</code>的<code>add(int index, E element)</code>函数会引起<code>index</code>之后所有元素的改变。</p>
+<p>通过上面的分析就可以理解为什么<code>LinkedList</code>中插入元素很快，而<code>ArrayList</code>中插入却很慢。”删除元素”与”插入元素”的原理类似，不再过多赘述。</p>
+<p>接下来看看：为什么<code>LinkedList</code>中随机访问很慢，而<code>ArrayList</code>中随机访问很快。<code>LinkedList</code>随机访问的相关代码如下：</p>
+<pre><code class="java">// 返回LinkedList指定位置的元素
+public E get(int index) &#123;
+    checkElementIndex(index);
+    return node(index).item;
+&#125;
+// 获取双向链表中指定位置的节点
+Node&lt;E&gt; node(int index) &#123;
+    // assert isElementIndex(index);
+    if (index &lt; (size &gt;&gt; 1)) &#123;
+        Node&lt;E&gt; x = first;
+        for (int i = 0; i &lt; index; i++)
+            x = x.next();
+        return x;
+    &#125; else &#123;
+        Node&lt;E&gt; x = last;
+        for (int i = size -1; i &gt; index; i--)
+            x = x.prev;
+        return x;
+    &#125;
+&#125;
+</code></pre>
+<p>从中可以看出：通过<code>get(int index)</code>获取<code>LinkedList</code>第<code>index</code>个元素时，先是调用<code>checkPositionIndex(int index)</code>方法判断<code>index</code>是否在<code>List</code>的索引范围内。再调用<code>node(int index)</code>查找<code>index</code>位置的节点，有一个加速动作：若<code>index &lt; 双向链表长度的1/2，则从前向后查找</code>，否则从后往前查找。</p>
+<p>再来看看<code>ArrayList</code>随机访问的相关代码：</p>
+<pre><code class="java">// 获取index位置元素的值
+public E get(int index) &#123;
+    Object.checkIndex(index, size);
+    checkForComodification();
+    return root.elementData(offset + index);
+&#125;
+
+E elementData(int index) &#123;
+    return (E) elementData[index];
+&#125;
+</code></pre>
+<p>从上面可以看到：通过<code>get(int index)</code>获取<code>ArrayList</code>第<code>index</code>元素时，调用<code>elemenetData</code>返回指定元素，而不需要像LinkedList一样进行查找。</p>
+<h1 id="Vector-和-ArrayList-比较"><a href="#Vector-和-ArrayList-比较" class="headerlink" title="Vector 和 ArrayList 比较"></a>Vector 和 ArrayList 比较</h1><h2 id="相同之处"><a href="#相同之处" class="headerlink" title="相同之处"></a>相同之处</h2><h3 id="它们都是-List"><a href="#它们都是-List" class="headerlink" title="它们都是 List"></a>它们都是 List</h3><p>它们都继承于<code>AbstractList</code>，并且都实现了<code>List</code>接口。<code>ArrayList</code>和<code>Vector</code>的类定义如下：</p>
+<pre><code class="java">// ArrayList的定义
+public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;
+        implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable &#123;&#125;
+// Vector的定义
+public class Vector&lt;E&gt; extends AbstractList&lt;E&gt;
+    implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable &#123;&#125;
+</code></pre>
+<h3 id="它们都实现了-RandomAccess-和-Cloneable-接口"><a href="#它们都实现了-RandomAccess-和-Cloneable-接口" class="headerlink" title="它们都实现了 RandomAccess 和 Cloneable 接口"></a>它们都实现了 RandomAccess 和 Cloneable 接口</h3><p>实现<code>RandomAccess</code>接口，意味着它们都支持快速随机访问。</p>
+<p>实现<code>Cloneable</code>接口，意味着它们都能克隆自己。</p>
+<h3 id="它们都是通过数组实现的，本质上都是动态数组"><a href="#它们都是通过数组实现的，本质上都是动态数组" class="headerlink" title="它们都是通过数组实现的，本质上都是动态数组"></a>它们都是通过数组实现的，本质上都是动态数组</h3><p><code>ArrayList</code>中定义数组<code>elementData</code>用于保存元素</p>
+<pre><code class="java">// 保存ArrayList中数据的数组
+transient Object[] elementData;
+// 保存Vector中数据的数组
+protected Object[] elementData;
+</code></pre>
+<h3 id="它们的默认数组容量是10"><a href="#它们的默认数组容量是10" class="headerlink" title="它们的默认数组容量是10"></a>它们的默认数组容量是10</h3><p>若创建<code>ArrayList</code>或<code>Vector</code>时，没指定容量大小；则使用默认容量大小10。</p>
+<p><code>ArrayList</code>的默认构造函数如下：</p>
+<pre><code class="java">public ArrayList() &#123;
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+&#125;
+</code></pre>
+<p><code>Vector</code>的默认构造函数如下：</p>
+<pre><code class="java">public Vector() &#123;
+    this(10);
+&#125;
+</code></pre>
+<h3 id="它们都支持-Iterator-和-listIterator-遍历"><a href="#它们都支持-Iterator-和-listIterator-遍历" class="headerlink" title="它们都支持 Iterator 和 listIterator 遍历"></a>它们都支持 Iterator 和 listIterator 遍历</h3><p>它们都继承与<code>AbstractList</code>，而<code>AbstractList</code>中分别实现了<code>iterator()</code>接口返回<code>Iterator</code>迭代器和<code>listList()</code>返回<code>ListIterator</code>迭代器。</p>
+<h2 id="不同之处"><a href="#不同之处" class="headerlink" title="不同之处"></a>不同之处</h2><h3 id="线程安全性不一样"><a href="#线程安全性不一样" class="headerlink" title="线程安全性不一样"></a>线程安全性不一样</h3><p><code>ArrrayList</code>是非线程安全的；而<code>Vector</code>是线程安全的，它的函数都是<code>synchronized</code>的，即都是支持同步的。</p>
+<p><code>ArrayList</code>适用于单线程，<code>Vector</code>适用于多线程。</p>
+<h3 id="对序列化支持不同"><a href="#对序列化支持不同" class="headerlink" title="对序列化支持不同"></a>对序列化支持不同</h3><p><code>ArrayList</code>支持序列化，而<code>Vector</code>不支持；即<code>ArrayList</code>有实现<code>java.io.Serializable</code>接口，而<code>Vector</code>没有实现该接口。</p>
+<h3 id="构造函数个数不同"><a href="#构造函数个数不同" class="headerlink" title="构造函数个数不同"></a>构造函数个数不同</h3><p><code>ArrayList</code>有3个构造函数，而<code>Vector</code>有4个构造函数。<code>Vector</code>除了包括和<code>ArrayList</code>类似的3个构造函数之外，另外的一个构造函数可以指定容量增加系数。</p>
+<p><code>ArrayList</code>的构造函数如下：</p>
+<pre><code class="java">public ArrayList(int initialCapacity) &#123;
+    if (initialCapacity &gt; 0) &#123;
+        this.elementData = new Object[initialCapacity];
+    &#125; else if (initialCapacity == 0) &#123;
+        this.elementData = EMPTY_ELEMENTDATA;
+    &#125; else &#123;
+        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+
+                                           initialCapacity);
+    &#125;
+&#125;
+
+public ArrayList() &#123;
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+&#125;
+
+public ArrayList(Collection&lt;? extends E&gt; c) &#123;
+    elementData = c.toArray();
+    if ((size = elementData.length) != 0) &#123;
+        if (elementData.getClass() != Object[].class)
+            elementData = Arrays.copyOf(elementData, size, Object[].class);
+    &#125; else &#123;
+        this.elementData = EMPTY_ELEMENTDATA;
+    &#125;
+&#125;
+</code></pre>
+<p><code>Vector</code>的构造函数如下：</p>
+<pre><code class="java">public Vector(int initialCapacity, int capacityIncrement) &#123;
+    super();
+    if (initialCapacity &lt; 0)
+        throw new IllegalArgumentException(&quot;Illegal Capacity: &quot;+
+                                           initialCapacity);
+    this.elementData = new Object[initialCapacity];
+    this.capacityIncrement = capacityIncrement;
+&#125;
+
+public Vector(int initialCapacity) &#123;
+    this(initialCapacity, 0);
+&#125;
+
+public Vector() &#123;
+    this(10);
+&#125;
+
+public Vector(Collection&lt;? extends E&gt; c) &#123;
+    elementData = c.toArray();
+    elementCount = elementData.length;
+    if (elementData.getClass() != Object[].class)
+        elementData = Arrays.copyOf(elementData, elementCount, Object[].class);
+&#125;
+</code></pre>
+<h3 id="容量增加方式不同"><a href="#容量增加方式不同" class="headerlink" title="容量增加方式不同"></a>容量增加方式不同</h3><p>逐个添加元素时，<code>Vector</code>的容量增长与增长系数有关，若指定了增长系数，且增长系数有效(即，大于0)；那么，每次容量不足时，<code>新的容量=原始容量+增长系数</code>。若增长系数无效(即，小于/等于0)，则<code>新的容量=原始容量 x 2</code>。</p>
+<p><code>ArrayList</code>中容量增长的主要函数如下：</p>
+<pre><code class="java">public void ensureCapacity(int minCapacity) &#123;
+    if (minCapacity &gt; elementData.length
+        &amp;&amp; !(elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+             &amp;&amp; minCapacity &lt;= DEFAULT_CAPACITY)) &#123;
+        modCount++;
+        grow(minCapacity);
+    &#125;
+&#125;
+</code></pre>
+<p><code>Vector</code>中容量增长的主要函数如下：</p>
+<pre><code class="java">public synchronized void ensureCapacity(int minCapacity) &#123;
+    if (minCapacity &gt; 0) &#123;
+        modCount++;
+        if (minCapacity &gt; elementData.length)
+        grow(minCapacity);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="对-Enumeration-的支持不同。-Vector-支持通过-Enumeration去遍历，而-List-不支持"><a href="#对-Enumeration-的支持不同。-Vector-支持通过-Enumeration去遍历，而-List-不支持" class="headerlink" title="对 Enumeration 的支持不同。 Vector 支持通过 Enumeration去遍历，而 List 不支持"></a>对 Enumeration 的支持不同。 Vector 支持通过 Enumeration去遍历，而 List 不支持</h3><p><code>Vector</code>中实现<code>Enumeration</code>的相关方式如下：</p>
+<pre><code class="java">public Enumeration&lt;E&gt; element()
+    return new Enumeration&lt;E&gt;() &#123;
+    int count = 0;
+    public boolean hasMoreElements() &#123;
+        return count &lt; elementCount;
+    &#125;
+    public E nextElement() &#123;
+        synchronized (Vector.this) &#123;
+            if (count &lt; elementCount) &#123;
+                return elementData(count++);
+            &#125;
+        &#125;
+        throw new NoSuchElementException(&quot;Vector Enumeration&quot;);
+    &#125;;
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag"><i class="fa fa-tag"></i> Java-集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/03/Java-List-LinkedList/" rel="prev" title="Java集合之LinkedLList">
+      <i class="fa fa-chevron-left"></i> Java集合之LinkedLList
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/04/Java-Set/" rel="next" title="Java集合之Set架构">
+      Java集合之Set架构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#List-%E6%A6%82%E6%8B%AC"><span class="nav-text">List 概括</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#List-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">List 使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LinkedList-%E5%92%8C-ArrayList-%E6%80%A7%E8%83%BD%E5%B7%AE%E5%BC%82%E5%88%86%E6%9E%90"><span class="nav-text">LinkedList 和 ArrayList 性能差异分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vector-%E5%92%8C-ArrayList-%E6%AF%94%E8%BE%83"><span class="nav-text">Vector 和 ArrayList 比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%90%8C%E4%B9%8B%E5%A4%84"><span class="nav-text">相同之处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%E4%BB%AC%E9%83%BD%E6%98%AF-List"><span class="nav-text">它们都是 List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%E4%BB%AC%E9%83%BD%E5%AE%9E%E7%8E%B0%E4%BA%86-RandomAccess-%E5%92%8C-Cloneable-%E6%8E%A5%E5%8F%A3"><span class="nav-text">它们都实现了 RandomAccess 和 Cloneable 接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%E4%BB%AC%E9%83%BD%E6%98%AF%E9%80%9A%E8%BF%87%E6%95%B0%E7%BB%84%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%8C%E6%9C%AC%E8%B4%A8%E4%B8%8A%E9%83%BD%E6%98%AF%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84"><span class="nav-text">它们都是通过数组实现的，本质上都是动态数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%E4%BB%AC%E7%9A%84%E9%BB%98%E8%AE%A4%E6%95%B0%E7%BB%84%E5%AE%B9%E9%87%8F%E6%98%AF10"><span class="nav-text">它们的默认数组容量是10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%E4%BB%AC%E9%83%BD%E6%94%AF%E6%8C%81-Iterator-%E5%92%8C-listIterator-%E9%81%8D%E5%8E%86"><span class="nav-text">它们都支持 Iterator 和 listIterator 遍历</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E4%B9%8B%E5%A4%84"><span class="nav-text">不同之处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%A7%E4%B8%8D%E4%B8%80%E6%A0%B7"><span class="nav-text">线程安全性不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%BA%8F%E5%88%97%E5%8C%96%E6%94%AF%E6%8C%81%E4%B8%8D%E5%90%8C"><span class="nav-text">对序列化支持不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%AA%E6%95%B0%E4%B8%8D%E5%90%8C"><span class="nav-text">构造函数个数不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E9%87%8F%E5%A2%9E%E5%8A%A0%E6%96%B9%E5%BC%8F%E4%B8%8D%E5%90%8C"><span class="nav-text">容量增加方式不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9-Enumeration-%E7%9A%84%E6%94%AF%E6%8C%81%E4%B8%8D%E5%90%8C%E3%80%82-Vector-%E6%94%AF%E6%8C%81%E9%80%9A%E8%BF%87-Enumeration%E5%8E%BB%E9%81%8D%E5%8E%86%EF%BC%8C%E8%80%8C-List-%E4%B8%8D%E6%94%AF%E6%8C%81"><span class="nav-text">对 Enumeration 的支持不同。 Vector 支持通过 Enumeration去遍历，而 List 不支持</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

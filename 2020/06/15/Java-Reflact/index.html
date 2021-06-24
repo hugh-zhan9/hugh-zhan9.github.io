@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="反射是一种保证程序在运行期间可以拿到一个对象的所有信息的机制，也是后期框架中应用到的重要基本思想之一。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射">
+<meta property="og:url" content="http://example.com/2020/06/15/Java-Reflact/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="反射是一种保证程序在运行期间可以拿到一个对象的所有信息的机制，也是后期框架中应用到的重要基本思想之一。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-15T20:00:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.198Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/06/15/Java-Reflact/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>反射 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/15/Java-Reflact/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          反射
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-15 20:00:28" itemprop="dateCreated datePublished" datetime="2020-06-15T20:00:28+00:00">2020-06-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/15/Java-Reflact/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/15/Java-Reflact/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>17k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>15 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>反射是一种保证程序在运行期间可以拿到一个对象的所有信息的机制，也是后期框架中应用到的重要基本思想之一。</p>
+<span id="more"></span>
+
+<p>首先需要了解两个概念：</p>
+<ul>
+<li><strong>编译期</strong>：是指将源码交给编译器编译成计算机可以执行的文件的过程。编译器相当于只是做了一些翻译的功能，并没有把代码放在内存中跑起来，而只是把代码当成文本进行操作，比如检查错误。</li>
+<li><strong>运行期</strong>：把编译后的文件交给计算机执行，直到程序运行结束。</li>
+</ul>
+<p>Java反射机制保证了程序在运行状态中，对于任意一个类，程序都能知道这个类所有的属性和方法；对于任意一个对象，都能调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为Java语言的反射机制。</p>
+<p>Java的反射机制可以操作（读写）字节码文件。</p>
+<p>反射机制下相关的重要的类：</p>
+<p><code>java.lang.Class</code>：代表整个字节码，代表一个类型</p>
+<p><code>java.lang.reflact.Method</code>：代表字节码中的方法字节码</p>
+<p><code>java.lang.Constructor</code>：代表字节码中的构造方法字节码</p>
+<p><code>java.lang.Field</code>：代表字节码中的属性字节码（静态变量和实例变量）</p>
+<h1 id="Class类"><a href="#Class类" class="headerlink" title="Class类"></a>Class类</h1><p>除了<code>int</code>等基本类型之外，Java的其它类型都是<code>Class</code>(包括<code>interface</code>)。例如：</p>
+<ul>
+<li><code>String</code></li>
+<li><code>Object</code></li>
+<li><code>Runnable</code></li>
+<li><code>Exception</code></li>
+<li>…</li>
+</ul>
+<p>可以得出结论：<code>class</code>(包括<code>interface</code>)的本质是数据类型(<code>Type</code>)。两个无继承关系的数据类型之间无法直接赋值。</p>
+<pre><code class="java">Number num = new Double(123.456);
+String str = new Double(123.456); //compile error!
+</code></pre>
+<p><code>class</code>是由JVM在执行过程中动态加载的。JVM在每一次读取到一种<code>class</code>类型时，将其加载进内存。每加载一种<code>class</code>，JVM就为其创建一个<code>Class</code>类型的实例，并关联起来。这里的<code>Class</code>类型是一个名叫<code>Class</code>的类。长这样：</p>
+<pre><code class="java">public final class Class&#123;
+    private Class() &#123;&#125;
+&#125;
+</code></pre>
+<p>以<code>String</code>类为例，当JVM加载<code>String</code>类时，首先读取<code>String.class</code>文件到内存，然后，为<code>String</code>类创建一个<code>Class</code>实例并关联起来：</p>
+<pre><code class="java">Class cls = new Class(String);
+</code></pre>
+<p>这个<code>Class</code>实例是JVM内部创建的，如果我们查看JDK源码，可以发现<code>Class</code>类的构造方法是<code>private</code>，只有JVM能创建<code>Class</code>实例，我们自己的Java程序是无法创建<code>Class</code>实例的。所以，JVM持有的每个<code>Class</code>实例都指向一个数据类型（<code>class</code>或<code>interface</code>），一个<code>Class</code>实例包含了该<code>class</code>的所有完整信息。</p>
+<p> 由于JVM为每个加载的<code>class</code>创建了对应的<code>Class</code>实例，并在实例中保存了该<code>class</code>的所有信息，包括类名、包名、父类、实现的接口、所有方法、字段等。因此，如果获取了某个<code>Class</code>实例，我们就可以通过这个<code>Class</code>实例获取到该实例对应的<code>class</code>的所有信息。<strong>这种通过<code>Class</code>实例获取<code>class</code>信息的方法就称为反射（Reflection）。</strong></p>
+<p>如何获取一个<code>class</code>的<code>Class</code>实例，有三种方法：</p>
+<ol>
+<li><p>方法一：直接通过一个<code>class</code>的静态变量<code>class</code>获取：</p>
+<pre><code class="java">Class cls = String.class;    // Java中任意一个类都有一个class属性
+</code></pre>
+</li>
+<li><p>方法二：如果有一个实例变量，可以通过该实例变量提供的<code>getClass()</code>方法获取：</p>
+<pre><code class="java">String str = &quot;Hello&quot;;
+Class cls = str.getClass();  // getClass()方法是由Object类定义的
+</code></pre>
+</li>
+<li><p>方法三：如果知道一个<code>class</code>的完整类名，可以通过静态方法<code>Class.forName()</code>获取：</p>
+<pre><code class="java">Class cls = Class.forName(&quot;java.lang.String&quot;);  // 这个方法会导致类加载，类加载时静态代码块会执行
+</code></pre>
+</li>
+</ol>
+<p>因为<code>Class</code>实例在JVM中是唯一的，所以上述三个方法获取的<code>Class</code>实例都是同一个实例。可以用<code>==</code>比较两个<code>Class</code>实例：</p>
+<pre><code class="java">Class cls1 = String.class;
+String str = &quot;Hello&quot;;
+Class cls2 = str.getClass();
+boolean sameClass = cls1 == cls2;  //true
+</code></pre>
+<p><strong>注意：<code>Class</code>实例比较和<code>instanceof</code>的差别：</strong></p>
+<p>用<code>instanceof</code>不但匹配指定类型，还匹配指定类型的子类。而<code>==</code>判断<code>Class</code>实例可以精确地判断数据类型，但不能作子类型比较。</p>
+<pre><code class="java">Integer n = new Integer(123);
+boolean b1 = n instanceof Integer; //true
+boolean b2 = n instanceof Number; //true
+boolean b3 = n.getClass() == Integer.class; //true
+boolean b4 = n.getClass() == Number.class; //false
+</code></pre>
+<p>通常情况下，我们应该用<code>instanceof</code>判断数据类型，因为面向抽象编程的时候，我们不关心具体的子类型。只有在需要精确判断一个类型是不是某个<code>class</code>的时候，我们才使用<code>==</code>判断<code>class</code>实例。</p>
+<p>因为反射的目的是为了获得某个实例的信息。因此，当我们拿到某个<code>Object</code>实例时，我们可以通过反射获取该<code>Object</code>的<code>class</code>信息：</p>
+<pre><code class="java">void printObjectInfo(Object obj) &#123;
+    Class cls = obj.getClass();
+&#125;
+</code></pre>
+<p>要从<code>Class</code>实例获取获取的基本信息，参考下面的代码：</p>
+<pre><code class="java">public class Main &#123;
+    public static void main(String[] args) &#123;
+        printClassInfo(&quot;&quot;.getClass());
+        printClassInfo(Runnable.class);
+        printClassInfo(java.time.Month.class);
+        printClassInfo(String[].class);
+        printClassInfo(int.class);
+    &#125;
+
+    static void printClassInfo(Class cls) &#123;
+        System.out.println(&quot;Class name: &quot; + cls.getName());
+        System.out.println(&quot;Simple name: &quot; + cls.getSimpleName());
+        if (cls.getPackage() != null) &#123;
+            System.out.println(&quot;Package name: &quot; + cls.getPackage().getName());
+        &#125;
+        System.out.println(&quot;is interface: &quot; + cls.isInterface());
+        System.out.println(&quot;is enum: &quot; + cls.isEnum());
+        System.out.println(&quot;is array: &quot; + cls.isArray());
+        System.out.println(&quot;is primitive: &quot; + cls.isPrimitive());
+        System.out.println(&quot;----------------------------------------&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果如下：</p>
+<pre><code class="java">Class name: java.lang.String 
+Simple name: String 
+Package name: java.lang 
+is interface: false 
+is enum: false 
+is array: false 
+is primitive: false 
+---------------------------------------- 
+Class name: java.lang.Runnable 
+Simple name: Runnable 
+Package name: java.lang 
+is interface: true 
+is enum: false 
+is array: false 
+is primitive: false 
+---------------------------------------- 
+Class name: java.time.Month 
+Simple name: Month 
+Package name: java.time 
+is interface: false 
+is enum: true 
+is array: false 
+is primitive: false 
+---------------------------------------- 
+Class name: [Ljava.lang.String; 
+Simple name: String[] 
+is interface: false 
+is enum: false 
+is array: true 
+is primitive: false 
+---------------------------------------- 
+Class name: int 
+Simple name: int 
+is interface: false 
+is enum: false 
+is array: false 
+is primitive: true 
+---------------------------------------- 
+</code></pre>
+<p>数组（例如<code>String[]</code>）也是一种<code>Class</code>，而且不同于<code>String.class</code>，它的类名是<code>[Ljava.lang.String</code>。此外，JVM为每一种基本类型如<code>int</code>也创建了<code>Class</code>，通过<code>int.class</code>访问。如果获取到了一个<code>Class</code>实例，我们就可以通过该<code>Class</code>实例来创建对应类型的实例：</p>
+<pre><code class="java">// 获取String的Class实例:
+Class cls = String.class;
+// 创建一个String实例:
+String s = (String) cls.newInstance();
+</code></pre>
+<p>上述代码的作用相当于<code>new String()</code>。通过<code>Class.newInstance()</code>可以创建类实例，它的局限是：只能调用<code>public</code>的无参数构造方法。带参数的构造方法，或者非<code>public</code>的构造方法都无法通过<code>Class.newInstance()</code>被调用（能使用new来创建尽量不使用这一方法）。</p>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p><strong>反射机制的灵活性：</strong></p>
+<p>测试程序</p>
+<pre><code class="java">public class Test&#123;
+    public static void class main(String args)&#123;
+        /*
+            FileReader file = new FileReader(&quot;project/ClassInfo.properties&quot;); 
+            上面这个方法里写的是我配置文件的位置，当代码结构变化时，路径可能就不正确了
+            
+            
+            下面这种方法即使代码位置发生变动，还是可以读取到配置文件，这种写法要求：配置文件在src目录下
+            Thread.currentThread()         当前线程对象
+            getContextClassLoader()       线程的方法，获取当前线程的   类加载器对象
+            getResource()                类加载器对象的方法，当前线程的类加载器默认从类的根路径下加载资源， 参数为类的根路径为启点的相对路径
+            这种方法可以拿到src目录下文件的绝对路径
+        String path = Thread.currentThread().getContextClassLoader().getResource(&quot;com/hugh/resource/ClassInfo.properties&quot;).getPath();  
+        FileReader file = new FileReader(path); 
+        */
+        
+        // 进一步改进，直接以流的形式返回
+        InputStream file = Thread.currentThread().getContextClassLoaser().getResourceAsStream(&quot;com/hugh/resource/ClassInfo.properties&quot;);
+        Properties pro = new Properties();
+        pro.load(file);
+        file.close();
+        String className = pro.getProperty(&quot;ClassName&quot;);
+        Class class = Class.forName(className);
+        System.out.println(class);
+    &#125;
+&#125;
+</code></pre>
+<p>我们可以修改<code>ClassInfo.properties</code>文件中的内容，来新建不同的类的对象而不用修改Java代码。</p>
+<pre><code class="properties">ClassName=java.lang.Data
+</code></pre>
+<p>上面的类还可以更简便：</p>
+<pre><code class="java"> public class ResourceBundleTest&#123;
+     // java.util包下提供了一个资源绑定器，便于获取属性配置文件中的内容
+     public static void mian(String[] args)&#123;
+        // 资源绑定器，只能绑定xxx.properties文件，并且配置文件文件必须在类路径下，文件的拓展名也必须是properties
+         // 在写文件路径时，文件的拓展名省略
+         ResourceBundle bundle = ResourceBundle.getBundle(&quot;com/hugh/resource.ClassInfo&quot;);
+         String className =  bundle.getString(&quot;ClassName&quot;);
+        System.out.println(className);
+     &#125;
+ &#125;
+</code></pre>
+<p><strong>类加载器</strong></p>
+<p>类加载器（ClassLoader）是专门负责加载类的命令/工具。JDK中自带了三个类加载器：启动类加载器（父加载器），扩展类加载器（母加载器），应用类加载器。——（双亲委派机制是一个安全机制，为了保证类加载的安全性）</p>
+<p>代码在开始执行之前，会将代码所需要的类全部加载到JVM当中。整个程序中类加载流程为：</p>
+<p>首先启动器加载器会在<code>jre/lib/rt.jar</code>包寻找需要加载的class文件，如果启动加载器加载找不到对应的class文件，扩展类加载器会去加载<code>jre/lib/ext.jar</code>包中寻找，如果还没有找到会通过应用加载器去寻找，应用加载器专门加载<code>classpath</code>下的jar包或者class文件。</p>
+<h2 id="动态加载"><a href="#动态加载" class="headerlink" title="动态加载"></a>动态加载</h2><p>JVM在执行Java程序的时候，并不是一次性把所有用到的字节码文件全部加载到内存，而是第一次需要用到时才加载。例如：</p>
+<pre><code class="java">// Main.java
+public class Main &#123;
+    public static void main(String[] args) &#123;
+        if (args.length &gt; 0) &#123;
+            create(args[0]);
+        &#125;
+    &#125;
+    static void create(String name) &#123;
+        Person p = new Person(name);
+    &#125;
+&#125;
+</code></pre>
+<p>当执行<code>Main.java</code>时，由于用到了<code>Main</code>，因此，JVM首先会把<code>Main.class</code>加载到内存。然而，并不会加载<code>Person.class</code>，除非程序执行到<code>create()</code>方法，JVM发现需要加载<code>Person</code>类时，才会首次加载<code>Person.class</code>。如果没有执行<code>create()</code>方法，那么<code>Person.class</code>根本就不会被加载。</p>
+<p>这就是JVM动态加载<code>class</code>的特性。动态加载<code>class</code>的特性对于Java程序非常重要。利用JVM动态加载<code>class</code>的特性，我们才能在运行期根据条件加载不同的实现类。</p>
+<h1 id="访问字段"><a href="#访问字段" class="headerlink" title="访问字段"></a>访问字段</h1><p>对于任意一个<code>Object</code>实例，只要我们获取了它的<code>Class</code>，就可以获取它的一切信息。<code>Class</code>提供了以下几个方法来获取字段：</p>
+<ul>
+<li><code>ClassName.getField(FieldName)</code>：根据字段名获取某个<code>public</code>的<code>field</code>（包括父类）。</li>
+<li><code>ClassName.getDeclaredField(FieldName)</code>：根据字段名获取当前类的某个<code>field</code>（不包括父类）。</li>
+<li><code>ClassName.getFields()</code>：获取所有<code>public</code>的<code>field</code>（包括父类）。</li>
+<li><code>ClassName.getDeclardFields()</code>：获取当前类的所有<code>field</code>（不包括父类）。</li>
+</ul>
+<pre><code class="java">public class Main&#123;
+    public static void main(String[] args) throws Exception&#123;
+        // 获取Student的Class实例
+        Class stdClass = Student.class;
+        // 获取public字段&quot;score&quot;
+        System.out.println(stdClass.getField(&quot;score&quot;));
+        // 获取继承的public字段&quot;name&quot;
+        System.out.println(stdClass.getField(&quot;name&quot;));
+        // 获取private字段&quot;grade&quot;
+        System.out.println(stdClass.getDeclaredField(&quot;grade&quot;));
+    &#125;
+&#125;
+public class Student extends Person&#123;
+    public int score;
+    private int grade;
+&#125;
+public class person&#123;
+    public String name;
+&#125;
+</code></pre>
+<p>结果如下：</p>
+<pre><code class="java">public int Student.score
+public java.lang.String Person.name
+private int Student.grade
+</code></pre>
+<p>一个<code>Field</code>对象包含了一个字段的所有信息：</p>
+<ul>
+<li><code>getName()</code>：返回字段名称，如：<code>&quot;name&quot;</code>。</li>
+<li><code>getType()</code>：返回字段类型，也是一个<code>Class</code>实例，如<code>String.Class</code>。</li>
+<li><code>getModifiers()</code>：返回字段的修饰符，它返回一个<code>int</code>，<code>int</code>的值表示修饰符的个数。</li>
+</ul>
+<hr>
+<p>以<code>Sting</code>类的<code>value</code>字段为例，它的定义如下：</p>
+<pre><code class="java">public final class String &#123;
+    private final byte[] value;
+&#125;
+</code></pre>
+<p>用反射获取该字段的信息：</p>
+<pre><code class="java">Field f = String.getDeclaredField(&quot;value&quot;);
+f.getName(); // &quot;value&quot;
+f.getType(); // class[B    表示byte[]类型
+int m = f.getModifiers();
+String modifiiersString = Modifier.toString(m); // private final
+Modifier.isFinal(m); // true
+Modifier.isPublic(m); // false
+Modifier.isProtected(m); // false
+Modifier.isPrivate(m); // true
+Modifier.isStatic(m); // false
+</code></pre>
+<hr>
+<h2 id="获取字段值"><a href="#获取字段值" class="headerlink" title="获取字段值"></a>获取字段值</h2><p>除了可以利用反射拿到字段的一个<code>Field</code>实例外，还可以拿到一个实例对应的该字段的值。例如：一个<code>Person</code>实例，我们可以先拿到<code>name</code>字段对应的<code>Field</code>，再获取这个实例的<code>name</code>字段的值。</p>
+<pre><code class="java">import java.lang.reflect.Field;
+public class Main&#123;
+    public static void main(String[] args)&#123;
+        Object p = new Person(&quot;Xiao Ming&quot;);
+        Class c = p.getClass();
+        Field f = c.getDeclaredField(&quot;name&quot;);
+        Object value = f.get(p);
+        System.out.println(value); //&quot;Xiao Ming&quot;
+    &#125;
+&#125;
+class Person&#123;
+    private String name;
+    public Person(String name)&#123; //构造方法
+        this.name = name;
+    &#125;
+&#125;
+</code></pre>
+<p>上述代码先获取<code>Class</code>实例，再获取<code>Field</code>实例，然后，用<code>Field.get(Object)</code>获取指定实例的指定字段的值。</p>
+<p>运行代码，如果不出意外，会得到一个<code>IllegalAccessException</code>，这是因为<code>name</code>被定义为一个<code>private</code>字段，正常情况下，<code>Main</code>类无法访问<code>Person</code>类的<code>private</code>字段。要修复错误，可以将<code>private</code>改为<code>public</code>，或者，在调用<code>Object value = f.get(p);</code>前，先写一句：</p>
+<pre><code class="java">f.setAccessible(true);
+</code></pre>
+<p>调用<code>Field.setAccessible(true)</code>的意思是，别管这个字段是不是<code>public</code>，一律允许访问。可以试着加上上述语句，再运行代码，就可以打印出<code>private</code>字段的值。</p>
+<p>正常情况下，我们总是通过<code>p.name</code>来访问<code>Person</code>的<code>name</code>字段，编译器会根据<code>public</code>、<code>protected</code>和<code>private</code>决定是否允许访问字段，这样就达到了数据封装的目的。而反射是一种非常规的用法，使用反射，首先代码非常繁琐，其次，它更多地是给工具或者底层框架来使用，目的是在不知道目标实例任何信息的情况下，获取特定字段的值。</p>
+<p>此外，<code>setAccessible(true)</code>可能会失败。如果JVM运行期存在<code>SecurityManager</code>，那么它会根据规则进行检查，有可能阻止<code>setAccessible(true)</code>。例如，某个<code>SecurityManager</code>可能不允许对<code>java</code>和<code>javax</code>开头的<code>package</code>的类调用<code>setAccessible(true)</code>，这样可以保证JVM核心库的安全。</p>
+<h2 id="设置字段值"><a href="#设置字段值" class="headerlink" title="设置字段值"></a>设置字段值</h2><p>通过Field实例既然可以获取到指定实例的字段值，自然也可以设置字段的值。设置字段是通过<code>Field.set(Object, Object)</code>实现的，其中第一个<code>Object</code>参数是指定的实例，第二个<code>Object</code>参数是待修改的值。</p>
+<pre><code class="java">import java.lang.reflect.Field;
+public class main&#123;
+    public static void main(String[] args)&#123;
+        Person p = new Person(&quot;Xiao Ming&quot;);
+        System.out.println(p.getName()); // &quot;Xiao Ming&quot;
+        Class c = p.getClass();
+        Field f = c.getDeclaredField(&quot;name&quot;);
+        f.setAccessible(true);
+        f.set(p, &quot;Xiao Hong&quot;);
+        System.out.println(p.getName()); // &quot;Xiao Hong&quot;
+    &#125;
+&#125;
+class Person&#123;
+    private String name;
+    public Person(String name)&#123;
+        this.name = name;
+    &#125;
+    public String getName()&#123;
+        return this.name;
+    &#125;
+&#125;
+</code></pre>
+<p>运行上述代码，打印的<code>name</code>字段从<code>Xiao Ming</code>变成了<code>Xiao Hong</code>，说明通过反射可以直接修改字段的值。同样的，修改非<code>public</code>字段，需要首先调用<code>setAccessible(true)</code>。</p>
+<h1 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h1><p>同样的通过<code>Class</code>实例我们还可以获取所有的<code>Method</code>信息。<code>Class</code>类提供了以下几个方法来获取<code>Method</code>：</p>
+<ul>
+<li><code>Method getMethod(name, Class...)</code>：获取某个<code>public</code>的<code>Method</code>（包括父类）。</li>
+<li><code>Method getDeclaredMethod(name, Class...)</code>：获取当前类的某个<code>Method</code>（不包括父类）。</li>
+<li><code>Method[] getMethods()</code>：获取所有<code>public</code>的<code>Method</code>（包括父类）。</li>
+<li><code>Method[] getDeclareMethods()</code>：获取当前类的所有<code>Method</code>（不包括父类）。</li>
+</ul>
+<pre><code class="java">public class Main&#123;
+    public static void main(String[] args)&#123;
+        Class stdClass = Student.class;
+        // 获取public方法getScore，参数类型为String
+        System.out.println(stdClass.getMethod(&quot;getScore&quot;, String.class));
+        // 获取继承的public方法getName，无参数
+        System.out.println(stdClass.getMethod(&quot;getName&quot;));
+        // 获取private方法getGrade，参数类型为int
+        System.out.println(stdClass.getDeclaredMethod(&quot;getGrade&quot;, int.class));
+    &#125;
+&#125;
+class Student extends Person&#123;
+    public int getScore(String type)&#123;
+        return 99;
+    &#125;
+    private int getGrade(int year)&#123;
+        return 1;
+    &#125;
+&#125;
+class Person&#123;
+    public String getName()&#123;
+        return &quot;Person&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>执行结果：</p>
+<pre><code class="java">public int Student.getScore(java.lang.String)
+public java.lang.String Person.getName()
+private int Student.getGrade(int)
+</code></pre>
+<p>一个<code>Method</code>对象包含一个方法的所有信息：</p>
+<ul>
+<li><p><code>getName()</code>：返回方法名称，例如：<code>&quot;getScore&quot;</code>。</p>
+</li>
+<li><p><code>getReturnType()</code>：返回方法返回值类型，也是一个Class实例，例如：<code>String.class</code>。</p>
+</li>
+<li><p><code>getParameterTypes()</code>：返回方法的参数类型，是一个Class数组，例如：<code>&#123;String.class, int.class&#125;</code>。</p>
+</li>
+<li><p><code>getModifiers()</code>：返回方法的修饰符，它是一个<code>int</code>，不同的bit表示不同的涵义。</p>
+</li>
+</ul>
+<h2 id="调用方法-1"><a href="#调用方法-1" class="headerlink" title="调用方法"></a>调用方法</h2><p>当获取到一个<code>Method</code>对象时，就可以对他进行调用。以下面代码为例：</p>
+<pre><code class="java">String s = &quot;Hello world&quot;;
+String r = s.substring(6); //&quot;world&quot;
+</code></pre>
+<p>如果用反射来调用<code>substring</code>方法，需要如下代码：</p>
+<pre><code class="java">import java.lang.reflext.Method;
+public class Main&#123;
+    public static void main(String[] args)&#123;
+        // 创建String对象
+        String s = &quot;Hello world&quot;;
+        // 获取String substring(int)方法，参数为int
+        Method m = String.class.getMethod(&quot;substring&quot;, int.class);
+        // 对s对象调用该方法并获取结果给r
+        String r = (string) m.invoke(s,6);
+        // 打印调用结果
+        System.out.println(r);
+    &#125;
+&#125;
+</code></pre>
+<p>注意到<code>substring()</code>有两个重载方法，我们获取的是<code>String substring(int)</code>这个方法，那么如何获取<code>String substring(int, int)</code>方法呢？</p>
+<p>对<code>Method</code>实例调用<code>invoke</code>就相当于调用方法，<code>invoke</code>的第一个参数是对象实例，即要调用方法的对象，第二个参数是方法要传入的参数。</p>
+<h2 id="调用静态方法"><a href="#调用静态方法" class="headerlink" title="调用静态方法"></a>调用静态方法</h2><p>如果获取到的<code>Method</code>表示一个静态方法，调用静态方法时，由于无需指定实例对象，所以<code>invoke</code>方法传入的第一个参数永远是<code>null</code>，我们以<code>Integer.parseInt(String)</code>方法为例。</p>
+<pre><code class="java">import java.lang.reflect.Method;
+public class Main&#123;
+    public static void main(String[] args)&#123;
+        // 获取Integer.parseInt(String)方法，参数String
+        Method m = Integer.class.getMethod(&quot;parseInt&quot;, String.class);
+        // 调用该静态方法并获取结果
+        Integer n = (Integer) m.invoke(null, &quot;123456&quot;);
+        System.ou.printlln(n);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="调用非public方法"><a href="#调用非public方法" class="headerlink" title="调用非public方法"></a>调用非public方法</h2><p>和<code>Field</code>类似，对于非<code>public</code>方法，我们虽然可以通过<code>Class.getDeclaredMethod()</code>获取方法实例，但是直接对其调用将会得到一个<code>IllegalAccessException</code>。所以我们需要通过<code>Method.setAccessible(true)</code>允许其调用。</p>
+<pre><code class="java">import java.lang.reflect.Method;
+public class Main&#123;
+    public static void main(String[] args)&#123;
+        Person p = new Person();
+        Method m = p.class.getDeclaredMethod(&quot;setName&quot;, String.class);
+        m.setAccessible(true);
+        m.invoke(p,&quot;Bob&quot;);
+        System.out.println(p.name);
+    &#125;
+&#125;
+class Person&#123;
+    String name;
+    private void setName(String name)&#123;
+        this.name = name;
+    &#125;
+&#125;
+</code></pre>
+<p>此外，<code>setAccessible(true)</code>可能会失败。如果JVM运行期存在<code>SecurityManager</code>，那么它会根据规则进行检查，有可能阻止<code>setAccessible(true)</code>。例如，某个<code>SecurityManager</code>可能不允许对<code>java</code>和<code>javax</code>开头的<code>package</code>的类调用<code>setAccessible(true)</code>，这样可以保证JVM核心库的安全。</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>如果一个<code>Person</code>类定义了<code>hello</code>方法，并且它的子类<code>Student</code>重写了<code>hello</code>方法，那么，从<code>Person.class</code>获取的<code>Method</code>，作用于<code>Student</code>实例时，调用的方法到底是哪个？</p>
+<pre><code class="java">import java.lang.reflect.Method;
+public class Main &#123;
+    public static void main(String[] args) throws Exception &#123;
+        // 获取Person的hello方法:
+        Method h = Person.class.getMethod(&quot;hello&quot;);
+        // 对Student实例调用hello方法:
+        h.invoke(new Student());
+    &#125;
+&#125;
+class Person &#123;
+    public void hello() &#123;
+        System.out.println(&quot;Person:hello&quot;);
+    &#125;
+&#125;
+class Student extends Person &#123;
+    public void hello() &#123;
+        System.out.println(&quot;Student:hello&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>运行上述代码，发现打印出的是<code>Student:hello</code>，因此，使用反射调用方法时，仍然遵循多态原则：即总是调用实际类型的覆写方法（如果存在）。上述的反射代码：</p>
+<pre><code class="java">Method m = Person.class.getMethod(&quot;hello&quot;);
+m.invoke(new Student());
+</code></pre>
+<p>实际上相当于：</p>
+<pre><code class="java">Person p = new Student();
+p.hello();
+</code></pre>
+<h1 id="调用构造方法"><a href="#调用构造方法" class="headerlink" title="调用构造方法"></a>调用构造方法</h1><p>我们通常使用<code>new</code>操作符创建新的实例：<code>Person p = new Person();</code></p>
+<p>如果要通过反射来创建新的实例时，可以调用<code>Class</code>提供的<code>newInstance()</code>方法:</p>
+<pre><code>Person p = Person.class.newInstance();
+</code></pre>
+<p><code>Class.newInstance()</code>只能调用该类的<code>public</code>无参数构造方法。如果构造方法带有参数，或者不是<code>public</code>方法就无法通过它来调用。为了调用任意的构造方法，Java儿对反射API提供了<code>Constructor</code>对象，它包含一个构造方法的所有信息，可以创建一个实例。<code>Constructor</code>对象和<code>Method</code>非常类似，不同之处仅在于它是一个构造方法，并且，调用结果总是返回实例：</p>
+<pre><code class="java">import java.lang.reflect.Constructor;
+public class Main&#123;
+    public static void main(String[] args)throws Exception&#123;
+        // 获取构造方法Integer(int)
+        Constructor cons1 = Integer.class.getConstructor(int.class);
+        // 调用构造方法
+        Integer n1 = (Integer) cons1.newInstance(123);
+        System.out.println(n1);
+        // 获取构造方法Integer(String)
+        Constructor cons2 = Integer.class.getConstructor(String.class);
+        Integer n2 = (Integer) cons2.newInstance(&quot;456&quot;);
+        System.out.println(n2);
+    &#125;
+&#125;
+</code></pre>
+<p>通过Class实例获取Constructor方法如下：</p>
+<ul>
+<li><p><code>getConstructor(Class...)</code>：获取某个<code>public</code>的<code>Constructor</code>。</p>
+</li>
+<li><p><code>getDeclaredConstructor(Class...)</code>：获取某个<code>Constructor</code>。</p>
+</li>
+<li><p><code>getConstructors()</code>：获取所有<code>public</code>的<code>Constructor</code>。</p>
+</li>
+<li><p><code>getDeclaredConstructors()</code>：获取所有<code>Constructor</code>。</p>
+</li>
+</ul>
+<p>注意<code>Constructor</code>总是当前类定义的构造方法，和父类无关，因此不存在多态的问题。</p>
+<h1 id="获取继承关系"><a href="#获取继承关系" class="headerlink" title="获取继承关系"></a>获取继承关系</h1><p>当我们获取到某个<code>Class</code>对象时，实际上就获取到了一个类的类型：</p>
+<pre><code class="java">Class cls = String.class; // 获取到String的Class
+</code></pre>
+<p>还可以用实例的<code>getClass()</code>方法获取：</p>
+<pre><code class="java">String s = &quot;&quot;;
+Class cls = s.getClass(); // s是String，因此获取到String的Class
+</code></pre>
+<p>最后一个获取<code>Class</code>的方法是通过<code>Class.forName(&quot;&quot;)</code>，传入<code>Class</code>的<strong>完整类名</strong>获取：</p>
+<pre><code class="java">Class s = Class.forName(&quot;java.lang.String&quot;);
+</code></pre>
+<p>这三种方式获取的<code>Class</code>实例都是同一个实例，因为JVM对每个加载的<code>Class</code>只创建一个<code>Class</code>实例来表示它的类型。</p>
+<h2 id="获取父类的Class"><a href="#获取父类的Class" class="headerlink" title="获取父类的Class"></a>获取父类的Class</h2><p>有了<code>Class</code>实例，还可以获取它的父类的<code>Class</code>：</p>
+<pre><code class="java">public class Main&#123;
+    public static void main(String[] args) throws Exception&#123;
+        Class i = Integer.class;
+        Class n = i.getSuperclass();
+        System.ou.println(n);
+        Class o = n.getSuperclass();
+        System.out.println(o);
+        System.out.println(o.getSuperclass());
+    &#125;
+&#125;
+// 运行结果
+class java.lang.Number
+class java.lang.Object
+null
+</code></pre>
+<h2 id="获取interface"><a href="#获取interface" class="headerlink" title="获取interface"></a>获取interface</h2><p>由于一个类可能实现一个或多个接口，通过<code>Class</code>我们就可以查询到实现的接口类型。例如：查询<code>Integer</code>实现的接口：</p>
+<pre><code class="java">import java.lang.reflect.Method;
+public class Main &#123;
+    public static void main(String[] args) throws Exception&#123;
+        Class s = Integer.class;
+        Class[] is = s.getInterfaces();
+        for (Class i : is)&#123;
+            System.out.println();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>要特别注意：<code>getInterfaces()</code>只返回当前类直接实现的接口类型，并不包括其父类实现的接口类型：</p>
+<pre><code class="java">import java.lang.reflect.Method;
+public class Main&#123;
+    public static void main(String[] args) throws Exception&#123;
+        Class s = Integer.class.getSuperclass();
+        Class[] is = s.getInterfaces();
+        for (Class i : is)&#123;
+            System.out.println(i);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><code>Integer</code>的父类是<code>Number</code>，<code>Number</code>实现的接口是<code>java.io.Serializable</code>。</p>
+<p>此外，对所有<code>interface</code>的<code>Class</code>调用<code>getSuperclass()</code>返回的是<code>null</code>，获取接口的父接口要用<code>getInterfaces()</code>：</p>
+<pre><code class="java">System.out.println(java.io.DataInputStream.class.getSuperclass()); // java.io.FilterInputStream，因为DataInputStream继承自FilterInputStream
+System.out.println(java.io.Closeable.class.getSuperclass()); // null，对接口调用getSuperclass()总是返回null，获取接口的父接口要用getInterfaces()
+</code></pre>
+<p>如果一个类没有实现任何<code>interface</code>，那么<code>getInterfaces()</code>返回空数组。</p>
+<h2 id="继承关系"><a href="#继承关系" class="headerlink" title="继承关系"></a>继承关系</h2><p>使用<code>instanceof</code>操作符判断一个实例是否是某个类型。</p>
+<pre><code class="java">Object n = Integer.valueOf(123)；
+boolean isDouble = n instanceof Double; //false
+boolean isInteger = n instanceof Integer; // true
+boolean isNumber = n instanceof Number; // true
+boolean isSerializable = n instanceof java.io.Serializable; //true
+</code></pre>
+<p>如果是两个<code>Class</code>实例，要判断一个向上转型是否成立，可以调用<code>isAssignableFrom()</code>：</p>
+<pre><code class="java">//Integer i = ?
+Integer.class isAssignableForm(Integer.class); //true，因为Integer可以赋值给Integer
+//Number n = ?
+Number.class isAssignableForm(Integer.class); //true，因为Integer可以赋值给Number
+// Object o = ?
+Object.class.isAssignableFrom(Integer.class); // true，因为Integer可以赋值给Object
+// Integer i = ?
+Integer.class.isAssignableFrom(Number.class); // false，因为Number不能赋值给Integer
+</code></pre>
+<p>小结：</p>
+<p>通过<code>Class</code>对象可以获取继承关系：</p>
+<ul>
+<li><code>Class getSuperclass()</code>：获取父类类型。</li>
+<li><code>Class[] getInterfaces()</code>：获取当前类实现的所有接口。</li>
+</ul>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/15/Java-OOP-Advance/" rel="prev" title="面向对象编程进阶">
+      <i class="fa fa-chevron-left"></i> 面向对象编程进阶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/16/%5BJava%5D-%E5%86%85%E7%BD%AE%E5%8C%85%E8%A3%85%E7%B1%BB/" rel="next" title="内置包装类">
+      内置包装类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Class%E7%B1%BB"><span class="nav-text">Class类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E5%B1%95"><span class="nav-text">拓展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD"><span class="nav-text">动态加载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%AD%97%E6%AE%B5"><span class="nav-text">访问字段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E5%80%BC"><span class="nav-text">获取字段值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%AD%97%E6%AE%B5%E5%80%BC"><span class="nav-text">设置字段值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">调用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="nav-text">调用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="nav-text">调用静态方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E9%9D%9Epublic%E6%96%B9%E6%B3%95"><span class="nav-text">调用非public方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%80%81"><span class="nav-text">多态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-text">调用构造方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="nav-text">获取继承关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%88%B6%E7%B1%BB%E7%9A%84Class"><span class="nav-text">获取父类的Class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96interface"><span class="nav-text">获取interface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="nav-text">继承关系</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

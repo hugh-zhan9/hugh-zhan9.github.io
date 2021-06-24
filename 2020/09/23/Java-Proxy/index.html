@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="代理（Proxy）是通过代理对象访问目标对象，这样可以在目标对象基础上增强额外的功能，如添加权限，访问控制和审计等功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代理">
+<meta property="og:url" content="http://example.com/2020/09/23/Java-Proxy/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="代理（Proxy）是通过代理对象访问目标对象，这样可以在目标对象基础上增强额外的功能，如添加权限，访问控制和审计等功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-23T21:58:48.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.198Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/09/23/Java-Proxy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>代理 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/23/Java-Proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          代理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-23 21:58:48" itemprop="dateCreated datePublished" datetime="2020-09-23T21:58:48+00:00">2020-09-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/09/23/Java-Proxy/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/23/Java-Proxy/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>代理（Proxy）是通过代理对象访问目标对象，这样可以在目标对象基础上增强额外的功能，如添加权限，访问控制和审计等功能。</p>
+<span id="more"></span>
+
+
+
+<p>Java代理分为静态代理和动态代理和<code>Cglib</code>代理，下面进行逐个说明。</p>
+<h1 id="1-静态代理"><a href="#1-静态代理" class="headerlink" title="1. 静态代理"></a>1. 静态代理</h1><p>在编译前使用代理类来对被代理类进行功能的增强。代理的关系在编译期前已经确定了，所以只能代理单一的对象。</p>
+<p>静态代理比较简单，只需要代理类和被代理类实现了同一接口，在代理类的构造函数中定义一个被代理类的对象即可。</p>
+<p>Person接口</p>
+<pre><code class="java">public interface Person &#123;
+    void sayHello(String content);
+&#125;
+</code></pre>
+<p>被代理类：Student</p>
+<pre><code class="java">public class Student implements Person&#123;
+    @Override
+    public void sayHello(String content) &#123;
+        System.out.println(content);
+    &#125;
+&#125;
+</code></pre>
+<p>代理类：StudentProxy</p>
+<pre><code class="java">public class StudentProxy implements Person&#123;
+    private Person obj;
+    public StudentProxy(Person o)&#123;
+        this.obj = obj;
+    &#125;
+
+    @Override
+    public void sayHello(String content) &#123;
+        System.out.println(&quot;ProxyObject sayHello begin&quot;);
+        //在代理类的方法中 间接访问被代理对象的方法
+        o.sayHello(content);
+        System.out.println(&quot;ProxyObject sayHello end&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>测试类：StaticProxyTest</p>
+<pre><code class="java">public class StaticProxyTest&#123;
+    public static void main(String[] args) &#123;
+        // student为被代理对象，某些情况下 我们不希望修改已有的代码，我们采用代理来间接访问
+        Student student = new Student();
+        // 创建代理类对象
+        StudentProxy proxy = new StudentProxy(student);
+        // 调用代理类对象的方法
+        proxy.sayHello(&quot;静态代理实现&quot;);
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<p>接口类<code>AdminService.java</code>接口</p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+public interface AdminService &#123;
+    void update();
+    Object find();
+&#125;
+</code></pre>
+<p>实现类<code>AdminServiceImpl.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+public class AdminServiceImpl implements AdminService&#123;
+    public void update() &#123;
+        System.out.println(&quot;修改管理系统数据&quot;);
+    &#125;
+
+    public Object find() &#123;
+        System.out.println(&quot;查看管理系统数据&quot;);
+        return new Object();
+    &#125;
+&#125;
+</code></pre>
+<p>代理类<code>AdminServiceProxy.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+public class AdminServiceProxy implements AdminService &#123;
+
+    private AdminService adminService;
+
+    public AdminServiceProxy(AdminService adminService) &#123;
+        this.adminService = adminService;
+    &#125;
+
+    public void update() &#123;
+        System.out.println(&quot;判断用户是否有权限进行update操作&quot;);
+        adminService.update();
+        System.out.println(&quot;记录用户执行update操作的用户信息、更改内容和时间等&quot;);
+    &#125;
+
+    public Object find() &#123;
+        System.out.println(&quot;判断用户是否有权限进行find操作&quot;);
+        System.out.println(&quot;记录用户执行find操作的用户信息、查看内容和时间等&quot;);
+        return adminService.find();
+    &#125;
+&#125;
+</code></pre>
+<p>测试类<code>StaticProxyTest.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+public class StaticProxyTest &#123;
+
+    public static void main(String[] args) &#123;
+        AdminService adminService = new AdminServiceImpl();
+        AdminServiceProxy proxy = new AdminServiceProxy(adminService);
+        proxy.update();
+        System.out.println(&quot;=============================&quot;);
+        proxy.find();
+    &#125;
+&#125;
+</code></pre>
+<p>输出：</p>
+<pre><code class="swift">判断用户是否有权限进行update操作
+修改管理系统数据
+记录用户执行update操作的用户信息、更改内容和时间等
+=============================
+判断用户是否有权限进行find操作
+记录用户执行find操作的用户信息、查看内容和时间等
+查看管理系统数据
+</code></pre>
+<p>总结：<br>静态代理模式在不改变目标对象的前提下，实现了对目标对象的功能扩展。</p>
+<p>不足：</p>
+<p>静态代理实现了目标对象的所有方法，一旦目标接口增加方法，代理对象和目标对象都要进行相应的修改，增加了维护成本。</p>
+<h1 id="2-JDK动态代理"><a href="#2-JDK动态代理" class="headerlink" title="2. JDK动态代理"></a>2. JDK动态代理</h1><p>动态代理是通过反射原理，在运行期动态地生成字节码来对被代理类实现功能增强的。动态代理的代理关系只有在代码真正执行时才会确定，可以代理任一对象。</p>
+<p>为解决静态代理对象必须实现接口的所有方法的问题，Java给出了动态代理，动态代理具有如下特点：</p>
+<ol>
+<li><code>Proxy</code>对象不需要<code>implements</code>接口；</li>
+<li><code>Proxy</code>对象的生成利用JDK的API，在JVM内存中动态的构建<code>Proxy</code>对象。需要使用<code>java.lang.reflect.Proxy</code>类的</li>
+</ol>
+<pre><code class="java">  /**
+     * Returns an instance of a proxy class for the specified interfaces
+     * that dispatches method invocations to the specified invocation
+     * handler.
+ 
+     * @param   loader the class loader to define the proxy class
+     * @param   interfaces the list of interfaces for the proxy class
+     *          to implement
+     * @param   h the invocation handler to dispatch method invocations to
+     * @return  a proxy instance with the specified invocation handler of a
+     *          proxy class that is defined by the specified class loader
+     *          and that implements the specified interfaces
+
+     */
+static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler invocationHandler );
+</code></pre>
+<p>方法，方法参数说明：</p>
+<ul>
+<li><code>ClassLoader loader</code>：指定当前<code>target</code>对象使用类加载器，获取加载器的方法是固定的：<code>被代理类对象.getClass().getClassLoader()</code>；</li>
+<li><code>Class&lt;?&gt;[] interfaces</code>：<code>target</code>对象实现的接口的类型，使用泛型方式确认类型</li>
+<li><code>InvocationHandler invocationHandler</code>：事件处理，执行<code>target</code>对象的方法时，会触发事件处理器的方法，会把当前执行<code>target</code>对象的方法作为参数传入。</li>
+</ul>
+<p>Java的动态代理机制中，有两个重要的类/接口，一个是<code>InvocationHandler</code>（Interface），还有一个是<code>Proxy</code>（class）。</p>
+<p><code>InvocationHandler</code>是每一个动态代理类都必须要实现的接口，并且每个代理类的实例都关联到了一个handler，当我们通过代理对象调用一个方法的时候，该方法的调用就会被转发由<code>InvocationHandler</code>这个接口的<code>invoke</code>方法来调用。</p>
+<p><code>Proxy</code>类，动态的创建一个代理对象的类，它提供了许多方法，我们用的最多的是<code>newProxyInstance</code>方法，该方法的作用就是得到一个动态的代理对象。</p>
+<p><strong>代理类中要实现的内容有：</strong></p>
+<ol>
+<li>因为动态代理不知道被代理的类是哪一个，所以在实现了<code>InvocationHandler</code>的代理类中定义了一个<code>Object</code>类，在代理类的构造函数中作为参数传递进来。</li>
+<li>实现<code>InvocationHandler</code>的<code>invoke</code>方法。</li>
+<li>写<code>main</code>方法，并在<code>main</code>方法中根据定义的被代理类实现代理类的生成。</li>
+</ol>
+<p>动态代理的步骤：</p>
+<ol>
+<li>首先获得一个被代理对象的引用</li>
+<li>获得该引用的接口</li>
+<li>生成一个类，这个类实现了我们给的代理对象所实现的接口</li>
+<li>上述类编译生成了<code>.class</code>字节码供JVM使用</li>
+<li>调用上述生成的<code>class</code></li>
+</ol>
+<pre><code class="java">import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+/**
+ * 动态代理类
+ * @author hugh
+ *
+ */
+public class DynamicProxy implements InvocationHandler &#123;
+    // 代理类中的真实对象
+    private Object object;
+    // 构造函数，给真实对象赋值
+    public DynamicProxy(Object object)&#123;
+        this.object = object;
+    &#125;
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;
+        System.out.println(&quot;DynamicProxy invoke begin&quot;);
+        System.out.println(&quot;proxy: &quot;+ proxy.getClass().getName());
+        System.out.println(&quot;method: &quot;+ method.getName());
+        for(Object o : args)&#123;
+            System.out.println(&quot;arg: &quot;+ o);
+        &#125;
+        //通过反射调用 被代理类的方法
+        method.invoke(object, args);  // 这里调用的是Method的invoke方法
+        System.out.println(&quot;DynamicProxy invoke end&quot;);
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<p>测试类/调用类</p>
+<pre><code class="java">import java.lang.reflect.Proxy;
+
+public class DynamicProxyTest&#123;
+    public static void main(String [] args)&#123;
+        //创建需要被代理的类
+        Person student = new Student();
+        // 创建被代理类的委托类，之后想要调用被代理类的方法时，都会委托给这个类的invoke(Object proxy, Method method, Object[] args)方法
+        DynamicProxy handler = new DynamicProxy(student);
+        //生成代理类, 注意newProxyInstance的三个参数所代表的含义
+        Person proxy = (Person) Proxy.newProxyInstance(student.getClass().getClassLoader(), student.getClass().getInterfaces(), handler);
+        //通过代理类调用 被代理类的方法
+        proxy.sayHello(&quot;被代理对象执行自己的方法&quot;);
+        proxy.sayGoodBye(true);
+        System.out.println(&quot;end&quot;);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="实战代码："><a href="#实战代码：" class="headerlink" title="实战代码："></a>实战代码：</h2><p>接口</p>
+<pre><code class="java">public interface IUserDao &#123;
+    void save();
+&#125;
+</code></pre>
+<p>实现类</p>
+<pre><code class="java">public class UserDao implements IUserDao &#123;
+    public void save() &#123;
+        System.out.println(&quot;----已经保存数据!----&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>采用匿名类的方式</p>
+<pre><code class="java">public class ProxyFactory&#123;
+    //维护一个目标对象
+    private Object target;
+    public ProxyFactory(Object target)&#123;
+        this.target=target;
+    &#125;
+
+   //给目标对象生成代理对象
+    public Object getProxyInstance()&#123;
+        return Proxy.newProxyInstance(
+                target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(),
+                new InvocationHandler() &#123;
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;
+                        System.out.println(&quot;开始事务2&quot;);
+                        //执行目标对象方法
+                        Object returnValue = method.invoke(target, args);
+                        System.out.println(&quot;提交事务2&quot;);
+                        return returnValue;
+                    &#125;
+                &#125;
+        );
+    &#125;
+
+&#125;
+</code></pre>
+<p>测试类，模拟现实中需要使用代理的情景</p>
+<pre><code class="java">/**
+ * 测试类
+ */
+public class App &#123;
+    public static void main(String[] args) &#123;
+        // 目标对象
+        IUserDao target = new UserDao();
+        // 【原始的类型 class cn.itcast.b_dynamic.UserDao】
+        System.out.println(target.getClass());
+
+        // 给目标对象，创建代理对象
+        IUserDao proxy = (IUserDao) new ProxyFactory(target).getProxyInstance();
+        // class $Proxy0   内存中动态生成的代理对象
+        System.out.println(proxy.getClass());
+
+        // 执行方法   【代理对象】
+        proxy.save();
+    &#125;
+&#125;
+</code></pre>
+<hr>
+<p><code>AdminServiceImpl.java</code>和<code>AdminService.java</code>和原来一样，这里不再赘述。</p>
+<p><code>AdminServiceInvocation.java</code>  </p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class AdminServiceInvocation  implements InvocationHandler &#123;
+
+    private Object target;
+
+    public AdminServiceInvocation(Object target) &#123;
+        this.target = target;
+    &#125;
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;
+        System.out.println(&quot;判断用户是否有权限进行操作&quot;);
+       Object obj = method.invoke(target);
+        System.out.println(&quot;记录用户执行操作的用户信息、更改内容和时间等&quot;);
+        return obj;
+    &#125;
+&#125;
+</code></pre>
+<p><code>AdminServiceDynamicProxy.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
+public class AdminServiceDynamicProxy &#123;
+    
+    private Object target;
+    private InvocationHandler invocationHandler;
+    
+    public AdminServiceDynamicProxy(Object target,InvocationHandler invocationHandler)&#123;
+        this.target = target;
+        this.invocationHandler = invocationHandler;
+    &#125;
+
+    public Object getPersonProxy() &#123;
+        Object obj = Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), invocationHandler);
+        return obj;
+    &#125;
+&#125;
+</code></pre>
+<p><code>DynamicProxyTest.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+public class DynamicProxyTest &#123;
+    public static void main(String[] args) &#123;
+
+        // 方法一
+        System.out.println(&quot;============ 方法一 ==============&quot;);
+        AdminService adminService = new AdminServiceImpl();
+        System.out.println(&quot;代理的目标对象：&quot; + adminService.getClass());
+
+        AdminServiceInvocation adminServiceInvocation = new AdminServiceInvocation(adminService);
+
+        AdminService proxy = (AdminService) new AdminServiceDynamicProxy(adminService, adminServiceInvocation).getPersonProxy();
+
+        System.out.println(&quot;代理对象：&quot; + proxy.getClass());
+
+        Object obj = proxy.find();
+        System.out.println(&quot;find 返回对象：&quot; + obj.getClass());
+        System.out.println(&quot;----------------------------------&quot;);
+        proxy.update();
+
+        //方法二
+        System.out.println(&quot;============ 方法二 ==============&quot;);
+        AdminService target = new AdminServiceImpl();
+        AdminServiceInvocation invocation = new AdminServiceInvocation(adminService);
+        AdminService proxy2 = (AdminService) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), invocation);
+
+        Object obj2 = proxy2.find();
+        System.out.println(&quot;find 返回对象：&quot; + obj2.getClass());
+        System.out.println(&quot;----------------------------------&quot;);
+        proxy2.update();
+
+        //方法三
+        System.out.println(&quot;============ 方法三 ==============&quot;);
+        final AdminService target3 = new AdminServiceImpl();
+        AdminService proxy3 = (AdminService) Proxy.newProxyInstance(target3.getClass().getClassLoader(), target3.getClass().getInterfaces(), new InvocationHandler() &#123;
+
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;
+                System.out.println(&quot;判断用户是否有权限进行操作&quot;);
+                Object obj = method.invoke(target3, args);
+                System.out.println(&quot;记录用户执行操作的用户信息、更改内容和时间等&quot;);
+                return obj;
+            &#125;
+        &#125;);
+
+        Object obj3 = proxy3.find();
+        System.out.println(&quot;find 返回对象：&quot; + obj3.getClass());
+        System.out.println(&quot;----------------------------------&quot;);
+        proxy3.update();
+
+
+    &#125;
+&#125;
+</code></pre>
+<p>输出结果：</p>
+<pre><code>============ 方法一 ==============
+代理的目标对象：class com.hugh.proxy.demo.service.AdminServiceImpl
+代理对象：class com.sun.proxy.$Proxy0
+判断用户是否有权限进行操作
+查看管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+find 返回对象：class java.lang.Object
+----------------------------------
+判断用户是否有权限进行操作
+修改管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+============ 方法二 ==============
+判断用户是否有权限进行操作
+查看管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+find 返回对象：class java.lang.Object
+----------------------------------
+判断用户是否有权限进行操作
+修改管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+============ 方法三 ==============
+判断用户是否有权限进行操作
+查看管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+find 返回对象：class java.lang.Object
+----------------------------------
+判断用户是否有权限进行操作
+修改管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+</code></pre>
+<h1 id="3-Cglib代理"><a href="#3-Cglib代理" class="headerlink" title="3. Cglib代理"></a>3. Cglib代理</h1><p>JDK动态代理要求<code>target</code>对象是一个接口的实现对象，假如<code>target</code>对象只是一个单独的对象，并没有实现任何接口，这时候就会用到<code>Cglib</code>代理(<code>Code Generation Library</code>)，即通过构建一个子类对象，从而实现对<code>target</code>对象的代理，因此目标对象不能是<code>final</code>类(报错)，且目标对象的方法不能是<code>final</code>或<code>static</code>（不执行代理功能）。<br> <code>Cglib</code>依赖的jar包</p>
+<pre><code class="xml">  &lt;dependency&gt;
+            &lt;groupId&gt;cglib&lt;/groupId&gt;
+            &lt;artifactId&gt;cglib&lt;/artifactId&gt;
+            &lt;version&gt;3.2.10&lt;/version&gt;
+  &lt;/dependency&gt;
+</code></pre>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>目标对象类<code>AdminCglibService.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+public class AdminCglibService &#123;
+    public void update() &#123;
+        System.out.println(&quot;修改管理系统数据&quot;);
+    &#125;
+
+    public Object find() &#123;
+        System.out.println(&quot;查看管理系统数据&quot;);
+        return new Object();
+    &#125;
+&#125;
+</code></pre>
+<p>代理类<code>AdminServiceCglibProxy.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+
+import java.lang.reflect.Method;
+
+public class AdminServiceCglibProxy implements MethodInterceptor &#123;
+
+    private Object target;
+
+    public AdminServiceCglibProxy(Object target) &#123;
+        this.target = target;
+    &#125;
+
+    //给目标对象创建一个代理对象
+    public Object getProxyInstance() &#123;
+        //工具类
+        Enhancer en = new Enhancer();
+        //设置父类
+        en.setSuperclass(target.getClass());
+        //设置回调函数
+        en.setCallback(this);
+        //创建子类代理对象
+        return en.create();
+    &#125;
+
+    @Override
+    public Object intercept(Object object, Method method, Object[] arg2, MethodProxy proxy) throws Throwable &#123;
+
+        System.out.println(&quot;判断用户是否有权限进行操作&quot;);
+        Object obj = method.invoke(target);
+        System.out.println(&quot;记录用户执行操作的用户信息、更改内容和时间等&quot;);
+        return obj;
+    &#125;
+
+
+&#125;
+</code></pre>
+<p><code>Cglib</code>代理测试类<code>CglibProxyTest.java</code></p>
+<pre><code class="java">package com.hugh.proxy.demo.service;
+
+public class CglibProxyTest &#123;
+    public static void main(String[] args) &#123;
+
+        // 创建目标对象
+        AdminCglibService target = new AdminCglibService();
+        // 创建代理对象
+        AdminServiceCglibProxy proxyFactory = new AdminServiceCglibProxy(target);
+        AdminCglibService proxy = (AdminCglibService) proxyFactory.getProxyInstance();
+
+        System.out.println(&quot;代理对象：&quot; + proxy.getClass());
+
+        Object obj = proxy.find();
+        System.out.println(&quot;find 返回对象：&quot; + obj.getClass());
+        System.out.println(&quot;----------------------------------&quot;);
+        proxy.update();
+    &#125;
+&#125;
+</code></pre>
+<p>输出结果：</p>
+<pre><code>代理对象：class com.hugh.proxy.demo.service.AdminCglibService$$EnhancerByCGLIB$$41b156f9
+判断用户是否有权限进行操作
+查看管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+find 返回对象：class java.lang.Object
+----------------------------------
+判断用户是否有权限进行操作
+修改管理系统数据
+记录用户执行操作的用户信息、更改内容和时间等
+</code></pre>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>理解上述Java代理后，也就明白Spring AOP的代理实现模式，即加入Spring中的target是接口的实现时，就使用JDK动态代理，否是就使用Cglib代理。Spring也可以通过<code>&lt;aop:config proxy-target-class=&quot;true&quot;&gt;</code>强制使用Cglib代理，使用Java字节码编辑类库ASM操作字节码来实现，直接以二进制形式动态地生成 stub 类或其他代理类，性能比JDK更强。</p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/21/Java-Annotation/" rel="prev" title="注解">
+      <i class="fa fa-chevron-left"></i> 注解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/25/%5BJava%5D-JSP&EL/" rel="next" title="JSP & EL表达式">
+      JSP & EL表达式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-text">1. 静态代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="nav-text">2. JDK动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="nav-text">实战代码：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Cglib%E4%BB%A3%E7%90%86"><span class="nav-text">3. Cglib代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98"><span class="nav-text">实战</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

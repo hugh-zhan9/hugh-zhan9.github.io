@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java集合之Map架构">
+<meta property="og:url" content="http://example.com/2020/07/13/Java-Map/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/10/UMasoj.jpg">
+<meta property="article:published_time" content="2020-07-13T11:42:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.198Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-集合">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/07/10/UMasoj.jpg">
+
+<link rel="canonical" href="http://example.com/2020/07/13/Java-Map/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java集合之Map架构 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/13/Java-Map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java集合之Map架构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-13 11:42:28" itemprop="dateCreated datePublished" datetime="2020-07-13T11:42:28+00:00">2020-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/13/Java-Map/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/13/Java-Map/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<p>来看看Map的架构</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/10/UMasoj.jpg"></p>
+<p>如上图：</p>
+<ul>
+<li><code>Map</code>是映射接口，<code>Map</code>中存储的内容是键值对（key-value）</li>
+<li><code>AbstractMap</code>是继承于<code>Map</code>的抽象类，它实现了<code>Map</code>中的大部分API。其它<code>Map</code>的实现类可以通过继承<code>AbstractMap</code>来减少重复编码。</li>
+<li><code>SortedMap</code>是继承于<code>Map</code>的接口，<code>SortedMap</code>中的内容是排序的键值对，排序的方法是通过比较器(<code>Comparator</code>)。</li>
+<li><code>NavigableMap</code>是继承于<code>SortedMap</code>的接口。相比于<code>SortedMap</code>，<code>NavigableMap</code>有一系列的导航方法；如：获取大于/等于某对象的键值对、获取小于/等于某对象的键值对等等。</li>
+<li><code>TreeMap</code>继承于<code>AbstractMap</code>，且实现了<code>NavigableMap</code>接口；因此，<code>TreeMap</code>中的内容是有序的键值对！</li>
+<li><code>HashMap</code>继承于<code>AbstractMap</code>，但没实现<code>NavigableMap</code>接口；因此，<code>HashMap</code>的内容是键值对，但不保证次序！</li>
+<li><code>Hashtable</code>虽然不是继承于<code>AbstractMap</code>，但它继承于<code>Dictionary</code>(<code>Dictionary</code>也是键值对的接口)，也实现<code>Map</code>接口；因此，<code>Hashtable</code>的内容也是键值对，也不保证次序。但和<code>HashMap</code>相比，<code>Hashtable</code>是线程安全的，而且它支持通过<code>Enumeration</code>去遍历。</li>
+<li><code>WeakHashMap</code>继承于<code>AbstractMap</code>。它和<code>HashMap</code>的键类型不同，<code>WeakHashMap</code>的键是<a href="">弱键</a>。</li>
+</ul>
+<h1 id="Map-简介"><a href="#Map-简介" class="headerlink" title="Map 简介"></a>Map 简介</h1><p>Map 的定义如下：</p>
+<pre><code class="java">public interface Map&lt;K,V&gt; &#123;&#125;
+</code></pre>
+<p><code>Map</code>是一个键值对(<code>key-value</code>)映射接口。<code>Map</code>映射中不能包含重复的键；每个键最多只能映射到一个值。</p>
+<p><code>Map</code>接口提供三种<code>collection</code>视图，允许以键集、值集或键-值映射关系集的形式查看某个映射的内容。</p>
+<p><code>Map</code>映射顺序。有些实现类，可以明确保证其顺序，如<code>TreeMap</code>；另一些映射实现则不保证顺序，如<code>HashMap</code>类。</p>
+<p><code>Map</code>的实现类应该提供2个标准的构造方法：</p>
+<ul>
+<li>第一个，无参构造方法，用于创建空映射；</li>
+<li>第二个，带有单个 <code>Map</code>类型参数的构造方法，用于创建一个与其参数具有相同键-值映射关系的新映射。</li>
+</ul>
+<p>实际上，后一个构造方法允许用户复制任意映射，生成所需类的一个等价映射。尽管无法强制执行此建议（因为接口不能包含构造方法），但是 JDK 中所有通用的映射实现都遵从它。</p>
+<h2 id="Map-的API"><a href="#Map-的API" class="headerlink" title="Map 的API"></a>Map 的API</h2><pre><code class="java">abstract void                 clear()
+abstract boolean              containsKey(Object key)
+abstract boolean              containsValue(Object value)
+abstract Set&lt;Entry&lt;K, V&gt;&gt;     entrySet()
+abstract boolean              equals(Object object)
+abstract V                    get(Object key)
+abstract int                  hashCode()
+abstract boolean              isEmpty()
+abstract Set&lt;K&gt;               keySet()
+abstract V                    put(K key, V value)
+abstract void                 putAll(Map&lt;? extends K, ? extends V&gt; map)
+abstract V                    remove(Object key)
+abstract int                  size()
+abstract Collection&lt;V&gt;        values()
+</code></pre>
+<p>说明：</p>
+<ul>
+<li><p><code>Map</code>提供接口分别用于返回键集、值集或键值映射关系集。</p>
+<blockquote>
+<p><code>entrySet()</code>用于返回键值集的<code>set</code>集合</p>
+<p><code>keySet()</code>用于返回键集的<code>Set</code>集合</p>
+<p><code>values()</code>用户返回值集的<code>Collection</code>集合</p>
+<p>因为<code>Map</code>中不能包含重复的键，每个键最多只能映射到一个值。所以：键值集、键集都是<code>Set</code>，值集是<code>Collection</code></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Map-Entry"><a href="#Map-Entry" class="headerlink" title="Map.Entry"></a>Map.Entry</h2><p><code>Map.Entry</code>的定义如下：</p>
+<pre><code class="java">interface Entry&lt;K,V&gt; &#123;&#125;
+</code></pre>
+<p><code>Map.Entry</code>是<code>Map</code>中内部的一个接口，<code>Map.Entry</code>是键值对，<code>Map</code>通过<code>entrySet()</code>获取<code>Map.Entry</code>的键值对集合，从而通过该集合实现对键值对的操作。</p>
+<h3 id="Map-Entry的API"><a href="#Map-Entry的API" class="headerlink" title="Map.Entry的API"></a>Map.Entry的API</h3><pre><code class="java">abstract boolean       equals(Object o)
+abstract K             getKey()
+abstract V             getValue()
+abstract int           hashCode()
+abstract V             setValue(V value)
+</code></pre>
+<h2 id="AbstractMap"><a href="#AbstractMap" class="headerlink" title="AbstractMap"></a>AbstractMap</h2><p><code>AbstractMap</code>的定义如下：</p>
+<pre><code class="JAVA">public abstract class AbstractMap&lt;K,V&gt; implements Map&lt;K,V&gt; &#123;&#125;
+</code></pre>
+<p><code>AbstractMap</code>类提供<code>Map</code>接口的骨干实现，以最大限度地减少实现此接口所需的工作。</p>
+<p>要实现不可修改的映射，编程人员只需扩展此类并提供<code>entrySet</code>方法的实现即可，该方法将返回映射的映射关系<code>set</code>视图。通常，返回的<code>set</code>将依次在<code>AbstractSet</code>上实现。此<code>set</code>不支持<code>add()</code>或<code>remove()</code>方法，其迭代器也不支持 <code>remove()</code>方法。</p>
+<p>要实现可修改的映射，编程人员必须另外重写此类的<code>put</code>方法（否则将抛出<code>UnsupportedOperationException</code>），<code>entrySet().iterator()</code>返回的迭代器也必须另外实现其<code>remove</code>方法。</p>
+<h3 id="AbstractMap的API"><a href="#AbstractMap的API" class="headerlink" title="AbstractMap的API"></a>AbstractMap的API</h3><pre><code class="java">abstract Set&lt;Entry&lt;K, V&gt;&gt;     entrySet()
+         void                 clear()
+         boolean              containsKey(Object key)
+         boolean              containsValue(Object value)
+         boolean              equals(Object object)
+         V                    get(Object key)
+         int                  hashCode()
+         boolean              isEmpty()
+         Set&lt;K&gt;               keySet()
+         V                    put(K key, V value)
+         void                 putAll(Map&lt;? extends K, ? extends V&gt; map)
+         V                    remove(Object key)
+         int                  size()
+         String               toString()
+         Collection&lt;V&gt;        values()
+         Object               clone()
+</code></pre>
+<h2 id="SortedMap"><a href="#SortedMap" class="headerlink" title="SortedMap"></a>SortedMap</h2><p><code>SortedMap</code>的定义如下：</p>
+<pre><code class="java">public interface SortedMap&lt;K,V&gt; extends Map&lt;K,V&gt; &#123; &#125;
+</code></pre>
+<p><code>SortedMap</code>是一个继承于<code>Map</code>接口的接口。它是一个有序的<code>SortedMap</code>键值映射。<br><code>SortedMap</code>的排序方式有两种：</p>
+<ul>
+<li>自然排序 </li>
+<li>用户指定比较器 </li>
+</ul>
+<p>插入有序<code>SortedMap</code>的所有元素都必须实现<code>Comparable</code>接口（或者被指定的比较器所接受）。</p>
+<p>另外，所有<code>SortedMap</code>实现类都应该提供 4 个标准构造方法：</p>
+<ul>
+<li>无参构造方法，它创建一个空的有序映射，按照键的自然顺序进行排序。</li>
+<li>带有一个<code>Comparator</code>类型参数的构造方法，它创建一个空的有序映射，根据指定的比较器进行排序。</li>
+<li>带有一个<code>Map</code>类型参数的构造方法，它创建一个新的有序映射，其键-值映射关系与参数相同，按照键的自然顺序进行排序。</li>
+<li>带有一个<code>SortedMap</code>类型参数的构造方法，它创建一个新的有序映射，其键-值映射关系和排序方法与输入的有序映射相同。</li>
+</ul>
+<h3 id="SortedMap的API"><a href="#SortedMap的API" class="headerlink" title="SortedMap的API"></a>SortedMap的API</h3><pre><code class="java">// SortedMap新增的API 
+abstract Comparator&lt;? super K&gt;     comparator()
+abstract K                         firstKey()
+abstract SortedMap&lt;K, V&gt;           headMap(K endKey)
+abstract K                         lastKey()
+abstract SortedMap&lt;K, V&gt;           subMap(K startKey, K endKey)
+abstract SortedMap&lt;K, V&gt;           tailMap(K startKey)
+</code></pre>
+<h3 id="NavigableMap"><a href="#NavigableMap" class="headerlink" title="NavigableMap"></a>NavigableMap</h3><p><code>NavigableMap</code>的定义如下：</p>
+<pre><code class="java">public interface NavigableMap&lt;K,V&gt; extends SortedMap&lt;K,V&gt; &#123; &#125;
+</code></pre>
+<p><code>NavigableMap</code>是继承于<code>SortedMap</code>的接口。它是一个可导航的键-值对集合，具有了为给定搜索目标报告最接近匹配项的导航方法。<br><code>NavigableMap</code>分别提供了获取键、键-值对、键集、键-值对集的相关方法。</p>
+<h4 id="NavigableMap的API"><a href="#NavigableMap的API" class="headerlink" title="NavigableMap的API"></a>NavigableMap的API</h4><pre><code class="java">abstract Entry&lt;K, V&gt;             ceilingEntry(K key)
+abstract Entry&lt;K, V&gt;             firstEntry()
+abstract Entry&lt;K, V&gt;             floorEntry(K key)
+abstract Entry&lt;K, V&gt;             higherEntry(K key)
+abstract Entry&lt;K, V&gt;             lastEntry()
+abstract Entry&lt;K, V&gt;             lowerEntry(K key)
+abstract Entry&lt;K, V&gt;             pollFirstEntry()
+abstract Entry&lt;K, V&gt;             pollLastEntry()
+abstract K                       ceilingKey(K key)
+abstract K                       floorKey(K key)
+abstract K                       higherKey(K key)
+abstract K                       lowerKey(K key)
+abstract NavigableSet&lt;K&gt;         descendingKeySet()
+abstract NavigableSet&lt;K&gt;         navigableKeySet()
+abstract NavigableMap&lt;K, V&gt;      descendingMap()
+abstract NavigableMap&lt;K, V&gt;      headMap(K toKey, boolean inclusive)
+abstract SortedMap&lt;K, V&gt;         headMap(K toKey)
+abstract SortedMap&lt;K, V&gt;         subMap(K fromKey, K toKey)
+abstract NavigableMap&lt;K, V&gt;      subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive)
+abstract SortedMap&lt;K, V&gt;         tailMap(K fromKey)
+abstract NavigableMap&lt;K, V&gt;      tailMap(K fromKey, boolean inclusive)
+</code></pre>
+<p>说明：<br><code>NavigableMap</code>除了继承<code>SortedMap</code>的特性外，它的提供的功能可以分为4类：</p>
+<ol>
+<li>提供操作键-值对的方法。<br><code>lowerEntry(K key)</code>、<code>floorEntry(K key)</code>、<code>ceilingEntry(K key)</code>和<code>higherEntry(K key)</code>方法，它们分别返回与小于、小于等于、大于等于、大于给定键的键关联的<code>Map.Entry</code>对象。<br><code>firstEntry()</code>、<code>pollFirstEntry()</code>、<code>lastEntry()</code>和<code>pollLastEntry()</code>方法，它们返回和/或移除最小和最大的映射关系（如果存在），否则返回<code>null</code>。</li>
+<li>提供操作键的方法。和第1类比较类似<br><code>lowerKey(K key)</code>、<code>floorKey(K key)</code>、<code>ceilingKey(K key)</code>和<code>higherKey(K key)</code>方法，它们分别返回与小于、小于等于、大于等于、大于给定键的键。</li>
+<li>获取键集。<br><code>navigableKeySet()</code>、<code>descendingKeySet()</code>分别获取正序/反序的键集。</li>
+<li>获取键-值对的子集。</li>
+</ol>
+<h2 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h2><p>Dictionary的定义如下：</p>
+<pre><code class="JAVA">public abstract class Dictionary&lt;K,V&gt; &#123;&#125;
+</code></pre>
+<p><code>Dictionary</code>是JDK 1.0定义的键值对的接口，它也包括了操作键值对的基本函数。</p>
+<blockquote>
+<p><strong>注意：此类已过时。 新的实现应实现 Map 接口，而不是扩展此类。</strong></p>
+</blockquote>
+<h3 id="Dictionary的API"><a href="#Dictionary的API" class="headerlink" title="Dictionary的API"></a>Dictionary的API</h3><pre><code class="java">abstract Enumeration&lt;V&gt;     elements()
+abstract V                  get(Object key)
+abstract boolean            isEmpty()
+abstract Enumeration&lt;K&gt;     keys()
+abstract V                  put(K key, V value)
+abstract V                  remove(Object key)
+abstract int                size()
+</code></pre>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag"><i class="fa fa-tag"></i> Java-集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/07/Java-Set-conclusion/" rel="prev" title="Java集合之Set总结">
+      <i class="fa fa-chevron-left"></i> Java集合之Set总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/14/Java-Map-HashMap/" rel="next" title="Java集合之HashMap">
+      Java集合之HashMap <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Map-%E7%AE%80%E4%BB%8B"><span class="nav-text">Map 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-%E7%9A%84API"><span class="nav-text">Map 的API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-Entry"><span class="nav-text">Map.Entry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-Entry%E7%9A%84API"><span class="nav-text">Map.Entry的API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AbstractMap"><span class="nav-text">AbstractMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AbstractMap%E7%9A%84API"><span class="nav-text">AbstractMap的API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SortedMap"><span class="nav-text">SortedMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SortedMap%E7%9A%84API"><span class="nav-text">SortedMap的API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NavigableMap"><span class="nav-text">NavigableMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NavigableMap%E7%9A%84API"><span class="nav-text">NavigableMap的API</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dictionary"><span class="nav-text">Dictionary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dictionary%E7%9A%84API"><span class="nav-text">Dictionary的API</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

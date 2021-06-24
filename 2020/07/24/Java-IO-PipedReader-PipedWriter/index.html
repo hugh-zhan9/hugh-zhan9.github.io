@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO之 PipedReader和PipedWriter详解">
+<meta property="og:url" content="http://example.com/2020/07/24/Java-IO-PipedReader-PipedWriter/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:description" content="-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/24/UxSgUI.jpg">
+<meta property="article:published_time" content="2020-07-24T22:02:28.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.194Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="Java-IO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/07/24/UxSgUI.jpg">
+
+<link rel="canonical" href="http://example.com/2020/07/24/Java-IO-PipedReader-PipedWriter/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java IO之 PipedReader和PipedWriter详解 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/24/Java-IO-PipedReader-PipedWriter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java IO之 PipedReader和PipedWriter详解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-24 22:02:28" itemprop="dateCreated datePublished" datetime="2020-07-24T22:02:28+00:00">2020-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/24/Java-IO-PipedReader-PipedWriter/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/24/Java-IO-PipedReader-PipedWriter/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>-</p>
+<span id="more"></span>
+
+<h1 id="PipedWriter-和-PipedReader-简介"><a href="#PipedWriter-和-PipedReader-简介" class="headerlink" title="PipedWriter 和 PipedReader 简介"></a>PipedWriter 和 PipedReader 简介</h1><p><code>PipedWriter</code>是字符管道输出流，它继承于<code>Writer</code>。</p>
+<p><code>PipedReader</code>是字符管道输入流，它继承于<code>Reader</code>。</p>
+<p><code>PipedWriter</code>和<code>PipedReader</code>的作用是可以通过管道进行线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedReader</code>配套使用。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>下面，来多线程中通过<code>PipedWriter</code>和<code>PipedReader</code>通信的例子。例子中包括3个类：<code>Receiver</code>,、<code>Sender</code>和<code>PipeTest</code></p>
+<h2 id="PipeTest"><a href="#PipeTest" class="headerlink" title="PipeTest"></a>PipeTest</h2><pre><code class="java">import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.IOException;
+
+@SuppressWarnings(&quot;all&quot;)   
+
+public class PipeTest &#123;   
+
+    public static void main(String[] args) &#123;   
+        Sender t1 = new Sender();   
+        Receiver t2 = new Receiver();   
+
+        PipedWriter out = t1.getWriter();   
+        PipedReader in = t2.getReader();   
+
+        try &#123;   
+            //管道连接。下面2句话的本质是一样。
+            //out.connect(in);   
+            in.connect(out);   
+
+            t1.start();
+            t2.start();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="Receiver"><a href="#Receiver" class="headerlink" title="Receiver"></a>Receiver</h2><pre><code class="java">import java.io.IOException;   
+import java.io.PipedReader;   
+
+@SuppressWarnings(&quot;all&quot;)   
+
+public class Receiver extends Thread &#123;   
+
+    // 管道输入流对象。
+    // 它和管道输出流(PipedWriter)对象绑定，
+    // 从而可以接收管道输出流的数据，再让用户读取。
+    private PipedReader in = new PipedReader();   
+
+    // 获得管道输入流对象
+    public PipedReader getReader()&#123;   
+        return in;   
+    &#125;   
+
+    @Override
+    public void run()&#123;   
+        readMessageOnce() ;
+    &#125;
+
+    // 从管道输入流中读取1次数据
+    public void readMessageOnce()&#123;   
+        // 虽然buf的大小是2048个字符，但最多只会从管道输入流中读取1024个字符。
+        // 因为，管道输入流的缓冲区大小默认只有1024个字符。
+        char[] buf = new char[2048];   
+        try &#123;   
+            int len = in.read(buf);   
+            System.out.println(new String(buf,0,len));   
+            in.close();   
+        &#125; catch (IOException e) &#123;   
+            e.printStackTrace();   
+        &#125;   
+    &#125;
+    
+    public void readMessageContinued()&#123;
+        int total=0;
+        while(true) &#123;
+            char[] buf = new char[1024];
+            try &#123;
+                int len = in.read(buf);
+                total += len;
+                System.out.println(new String(buf,0,len));
+                // 若读取的字符总数&gt;1024，则退出循环。
+                if (total &gt; 1024)
+                    break;
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+
+        try &#123;
+            in.close(); 
+        &#125; catch (IOException e) &#123;   
+            e.printStackTrace();   
+        &#125;   
+    &#125;   
+&#125;
+</code></pre>
+<h2 id="Sender"><a href="#Sender" class="headerlink" title="Sender"></a>Sender</h2><pre><code class="java">import java.io.IOException;   
+import java.io.PipedWriter;   
+@SuppressWarnings(&quot;all&quot;)
+public class Sender extends Thread &#123;   
+
+    // 管道输出流对象。
+    // 它和管道输入流(PipedReader)对象绑定，
+    // 从而可以将数据发送给管道输入流，然后用户可以从管道输入流读取数据。
+    private PipedWriter out = new PipedWriter();
+
+    // 获得管道输出流对象
+    public PipedWriter getWriter()&#123;
+        return out;
+    &#125;   
+
+    @Override
+    public void run()&#123;   
+        writeShortMessage();
+        //writeLongMessage();
+    &#125;   
+
+    // 向管道输出流中写入一则较简短的消息：&quot;this is a short message&quot; 
+    private void writeShortMessage() &#123;
+        String strInfo = &quot;this is a short message&quot; ;
+        try &#123;
+            out.write(strInfo.toCharArray());
+            out.close();   
+        &#125; catch (IOException e) &#123;   
+            e.printStackTrace();   
+        &#125;   
+    &#125;
+    // 向管道输出流中写入一则较长的消息
+    private void writeLongMessage() &#123;
+        StringBuilder sb = new StringBuilder();
+        // 通过for循环写入1020个字符
+        for (int i=0; i&lt;102; i++)
+            sb.append(&quot;0123456789&quot;);
+        // 再写入26个字符。
+        sb.append(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
+        // str的总长度是1020+26=1046个字符
+        String str = sb.toString();
+        try &#123;
+            // 将1046个字符写入到管道输出流中
+            out.write(str);
+            out.close();
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>说明：  </p>
+<ul>
+<li><p><code>in.connect(out)</code>;</p>
+<p>它的作用是将管道输入流和管道输出流关联起来。查看<code>PipedWriter</code>和<code>PipedReader</code>中<code>connect()</code>的源码；我们知道 <code>out.connect(in)</code>; 等价于<code>in.connect(out)</code>;</p>
+</li>
+<li><p>先查看<code>Sender</code>的源码，线程启动后执行<code>run()</code>函数；在<code>Sender</code>的<code>run()</code>中，调用<code>writeShortMessage()</code>;<br><code>writeShortMessage()</code>;的作用就是向管道输出流中写入数据<code>this is a short message</code>；这条数据会被管道输入流接收到。下面看看这是如何实现的。<br><code>PipedWriter</code>继承于<code>Writer</code>；<code>Writer</code>中<code>write(char cbuf[])</code>的源码如下：</p>
+</li>
+</ul>
+<pre><code class="java">public void write(char cbuf[]) throws IOException &#123;
+    write(cbuf, 0, cbuf.length);
+&#125;
+</code></pre>
+<p>实际上<code>write(char c[])</code>是调用的<code>PipedWriter</code>中的<code>write(char c[], int off, int len)</code>函数。查看<code>write(char c[], int off, int len)</code>的源码，我们发现：它会调用<code>sink.receive(cbuf, off, len)</code>; 进一步查看<code>receive(char c[], int off, int len)</code>的定义，我们知道<code>sink.receive(cbuf, off, len)</code>的作用就是：将管道输出流中的数据保存到管道输入流的缓冲中。而管道输入流的缓冲区<code>buffer</code>的默认大小是1024个字符。</p>
+<p>至此，我们知道：<code>t1.start()</code>启动<code>Sender</code>线程，而<code>Sender</code>线程会将数据<code>this is a short message</code>写入到管道输出流；而管道输出流又会将该数据传输给管道输入流，即而保存在管道输入流的缓冲中。</p>
+<p>接下来，我们看看用户如何从管道输入流的缓冲中读取数据。这实际上就是<code>Receiver</code>线程的动作。<br><code>t2.start()</code>会启动<code>Receiver</code>线程，从而执行<code>Receiver</code>的<code>run()</code>函数。查看<code>Receiver</code>的源码，我们知道<code>run()</code>调用了<code>readMessageOnce()</code>。<br>而<code>readMessageOnce()</code>就是调用<code>in.read(buf)</code>从管道输入流<code>in</code>中读取数据，并保存到<code>buf</code>中。<br>通过上面的分析，我们已经知道管道输入流<code>in</code>的缓冲中的数据是<code>this is a short message</code>；因此，<code>buf</code>的数据就是<code>this is a short message</code>。</p>
+<p>为了加深对管道的理解。我们接着进行下面两个小试验。</p>
+<p><strong>试验一：修改Sender</strong></p>
+<p>将</p>
+<pre><code class="java">public void run()&#123;   
+    writeShortMessage();
+    //writeLongMessage();
+&#125;
+</code></pre>
+<p>修改为</p>
+<pre><code class="java">public void run()&#123;   
+    //writeShortMessage();
+    writeLongMessage();
+&#125;
+</code></pre>
+<p>运行程序。运行结果如下：</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/24/UxSgUI.jpg"></p>
+<p>从中，我们看出，程序运行出错！抛出异常<code>java.io.IOException: Pipe closed</code></p>
+<p>为什么会这样呢？</p>
+<p>我分析一下程序流程。</p>
+<ol>
+<li>在<code>PipeTest</code>中，通过<code>in.connect(out)</code>将输入和输出管道连接起来；然后，启动两个线程。<code>t1.start()</code>启动了线程<code>Sender</code>，<code>t2.start()</code>启动了线程<code>Receiver</code>。</li>
+<li><code>Sender</code>线程启动后，通过<code>writeLongMessage()</code>写入数据到输出管道，<code>out.write(str.toCharArray())</code>共写入了1046个字符。而根据<code>PipedWriter</code>的源码，<code>PipedWriter</code>的<code>write()</code>函数会调用<code>PipedReader</code>的<code>receive()</code>函数。而观察<code>PipedReader</code>的<code>receive()</code>函数，我们知道，<code>PipedReader</code>会将接受的数据存储缓冲区。仔细观察<code>receive()</code>函数，有如下代码：</li>
+</ol>
+<pre><code class="java">while (in == out) &#123;
+    if ((readSide != null) &amp;&amp; !readSide.isAlive()) &#123;
+        throw new IOException(&quot;Pipe broken&quot;);
+    &#125;
+    /* full: kick any waiting readers */
+    notifyAll();
+    try &#123;
+        wait(1000);
+    &#125; catch (InterruptedException ex) &#123;
+        throw new java.io.InterruptedIOException();
+    &#125;
+&#125;
+</code></pre>
+<p>而<code>in</code>和<code>out</code>的初始值分别是<code>in=-1</code>, <code>out=0</code>；结合上面的<code>while(in==out)</code>。我们知道，它的含义就是，每往管道中写入一个字符，就达到了<code>in==out</code>这个条件。然后，就调用<code>notifyAll()</code>，唤醒读取管道的线程。</p>
+<p>也就是，每往管道中写入一个字符，都会阻塞式的等待其它线程读取。<br>然而，<code>PipedReader</code>的缓冲区的默认大小是1024！但是，此时要写入的数据却有1046！所以，一次性最多只能写入1024个字符。</p>
+<ol start="3">
+<li><code>Receiver</code>线程启动后，会调用<code>readMessageOnce()</code>读取管道输入流。读取1024个字符会，会调用<code>close()</code>关闭，管道。</li>
+</ol>
+<p>由2和3的分析可知，<code>Sender</code>要往管道写入1046个字符。其中，前1024个字符(缓冲区容量是1024)能正常写入，并且每写入一个就读取一个。当写入1025个字符时，依然是依次的调用<code>PipedWriter</code>中的<code>write()</code>；然后，<code>write()</code>中调用<code>PipedReader</code>中的<code>receive()</code>；在<code>PipedReader</code>中，最终又会调用到<code>receive(int c)</code>函数。 而此时，管道输入流已经被关闭，也就是<code>closedByReader</code>为<code>true</code>，所以抛出<code>throw new IOException(&quot;Pipe closed&quot;)</code>。</p>
+<p>我们对试验一继续进行修改，解决该问题。</p>
+<p><strong>试验二： 在试验一的基础上继续修改Receiver</strong> 将</p>
+<pre><code class="java">public void run()&#123;   
+    readMessageOnce() ;
+    //readMessageContinued() ;
+&#125;
+</code></pre>
+<p>修改为</p>
+<pre><code class="java">public void run()&#123;   
+    //readMessageOnce() ;
+    readMessageContinued() ;
+&#125;
+</code></pre>
+<p>此时，程序能正常运行。运行结果为：</p>
+<pre><code>01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+012345678901234567890123456789abcd
+efghijklmnopqrstuvwxyz
+</code></pre>
+<h1 id="PipedWriter-和-PipedReader-源码"><a href="#PipedWriter-和-PipedReader-源码" class="headerlink" title="PipedWriter 和 PipedReader 源码"></a>PipedWriter 和 PipedReader 源码</h1><h2 id="PipedWriter-源码"><a href="#PipedWriter-源码" class="headerlink" title="PipedWriter 源码"></a>PipedWriter 源码</h2><pre><code class="java">package java.io;
+
+
+public class PipedWriter extends Writer &#123;
+    private PipedReader sink;
+    private boolean closed = false;
+
+    public PipedWriter(PipedReader snk)  throws IOException &#123;
+        connect(snk);
+    &#125;
+
+
+    public PipedWriter() &#123;
+    &#125;
+
+    public synchronized void connect(PipedReader snk) throws IOException &#123;
+        if (snk == null) &#123;
+            throw new NullPointerException();
+        &#125; else if (sink != null || snk.connected) &#123;
+            throw new IOException(&quot;Already connected&quot;);
+        &#125; else if (snk.closedByReader || closed) &#123;
+            throw new IOException(&quot;Pipe closed&quot;);
+        &#125;
+
+        sink = snk;
+        snk.in = -1;
+        snk.out = 0;
+        snk.connected = true;
+    &#125;
+
+    
+    public void write(int c)  throws IOException &#123;
+        if (sink == null) &#123;
+            throw new IOException(&quot;Pipe not connected&quot;);
+        &#125;
+        sink.receive(c);
+    &#125;
+
+  
+    public void write(char cbuf[], int off, int len) throws IOException &#123;
+        if (sink == null) &#123;
+            throw new IOException(&quot;Pipe not connected&quot;);
+        &#125; else if ((off | len | (off + len) | (cbuf.length - (off + len))) &lt; 0) &#123;
+            throw new IndexOutOfBoundsException();
+        &#125;
+        sink.receive(cbuf, off, len);
+    &#125;
+
+
+    public synchronized void flush() throws IOException &#123;
+        if (sink != null) &#123;
+            if (sink.closedByReader || closed) &#123;
+                throw new IOException(&quot;Pipe closed&quot;);
+            &#125;
+            synchronized (sink) &#123;
+                sink.notifyAll();
+            &#125;
+        &#125;
+    &#125;
+
+
+    public void close()  throws IOException &#123;
+        closed = true;
+        if (sink != null) &#123;
+            sink.receivedLast();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="PipedReader-源码"><a href="#PipedReader-源码" class="headerlink" title="PipedReader 源码"></a>PipedReader 源码</h2><pre><code class="java">package java.io;
+
+public class PipedReader extends Reader &#123;
+    boolean closedByWriter = false;
+    boolean closedByReader = false;
+    boolean connected = false;
+
+  
+    Thread readSide;
+    Thread writeSide;
+
+  
+    private static final int DEFAULT_PIPE_SIZE = 1024;
+
+    char buffer[];
+
+    int in = -1;
+    
+    int out = 0;
+
+   
+    public PipedReader(PipedWriter src) throws IOException &#123;
+        this(src, DEFAULT_PIPE_SIZE);
+    &#125;
+
+    public PipedReader(PipedWriter src, int pipeSize) throws IOException &#123;
+        initPipe(pipeSize);
+        connect(src);
+    &#125;
+
+
+    public PipedReader() &#123;
+        initPipe(DEFAULT_PIPE_SIZE);
+    &#125;
+
+   
+    public PipedReader(int pipeSize) &#123;
+        initPipe(pipeSize);
+    &#125;
+
+    private void initPipe(int pipeSize) &#123;
+        if (pipeSize &lt;= 0) &#123;
+            throw new IllegalArgumentException(&quot;Pipe size &lt;= 0&quot;);
+        &#125;
+        buffer = new char[pipeSize];
+    &#125;
+
+    
+    public void connect(PipedWriter src) throws IOException &#123;
+        src.connect(this);
+    &#125;
+
+    synchronized void receive(int c) throws IOException &#123;
+        if (!connected) &#123;
+            throw new IOException(&quot;Pipe not connected&quot;);
+        &#125; else if (closedByWriter || closedByReader) &#123;
+            throw new IOException(&quot;Pipe closed&quot;);
+        &#125; else if (readSide != null &amp;&amp; !readSide.isAlive()) &#123;
+            throw new IOException(&quot;Read end dead&quot;);
+        &#125;
+
+        writeSide = Thread.currentThread();
+        while (in == out) &#123;
+            if ((readSide != null) &amp;&amp; !readSide.isAlive()) &#123;
+                throw new IOException(&quot;Pipe broken&quot;);
+            &#125;
+            /* full: kick any waiting readers */
+            notifyAll();
+            try &#123;
+                wait(1000);
+            &#125; catch (InterruptedException ex) &#123;
+                throw new java.io.InterruptedIOException();
+            &#125;
+        &#125;
+        if (in &lt; 0) &#123;
+            in = 0;
+            out = 0;
+        &#125;
+        buffer[in++] = (char) c;
+        if (in &gt;= buffer.length) &#123;
+            in = 0;
+        &#125;
+    &#125;
+
+    synchronized void receive(char c[], int off, int len)  throws IOException &#123;
+        while (--len &gt;= 0) &#123;
+            receive(c[off++]);
+        &#125;
+    &#125;
+
+ 
+    synchronized void receivedLast() &#123;
+        closedByWriter = true;
+        notifyAll();
+    &#125;
+
+    public synchronized int read()  throws IOException &#123;
+        if (!connected) &#123;
+            throw new IOException(&quot;Pipe not connected&quot;);
+        &#125; else if (closedByReader) &#123;
+            throw new IOException(&quot;Pipe closed&quot;);
+        &#125; else if (writeSide != null &amp;&amp; !writeSide.isAlive()
+                   &amp;&amp; !closedByWriter &amp;&amp; (in &lt; 0)) &#123;
+            throw new IOException(&quot;Write end dead&quot;);
+        &#125;
+
+        readSide = Thread.currentThread();
+        int trials = 2;
+        while (in &lt; 0) &#123;
+            if (closedByWriter) &#123;
+                /* closed by writer, return EOF */
+                return -1;
+            &#125;
+            if ((writeSide != null) &amp;&amp; (!writeSide.isAlive()) &amp;&amp; (--trials &lt; 0)) &#123;
+                throw new IOException(&quot;Pipe broken&quot;);
+            &#125;
+            /* might be a writer waiting */
+            notifyAll();
+            try &#123;
+                wait(1000);
+            &#125; catch (InterruptedException ex) &#123;
+                throw new java.io.InterruptedIOException();
+            &#125;
+        &#125;
+        int ret = buffer[out++];
+        if (out &gt;= buffer.length) &#123;
+            out = 0;
+        &#125;
+        if (in == out) &#123;
+            /* now empty */
+            in = -1;
+        &#125;
+        return ret;
+    &#125;
+
+   
+    public synchronized int read(char cbuf[], int off, int len)  throws IOException &#123;
+        if (!connected) &#123;
+            throw new IOException(&quot;Pipe not connected&quot;);
+        &#125; else if (closedByReader) &#123;
+            throw new IOException(&quot;Pipe closed&quot;);
+        &#125; else if (writeSide != null &amp;&amp; !writeSide.isAlive()
+                   &amp;&amp; !closedByWriter &amp;&amp; (in &lt; 0)) &#123;
+            throw new IOException(&quot;Write end dead&quot;);
+        &#125;
+
+        if ((off &lt; 0) || (off &gt; cbuf.length) || (len &lt; 0) ||
+            ((off + len) &gt; cbuf.length) || ((off + len) &lt; 0)) &#123;
+            throw new IndexOutOfBoundsException();
+        &#125; else if (len == 0) &#123;
+            return 0;
+        &#125;
+
+        /* possibly wait on the first character */
+        int c = read();
+        if (c &lt; 0) &#123;
+            return -1;
+        &#125;
+        cbuf[off] =  (char)c;
+        int rlen = 1;
+        while ((in &gt;= 0) &amp;&amp; (--len &gt; 0)) &#123;
+            cbuf[off + rlen] = buffer[out++];
+            rlen++;
+            if (out &gt;= buffer.length) &#123;
+                out = 0;
+            &#125;
+            if (in == out) &#123;
+                /* now empty */
+                in = -1;
+            &#125;
+        &#125;
+        return rlen;
+    &#125;
+
+  
+    public synchronized boolean ready() throws IOException &#123;
+        if (!connected) &#123;
+            throw new IOException(&quot;Pipe not connected&quot;);
+        &#125; else if (closedByReader) &#123;
+            throw new IOException(&quot;Pipe closed&quot;);
+        &#125; else if (writeSide != null &amp;&amp; !writeSide.isAlive()
+                   &amp;&amp; !closedByWriter &amp;&amp; (in &lt; 0)) &#123;
+            throw new IOException(&quot;Write end dead&quot;);
+        &#125;
+        if (in &lt; 0) &#123;
+            return false;
+        &#125; else &#123;
+            return true;
+        &#125;
+    &#125;
+
+   
+    public void close()  throws IOException &#123;
+        in = -1;
+        closedByReader = true;
+    &#125;
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java-IO/" rel="tag"><i class="fa fa-tag"></i> Java-IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/24/Java-IO-FileReader-FileWriter/" rel="prev" title="Java IO之 FileReader和FileWriter详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 FileReader和FileWriter详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/24/Java-IO-RandomAccessFile/" rel="next" title="Java IO之 RandomAccessFile详解">
+      Java IO之 RandomAccessFile详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PipedWriter-%E5%92%8C-PipedReader-%E7%AE%80%E4%BB%8B"><span class="nav-text">PipedWriter 和 PipedReader 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PipeTest"><span class="nav-text">PipeTest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Receiver"><span class="nav-text">Receiver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sender"><span class="nav-text">Sender</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PipedWriter-%E5%92%8C-PipedReader-%E6%BA%90%E7%A0%81"><span class="nav-text">PipedWriter 和 PipedReader 源码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PipedWriter-%E6%BA%90%E7%A0%81"><span class="nav-text">PipedWriter 源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PipedReader-%E6%BA%90%E7%A0%81"><span class="nav-text">PipedReader 源码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

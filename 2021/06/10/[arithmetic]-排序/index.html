@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":260,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="基本数据结构 - 排序">
+<meta property="og:url" content="http://example.com/2021/06/10/[arithmetic]-%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="日积硅步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wallpapers.com/images/high/wallpaper-black-and-white-aesthetic-collection-whatsapp-anime-aep9nuag5yqoa1lm.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/13/59/1381c1f3f7819ae61ab17455ed7f0b59.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/40/e9/4038f64f47975ab9f519e4f739e464e9.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/92/09/9246f12cca22e5d872cbfce302ef4d09.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/a9/e6/a9783a3b13c11a5e064c5306c261e8e6.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/fe/0f/fe107c06da8b290fb78fcce4f6774c0f.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/a1/20/a1ef4cc1999d6bd0af08d8417ee55220.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/88/34/8890cbf63ea80455ce82490a23361134.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/b6/e1/b60f61ec487358ac037bf2b6974d2de1.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/fd/01/fd6582d5e5927173ee35d7cc74d9c401.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-91b76e8e4dab9b0cad9a017d7dd431e2_b.webp">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/32/1d/32371475a0b08f0db9861d102474181d.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/db/2b/db7f892d3355ef74da9cd64aa926dc2b.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/95/2f/95897ade4f7ad5d10af057b1d144a22f.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/4d/81/4d892c3a2e08a17f16097d07ea088a81.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/66/dc/6643bc3cef766f5b3e4526c332c60adc.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/08/e7/086002d67995e4769473b3f50dd96de7.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/aa/05/aa03ae570dace416127c9ccf9db8ac05.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/98/ae/987564607b864255f81686829503abae.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/ad/c9/adc75672ef33fa54b023a040834fcbc9.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/36/29/361f4d781d2a2d144dcbbbb0b9e6db29.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/dd/1f/dd6c62b12b0dc1b3a294af0fa1ce371f.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/1d/84/1d730cb17249f8e92ef5cab53ae65784.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/df/0c/df0cdbb73bd19a2d69a52c54d8b9fc0c.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/89/91/898d94fc32e0a795fd65897293b98791.jpg">
+<meta property="article:published_time" content="2021-06-10T16:22:00.000Z">
+<meta property="article:modified_time" content="2021-06-24T04:54:19.206Z">
+<meta property="article:author" content="深南大道">
+<meta property="article:tag" content="数据结构与算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wallpapers.com/images/high/wallpaper-black-and-white-aesthetic-collection-whatsapp-anime-aep9nuag5yqoa1lm.jpg">
+
+<link rel="canonical" href="http://example.com/2021/06/10/[arithmetic]-%E6%8E%92%E5%BA%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基本数据结构 - 排序 | 日积硅步</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">日积硅步</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-数据结构与算法">
+
+    <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="section"><i class="fa fa-database fa-fw"></i>数据结构与算法</a>
+
+  </li>
+        <li class="menu-item menu-item-leetcode笔记与总结">
+
+    <a href="/categories/LeetCode%E7%AC%94%E8%AE%B0%E4%B8%8E%E6%80%BB%E7%BB%93/" rel="section"><i class="fa fa-code fa-fw"></i>LeetCode笔记与总结</a>
+
+  </li>
+        <li class="menu-item menu-item-java">
+
+    <a href="/categories/Java/" rel="section"><i class="fa fa-terminal fa-fw"></i>Java</a>
+
+  </li>
+        <li class="menu-item menu-item-后端">
+
+    <a href="/categories/%E5%90%8E%E7%AB%AF/" rel="section"><i class="fa fa-server fa-fw"></i>后端</a>
+
+  </li>
+        <li class="menu-item menu-item-前端">
+
+    <a href="/categories/%E5%89%8D%E7%AB%AF/" rel="section"><i class="fab fa-chrome fa-fw"></i>前端</a>
+
+  </li>
+        <li class="menu-item menu-item-杂谈">
+
+    <a href="/categories/%E6%9D%82%E8%B0%88/" rel="section"><i class="fa fa-comment fa-fw"></i>杂谈</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+ 
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener("visibilitychange", function() {
+    if (document.hidden) {
+      document.title = "(つェ⊂)我藏好了哦~" + OriginTitile;
+      clearTimeout(titleTime);
+    } else {
+      document.title = "(*´∇｀*) 被你发现啦~" + OriginTitile;
+      titleTime = setTimeout(function() {
+        document.title = OriginTitile;
+      }, 2000);
+    }
+  });
+</script>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/10/[arithmetic]-%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="深南大道">
+      <meta itemprop="description" content="日拱一卒，功不唐捐">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="日积硅步">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基本数据结构 - 排序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-10 16:22:00" itemprop="dateCreated datePublished" datetime="2021-06-10T16:22:00+00:00">2021-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-24 04:54:19" itemprop="dateModified" datetime="2021-06-24T04:54:19+00:00">2021-06-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/06/10/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/06/10/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>22k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>20 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img data-src="https://wallpapers.com/images/high/wallpaper-black-and-white-aesthetic-collection-whatsapp-anime-aep9nuag5yqoa1lm.jpg"></p>
+<span id="more"></span>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/41802">课程地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/41913">课程地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/42038">课程地址</a></p>
+</blockquote>
+<p>排序算法太多了，有很多可能你连名字都没听说过，比如猴子排序、睡眠排序、面条排序等。这里只讲众多排序算法中的一小撮，也是最经典的、最常用的：<strong>冒泡排序、插入排序、选择排序、归并排序、快速排序、计数排序、基数排序、桶排序</strong>。按照时间复杂度把它们分成了三类</p>
+<table>
+<thead>
+<tr>
+<th align="center">排序算法</th>
+<th align="center">时间复杂度</th>
+<th align="center">基于比较</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">冒泡、插入、选择</td>
+<td align="center">O(n²)</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">快排、归并</td>
+<td align="center">O(nlogn)</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">桶、计数、基数</td>
+<td align="center">O(n)</td>
+<td align="center">×</td>
+</tr>
+</tbody></table>
+<p>带着问题去学习，是最有效的学习方法。所以按照惯例，还是先给出一个思考题：插入排序和冒泡排序的时间复杂度相同，都是 O(n²)，在实际的软件开发里，为什么更倾向于使用插入排序算法而不是冒泡排序算法呢？你可以先思考一两分钟，带着这个问题，开始第一部分内容</p>
+<h1 id="如何分析一个排序算法"><a href="#如何分析一个排序算法" class="headerlink" title="如何分析一个排序算法"></a>如何分析一个排序算法</h1><h2 id="执行效率"><a href="#执行效率" class="headerlink" title="执行效率"></a>执行效率</h2><p>对于排序算法执行效率的分析，我们一般会从这几个方面来衡量：</p>
+<ol>
+<li><p><strong>最好情况、最坏情况、平均情况时间复杂度</strong></p>
+<p>在分析排序算法的时间复杂度时，要分别给出最好情况、最坏情况、平均情况下的时间复杂度。除此之外，还要说出最好、最坏时间复杂度对应的要排序的原始数据是什么样的。</p>
+<p>为什么要区分这三种时间复杂度呢？第一，有些排序算法会区分，为了好对比，所以最好都做一下区分。第二，对于要排序的数据，有的接近有序，有的完全无序。有序度不同的数据，对于排序的执行时间肯定是有影响的，我们要知道排序算法在不同数据下的性能表现。</p>
+</li>
+<li><p><strong>时间复杂度的系数、常数、低阶</strong></p>
+<p>时间复杂度反映的是数据规模n很大的时候的一个增长趋势，所以它表示的时候会忽略系数、常数、低阶。但是实际的开发过程中，排序的可能是10个、100个、1000个这种规模比较小的数据。所以，在对同一阶时间复杂度的排序算法性能对比的时候，就要把系数、常数、低阶考虑进来。</p>
+</li>
+<li><p><strong>比较次数和交换（或移动）次数</strong></p>
+<p>基于比较的排序算法的执行过程会涉及到两种操作：一种是元素比较大小，另一种是元素交换或移动。所以在分析执行效率的时候应该把比较次数和交换（或移动次数也考虑进去）。</p>
+</li>
+</ol>
+<h2 id="内存消耗"><a href="#内存消耗" class="headerlink" title="内存消耗"></a>内存消耗</h2><p>算法的内存消耗可以通过空间复杂度来衡量，排序算法也不例外。不过针对排序算法的空间复杂度还引入了一个新的概念，<strong>原地排序</strong>（Sorted in place）。原地排序算法就是特指空间复杂度是 O(1) 的排序算法。</p>
+<h2 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h2><p>仅仅用执行效率和内存消耗来衡量排序算法的好坏是不够的。针对排序算法，我们还有一个重要的度量指标，稳定性。这个概念是说，如果待排序的序列中存在值相等的元素，经过排序之后，相等元素之间原有的先后顺序不变。</p>
+<p>举个例子，比如有一组数据 2，9，3，4，8，3，按照大小排序之后就是 2，3，3，4，8，9。这组数据里有两个 3。经过某种排序算法排序之后，如果两个 3 的前后顺序没有改变，这种排序算法就叫<strong>稳定的排序算法</strong>；如果前后顺序发生变化，那对应的排序算法就叫作<strong>不稳定的排序算法</strong>。</p>
+<p>为什么要考察排序算法的稳定性呢？很多数据结构和算法课程，在讲排序的时候，都是用整数来举例，但在真正软件开发中要排序的往往不是单纯的整数，而是一组对象，需要按照对象的某个 key 来排序。</p>
+<p>比如说，现在要给电商交易系统中的“订单”排序。订单有两个属性，一个是下单时间，另一个是订单金额。如果现在有 10 万条订单数据希望按照金额从小到大对订单数据排序。对于金额相同的订单，希望按照下单时间从早到晚有序。对于这样一个排序需求，怎么来做呢？</p>
+<p>最先想到的方法是：先按照金额对订单数据进行排序，然后，再遍历排序之后的订单数据，对于每个金额相同的小区间再按照下单时间排序。这种排序思路理解起来不难，但是实现起来会很复杂。</p>
+<p>借助稳定排序算法，这个问题可以非常简洁地解决。解决思路是这样的：先按照下单时间给订单排序，注意是按照下单时间，不是金额。排序完成之后，我们用稳定排序算法，按照订单金额重新排序。两遍排序之后，得到的订单数据就是按照金额从小到大排序，金额相同的订单按照下单时间从早到晚排序的。为什么呢？稳定排序算法可以保持金额相同的两个对象，在排序之后的前后顺序不变。第一次排序之后，所有的订单按照下单时间从早到晚有序了。在第二次排序中，用的是稳定的排序算法，所以经过第二次排序之后，相同金额的订单仍然保持下单时间从早到晚有序。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/13/59/1381c1f3f7819ae61ab17455ed7f0b59.jpg"></p>
+<h1 id="冒泡、插入、选择"><a href="#冒泡、插入、选择" class="headerlink" title="冒泡、插入、选择"></a>冒泡、插入、选择</h1><h2 id="冒泡排序（Bubble-Sort）"><a href="#冒泡排序（Bubble-Sort）" class="headerlink" title="冒泡排序（Bubble Sort）"></a>冒泡排序（Bubble Sort）</h2><p>冒泡排序只会操作相邻的两个数据。每次冒泡操作都会对相邻的两个元素进行比较，看是否满足大小关系要求。如果不满足就让它俩互换。一次冒泡会让至少一个元素移动到它应该在的位置，重复 n 次，就完成了 n 个数据的排序工作。</p>
+<p>举一个例子看一下冒泡排序的整个过程。比如要对一组数据 4，5，6，3，2，1，从小到大进行排序。第一次冒泡操作的详细过程就是这样：</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/40/e9/4038f64f47975ab9f519e4f739e464e9.jpg"></p>
+<p>可以看出，经过一次冒泡操作之后，6 这个元素已经存储在正确的位置上。要想完成所有数据的排序，我们只要进行 6 次这样的冒泡操作就行了。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/92/09/9246f12cca22e5d872cbfce302ef4d09.jpg"></p>
+<p>实际上，刚讲的冒泡过程还可以优化。当某次冒泡操作已经没有数据交换时，说明已经达到完全有序，不用再继续执行后续的冒泡操作。这里还有另外一个例子，这里面给 6 个元素排序，只需要 4 次冒泡操作就可以了。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/a9/e6/a9783a3b13c11a5e064c5306c261e8e6.jpg"></p>
+<p>冒泡排序算法的原理比较容易理解，下面是具体的代码，可以结合着代码来看前面讲的原理。</p>
+<pre><code class="java">// 冒泡排序，a表示数组，n表示数组大小
+public void bubbleSort(int[] a, int n) &#123;
+    if (n &lt;= 1) return;
+    
+    for (int i = 0; i &lt; n; ++i) &#123;
+        // 提前退出冒泡循环的标志位
+        boolean flag = false;
+        for (int j=0; j &lt; n-i- 1; ++j) &#123;
+            if (a[j] &gt; a[j+1]) &#123; // 交换
+                int tmp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = tmp;
+                flag = true;  // 表示有数据交换
+            &#125;
+        &#125;
+        if (!flag) break;  // 没有数据交换，提前退出
+    &#125;
+&#125;
+</code></pre>
+<p>现在，结合前面分析排序算法的三个方面，有三个问题。</p>
+<p><strong>第一，冒泡排序是原地排序算法吗？</strong></p>
+<p>冒泡的过程只涉及相邻数据的交换操作，只需要常量级的临时空间，所以它的空间复杂度为 <code>O(1)</code>，是一个原地排序算法。</p>
+<p><strong>第二，冒泡排序是稳定的排序算法吗？</strong></p>
+<p>在冒泡排序中，只有交换才可以改变两个元素的前后顺序。为了保证冒泡排序算法的稳定性，当有相邻的两个元素大小相等的时候，我们不做交换，相同大小的数据在排序前后不会改变顺序，所以冒泡排序是稳定的排序算法。</p>
+<p><strong>第三，冒泡排序的时间复杂度是多少？</strong></p>
+<p>最好情况下，要排序的数据已经是有序的了，我们只需要进行一次冒泡操作，就可以结束了，所以最好情况时间复杂度是 O(n)。而最坏的情况是，要排序的数据刚好是倒序排列的，我们需要进行 n 次冒泡操作，所以最坏情况时间复杂度为 O(n²)。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/fe/0f/fe107c06da8b290fb78fcce4f6774c0f.jpg"></p>
+<p>平均情况下的时间复杂是多少呢？前面讲过，平均时间复杂度就是加权平均期望时间复杂度，分析的时候要结合概率论的知识。</p>
+<p>对于包含 n 个数据的数组，这 n 个数据就有 <code>n!</code> 种排列方式。不同的排列方式，冒泡排序执行的时间肯定是不同的。比如前面举的那两个例子，其中一个要进行 6 次冒泡，而另一个只需要 4 次。如果用概率论方法定量分析平均时间复杂度，涉及的数学推理和计算就会很复杂。这里还有一种思路，通过 “有序度” 和 “逆序度” 这两个概念来进行分析。</p>
+<p><strong>有序度</strong>是数组中具有有序关系的元素对的个数。有序元素对用数学表达式表示就是这样：</p>
+<pre><code>有序元素对：a[i] &lt;= a[j], 如果i &lt; j。
+</code></pre>
+<p><img data-src="https://static001.geekbang.org/resource/image/a1/20/a1ef4cc1999d6bd0af08d8417ee55220.jpg"></p>
+<p>同理，对于一个倒序排列的数组，比如 6，5，4，3，2，1，有序度是 0；对于一个完全有序的数组，比如 1，2，3，4，5，6，有序度就是 <code>n*(n-1)/2</code>，也就是 15。我们把这种完全有序的数组的有序度叫作<strong>满有序度</strong>。</p>
+<p><strong>逆序度</strong>的定义正好跟有序度相反（默认从小到大为有序）。</p>
+<p>关于这三个概念，还有一个公式：<code>逆序度 = 满有序度 - 有序度</code>。排序的过程就是一种增加有序度，减少逆序度的过程，最后达到满有序度，就说明排序完成了。还是拿前面举的那个冒泡排序的例子来说明。要排序的数组的初始状态是 4，5，6，3，2，1 ，其中，有序元素对有 <code>(4，5), (4，6), (5，6)</code>，所以有序度是 3。n=6，所以排序完成之后终态的满有序度为 <code>n*(n-1)/2=15</code>。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/88/34/8890cbf63ea80455ce82490a23361134.jpg"></p>
+<p>冒泡排序包含两个操作原子，比较和交换。每交换一次，有序度就加 1。不管算法怎么改进，交换次数总是确定的，即为逆序度，也就是<code>n*(n-1)/2–初始有序度</code>。此例中就是 15–3=12，要进行 12 次交换操作。</p>
+<p>对于包含 n 个数据的数组进行冒泡排序，平均交换次数是多少呢？最坏情况下，初始状态的有序度是 0，所以要进行 <code>n*(n-1)/2</code> 次交换。最好情况下初始状态的有序度是 <code>n*(n-1)/2</code>，就不需要进行交换。我们可以取个中间值 <code>n*(n-1)/4</code>，来表示初始有序度既不是很高也不是很低的平均情况。</p>
+<p>换句话说，平均情况下，需要 <code>n*(n-1)/4</code> 次交换操作，比较操作肯定要比交换操作多，而复杂度的上限是 <code>O(n²)</code>，所以平均情况下的时间复杂度就是 <code>O(n²)</code>。</p>
+<blockquote>
+<p>比较操作肯定比交换操作多，那么平均比较操作次数大于 <code>n*(n-1)/4</code>，所以冒泡算法的平均复杂度只能是大于等于 <code>O(n²)</code>，但由于复杂度上限是 <code>O(n²)</code>，所以冒泡算法平均情况下时间复杂度就是 <code>O(n²)</code></p>
+</blockquote>
+<p>这个平均时间复杂度推导过程其实并不严格，但是很多时候很实用，毕竟概率论的定量分析太复杂，不太好用。等讲到快排的时候，还会再次用这种“不严格”的方法来分析平均时间复杂度。</p>
+<h2 id="插入排序（Insertion-Sort）"><a href="#插入排序（Insertion-Sort）" class="headerlink" title="插入排序（Insertion Sort）"></a>插入排序（Insertion Sort）</h2><p>先来看一个问题。一个有序的数组，我们往里面添加一个新的数据后，如何继续保持数据有序呢？很简单，我们只要遍历数组，找到数据应该插入的位置将其插入即可。</p>
+<p>这是一个动态排序的过程，即动态地往有序集合中添加数据，可以通过这种方法保持集合中的数据一直有序。而对于一组静态数据，也可以借鉴上面讲的插入方法，来进行排序，于是就有了插入排序算法。</p>
+<p><strong>插入排序是如何借助上面的思想来实现排序的呢？</strong></p>
+<p>首先，将数组中的数据分为两个区间，<strong>已排序区间</strong>和<strong>未排序区间</strong>。初始已排序区间只有一个元素，就是数组的第一个元素。<strong>插入算法的核心思想是取未排序区间中的元素，在已排序区间中找到合适的插入位置将其插入，并保证已排序区间数据一直有序。</strong>重复这个过程，直到未排序区间中元素为空，算法结束。</p>
+<p>如图所示，要排序的数据是 4，5，6，1，3，2，其中左侧为已排序区间，右侧是未排序区间。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/b6/e1/b60f61ec487358ac037bf2b6974d2de1.jpg"></p>
+<p>插入排序也包含两种操作，一种是元素的比较，一种是元素的移动。当我们需要将一个数据 a 插入到已排序区间时，需要拿 a 与已排序区间的元素依次比较大小，找到合适的插入位置。找到插入点之后，我们还需要将插入点之后的元素顺序往后移动一位，这样才能腾出位置给元素 a 插入。</p>
+<p>对于不同的查找插入点方法（从头到尾、从尾到头），元素的比较次数是有区别的。但对于一个给定的初始序列，移动操作的次数总是固定的，就等于逆序度。</p>
+<p>为什么说移动次数就等于逆序度呢？拿刚才的例子画了一个图表，你一看就明白了。满有序度是 <code>n*(n-1)/2=15</code>，初始序列的有序度是 5，所以逆序度是 10。插入排序中，数据移动的个数总和也等于 10=3+3+4。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/fd/01/fd6582d5e5927173ee35d7cc74d9c401.jpg"></p>
+<pre><code class="java">// 插入排序，a表示数组，n表示数组大小
+public void insertionSort(int[] a, int n) &#123;
+    if (n &lt;= 1) return;
+
+    for (int i = 1; i &lt; n; ++i) &#123;
+        int value = a[i];
+        int j = i - 1;
+        // 查找插入的位置
+        for (; j &gt;= 0; --j) &#123;
+              if (a[j] &gt; value) &#123;
+                a[j+1] = a[j];  // 数据移动
+              &#125; else &#123;
+                break;
+              &#125;
+        &#125;
+        a[j+1] = value; // 插入数据
+      &#125;
+&#125;
+</code></pre>
+<p><img data-src="https://pic3.zhimg.com/v2-91b76e8e4dab9b0cad9a017d7dd431e2_b.webp"></p>
+<pre><code class="java">public static void insertionSort(int[] array) &#123;
+    if (array == null || array.length &lt;= 1) &#123;
+        return;
+    &#125;
+
+    int length = array.length;
+
+    // 要插入的数
+    int insertNum;
+
+    for (int i = 1; i &lt; length; i++) &#123;
+        insertNum = array[i];
+        // 已经排序好的元素个数
+        int j = i - 1;
+        while (j &gt;= 0 &amp;&amp; array[j] &gt; insertNum) &#123;
+            // 从后到前循环，将大于insertNum的数向后移动一格
+            array[j + 1] = array[j];
+            j--;
+        &#125;
+
+        // 将需要插入的数放在要插入的位置
+        array[j + 1] = insertNum;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>第一，插入排序是原地排序算法吗？</strong></p>
+<p>从实现过程可以很明显地看出，插入排序算法的运行并不需要额外的存储空间，所以空间复杂度是 <code>O(1)</code>，也就是说，这是一个原地排序算法。</p>
+<p><strong>第二，插入排序是稳定的排序算法吗？</strong></p>
+<p>在插入排序中，对于值相同的元素，可以选择将后面出现的元素，插入到前面出现元素的后面，这样就可以保持原有的前后顺序不变，所以插入排序是稳定的排序算法。</p>
+<p><strong>第三，插入排序的时间复杂度是多少？</strong></p>
+<p>如果要排序的数据已经是有序的，并不需要搬移任何数据。如果从尾到头在有序数据组里面查找插入位置，每次只需要比较一个数据就能确定插入的位置。所以这种情况下，最好是时间复杂度为 <code>O(n)</code>。注意，这里是从尾到头遍历已经有序的数据。如果数组是倒序的，每次插入都相当于在数组的第一个位置插入新的数据，所以需要移动大量的数据，所以最坏情况时间复杂度为 <code>O(n²)</code>。</p>
+<p>还记得在数组中插入一个数据的平均时间复杂度是多少吗？没错，是 <code>O(n)</code>。所以，对于插入排序来说，每次插入操作都相当于在数组中插入一个数据，循环执行 n 次插入操作，所以平均时间复杂度为 <code>O(n²)</code>。</p>
+<h2 id="选择排序（Selection-Sort）"><a href="#选择排序（Selection-Sort）" class="headerlink" title="选择排序（Selection Sort）"></a>选择排序（Selection Sort）</h2><p>选择排序算法的实现思路有点类似插入排序，也分已排序区间和未排序区间。但是选择排序每次会从未排序区间中找到最小的元素，将其放到已排序区间的末尾。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/32/1d/32371475a0b08f0db9861d102474181d.jpg"></p>
+<pre><code class="java">public void selectionSort(int[] a, int n) &#123;
+    if (n &lt;= 1) return;
+    for(int i=0; i&lt;n-1; i++)&#123;
+        int j = i+1;
+        int min = i;
+        // 从未排序区选择最小的
+        for(; j&lt;n; j++)&#123;
+            if(a[j] &lt; a[min])&#123;
+                min = j;
+            &#125;
+        &#125;
+        int temp = a[i];
+        a[i] = a[min];
+        a[min] = temp;
+    &#125;
+&#125;
+</code></pre>
+<p>照例，也有三个问题需要思考，不过前面两种排序算法我已经分析得很详细了，这里就直接公布答案了。首先，选择排序空间复杂度为 <code>O(1)</code>，是一种原地排序算法。选择排序的最好情况时间复杂度、最坏情况和平均情况时间复杂度都为 <code>O(n²)</code>。你可以自己来分析看看。</p>
+<p>那选择排序是稳定的排序算法吗？这个问题我着重来说一下。答案是否定的，选择排序是一种不稳定的排序算法。从前面的那张图中可以看出来，选择排序每次都要找剩余未排序元素中的最小值，并和前面的元素交换位置，这样破坏了稳定性。</p>
+<p>比如 5，8，5，2，9 这样一组数据，使用选择排序算法来排序的话，第一次找到最小元素 2，与第一个 5 交换位置，那第一个 5 和中间的 5 顺序就变了，所以就不稳定了。正是因此，相对于冒泡排序和插入排序，选择排序就稍微逊色了。</p>
+<h1 id="归并、快速"><a href="#归并、快速" class="headerlink" title="归并、快速"></a>归并、快速</h1><p>归并排序和快速排序是两种时间复杂度为 <code>O(nlogn)</code> 的排序算法，这两种排序算法适合大规模的数据排序，比上一节的三种排序算法要更常用。</p>
+<p>归并排序和快速排序都用到了<strong>分治思想</strong>，非常巧妙。可以借鉴这个思想，来解决非排序的问题，比如：如何在 <code>O(n)</code> 的时间复杂度内查找一个无序数组中的第 K 大元素？ </p>
+<h2 id="归并排序（Merge-Sort）"><a href="#归并排序（Merge-Sort）" class="headerlink" title="归并排序（Merge Sort）"></a>归并排序（Merge Sort）</h2><p>归并排序的核心思想还是蛮简单的。如果要排序一个数组，先把数组从中间分成前后两部分，然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组就都有序了。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/db/2b/db7f892d3355ef74da9cd64aa926dc2b.jpg"></p>
+<p>归并排序使用的就是分治思想。分治，顾名思义，就是分而治之，将一个大问题分解成小的子问题来解决。小的子问题解决了，大问题也就解决了。</p>
+<p>从刚才的描述，你有没有感觉到，分治思想和前面的递归思想很像。其实分治算法一般都是用递归来实现的。分治是一种解决问题的处理思想，递归是一种编程技巧，这两者并不冲突。</p>
+<p>递归代码的编写技巧你还记得吗？写递归代码的技巧就是：分析得出递推公式，然后找到终止条件，最后将递推公式翻译成递归代码。所以，要想写出归并排序的代码，先写出归并排序的递推公式。</p>
+<pre><code>递推公式：
+merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+1…r))
+
+终止条件：
+p &gt;= r 不用再继续分解
+</code></pre>
+<p>来解释一下这个递推公式：<code>merge_sort(p…r)</code> 表示给下标从 p 到 r 之间的数组排序。将这个排序问题转化为了两个子问题，<code>merge_sort(p…q)</code> 和 <code>merge_sort(q+1…r)</code>，其中下标 q 等于 p 和 r 的中间位置，也就是 <code>(p+r)/2</code>。当下标从 p 到 q 和从 q+1 到 r 这两个子数组都排好序之后，我们再将两个有序的子数组合并在一起，这样下标从 p 到 r 之间的数据就也排好序了。有了递推公式，转化成代码就简单多了。</p>
+<pre><code>// 归并排序算法, A是数组，n表示数组大小
+merge_sort(A, n) &#123;
+  merge_sort_c(A, 0, n-1)
+&#125;
+
+// 递归调用函数
+merge_sort_c(A, p, r) &#123;
+  // 递归终止条件
+  if p &gt;= r  then return
+
+  // 取p到r之间的中间位置q
+  q = (p+r) / 2
+  // 分治递归
+  merge_sort_c(A, p, q)
+  merge_sort_c(A, q+1, r)
+  // 将A[p...q]和A[q+1...r]合并为A[p...r]
+  merge(A[p...r], A[p...q], A[q+1...r])
+&#125;
+</code></pre>
+<p><code>merge(A[p...r], A[p...q], A[q+1...r])</code> 这个函数的作用就是，将已经有序的 <code>A[p...q]</code>和 <code>A[q+1....r]</code>合并成一个有序的数组，并且放入 <code>A[p....r]</code>。那这个过程具体该如何做呢？如图所示，申请一个临时数组 <code>tmp</code>，大小与 <code>A[p...r]</code>相同。用两个游标 i 和 j，分别指向 <code>A[p...q]</code>和 <code>A[q+1...r]</code>的第一个元素。比较这两个元素 <code>A[i]</code>和 <code>A[j]</code>，如果 <code>A[i]&lt;=A[j]</code>，我们就把 <code>A[i]</code>放入到临时数组 <code>tmp</code>，并且 i 后移一位，否则将 <code>A[j]</code>放入到数组 <code>tmp</code>，j 后移一位。</p>
+<p>继续上述比较过程，直到其中一个子数组中的所有数据都放入临时数组中，再把另一个数组中的数据依次加入到临时数组的末尾，这个时候，临时数组中存储的就是两个子数组合并之后的结果了。最后再把临时数组 tmp 中的数据拷贝到原数组 <code>A[p...r]</code>中。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/95/2f/95897ade4f7ad5d10af057b1d144a22f.jpg"></p>
+<p>把 <code>merge()</code> 函数写成伪代码，就是下面这样：</p>
+<pre><code>
+merge(A[p...r], A[p...q], A[q+1...r]) &#123;
+  var i := p，j := q+1，k := 0 // 初始化变量i, j, k
+  var tmp := new array[0...r-p] // 申请一个大小跟A[p...r]一样的临时数组
+  while i&lt;=q AND j&lt;=r do &#123;
+    if A[i] &lt;= A[j] &#123;
+      tmp[k++] = A[i++] // i++等于i:=i+1
+    &#125; else &#123;
+      tmp[k++] = A[j++]
+    &#125;
+  &#125;
+  
+  // 判断哪个子数组中有剩余的数据
+  var start := i，end := q
+  if j&lt;=r then start := j, end:=r
+  
+  // 将剩余的数据拷贝到临时数组tmp
+  while start &lt;= end do &#123;
+    tmp[k++] = A[start++]
+  &#125;
+  
+  // 将tmp中的数组拷贝回A[p...r]
+  for i:=0 to r-p do &#123;
+    A[p+i] = tmp[i]
+  &#125;
+&#125;
+</code></pre>
+<p>还记得前面讲过的利用哨兵简化编程的处理技巧吗？<code>merge()</code> 合并函数如果借助哨兵，代码就会简洁很多，这个问题留给你思考。</p>
+<blockquote>
+</blockquote>
+<p><strong>第一，归并排序是最稳定的排序算法吗？</strong></p>
+<p>结合前的图和归并排序的伪代码能发现，归并排序稳不稳定关键要看 <code>merge()</code> 函数，也就是两个有序子数组合并成一个有序数组的那部分代码。</p>
+<p>在合并的过程中，如果 <code>A[p...q]</code>和 <code>A[q+1...r]</code>之间有值相同的元素，那可以像伪代码中那样，先把 <code>A[p...q]</code>中的元素放入 tmp 数组。这样就保证了值相同的元素，在合并前后的先后顺序不变。所以归并排序是一个稳定的排序算法。</p>
+<p><strong>第二，归并排序的时间复杂度是多少</strong></p>
+<p>归并排序涉及递归，时间复杂度的分析稍微有点复杂。正好借此机会来学习一下如何分析递归代码的时间复杂度。</p>
+<p>之前讲过，递归的适用场景是，一个问题 a 可以分解为多个子问题 b、c，那求解问题 a 就可以分解为求解问题 b、c。问题 b、c 解决之后，再把 b、c 的结果合并成 a 的结果。</p>
+<p>如果定义求解问题 a 的时间是 T(a)，求解问题 b、c 的时间分别是 T(b) 和 T( c)，那就可以得到这样的递推关系式：</p>
+<pre><code>T(a) = T(b) + T(c) + K
+</code></pre>
+<p>其中 K 等于将两个子问题 b、c 的结果合并成问题 a 的结果所消耗的时间。</p>
+<p>从刚刚的分析，可以得到一个重要的结论：<strong>不仅递归求解的问题可以写成递推公式，递归代码的时间复杂度也可以写成递推公式。</strong></p>
+<p>套用这个公式，来分析一下归并排序的时间复杂度。假设对 n 个元素进行归并排序需要的时间是 <code>T(n)</code>，那分解成两个子数组排序的时间都是 <code>T(n/2)</code>。<code>merge()</code> 函数合并两个有序子数组的时间复杂度是 <code>O(n)</code>。所以，套用前面的公式，归并排序的时间复杂度的计算公式就是：</p>
+<pre><code>T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
+T(n) = 2*T(n/2) + n； n&gt;1
+</code></pre>
+<p>通过这个公式，如何来求解 <code>T(n)</code> 呢？还不够直观？再进一步分解一下计算过程。</p>
+<pre><code>T(n) = 2*T(n/2) + n
+     = 2*(2*T(n/4) + n/2) + n = 4*T(n/4) + 2*n
+     = 4*(2*T(n/8) + n/4) + 2*n = 8*T(n/8) + 3*n
+     = 8*(2*T(n/16) + n/8) + 3*n = 16*T(n/16) + 4*n
+     ......
+     = 2^k * T(n/2^k) + k * n
+     ......
+</code></pre>
+<p>通过这样一步一步分解推导，可以得到 <code>T(n) = 2^kT(n/2^k)+kn</code>。当 <code>T(n/2^k)=T(1)</code> 时，也就是 <code>n/2^k=1</code>，我们得到 <code>k=log2n</code> 。我们将 k 值代入上面的公式，得到 <code>T(n)=Cn+nlog2n</code> 。如果用大 O 标记法来表示的话，<code>T(n)</code> 就等于 <code>O(nlogn)</code>。所以归并排序的时间复杂度是 <code>O(nlogn)</code>。</p>
+<p>从原理分析和伪代码可以看出，归并排序的执行效率与要排序的原始数组的有序程度无关，所以其时间复杂度是非常稳定的，不管是最好情况、最坏情况，还是平均情况，时间复杂度都是 <code>O(nlogn)</code>。</p>
+<p><strong>第三，归并排序的空间复杂度是多少？</strong></p>
+<p>归并排序的时间复杂度任何情况下都是 <code>O(nlogn)</code>，看起来非常优秀。（即便是快速排序，最坏情况下，时间复杂度也是 <code>O(n²)</code>。）但是归并排序并没有像快排那样应用广泛，这是为什么呢？因为它有一个致命的“弱点”，那就是归并排序不是原地排序算法。</p>
+<p>这是因为归并排序的合并函数，在合并两个有序数组为一个有序数组时，需要借助额外的存储空间。那归并排序的空间复杂度到底是多少呢？是 <code>O(n)</code>，还是 <code>O(nlogn)</code>，应该如何分析呢？</p>
+<p>如果继续按照分析递归时间复杂度的方法，通过递推公式来求解，那整个归并过程需要的空间复杂度就是 <code>O(nlogn)</code>。不过，类似分析时间复杂度那样来分析空间复杂度，这个思路对吗？</p>
+<p>实际上，递归代码的空间复杂度并不能像时间复杂度那样累加。刚刚忘记了最重要的一点，那就是，<strong>尽管每次合并操作都需要申请额外的内存空间，但在合并完成之后，临时开辟的内存空间就被释放掉了。</strong>在任意时刻，CPU 只会有一个函数在执行，也就只会有一个临时的内存空间在使用。临时内存空间最大也不会超过 n 个数据的大小，所以空间复杂度是 <code>O(n)</code>。</p>
+<h2 id="快速排序（Quick-Sort）"><a href="#快速排序（Quick-Sort）" class="headerlink" title="快速排序（Quick Sort）"></a>快速排序（Quick Sort）</h2><p>再来看快速排序算法，简称“快排”。快排利用的也是分治思想。乍看起来，它有点像归并排序，但是思路其实完全不一样。</p>
+<p>快排的思想是这样的：如果要排序数组中下标从 p 到 r 之间的一组数据，我们选择 p 到 r 之间的任意一个数据作为 pivot（分区点）。我们遍历 p 到 r 之间的数据，将小于 pivot 的放到左边，将大于 pivot 的放到右边，将 pivot 放到中间。</p>
+<p>经过这一步骤之后，数组 p 到 r 之间的数据就被分成了三个部分，前面 p 到 q-1 之间都是小于 pivot 的，中间是 pivot，后面的 q+1 到 r 之间是大于 pivot 的。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/4d/81/4d892c3a2e08a17f16097d07ea088a81.jpg"></p>
+<p>根据分治、递归的处理思想，可以用递归排序下标从 p 到 q-1 之间的数据和下标从 q+1 到 r 之间的数据，直到区间缩小为 1，就说明所有的数据都有序了。用递推公式来表示上面的过程就是这样：</p>
+<pre><code>递推公式：
+quick_sort(p…r) = quick_sort(p…q-1) + quick_sort(q+1… r)
+
+终止条件：
+p &gt;= r
+</code></pre>
+<p>用伪代码来实现：</p>
+<pre><code>// 快速排序，A是数组，n表示数组的大小
+quick_sort(A, n) &#123;
+  quick_sort_c(A, 0, n-1)
+&#125;
+
+// 快速排序递归函数，p，r为下标
+quick_sort_c(A, p, r) &#123;
+  if p &gt;= r then return
+  
+  q = partition(A, p, r) // 获取分区点
+  quick_sort_c(A, p, q-1)
+  quick_sort_c(A, q+1, r)
+&#125;
+</code></pre>
+<p>归并排序中有一个 <code>merge()</code> 合并函数，一个 <code>partition()</code> 分区函数。<code>partition()</code> 分区函数实际就是随机选择一个元素作为 pivot（一般情况下，可以选择 p 到 r 区间的最后一个元素），然后对 <code>A[p...r]</code>分区，函数返回 pivot 的下标。</p>
+<p>如果不考虑空间消耗的话，<code>partition()</code> 分区函数可以写得非常简单。申请两个临时数组 X 和 Y，遍历 <code>A[p...r]</code>，将小于 pivot 的元素都拷贝到临时数组 X，将大于 pivot 的元素都拷贝到临时数组 Y，最后再将数组 X 和数组 Y 中数据顺序拷贝到 <code>A[p....r]</code>。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/66/dc/6643bc3cef766f5b3e4526c332c60adc.jpg"></p>
+<p>但是，如果按照这种思路实现的话，<code>partition()</code> 函数就需要很多额外的内存空间，所以快排就不是原地排序算法了。如果希望快排是原地排序算法，那它的空间复杂度得是 <code>O(1)</code>，那 <code>partition()</code> 分区函数就不能占用太多额外的内存空间，就需要在 <code>A[p...r]</code>的原地完成分区操作。</p>
+<p>原地分区函数的实现思路非常巧妙，下面是伪代码</p>
+<pre><code>partition(A, p, r) &#123;
+// :=表示“定义为”，用来定义一个新出现的符号。
+  pivot := A[r]
+  i := p
+  for j := p to r-1 do &#123;
+    if A[j] &lt; pivot &#123;
+      swap A[i] with A[j]
+      i := i+1
+    &#125;
+  &#125;
+  swap A[i] with A[r]
+  return i
+</code></pre>
+<p>这里的处理有点类似选择排序。通过游标 <code>i</code> 把 <code>A[p...r-1]</code>分成两部分。<code>A[p...i-1]</code>的元素都是小于 pivot 的，暂且叫它“已处理区间”，<code>A[i...r-1]</code>是“未处理区间”。每次都从未处理的区间 <code>A[i...r-1]</code>中取一个元素 <code>A[j]</code>，与 pivot 对比，如果小于 pivot，则将其加入到已处理区间的尾部，也就是 <code>A[i]</code>的位置。</p>
+<p>数组的插入操作还记得吗？在数组某个位置插入元素，需要搬移数据，非常耗时。当时讲了一种处理技巧，就是交换，在 O(1) 的时间复杂度内完成插入操作。这里也需要借助这个思想，只需要将 <code>A[i]</code>与 <code>A[j]</code>交换，就可以在 <code>O(1)</code> 时间复杂度内将 <code>A[j]</code>放到下标为 i 的位置。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/08/e7/086002d67995e4769473b3f50dd96de7.jpg"></p>
+<p>因为分区的过程涉及交换操作，如果数组中有两个相同的元素，比如序列 6，8，7，6，3，5，9，4，在经过第一次分区操作之后，两个 6 的相对先后顺序就会改变。所以，快速排序并不是一个稳定的排序算法。</p>
+<p>那么问题来了：快排和归并用的都是分治思想，递推公式和递归代码也非常相似，那它们的区别在哪里呢？</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/aa/05/aa03ae570dace416127c9ccf9db8ac05.jpg"></p>
+<p>可以发现，归并排序的处理过程是由下到上的，先处理子问题，然后再合并。而快排正好相反，它的处理过程是由上到下的，先分区，然后再处理子问题。归并排序虽然是稳定的、时间复杂度为 <code>O(nlogn)</code> 的排序算法，但是它是非原地排序算法。前面讲过，归并之所以是非原地排序算法，主要原因是合并函数无法在原地执行。快速排序通过设计巧妙的原地分区函数，可以实现原地排序，解决了归并排序占用太多内存的问题。</p>
+<p><strong>快速排序的性能分析</strong></p>
+<p>现在，来分析一下快速排序的性能。前面在讲解快排的实现原理时，已经分析了稳定性和空间复杂度。快排是一种原地、不稳定的排序算法。来看快排的时间复杂度。快排也是用递归来实现的。对于递归代码的时间复杂度，前面总结的公式在这里也还是适用的。如果每次分区操作，都能正好把数组分成大小接近相等的两个小区间，那快排的时间复杂度递推求解公式跟归并是相同的。所以，快排的时间复杂度也是 <code>O(nlogn)</code>。</p>
+<pre><code>T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
+T(n) = 2*T(n/2) + n； n&gt;1
+</code></pre>
+<p>但是公式成立的前提是每次分区操作，选择的 pivot 都很合适，正好能将大区间对等地一分为二。但实际上这种情况是很难实现的。</p>
+<p>举一个比较极端的例子。如果数组中的数据原来已经是有序的了，比如 1，3，5，6，8。如果每次选择最后一个元素作为 pivot，那每次分区得到的两个区间都是不均等的。我们需要进行大约 n 次分区操作，才能完成快排的整个过程。每次分区平均要扫描大约 <code>n/2</code> 个元素，这种情况下，快排的时间复杂度就从 <code>O(nlogn)</code> 退化成了 <code>O(n²)</code>。</p>
+<p>前面讲的是两个极端情况下的时间复杂度，一个是分区极其均衡，一个是分区极其不均衡。它们分别对应快排的最好情况时间复杂度和最坏情况时间复杂度。那快排的平均情况时间复杂度是多少呢？</p>
+<p>假设每次分区操作都将区间分成大小为 9:1 的两个小区间。继续套用递归时间复杂度的递推公式，就会变成这样：</p>
+<pre><code>T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
+
+T(n) = T(n/10) + T(9*n/10) + n； n&gt;1
+</code></pre>
+<p>这个公式的递推求解的过程非常复杂，虽然可以求解，但不推荐用这种方法。实际上，递归的时间复杂度的求解方法除了递推公式之外，还有递归树，这里暂时不说。</p>
+<p>这里直接给出结论：<code>T(n)</code> 在大部分情况下的时间复杂度都可以做到 <code>O(nlogn)</code>，只有在极端情况下，才会退化到 <code>O(n²)</code>。而且也有很多方法将这个概率降到很低，后面会说明如何去做。</p>
+<h1 id="桶、计数、基数"><a href="#桶、计数、基数" class="headerlink" title="桶、计数、基数"></a>桶、计数、基数</h1><p>这是三种时间复杂度是 <code>O(n)</code> 的排序算法：桶排序、计数排序、基数排序。因为这些排序算法的时间复杂度是线性的，所以这类排序算法被称作<strong>线性排序</strong>（Linear sort）。之所以能做到线性的时间复杂度，主要原因是，这三个算法是非基于比较的排序算法，都不涉及元素之间的比较操作。</p>
+<p>这几种排序算法理解起来都不难，时间、空间复杂度分析起来也很简单，但是对要排序的数据要求很苛刻，所以这几个排序算法的使用场景是重点。按照惯例，先给出一道思考题：如何根据年龄给 100 万用户排序？ 你可能会说，用归并、快排就可以搞定啊！是的，它们也可以完成功能，但是时间复杂度最低也是 <code>O(nlogn)</code>。有没有更快的排序方法呢？</p>
+<h2 id="桶排序（Bucket-sort）"><a href="#桶排序（Bucket-sort）" class="headerlink" title="桶排序（Bucket sort）"></a>桶排序（Bucket sort）</h2><p>桶排序，顾名思义，会用到“桶”，核心思想是将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序。桶内排完序之后，再把每个桶里的数据按照顺序依次取出，组成的序列就是有序的了。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/98/ae/987564607b864255f81686829503abae.jpg"></p>
+<p>桶排序的时间复杂度为什么是 O(n) 呢？一块儿来分析一下。</p>
+<p>如果要排序的数据有 n 个，把它们均匀地划分到 m 个桶内，每个桶里就有 <code>k=n/m</code> 个元素。每个桶内部使用快速排序，时间复杂度为 <code>O(k * logk)</code>。m 个桶排序的时间复杂度就是 <code>O(m * k * logk)</code>，因为 <code>k=n/m</code>，所以整个桶排序的时间复杂度就是 <code>O(n*log(n/m))</code>。当桶的个数 m 接近数据个数 n 时，<code>log(n/m)</code> 就是一个非常小的常量，这个时候桶排序的时间复杂度接近 <code>O(n)</code>。</p>
+<p><strong>桶排序看起来很优秀，那它是不是可以替代我们之前讲的排序算法呢？</strong></p>
+<p>答案当然是否定的。为了轻松理解桶排序的核心思想，刚才做了很多假设。实际上，桶排序对要排序数据的要求是非常苛刻的。</p>
+<p>首先，要排序的数据需要很容易就能划分成 m 个桶，并且，桶与桶之间有着天然的大小顺序。这样每个桶内的数据都排序完之后，桶与桶之间的数据不需要再进行排序。</p>
+<p>其次，数据在各个桶之间的分布是比较均匀的。如果数据经过桶的划分之后，有些桶里的数据非常多，有些非常少，很不平均，那桶内数据排序的时间复杂度就不是常量级了。在极端情况下，如果数据都被划分到一个桶里，那就退化为 <code>O(nlogn)</code> 的排序算法了。</p>
+<p><strong>桶排序比较适合用在外部排序中。</strong>所谓的外部排序就是数据存储在外部磁盘中，数据量比较大，内存有限，无法将数据全部加载到内存中。</p>
+<p>比如说有 10GB 的订单数据，希望按订单金额（假设金额都是正整数）进行排序，但是内存有限，只有几百 MB，没办法一次性把 10GB 的数据都加载到内存中。这个时候该怎么办呢？</p>
+<p>现在我来讲一下，如何借助桶排序的处理思想来解决这个问题。</p>
+<p>可以先扫描一遍文件，看订单金额所处的数据范围。假设经过扫描之后得到：订单金额最小是 1 元，最大是 10 万元。我们将所有订单根据金额划分到 100 个桶里，第一个桶我们存储金额在 1 元到 1000 元之内的订单，第二桶存储金额在 1001 元到 2000 元之内的订单，以此类推。每一个桶对应一个文件，并且按照金额范围的大小顺序编号命名（00，01，02…99）。</p>
+<p>理想的情况下，如果订单金额在 1 到 10 万之间均匀分布，那订单会被均匀划分到 100 个文件中，每个小文件中存储大约 100MB 的订单数据，这样就可以将这 100 个小文件依次放到内存中，用快排来排序。等所有文件都排好序之后，我们只需要按照文件编号，从小到大依次读取每个小文件中的订单数据，并将其写入到一个文件中，那这个文件中存储的就是按照金额从小到大排序的订单数据了。</p>
+<p>不过，你可能也发现了，订单按照金额在 1 元到 10 万元之间并不一定是均匀分布的 ，所以 10GB 订单数据是无法均匀地被划分到 100 个文件中的。有可能某个金额区间的数据特别多，划分之后对应的文件就会很大，没法一次性读入内存。这又该怎么办呢？</p>
+<p>针对这些划分之后还是比较大的文件可以继续划分，比如订单金额在 1 元到 1000 元之间的比较多，就将这个区间继续划分为 10 个小区间，1 元到 100 元，101 元到 200 元，201 元到 300 元….901 元到 1000 元。如果划分之后，101 元到 200 元之间的订单还是太多，无法一次性读入内存，那就继续再划分，直到所有的文件都能读入内存为止。</p>
+<h2 id="计数排序（Counting-sort）"><a href="#计数排序（Counting-sort）" class="headerlink" title="计数排序（Counting sort）"></a>计数排序（Counting sort）</h2><p><strong>计数排序可以看作是桶排序的一种特殊情况。</strong>当要排序的n个数据所处的范围并不大的时候，比如最大值是 k，就可以把数据划分成 k 个桶。每个桶内的数据值都是相同的，省掉了桶内排序的时间。</p>
+<p>我们都经历过高考，高考查分数系统你还记得吗？查分数的时候，系统会显示成绩以及所在省的排名。如果你所在的省有 50 万考生，如何通过成绩快速排序得出名次呢？考生的满分是 900 分，最小是 0 分，这个数据的范围很小，所以可以分成 901 个桶，对应分数从 0 分到 900 分。根据考生的成绩，将这 50 万考生划分到这 901 个桶里。桶内的数据都是分数相同的考生，所以并不需要再进行排序。只需要依次扫描每个桶，将桶内的考生依次输出到一个数组中，就实现了 50 万考生的排序。因为只涉及扫描遍历操作，所以时间复杂度是 <code>O(n)</code>。</p>
+<p>计数排序的算法思想就是这么简单，跟桶排序非常类似，只是桶的大小粒度不一样。不过，为什么这个排序算法叫“计数”排序呢？“计数”的含义来自哪里呢？</p>
+<p>想弄明白这个问题，就要弄懂计数排序算法的实现方法。还是拿考生那个例子来解释。为了方便说明这里对数据规模做了简化。假设只有 8 个考生，分数在 0 到 5 分之间。这 8 个考生的成绩放在一个数组 A[8]中，它们分别是：2，5，3，0，2，3，0，3。考生的成绩从 0 到 5 分，使用大小为 6 的数组 C[6]表示桶，其中下标对应分数。不过，C[6]内存储的并不是考生，而是对应的考生个数。像刚刚举的那个例子，只需要遍历一遍考生分数，就可以得到 C[6]的值。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/ad/c9/adc75672ef33fa54b023a040834fcbc9.jpg"></p>
+<p>从图中可以看出，分数为 3 分的考生有 3 个，小于 3 分的考生有 4 个，所以，成绩为 3 分的考生在排序之后的有序数组 R[8]中，会保存下标 4，5，6 的位置。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/36/29/361f4d781d2a2d144dcbbbb0b9e6db29.jpg"></p>
+<p>那如何快速计算出，每个分数的考生在有序数组中对应的存储位置呢？这个处理方法非常巧妙，很不容易想到。</p>
+<p>思路是这样的：对 C[6]数组顺序求和，C[6]存储的数据就变成了下面这样子。C[k]里存储小于等于分数 k 的考生个数。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/dd/1f/dd6c62b12b0dc1b3a294af0fa1ce371f.jpg"></p>
+<p>从后到前依次扫描数组 A。比如，当扫描到 3 时，可以从数组 C 中取出下标为 3 的值 7，也就是说，到目前为止，包括自己在内，分数小于等于 3 的考生有 7 个，也就是说 3 是数组 R 中的第 7 个元素（也就是数组 R 中下标为 6 的位置）。当 3 放入到数组 R 中后，小于等于 3 的元素就只剩下了 6 个了，所以相应的 C[3]要减 1，变成 6。</p>
+<p>以此类推，当我们扫描到第 2 个分数为 3 的考生的时候，就会把它放入数组 R 中的第 6 个元素的位置（也就是下标为 5 的位置）。当我们扫描完整个数组 A 后，数组 R 内的数据就是按照分数从小到大有序排列的了。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/1d/84/1d730cb17249f8e92ef5cab53ae65784.jpg"></p>
+<p>代码如下：</p>
+<pre><code class="java">
+// 计数排序，a是数组，n是数组大小。假设数组中存储的都是非负整数。
+public void countingSort(int[] a, int n) &#123;
+    if (n &lt;= 1) return;
+    
+    // 查找数组中数据的范围
+    int max = a[0];
+    for (int i = 1; i &lt; n; ++i) &#123;
+        if (max &lt; a[i]) &#123;
+            max = a[i];
+        &#125;
+    &#125;
+
+    int[] c = new int[max + 1]; // 申请一个计数数组c，下标大小[0,max]
+    for (int i = 0; i &lt;= max; ++i) &#123;
+        c[i] = 0;
+    &#125;
+
+      // 计算每个元素的个数，放入c中
+      for (int i = 0; i &lt; n; ++i) &#123;
+        c[a[i]]++;
+      &#125;
+
+      // 依次累加
+      for (int i = 1; i &lt;= max; ++i) &#123;
+        c[i] = c[i-1] + c[i];
+      &#125;
+    
+      // 临时数组r，存储排序之后的结果
+      int[] r = new int[n];
+      // 计算排序的关键步骤，有点难理解
+      for (int i = n - 1; i &gt;= 0; --i) &#123;
+        int index = c[a[i]]-1;
+        r[index] = a[i];
+        c[a[i]]--;
+      &#125;
+    
+      // 将结果拷贝给a数组
+      for (int i = 0; i &lt; n; ++i) &#123;
+        a[i] = r[i];
+      &#125;
+&#125;
+</code></pre>
+<p>这种利用另外一个数组来计数的实现方式是不是很巧妙呢？这也是为什么这种排序算法叫计数排序的原因。不过千万不要死记硬背上面的排序过程，重要的是理解和会用。</p>
+<p>总结一下：<strong>计数排序只能用在数据范围不大的场景中，如果数据范围 k 比要排序的数据 n 大很多，就不适合用计数排序了。而且，计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下，转化为非负整数。</strong></p>
+<blockquote>
+<p>如果考生成绩精确到小数后一位，就需要将所有的分数都先乘以 10，转化成整数，然后再放到 9010 个桶内。如果要排序的数据中有负数，数据的范围是[-1000, 1000]，那就需要先对每个数据都加 1000，转化成非负整数。</p>
+</blockquote>
+<h2 id="基数排序（Radix-sort）"><a href="#基数排序（Radix-sort）" class="headerlink" title="基数排序（Radix sort）"></a>基数排序（Radix sort）</h2><p>再来看这样一个排序问题。假设有 10 万个手机号码，要将这 10 万个手机号码从小到大排序，有什么比较快速的排序方法吗？</p>
+<p>快排，时间复杂度可以做到 <code>O(nlogn)</code>，还有更高效的排序算法吗？桶排序、计数排序能派上用场吗？手机号码有 11 位，范围太大，显然不适合用这两种排序算法。针对这个排序问题，有没有时间复杂度是 <code>O(n)</code> 的算法呢？</p>
+<p>刚刚这个问题里有这样的规律：假设要比较两个手机号码 a，b 的大小，如果在前面几位中，a 手机号码已经比 b 手机号码大了，那后面的几位就不用看了。</p>
+<p>借助稳定排序算法，这里有一个巧妙的实现思路。还记前面在阐述排序算法的稳定性的时候举的订单的例子吗？这里也可以借助相同的处理思路，先按照最后一位来排序手机号码，然后，再按照倒数第二位<strong>重新</strong>排序，以此类推，最后按照第一位重新排序。经过 11 次排序之后，手机号码就都有序了。</p>
+<blockquote>
+<p>从前往后排：排好了第一位数，排第二位数的时候，还需要保证第一位数是有序的。就相当于排第一位数时，需要分桶，1 在第一个桶，2 在第二个桶，然后在每个桶里面再进行第二位数的排序。 比如有三个数： 132 213 123 根据第一位排序的结果： 132 123 213 根据第二位排序的结果（假设不考虑第一位）： 213 123 132 那这样就错了，需要基于第一位的排序结果再进行排序才行。 123 132 213 从后往前排：排好了最后一位数，排倒数第二位数时，不需要再考虑最后一位数了。反正是左边的数优先级更高。</p>
+</blockquote>
+<p>手机号码稍微有点长，画图比较不容易看清楚，这里用字符串排序的例子，画了一张基数排序的过程分解图可以看下过程。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/df/0c/df0cdbb73bd19a2d69a52c54d8b9fc0c.jpg"></p>
+<p>注意，<strong>这里按照每位来排序的排序算法要是稳定的，否则这个实现思路就是不正确的。因为如果是非稳定排序算法，那最后一次排序只会考虑最高位的大小顺序，完全不管其他位的大小关系，那么低位的排序就完全没有意义了。</strong></p>
+<blockquote>
+<p>下面（底层）的排序算法得是稳定的</p>
+</blockquote>
+<p>根据每一位来排序，可以用刚讲过的桶排序或者计数排序，它们的时间复杂度可以做到 <code>O(n)</code>。如果要排序的数据有 k 位，那我们就需要 k 次桶排序或者计数排序，总的时间复杂度是 <code>O(k*n)</code>。当 k 不大的时候，比如手机号码排序的例子，k 最大就是 11，所以基数排序的时间复杂度就近似于 <code>O(n)</code>。</p>
+<p>实际上，有时候要排序的数据并不都是等长的，比如排序牛津字典中的 20 万个英文单词，最短的只有 1 个字母，最长的有 45 个字母，对于这种不等长的数据，基数排序还适用吗？（补足位数排序？）</p>
+<p>实际上，可以把所有的单词补齐到相同长度，位数不够的可以在后面补“0”，因为根据ASCII 值，所有字母都大于“0”，所以补“0”不会影响到原有的大小顺序。这样就可以继续用基数排序了。</p>
+<p>总结一下，<strong>基数排序对要排序的数据是有要求的，需要可以分割出独立的“位”来比较，而且位之间有递进的关系，如果 a 数据的高位比 b 数据大，那剩下的低位就不用比较了。除此之外，每一位的数据范围不能太大，要可以用线性排序算法来排序，否则，基数排序的时间复杂度就无法做到 <code>O(n)</code> 了。</strong></p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>回到开篇的问题：冒泡排序和插入排序的时间复杂度都是 <code>O(n²)</code>，都是原地排序算法，为什么插入排序要比冒泡排序更受欢迎呢？</p>
+<blockquote>
+<p>前面分析冒泡排序和插入排序的时候讲到，冒泡排序不管怎么优化，元素交换的次数是一个固定值，是原始数据的逆序度。插入排序是同样的，不管怎么优化，元素移动的次数也等于原始数据的逆序度。但是，从代码实现上来看，冒泡排序的数据交换要比插入排序的数据移动要复杂，冒泡排序需要 3 个赋值操作，而插入排序只需要 1 个。我们来看这段操作：</p>
+<pre><code class="java">// 冒泡排序中数据的交换操作：
+if (a[j] &gt; a[j+1]) &#123; // 交换
+    int tmp = a[j];
+       a[j] = a[j+1];
+       a[j+1] = tmp;
+       flag = true;
+&#125;
+
+// 插入排序中数据的移动操作：
+if (a[j] &gt; value) &#123;
+    a[j+1] = a[j];  // 数据移动
+&#125; else &#123;
+    break;
+&#125;
+</code></pre>
+<p>把执行一个赋值语句的时间粗略地计为单位时间（unit_time），然后分别用冒泡排序和插入排序对同一个逆序度是 K 的数组进行排序。用冒泡排序，需要 K 次交换操作，每次需要 3 个赋值语句，所以交换操作总耗时就是 3*K 单位时间。而插入排序中数据移动操作只需要 K 个单位时间。</p>
+<p>这个只是非常理论的分析，为了实验，针对上面的冒泡排序和插入排序的 Java 代码，写一个性能对比测试程序，随机生成 10000 个数组，每个数组中包含 200 个数据，然后在机器上分别用冒泡和插入排序算法来排序，冒泡排序算法大约 700ms 才能执行完成，而插入排序只需要 100ms 左右就能搞定！所以，虽然冒泡排序和插入排序在时间复杂度上是一样的，都是 <code>O(n²)</code>，但是如果我们希望把性能优化做到极致，那肯定首选插入排序。插入排序的算法思路也有很大的优化空间，这里只是讲了最基础的一种。如果对插入排序的优化感兴趣，可以自行学习一下[希尔排序](<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序_百度百科 (baidu.com)</a>)。</p>
+</blockquote>
+<p>前面讲过，特定算法是依赖特定的数据结构的。冒泡、插入、选择这几种排序算法，都是基于数组实现的。如果数据存储在链表中，这三种排序算法还能工作吗？如果能，那相应的时间、空间复杂度又是多少呢？</p>
+<blockquote>
+<p>对于老师所提课后题，觉得应该有个前提，是否允许修改链表的节点 value 值，还是只能改变节点的位置。一般而言，考虑只能改变节点位置，冒泡排序相比于数组实现，比较次数一致，但交换时操作更复杂；插入排序，比较次数一致，不需要再有后移操作，找到位置后可以直接插入；选择排序比较次数一致，交换操作同样比较麻烦。综上，时间复杂度和空间复杂度并无明显变化，若追求极致性能，冒泡排序的时间复杂度系数会变大，插入排序系数会减小，选择排序无明显变化。</p>
+</blockquote>
+<p>回到开篇的问题：如何在 <code>O(n)</code> 的时间复杂度内查找一个无序数组中的第 K 大元素？ 比如，4， 2， 5， 12， 3 这样一组数据，第 3 大元素就是 4。</p>
+<blockquote>
+<p>选择数组区间 <code>A[0...n-1]</code> 的最后一个元素 <code>A[n-1]</code>作为 pivot，对数组 <code>A[0...n-1]</code>原地分区，这样数组就分成了三部分，<code>A[0...p-1]</code>、<code>A[p]</code>、<code>A[p+1...n-1]</code>。</p>
+<p>如果 <code>p+1=K</code>，那 <code>A[p]</code>就是要求解的元素；如果 <code>K&gt;p+1</code>，说明第 K 大元素出现在 <code>A[p+1...n-1]</code>区间，再按照上面的思路递归地在 <code>A[p+1...n-1]</code>这个区间内查找。同理，如果 <code>K&lt;p+1</code>，那就在 <code>A[0...p-1]</code>区间查找。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/89/91/898d94fc32e0a795fd65897293b98791.jpg"></p>
+<p>来看看，为什么上述解决思路的时间复杂度是 <code>O(n)</code>？</p>
+<p>第一次分区查找，需要对大小为 n 的数组执行分区操作，需要遍历 n 个元素。第二次分区查找，只需要对大小为 n/2 的数组执行分区操作，需要遍历 n/2 个元素。依次类推，分区遍历元素的个数分别为、n/2、n/4、n/8、n/16.……直到区间缩小为 1。</p>
+<p>如果把每次分区遍历的元素个数加起来，就是：<code>n+n/2+n/4+n/8+...+1</code>。这是一个等比数列求和，最后的和等于 <code>2n-1</code>。所以，上述解决思路的时间复杂度就为 <code>O(n)</code>。</p>
+<p>你可能会说，我有个很笨的办法，每次取数组中的最小值，将其移动到数组的最前面，然后在剩下的数组中继续找最小值，以此类推，执行 K 次，找到的数据不就是第 K 大元素了吗？不过，时间复杂度就并不是 <code>O(n)</code> 了，而是 <code>O(K * n)</code>。你可能会说，时间复杂度前面的系数不是可以忽略吗？<code>O(K * n)</code> 不就等于 <code>O(n)</code> 吗？</p>
+<p>这个可不能这么简单地划等号。当 K 是比较小的常量时，比如 1、2，那最好时间复杂度确实是 <code>O(n)</code>；但当 K 等于 n/2 或者 n 时，这种最坏情况下的时间复杂度就是 <code>O(n²)</code> 了。</p>
+</blockquote>
+<p>现在你有 10 个接口访问日志文件，每个日志文件大小约 300MB，每个文件里的日志都是按照时间戳从小到大排序的。你希望将这 10 个较小的日志文件，合并为 1 个日志文件，合并之后的日志仍然按照时间戳从小到大排列。如果处理上述排序任务的机器内存只有 1GB，你有什么好的解决思路，能“快速”地将这 10 个日志文件合并吗？</p>
+<blockquote>
+<p>先构建十条io流，分别指向十个文件，每条io流读取对应文件的第一条数据，然后比较时间戳，选择出时间戳最小的那条数据，将其写入一个新的文件，然后指向该时间戳的io流读取下一行数据，然后继续刚才的操作，比较选出最小的时间戳数据，写入新文件，io流读取下一行数据，以此类推，完成文件的合并， 这种处理方式，日志文件有n个数据就要比较n次，每次比较选出一条数据来写入，时间复杂度是O（n），空间复杂度是O（1），几乎不占用内存</p>
+</blockquote>
+<p>如何根据年龄给 100 万用户排序？现在思考题是不是变得非常简单了呢？我来说一下我的解决思路。</p>
+<blockquote>
+<p>根据年龄给 100 万用户排序，就类似按照成绩给 50 万考生排序。我们假设年龄的范围最小 1 岁，最大不超过 120 岁。可以遍历这 100 万用户，根据年龄将其划分到这 120 个桶里，然后依次顺序遍历这 120 个桶中的元素。这样就得到了按照年龄排序的 100 万用户数据。</p>
+</blockquote>
+<p>实际上，还有很多看似是排序但又不需要使用排序算法就能处理的排序问题。假设现在需要对 D，a，F，B，c，A，z 这个字符串进行排序，要求将其中所有小写字母都排在大写字母的前面，但小写字母内部和大写字母内部不要求有序。比如经过排序之后为 a，c，z，D，F，B，A，这个如何来实现呢？如果字符串中存储的不仅有大小写字母，还有数字。要将小写字母的放到前面，大写字母放在最后，数字放在中间，不用排序算法，又该怎么解决呢？</p>
+<blockquote>
+<p>用两个指针a、b：a指针从头开始往后遍历，遇到大写字母就停下，b从后往前遍历，遇到小写字母就停下，交换a、b指针对应的元素；重复如上过程，直到a、b指针相交。<br>对于小写字母放前面，数字放中间，大写字母放后面，可以先将数据分为小写字母和非小写字母两大类，进行如上交换后再在非小写字母区间内分为数字和大写字母做同样处理</p>
+</blockquote>
+<h1 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h1><blockquote>
+<p>二刷了下排序，有了一些新的体会。</p>
+<p>冒泡、插入、选择排序都有一个共同点，将待排序数列分为已排序和未排序两部分。在未排序的部分中查找一个最值，放到已排序数列的恰当位置。</p>
+<p>具体到代码层面，外层循环的变量用于分割已排序和未排序数，内层循环的变量用于在未排序数中查找。从思路上看，这三种算法其实是一样的，所以时间复杂度也相同。</p>
+</blockquote>
+<blockquote>
+<p>老师，个人感觉这节没有以往章节的细致了，拿桶排序来举例：<br>1、自问的三个问题只有了时间复杂度分析，少了是否为稳定排序算法和空间复杂度两个问题。<br>1.1）稳定性，若单个桶内用归并排序，则可保证桶排序的稳定性；若使用快排则无法保证稳定性。<br>1.2）空间复杂度，桶都是额外的存储空间，只有确定了单个桶的大小才能确定空间复杂度；n个元素假设分为m个桶，每个桶分配n/m个元素的大小？个人觉得单个桶的大小不好确定，但是范围应该在n/m~n之间<br>2、没有伪代码实现，自己在代码实现中遇到了一些问题<br>2.1）桶个数的设置依据什么原则？<br>2.2）桶大小的设置，让桶的能动扩容？<br>望回复，谢谢！</p>
+<p>作者回复: 1）这一节课的重点是应用场景<br>2）关于时间 空间 稳定性分析确实没有前面两节详细。不过通过前两节的学习 这三种排序算法的时间 空间 稳定性分析应该简单多了<br>3）你说的对 要用归并<br>4）桶的大小设置的原则 权衡空间 时间复杂度 在你能接受的执行时间和内存占用下完成就可以 并没有一个标准答案<br>5）是的 要么用链表 要么用动态扩容的数组</p>
+</blockquote>
+<blockquote>
+<p>桶排序:</p>
+<ol>
+<li>原理: 根据数据范围，分成若干个数据段的桶，通过遍历讲数据放到对应的桶中。每个桶里都进行快排或归并。</li>
+<li>时间复杂度: 最好o(n), 最坏o(nlogn), 平均o(n)，一般桶分的越细越多复杂度就会最好。</li>
+<li>内存消耗: o(n)</li>
+<li>稳定性: 取决于每个桶的排序方式，快排就不稳定，归并就稳定。</li>
+<li>适用场景: 数据范围不大的。内存吃紧的，如磁盘的读写可以分成多个小文件并对每个小文件排序，然后直接写到大文件里，这个时候内存消耗不再是o(n)了。</li>
+</ol>
+<p>计数排序:</p>
+<ol>
+<li>原理: 特殊的桶排序，即每个下标代表一个数据范围，其值就是这个数据的个数。</li>
+<li>时间复杂度: 都是o(n)</li>
+<li>内存消耗: o(n)</li>
+<li>稳定性: 稳定，只要整理最后结果时从后开始遍历即可。</li>
+<li>适用场景: 数据范围不大的，如年龄排序。</li>
+</ol>
+<p>基数排序:</p>
+<ol>
+<li>原理: 对数据的每一位进行桶排序或计数排序，对每位排序后结果就是有序的。</li>
+<li>时间复杂度: 最好o(n), 最坏o(nlogn), 平均o(n)</li>
+<li>内存消耗: o(n)</li>
+<li>稳定性: 稳定。否则就排不成的。</li>
+<li>适用场景: 是在桶排序和计数排序基础上进行的，保证每位数据范围不大，并且位数也不是很多。</li>
+</ol>
+</blockquote>
+<pre><code>private static void quickSort(int[] a, int head, int tail) &#123;
+
+        int low = head;
+        int high = tail;
+        int pivot = a[low];
+        if (low &lt; high) &#123;
+
+            while (low&lt;high) &#123;
+                while (low &lt; high &amp;&amp; pivot &lt;= a[high]) high--;
+                a[low] = a[high];
+                while (low &lt; high &amp;&amp; pivot &gt;= a[low]) low++;
+                a[high]=a[low];
+            &#125;
+            a[low] = pivot;
+
+            if(low&gt;head+1) quickSort(a,head,low-1);
+            if(high&lt;tail-1) quickSort(a,high+1,tail);
+        &#125;
+
+    &#125;
+</code></pre>
+<p>快排</p>
+<pre><code class="java">private static void quickSortC(int[] a, int p, int r) &#123;
+    if (p &gt;= r) &#123;
+        return;
+    &#125;
+    int q = partition(a, p, r);
+    quickSortC(a, p, q - 1);
+    quickSortC(a, q + 1, r);
+&#125;
+    
+public static int partition(int[] a, int start, int end) &#123;
+    int pivot = a[end];
+    int i = start;
+    for (int j = start; j &lt; end; j++) &#123;
+        if (a[j] &lt; pivot) &#123;
+            swap(a, i, j);
+            i = i + 1;
+        &#125;
+    &#125;
+    swap(a, i, end);
+    return i;
+&#125;
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/KU-AUGOnLeRtE_hivl2uSA">计数排序</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 数据结构与算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/09/%5Barithmetic%5D-%E9%80%92%E5%BD%92/" rel="prev" title="基本数据结构 - 递归">
+      <i class="fa fa-chevron-left"></i> 基本数据结构 - 递归
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/16/%E9%B8%BF%E8%92%99%EF%BC%8C%E6%98%AF%E5%90%A6%E5%A4%AA%E9%AB%98%E8%B0%83/" rel="next" title="【转载】鸿蒙，是否太高调">
+      【转载】鸿蒙，是否太高调 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90%E4%B8%80%E4%B8%AA%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-text">如何分析一个排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%95%88%E7%8E%87"><span class="nav-text">执行效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B6%88%E8%80%97"><span class="nav-text">内存消耗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="nav-text">稳定性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E3%80%81%E6%8F%92%E5%85%A5%E3%80%81%E9%80%89%E6%8B%A9"><span class="nav-text">冒泡、插入、选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%EF%BC%88Bubble-Sort%EF%BC%89"><span class="nav-text">冒泡排序（Bubble Sort）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%EF%BC%88Insertion-Sort%EF%BC%89"><span class="nav-text">插入排序（Insertion Sort）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%EF%BC%88Selection-Sort%EF%BC%89"><span class="nav-text">选择排序（Selection Sort）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E3%80%81%E5%BF%AB%E9%80%9F"><span class="nav-text">归并、快速</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%EF%BC%88Merge-Sort%EF%BC%89"><span class="nav-text">归并排序（Merge Sort）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88Quick-Sort%EF%BC%89"><span class="nav-text">快速排序（Quick Sort）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%B6%E3%80%81%E8%AE%A1%E6%95%B0%E3%80%81%E5%9F%BA%E6%95%B0"><span class="nav-text">桶、计数、基数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%B6%E6%8E%92%E5%BA%8F%EF%BC%88Bucket-sort%EF%BC%89"><span class="nav-text">桶排序（Bucket sort）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%EF%BC%88Counting-sort%EF%BC%89"><span class="nav-text">计数排序（Counting sort）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F%EF%BC%88Radix-sort%EF%BC%89"><span class="nav-text">基数排序（Radix sort）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%84%E8%AE%BA"><span class="nav-text">评论</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="深南大道"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">深南大道</p>
+  <div class="site-description" itemprop="description">日拱一卒，功不唐捐</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hugh-zhan9" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hugh-zhan9" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/hugh_zhan9@163.com" title="E-Mail → hugh_zhan9@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/" title="Weibo → https:&#x2F;&#x2F;weibo.com" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yourname" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://yoursite.com/" title="http:&#x2F;&#x2F;yoursite.com" rel="noopener" target="_blank">友链</a>
+        </li>
+    </ul>
+  </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/EL/" rel="tag">EL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/" rel="tag">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/" rel="tag">Github</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/" rel="tag">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSP/" rel="tag">JSP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JWT/" rel="tag">JWT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">30</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-IO/" rel="tag">Java-IO</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">Java-多线程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-%E9%9B%86%E5%90%88/" rel="tag">Java-集合</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LeetCode/" rel="tag">LeetCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyBatis-plus/" rel="tag">MyBatis-plus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Servlet/" rel="tag">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringMVC/" rel="tag">SpringMVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swagger2/" rel="tag">Swagger2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thymeleaf/" rel="tag">Thymeleaf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/" rel="tag">blog</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/" rel="tag">node.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E5%BA%8A/" rel="tag">图床</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" rel="tag">逆向工程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-block">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        近期文章
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/2021/06/23/SSH%20%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA/" title="Github Action 部署 hexo 博客" target="_blank">Github Action 部署 hexo 博客</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/Spring%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="Spring 中的设计模式" target="_blank">Spring 中的设计模式</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/21/%E9%94%81/" title="锁" target="_blank">锁</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/Go%20-%20Hello%20GoLang/" title="Hello Go!" target="_blank">Hello Go!</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/20/%5Barithmetic%5D-%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96/" title="基本数据结构 - 排序优化" target="_blank">基本数据结构 - 排序优化</a>
+          </li>
+        
+      </ul>
+    </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深南大道</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">1.5m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23:23</span>
+</div><!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span> 
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/16/2020 00:00:00"); //此处为你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "小破站已在风雨中飘摇了 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'uf9yWkeT6whL4qj8wkhXS18E-gzGzoHsz',
+      appKey     : 'CSjHy3It8r2y2X71P1hxCBmt',
+      placeholder: "说点什么吧",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>
