@@ -1,0 +1,21 @@
+$font-family-monospace    = consolas, Menlo, monospace, $font-family-base;
+$font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-base if get_font_family('codes');
+
+// 圆角设置
+// $border-radius-inner     = 20px 20px 20px 20px;
+// $border-radius           = 20px;
+
+//去掉顶部黑线：
+.headband {display:none;}
+
+// 文章内链接文本样式
+if hexo-config("custom_css.post_body_a.enable")
+  .post-body 
+    a:not(.btn){
+      color: convert(hexo-config("custom_css.post_body_a.normal_color"));
+      border-bottom: none;
+      &:hover {
+        color: convert(hexo-config("custom_css.post_body_a.hover_color"));
+        text-decoration: underline;
+      }
+    }
