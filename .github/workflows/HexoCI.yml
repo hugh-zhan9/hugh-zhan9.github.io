@@ -6,8 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    with:
-          node-version: '12'
+    
     steps:
       - name: 切换分支
         uses: actions/checkout@v2
