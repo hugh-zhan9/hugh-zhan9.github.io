@@ -8,12 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.5
-        with:
-          # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
-          node-version: 16.4.0
-      
       - name: 切换分支
         uses: actions/checkout@v2
 
@@ -28,10 +22,10 @@ jobs:
           args: clean
 
       - name: 生成Hexo
-        uses: heowc/action-hexo@main
+        uses: actions/setup-node@v2.1.5, heowc/action-hexo@main
         with:
+          node-version: 16.4.0
           args: generate
-          node-version: '12'
 
       - name: 部署到master分支
         uses: peaceiris/actions-gh-pages@v3
