@@ -15,6 +15,7 @@ jobs:
       - name: 安装依赖
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+        
 
       - name: 清除Hexo
         uses: heowc/action-hexo@main
@@ -25,6 +26,7 @@ jobs:
         uses: heowc/action-hexo@main
         with:
           args: generate
+          node-version: '12'
 
       - name: 部署到master分支
         uses: peaceiris/actions-gh-pages@v3
