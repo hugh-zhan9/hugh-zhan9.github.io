@@ -22,9 +22,8 @@ jobs:
           args: clean
 
       - name: 生成Hexo
-        uses: actions/setup-node@v2.1.5, heowc/action-hexo@main
+        uses: heowc/action-hexo@main
         with:
-          node-version: 16.4.0
           args: generate
 
       - name: 部署到master分支
