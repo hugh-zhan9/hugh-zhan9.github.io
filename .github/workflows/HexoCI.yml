@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: 更新node
+        run: npm install -g n
+      - name: 更新node
+        run: n v12.4.0
+        
       - name: 切换分支
         uses: actions/checkout@v2
 
