@@ -2570,6 +2570,159 @@ public static int partition(int[] a, int start, int end) &#123;
       </tags>
   </entry>
   <entry>
+    <title>算法 - 递归</title>
+    <url>/2021/06/09/%5Barithmetic%5D-%E9%80%92%E5%BD%92/</url>
+    <content><![CDATA[<p><img data-src="https://wallpapers.com/images/high/bird-in-the-sea-4k-rkwa6t0tnih0p5s2.jpg"></p>
+<span id="more"></span>
+
+<blockquote>
+<p><a href="https://time.geekbang.org/column/article/41440">课程地址</a></p>
+</blockquote>
+<p>推荐注册返佣金的这个功能我想你应该不陌生吧？现在很多 App 都有这个功能。这个功能中，用户 A 推荐用户 B 来注册，用户 B 又推荐了用户 C 来注册。我们可以说，用户 C 的“最终推荐人”为用户 A，用户 B 的“最终推荐人”也为用户 A，而用户 A 没有“最终推荐人”。</p>
+<p>一般来说，我们会通过数据库来记录这种推荐关系。在数据库表中，我们可以记录两行数据，其中 actor_id 表示用户 id，referrer_id 表示推荐人 id。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/29/0e/2984d45578440e9a348144c70d124a0e.jpg"></p>
+<p>基于这个背景，我的问题是，给定一个用户 ID，如何查找这个用户的“最终推荐人”？ 带着这个问题，我们来学习今天的内容，递归（Recursion）！</p>
+<h1 id="如何理解递归"><a href="#如何理解递归" class="headerlink" title="如何理解递归"></a>如何理解递归</h1><p>从我自己学习数据结构和算法的经历来看，我个人觉得，有两个最难理解的知识点，一个是动态规划，另一个就是递归。</p>
+<p>递归是一种应用非常广泛的算法（或者编程技巧）。很多数据结构和算法的编码实现都要用到递归，比如 DFS 深度优先搜索、前中后序二叉树遍历等等。所以，搞懂递归非常重要，否则，复杂一些的数据结构和算法学起来就会比较吃力。</p>
+<p>不过，别看说了这么多，递归本身可是一点儿都不“高冷”，咱们生活中就有很多用到递归的例子。周末你带着女朋友去电影院看电影，女朋友问你，咱们现在坐在第几排啊？电影院里面太黑了，看不清，没法数，现在你怎么办？别忘了你是程序员，这个可难不倒你，递归就开始排上用场了。于是你就问前面一排的人他是第几排，你想只要在他的数字上加一，就知道自己在哪一排了。但是，前面的人也看不清啊，所以他也问他前面的人。就这样一排一排往前问，直到问到第一排的人，说我在第一排，然后再这样一排一排再把数字传回来。直到你前面的人告诉你他在哪一排，于是你就知道答案了。</p>
+<p>这就是一个非常标准的递归求解问题的分解过程，去的过程叫“递”，回来的过程叫“归”。基本上，所有的递归问题都可以用递推公式来表示。刚刚这个生活中的例子，我们用递推公式将它表示出来就是这样的：</p>
+<pre><code>f(n)=f(n-1)+1 其中，f(1)=1
+</code></pre>
+<p><code>f(n)</code> 表示你想知道自己在哪一排，<code>f(n-1)</code> 表示前面一排所在的排数，<code>f(1)=1</code> 表示第一排的人知道自己在第一排。有了这个递推公式，我们就可以很轻松地将它改为递归代码，如下：</p>
+<pre><code class="c#">int f(int n) &#123;
+    if (n == 1) return 1;
+    return f(n-1) + 1;
+&#125;
+</code></pre>
+<h1 id="递归需要满足的三个条件"><a href="#递归需要满足的三个条件" class="headerlink" title="递归需要满足的三个条件"></a>递归需要满足的三个条件</h1><p>刚刚这个例子是非常典型的递归，那究竟什么样的问题可以用递归来解决呢？我总结了三个条件，只要同时满足以下三个条件，就可以用递归来解决。</p>
+<ol>
+<li><p>一个问题的解可以分解为几个子问题的解</p>
+<p>何为子问题？子问题就是数据规模更小的问题。比如，前面讲的电影院的例子，你要知道，“自己在哪一排”的问题，可以分解为“前一排的人在哪一排”这样一个子问题。</p>
+</li>
+<li><p>这个问题与分解之后的子问题，除了数据规模不同，求解思路完全一样</p>
+<p>比如电影院那个例子，你求解“自己在哪一排”的思路，和前面一排人求解“自己在哪一排”的思路，是一模一样的。</p>
+</li>
+<li><p>存在递归终止条件</p>
+<p>把问题分解为子问题，把子问题再分解为子子问题，一层一层分解下去，不能存在无限循环，这就需要有终止条件。还是电影院的例子，第一排的人不需要再继续询问任何人，就知道自己在哪一排，也就是 f(1)=1，这就是递归的终止条件。</p>
+</li>
+</ol>
+<h1 id="如何编写递归代码"><a href="#如何编写递归代码" class="headerlink" title="如何编写递归代码"></a>如何编写递归代码</h1><p>前面铺垫了那么多，那如何来写递归代码呢？我个人觉得，写递归代码最关键的是<strong>写出递推公式，找到终止条件</strong>，剩下将递推公式转化为代码就很简单了。</p>
+<p>举一个例子，假如这里有 n 个台阶，每次可以跨 1 个台阶或者 2 个台阶，请问走这 n 个台阶有多少种走法？如果有 7 个台阶，可以 2，2，2，1 这样子上去，也可以 1，2，1，1，2 这样子上去，总之走法有很多，那如何用编程求得总共有多少种走法呢？</p>
+<p>我们仔细想下，实际上，可以根据第一步的走法把所有走法分为两类，第一类是第一步走了 1 个台阶，另一类是第一步走了 2 个台阶。所以 n 个台阶的走法就等于先走 1 阶后，n-1 个台阶的走法 + 先走 2 阶后，n-2 个台阶的走法。用公式表示就是：</p>
+<pre><code>f(n) = f(n-1) + f(n-2)
+</code></pre>
+<p>有了递推公式，递归代码基本上就完成了一半。再来看下终止条件。当有一个台阶时，就不需要再继续递归，就只有一种走法。所以<code>f(1)=1</code>。这个递归终止条件足够吗？我们可以用 n=2，n=3 这样比较小的数试验一下。n=2 时，<code>f(2) = f(1) + f(0)</code>。如果递归终止条件只有一个<code> f(1)=1</code>，那 <code>f(2)</code> 就无法求解了。所以除了 <code>f(1)=1</code> 这一个递归终止条件外，还要有 <code>f(0)=1</code>，表示走 0 个台阶有一种走法，不过这样子看起来就不符合正常的逻辑思维了。所以，我们可以把 <code>f(2)=2</code> 作为一种终止条件，表示走 2 个台阶，有两种走法，一步走完或者分两步来走。所以，递归终止条件就是 <code>f(1)=1</code>，<code>f(2)=2</code>。这个时候，你可以再拿 n=3，n=4 来验证一下，这个终止条件是否足够并且正确。我们把递归终止条件和刚刚得到的递推公式放到一起就是这样的：</p>
+<pre><code>f(1) = 1
+f(2) = 2
+f(n) = f(n-1) + f(n-2)
+</code></pre>
+<p>有了这个公式，我们转化成递归代码就简单多了。最终的递归代码是这样的：</p>
+<pre><code class="c">int f(int n) &#123;
+  if (n == 1) return 1;
+  if (n == 2) return 2;
+  return f(n-1) + f(n-2);
+&#125;
+</code></pre>
+<p>总结一下，<strong>写递归代码的关键就是找到如何将大问题分解为小问题的规律，并且基于此写出递推公式，然后再推敲终止条件，最后将递推公式和终止条件翻译成代码。</strong></p>
+<p>虽然我讲了这么多方法，但是作为初学者的你，现在是不是还是有种想不太清楚的感觉呢？实际上，我刚学递归的时候，也有这种感觉，这也是文章开头我说递归代码比较难理解的地方。刚讲的电影院的例子，我们的递归调用只有一个分支，也就是说“一个问题只需要分解为一个子问题”，我们很容易能够想清楚“递”和“归”的每一个步骤，所以写起来、理解起来都不难。但是，当我们面对的是一个问题要分解为多个子问题的情况，递归代码就没那么好理解了。像我刚刚讲的第二个例子，人脑几乎没办法把整个“递”和“归”的过程一步一步都想清楚。计算机擅长做重复的事情，所以递归正合它的胃口。而我们人脑更喜欢平铺直叙的思维方式。当我们看到递归时，我们总想把递归平铺展开，脑子里就会循环，一层一层往下调，然后再一层一层返回，试图想搞清楚计算机每一步都是怎么执行的，这样就很容易被绕进去。对于递归代码，这种试图想清楚整个递和归过程的做法，实际上是进入了一个思维误区。很多时候，我们理解起来比较吃力，主要原因就是自己给自己制造了这种理解障碍。那正确的思维方式应该是怎样的呢？如果一个问题 A 可以分解为若干子问题 B、C、D，你可以假设子问题 B、C、D 已经解决，在此基础上思考如何解决问题 A。而且，你只需要思考问题 A 与子问题 B、C、D 两层之间的关系即可，不需要一层一层往下思考子问题与子子问题，子子问题与子子子问题之间的关系。屏蔽掉递归细节，这样子理解起来就简单多了。因此，编写递归代码的关键是，只要遇到递归，我们就把它抽象成一个递推公式，不用想一层层的调用关系，不要试图用人脑去分解递归的每个步骤。</p>
+<h1 id="递归代码的问题"><a href="#递归代码的问题" class="headerlink" title="递归代码的问题"></a>递归代码的问题</h1><h2 id="堆栈溢出"><a href="#堆栈溢出" class="headerlink" title="堆栈溢出"></a>堆栈溢出</h2><p>在实际的软件开发中，编写递归代码时，我们会遇到很多问题，比如堆栈溢出。而堆栈溢出会造成系统性崩溃，后果会非常严重。为什么递归代码容易造成堆栈溢出呢？我们又该如何预防堆栈溢出呢？</p>
+<p>前面讲过，函数调用会使用栈来保存临时变量。每调用一个函数，都会将临时变量封装为栈帧压入内存栈，等函数执行完成返回时，才出栈。系统栈或者虚拟机栈空间一般都不大。如果递归求解的数据规模很大，调用层次很深，一直压入栈，就会有堆栈溢出的风险。比如前面的讲到的电影院的例子，如果我们将系统栈或者 JVM 堆栈大小设置为 1KB，在求解 <code>f(19999)</code> 时便会出现如下堆栈报错：</p>
+<pre><code>Exception in thread &quot;main&quot; java.lang.StackOverflowError
+</code></pre>
+<p>那么，如何避免出现堆栈溢出呢？</p>
+<p>可以通过在代码中限制递归调用的最大深度的方式来解决这个问题。递归调用超过一定深度（比如 1000）之后，就不继续往下再递归了，直接返回报错。还是电影院那个例子，可以改造成下面这样子，就可以避免堆栈溢出了。不过，我写的代码是伪代码，为了代码简洁，有些边界条件没有考虑，比如 <code>x&lt;=0</code>。</p>
+<pre><code>// 全局变量，表示递归的深度。
+int depth = 0;
+
+int f(int n) &#123;
+  ++depth；
+  if (depth &gt; 1000) throw exception;
+  
+  if (n == 1) return 1;
+  return f(n-1) + 1;
+&#125;
+</code></pre>
+<p>但这种做法并不能完全解决问题，因为最大允许的递归深度跟当前线程剩余的栈空间大小有关，事先无法计算。如果实时计算，代码过于复杂，就会影响代码的可读性。所以，如果最大深度比较小，比如 10、50，就可以用这种方法，否则这种方法并不是很实用。</p>
+<h2 id="重复计算"><a href="#重复计算" class="headerlink" title="重复计算"></a>重复计算</h2><p>除此之外，使用递归时还会出现重复计算的问题。刚才的第二个递归代码的例子，如果把整个递归过程分解一下的话，就是这样的：</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/e7/bf/e7e778994e90265344f6ac9da39e01bf.jpg"></p>
+<p>从图中，可以直观地看到，想要计算 f(5)，需要先计算 f(4) 和 f(3)，而计算 f(4) 还需要计算 f(3)，因此，f(3) 就被计算了很多次，这就是重复计算问题。</p>
+<p>为了避免重复计算，可以通过一个数据结构（比如散列表）来保存已经求解过的 f(k)。当递归调用到 f(k) 时，先看下是否已经求解过了。如果是，则直接从散列表中取值返回，不需要重复计算，这样就能避免刚讲的问题了。按照上面的思路改造一下刚才的代码：</p>
+<pre><code class="java">public int f(int n) &#123;
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    
+    // hasSolvedList可以理解成一个Map，key是n，value是f(n)
+    if (hasSolvedList.containsKey(n)) &#123;
+        return hasSolvedList.get(n);
+    &#125;
+  
+    int ret = f(n-1) + f(n-2);
+    hasSolvedList.put(n, ret);
+    return ret;
+&#125;
+</code></pre>
+<p>除了堆栈溢出、重复计算这两个常见的问题。递归代码还有很多别的问题。</p>
+<p>在时间效率上，递归代码里多了很多函数调用，当这些函数调用的数量较大时，就会积聚成一个可观的时间成本。在空间复杂度上，因为递归调用一次就会在内存栈中保存一次现场数据，所以在分析递归代码空间复杂度时，需要额外考虑这部分的开销，比如我们前面讲到的电影院递归代码，空间复杂度并不是 <code>O(1)</code>，而是 <code>O(n)</code>。</p>
+<h1 id="怎么将递归代码改写为非递归代码"><a href="#怎么将递归代码改写为非递归代码" class="headerlink" title="怎么将递归代码改写为非递归代码"></a>怎么将递归代码改写为非递归代码</h1><p>刚刚说了，递归有利有弊，利是递归代码的表达力很强，写起来非常简洁；而弊就是空间复杂度高、有堆栈溢出的风险、存在重复计算、过多的函数调用会耗时较多等问题。所以，在开发过程中，我们要根据实际情况来选择是否需要用递归的方式来实现。</p>
+<p>那是否可以把递归代码改写为非递归代码呢？比如刚才那个电影院的例子，抛开场景，只看 <code>f(x) =f(x-1)+1</code> 这个递推公式。这样改写看看：</p>
+<pre><code>int f(int n) &#123;
+    int ret = 1;
+      for (int i = 2; i &lt;= n; ++i) &#123;
+        ret = ret + 1;
+      &#125;
+      return ret;
+&#125;
+</code></pre>
+<p>同样，第二个例子也可以改为非递归的实现方式。</p>
+<pre><code>int f(int n) &#123;
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+
+      int ret = 0;
+      int pre = 2;
+      int prepre = 1;
+      for (int i = 3; i &lt;= n; ++i) &#123;
+        ret = pre + prepre;
+        prepre = pre;
+        pre = ret;
+      &#125;
+      return ret;
+&#125;
+</code></pre>
+<blockquote>
+<p>这个很简单，ret代表当前台阶的走法，pre代表上一个台阶的走法，prepre代表上上个台阶的走法，ret=pre+prepre，也就是使用递推公式计算当前台阶的走法，计算完当前台阶的走法后，为计算下一台阶做准备：将pre设置为ret，也就是下次计算的上一个台阶的走法，把prepre设置为pre，也就是下次计算的上上个台阶的走法。下一次计算就再次使用ret=pre+prepre 了。</p>
+<p>这里的ret为当前阶梯往下走的所有走法； pre为下一阶阶梯开始往下走的所有走法； prepre为下两阶阶梯开始往下走的所有方法。 而当前阶梯往下走一次的话只能走一阶或者两阶，只有这两种选择，所以当前阶梯的往下走的所有走法为：下一阶往下的所有走法+下两阶往下的所有走法，即 ret = pre + prepre 而每一次执行循环体后相当于阶数+1，当前阶梯ret的值变成了下一阶pre的值，下一阶pre的值变成了下两阶prepre的值。 所以可以看到这是一种从下往上推的方法，而递归是一种从上往下推的方法。</p>
+</blockquote>
+<p>那是不是所有的递归代码都可以改为这种迭代循环的非递归写法呢？</p>
+<p>笼统地讲，是的。因为递归本身就是借助栈来实现的，只不过我们使用的栈是系统或者虚拟机本身提供的，我们没有感知罢了。如果我们自己在内存堆上实现栈，手动模拟入栈、出栈过程，这样任何递归代码都可以改写成看上去不是递归代码的样子。但是这种思路实际上是将递归改为了“手动”递归，本质并没有变，而且也并没有解决前面讲到的某些问题，徒增了实现的复杂度。</p>
+<blockquote>
+<p>前面说的那个限制递归深度的做法只适合规模比较小的情况，那如果规模大了，就可以自己实现一个栈，使用非递归的方式实现</p>
+</blockquote>
+<h1 id="解答开篇"><a href="#解答开篇" class="headerlink" title="解答开篇"></a>解答开篇</h1><p>到此为止，递归相关的基础知识已经讲完了，咱们来看一下开篇的问题：如何找到“最终推荐人”？我的解决方案是这样的：</p>
+<pre><code class="java">long findRootReferrerId(long actorId) &#123;  
+    Long referrerId = select referrer_id from [table] where actor_id = actorId;  
+    if (referrerId == null) return actorId;  
+    return findRootReferrerId(referrerId);
+&#125;
+</code></pre>
+<p>是不是非常简洁？用三行代码就能搞定了，不过在实际项目中，上面的代码并不能工作，为什么呢？这里面有两个问题。第一，如果递归很深，可能会有堆栈溢出的问题。第二，如果数据库里存在脏数据，我们还需要处理由此产生的无限递归问题。比如 demo 环境下数据库中，测试工程师为了方便测试，会人为地插入一些数据，就会出现脏数据。如果 A 的推荐人是 B，B 的推荐人是 C，C 的推荐人是 A，这样就会发生死循环。第一个问题，我前面已经解答过了，可以用限制递归深度来解决。第二个问题，也可以用限制递归深度来解决。不过，还有一个更高级的处理方法，就是自动检测 A-B-C-A 这种“环”的存在。这个我暂时不细说，你可以自己思考下。</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>如何来检测上面提到的环的存在呢？</p>
+<blockquote>
+</blockquote>
+<p>我们平时调试代码喜欢使用 IDE 的单步跟踪功能，像规模比较大、递归层次很深的递归代码，几乎无法使用这种调试方式。对于递归代码，有什么好的调试方法呢？</p>
+<blockquote>
+<p>我常用的办法是，打印一个树型结构的日志，每进入一层，深度加一然后打印深度，比如“–”，再接上值，换行，这样可以很清楚的看到信息</p>
+<p>调试递归就像写递归一样，不要被每一步的细节所困，重点在于确认递推关系与结束条件是否正确，用条件断点着重调试最初两步与最终两步即可。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构与算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>数据结构 - 跳表</title>
     <url>/2021/06/09/%5Barithmetic%5D-%E8%B7%B3%E8%A1%A8/</url>
     <content><![CDATA[<p><img data-src="http://47.98.158.110:8888/group1/M00/00/00/L2KebmDZlUCAd0X9AAK1bzjqMOw870.jpg"></p>
@@ -3071,149 +3224,74 @@ public class SkipList2 &#123;
       </tags>
   </entry>
   <entry>
-    <title>算法 - 递归</title>
-    <url>/2021/06/09/%5Barithmetic%5D-%E9%80%92%E5%BD%92/</url>
-    <content><![CDATA[<p><img data-src="https://wallpapers.com/images/high/bird-in-the-sea-4k-rkwa6t0tnih0p5s2.jpg"></p>
+    <title>数据结构 - 跳表</title>
+    <url>/2021/06/09/%5Barithmetic%5D-%E6%95%A3%E5%88%97%E8%A1%A8/</url>
+    <content><![CDATA[<p><img data-src=""></p>
 <span id="more"></span>
 
 <blockquote>
-<p><a href="https://time.geekbang.org/column/article/41440">课程地址</a></p>
+<p><a href="https://time.geekbang.org/column/article/64233">课程地址</a></p>
 </blockquote>
-<p>推荐注册返佣金的这个功能我想你应该不陌生吧？现在很多 App 都有这个功能。这个功能中，用户 A 推荐用户 B 来注册，用户 B 又推荐了用户 C 来注册。我们可以说，用户 C 的“最终推荐人”为用户 A，用户 B 的“最终推荐人”也为用户 A，而用户 A 没有“最终推荐人”。</p>
-<p>一般来说，我们会通过数据库来记录这种推荐关系。在数据库表中，我们可以记录两行数据，其中 actor_id 表示用户 id，referrer_id 表示推荐人 id。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/29/0e/2984d45578440e9a348144c70d124a0e.jpg"></p>
-<p>基于这个背景，我的问题是，给定一个用户 ID，如何查找这个用户的“最终推荐人”？ 带着这个问题，我们来学习今天的内容，递归（Recursion）！</p>
-<h1 id="如何理解递归"><a href="#如何理解递归" class="headerlink" title="如何理解递归"></a>如何理解递归</h1><p>从我自己学习数据结构和算法的经历来看，我个人觉得，有两个最难理解的知识点，一个是动态规划，另一个就是递归。</p>
-<p>递归是一种应用非常广泛的算法（或者编程技巧）。很多数据结构和算法的编码实现都要用到递归，比如 DFS 深度优先搜索、前中后序二叉树遍历等等。所以，搞懂递归非常重要，否则，复杂一些的数据结构和算法学起来就会比较吃力。</p>
-<p>不过，别看说了这么多，递归本身可是一点儿都不“高冷”，咱们生活中就有很多用到递归的例子。周末你带着女朋友去电影院看电影，女朋友问你，咱们现在坐在第几排啊？电影院里面太黑了，看不清，没法数，现在你怎么办？别忘了你是程序员，这个可难不倒你，递归就开始排上用场了。于是你就问前面一排的人他是第几排，你想只要在他的数字上加一，就知道自己在哪一排了。但是，前面的人也看不清啊，所以他也问他前面的人。就这样一排一排往前问，直到问到第一排的人，说我在第一排，然后再这样一排一排再把数字传回来。直到你前面的人告诉你他在哪一排，于是你就知道答案了。</p>
-<p>这就是一个非常标准的递归求解问题的分解过程，去的过程叫“递”，回来的过程叫“归”。基本上，所有的递归问题都可以用递推公式来表示。刚刚这个生活中的例子，我们用递推公式将它表示出来就是这样的：</p>
-<pre><code>f(n)=f(n-1)+1 其中，f(1)=1
-</code></pre>
-<p><code>f(n)</code> 表示你想知道自己在哪一排，<code>f(n-1)</code> 表示前面一排所在的排数，<code>f(1)=1</code> 表示第一排的人知道自己在第一排。有了这个递推公式，我们就可以很轻松地将它改为递归代码，如下：</p>
-<pre><code class="c#">int f(int n) &#123;
-    if (n == 1) return 1;
-    return f(n-1) + 1;
+<h1 id="散列思想"><a href="#散列思想" class="headerlink" title="散列思想"></a>散列思想</h1><p>散列表的英文叫 “Hash Table”，也叫它 “哈希表” 或者 “Hash 表”。<strong>散列表用的是数组支持按照下标随机访问数据的特性，所以散列表其实就是数组的一种扩展，由数组演化而来。</strong></p>
+<p>可以说，如果没有数组，就没有散列表。举个例子，假如有 89 名选手参加学校运动会。为了方便记录成绩，每个选手胸前都会贴上自己的参赛号码。这 89 名选手的编号依次是 1 到 89。现在希望编程实现这样一个功能：通过编号快速找到对应的选手信息。你会怎么做呢？</p>
+<p>可以把这 89 名选手的信息放在数组里。编号为 1 的选手，放到数组中下标为 1 的位置；编号为 2 的选手，放到数组中下标为 2 的位置。以此类推，编号为 k 的选手放到数组中下标为 k 的位置。因为参赛编号跟数组下标一一对应，当需要查询参赛编号为 x 的选手的时候，只需要将下标为 x 的数组元素取出来就可以了，时间复杂度就是 <code>O(1)</code>。这样按照编号查找选手信息，效率是不是很高？</p>
+<p>实际上，这个例子已经用到了散列的思想。在这个例子里，参赛编号是自然数，并且与数组的下标形成一一映射，所以利用数组支持根据下标随机访问的时候，时间复杂度是 <code>O(1)</code> 这一特性，就可以实现快速查找编号对应的选手信息。</p>
+<p>这个例子中蕴含的散列思想还不够明显，来改造一下这个例子。</p>
+<p>假设校长说，参赛编号不能设置得这么简单，要加上年级、班级这些更详细的信息，所以把编号的规则稍微修改了一下，用 6 位数字来表示。比如 051167，其中，前两位 05 表示年级，中间两位 11 表示班级，最后两位还是原来的编号 1 到 89。这个时候该如何存储选手信息，才能够支持通过编号来快速查找选手信息呢？思路还是跟前面类似。尽管不能直接把编号作为数组下标，但可以截取参赛编号的后两位作为数组下标，来存取选手信息数据。当通过参赛编号查询选手信息的时候，用同样的方法，取参赛编号的后两位，作为数组下标，来读取数组中的数据。这就是典型的散列思想。</p>
+<p>其中，参赛选手的编号叫做<strong>键</strong>（key）或者关键字用来标识一个选手。参赛编号转化为数组下标的映射方法就叫作<strong>散列函数</strong>（或 “Hash 函数”、”哈希函数”），而散列函数计算得到的值就叫作<strong>散列值</strong>（或”Hash 值”、”哈希值”）。</p>
+<p><strong>散列表用的就是数组支持按照下标随机访问的时候，时间复杂度是 <code>O(1)</code> 的特性。通过散列函数把元素的键值映射为下标，然后将数据存储在数组中对应下标的位置。当按照键值查询元素时，用同样的散列函数，将键值转化数组下标，从对应的数组下标的位置取数据。</strong></p>
+<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>从上面的例子我们可以看到，散列函数在散列表中起着非常关键的作用。顾名思义，散列函数是一个函数，可以把它定义成 <code>hash(key)</code>，其中 key 表示元素的键值，<code>hash(key)</code> 的值表示经过散列函数计算得到的散列值。那第一个例子中，编号就是数组下标，所以 <code>hash(key)</code> 就等于 key。改造后的例子，用伪代码将它写成函数就是下面这样：</p>
+<pre><code>int hash(String key) &#123;
+    // 获取后两位字符
+    string lastTwoChars = key.substr(length-2, length);
+    // 将后两位字符转换为整数
+    int hashValue = convert lastTwoChas to int-type;
+    return hashValue;
 &#125;
 </code></pre>
-<h1 id="递归需要满足的三个条件"><a href="#递归需要满足的三个条件" class="headerlink" title="递归需要满足的三个条件"></a>递归需要满足的三个条件</h1><p>刚刚这个例子是非常典型的递归，那究竟什么样的问题可以用递归来解决呢？我总结了三个条件，只要同时满足以下三个条件，就可以用递归来解决。</p>
-<ol>
-<li><p>一个问题的解可以分解为几个子问题的解</p>
-<p>何为子问题？子问题就是数据规模更小的问题。比如，前面讲的电影院的例子，你要知道，“自己在哪一排”的问题，可以分解为“前一排的人在哪一排”这样一个子问题。</p>
-</li>
-<li><p>这个问题与分解之后的子问题，除了数据规模不同，求解思路完全一样</p>
-<p>比如电影院那个例子，你求解“自己在哪一排”的思路，和前面一排人求解“自己在哪一排”的思路，是一模一样的。</p>
-</li>
-<li><p>存在递归终止条件</p>
-<p>把问题分解为子问题，把子问题再分解为子子问题，一层一层分解下去，不能存在无限循环，这就需要有终止条件。还是电影院的例子，第一排的人不需要再继续询问任何人，就知道自己在哪一排，也就是 f(1)=1，这就是递归的终止条件。</p>
-</li>
-</ol>
-<h1 id="如何编写递归代码"><a href="#如何编写递归代码" class="headerlink" title="如何编写递归代码"></a>如何编写递归代码</h1><p>前面铺垫了那么多，那如何来写递归代码呢？我个人觉得，写递归代码最关键的是<strong>写出递推公式，找到终止条件</strong>，剩下将递推公式转化为代码就很简单了。</p>
-<p>举一个例子，假如这里有 n 个台阶，每次可以跨 1 个台阶或者 2 个台阶，请问走这 n 个台阶有多少种走法？如果有 7 个台阶，可以 2，2，2，1 这样子上去，也可以 1，2，1，1，2 这样子上去，总之走法有很多，那如何用编程求得总共有多少种走法呢？</p>
-<p>我们仔细想下，实际上，可以根据第一步的走法把所有走法分为两类，第一类是第一步走了 1 个台阶，另一类是第一步走了 2 个台阶。所以 n 个台阶的走法就等于先走 1 阶后，n-1 个台阶的走法 + 先走 2 阶后，n-2 个台阶的走法。用公式表示就是：</p>
-<pre><code>f(n) = f(n-1) + f(n-2)
+<p>刚刚举的学校运动会的例子，散列函数比较简单，也比较容易想到。但是，如果参赛选手的编号是随机生成的 6 位数字，又或者用的是 a 到 z 之间的字符串，该如何构造散列函数呢？</p>
+<p>这里总结了三点散列函数设计的基本要求：</p>
+<ul>
+<li>散列函数计算得到的散列值是一个非负整数；</li>
+<li>如果 <code>key1 = key2</code>，那 <code>hash(key1) == hash(key2)</code>；</li>
+<li>如果 <code>key1 ≠ key2</code>，那 <code>hash(key1) ≠ hash(key2)</code>。</li>
+</ul>
+<p>其中，第一点理解起来应该没有任何问题。因为数组下标是从 0 开始的，所以散列函数生成的散列值也要是非负整数。第二点也很好理解。相同的 key，经过散列函数得到的散列值也应该是相同的。</p>
+<p>第三点理解起来可能会有问题，着重说一下。这个要求看起来合情合理，但是在真实的情况下，要想找到一个不同的 key 对应的散列值都不一样的散列函数，几乎是不可能的。即便像业界著名的MD5、SHA、CRC等哈希算法，也无法完全避免这种散列冲突。而且，因为数组的存储空间有限，也会加大散列冲突的概率。所以几乎无法找到一个完美的无冲突的散列函数，即便能找到，付出的时间成本、计算成本也是很大的，所以针对散列冲突问题，需要通过其他途径来解决。</p>
+<h1 id="散列冲突"><a href="#散列冲突" class="headerlink" title="散列冲突"></a>散列冲突</h1><p>再好的散列函数也无法避免散列冲突。那究竟该如何解决散列冲突问题呢？常用的散列冲突解决方法有两类，开放寻址法（open addressing）和链表法（chaining）。</p>
+<h2 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h2><p>开放寻址法的核心思想是，如果出现了散列冲突，就重新探测一个空闲位置将其插入。那如何重新探测新的位置呢？</p>
+<p>先讲一个比较简单的探测方法，线性探测（Linear Probing）。</p>
+<p>当往散列表中插入数据时，如果某个数据经过散列函数散列之后，存储位置已经被占用了，就从当前位置开始依次往后查找，看是否有空闲位置直到找到为止。举一个例子说明一下，这里面黄色的色块表示空闲位置，橙色的色块表示已经存储了数据。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/5c/d5/5c31a3127cbc00f0c63409bbe1fbd0d5.jpg"></p>
+<p>从图中可以看出，散列表的大小为 10，在元素 x 插入散列表之前，已经 6 个元素插入到散列表中。x 经过 Hash 算法之后，被散列到位置下标为 7 的位置，但是这个位置已经有数据了，所以就产生了冲突。于是就顺序地往后一个一个找，看有没有空闲的位置，遍历到尾部都没有找到空闲的位置，于是我们再从表头开始找，直到找到空闲位置 2，于是将其插入到这个位置。</p>
+<p>在散列表中查找元素的过程有点儿类似插入过程。通过散列函数求出要查找元素的键值对应的散列值，然后比较数组中下标为散列值的元素和要查找的元素是否相等。如果相等，则说明就是要找的元素；否则就顺序往后依次查找。<strong>如果遍历到数组中的空闲位置，还没有找到，就说明要查找的元素并没有在散列表中。</strong></p>
+<p>散列表跟数组一样，不仅支持插入、查找操作，还支持删除操作。对于使用线性探测法解决冲突的散列表，删除操作稍微有些特别。不能单纯地把要删除的元素设置为空。这是为什么呢？</p>
+<p>在查找的时候，一旦我们通过线性探测方法，找到一个空闲位置，就可以认定散列表中不存在这个数据。但是，如果这个空闲位置是后来删除的，就会导致原来的查找算法失效。本来存在的数据，会被认定为不存在。这个问题如何解决呢？可以将删除的元素，特殊标记为 deleted。当线性探测查找的时候，遇到标记为 deleted 的空间，并不是停下来，而是继续往下探测。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/fe/1d/fe7482ba09670cbe05a9dfe4dd49bd1d.jpg"></p>
+<p>线性探测法其实存在很大问题。当散列表中插入的数据越来越多时，散列冲突发生的可能性就会越来越大，空闲位置会越来越少，线性探测的时间就会越来越久。极端情况下，可能需要探测整个散列表，所以最坏情况下的时间复杂度为 <code>O(n)</code>。同理，在删除和查找时，也有可能会线性探测整张散列表，才能找到要查找或者删除的数据。</p>
+<p>对于开放寻址冲突解决方法，除了线性探测方法之外，还有另外两种比较经典的探测方法，<strong>二次探测</strong>（Quadratic probing）和<strong>双重散列</strong>（Double hashing）。</p>
+<p>所谓二次探测，跟线性探测很像，线性探测每次探测的步长是 1，那它探测的下标序列就是 <code>hash(key)+0，hash(key)+1，hash(key)+2……</code> 而二次探测探测的步长就变成了原来的“二次方”，也就是说，它探测的下标序列就是 <code>hash(key)+0，hash(key)+12，hash(key)+22……</code></p>
+<p>所谓双重散列，不是简单的使用一个散列函数。而是使用一组散列函数 <code>hash1(key)，hash2(key)，hash3(key)……</code>，先用第一个散列函数，如果计算得到的存储位置已经被占用，再用第二个散列函数，依次类推，直到找到空闲的存储位置。</p>
+<p>不管采用哪种探测方法，当散列表中空闲位置不多的时候，散列冲突的概率就会大大提高。为了尽可能保证散列表的操作效率，一般情况下，会尽可能保证散列表中有一定比例的空闲槽位。用<strong>装载因子</strong>（load factor）来表示空位的多少。装载因子的计算公式是：</p>
+<pre><code>散列表的装载因子 = 填入表中的元素个数 / 散列表的长度
 </code></pre>
-<p>有了递推公式，递归代码基本上就完成了一半。再来看下终止条件。当有一个台阶时，就不需要再继续递归，就只有一种走法。所以<code>f(1)=1</code>。这个递归终止条件足够吗？我们可以用 n=2，n=3 这样比较小的数试验一下。n=2 时，<code>f(2) = f(1) + f(0)</code>。如果递归终止条件只有一个<code> f(1)=1</code>，那 <code>f(2)</code> 就无法求解了。所以除了 <code>f(1)=1</code> 这一个递归终止条件外，还要有 <code>f(0)=1</code>，表示走 0 个台阶有一种走法，不过这样子看起来就不符合正常的逻辑思维了。所以，我们可以把 <code>f(2)=2</code> 作为一种终止条件，表示走 2 个台阶，有两种走法，一步走完或者分两步来走。所以，递归终止条件就是 <code>f(1)=1</code>，<code>f(2)=2</code>。这个时候，你可以再拿 n=3，n=4 来验证一下，这个终止条件是否足够并且正确。我们把递归终止条件和刚刚得到的递推公式放到一起就是这样的：</p>
-<pre><code>f(1) = 1
-f(2) = 2
-f(n) = f(n-1) + f(n-2)
-</code></pre>
-<p>有了这个公式，我们转化成递归代码就简单多了。最终的递归代码是这样的：</p>
-<pre><code class="c">int f(int n) &#123;
-  if (n == 1) return 1;
-  if (n == 2) return 2;
-  return f(n-1) + f(n-2);
-&#125;
-</code></pre>
-<p>总结一下，<strong>写递归代码的关键就是找到如何将大问题分解为小问题的规律，并且基于此写出递推公式，然后再推敲终止条件，最后将递推公式和终止条件翻译成代码。</strong></p>
-<p>虽然我讲了这么多方法，但是作为初学者的你，现在是不是还是有种想不太清楚的感觉呢？实际上，我刚学递归的时候，也有这种感觉，这也是文章开头我说递归代码比较难理解的地方。刚讲的电影院的例子，我们的递归调用只有一个分支，也就是说“一个问题只需要分解为一个子问题”，我们很容易能够想清楚“递”和“归”的每一个步骤，所以写起来、理解起来都不难。但是，当我们面对的是一个问题要分解为多个子问题的情况，递归代码就没那么好理解了。像我刚刚讲的第二个例子，人脑几乎没办法把整个“递”和“归”的过程一步一步都想清楚。计算机擅长做重复的事情，所以递归正合它的胃口。而我们人脑更喜欢平铺直叙的思维方式。当我们看到递归时，我们总想把递归平铺展开，脑子里就会循环，一层一层往下调，然后再一层一层返回，试图想搞清楚计算机每一步都是怎么执行的，这样就很容易被绕进去。对于递归代码，这种试图想清楚整个递和归过程的做法，实际上是进入了一个思维误区。很多时候，我们理解起来比较吃力，主要原因就是自己给自己制造了这种理解障碍。那正确的思维方式应该是怎样的呢？如果一个问题 A 可以分解为若干子问题 B、C、D，你可以假设子问题 B、C、D 已经解决，在此基础上思考如何解决问题 A。而且，你只需要思考问题 A 与子问题 B、C、D 两层之间的关系即可，不需要一层一层往下思考子问题与子子问题，子子问题与子子子问题之间的关系。屏蔽掉递归细节，这样子理解起来就简单多了。因此，编写递归代码的关键是，只要遇到递归，我们就把它抽象成一个递推公式，不用想一层层的调用关系，不要试图用人脑去分解递归的每个步骤。</p>
-<h1 id="递归代码的问题"><a href="#递归代码的问题" class="headerlink" title="递归代码的问题"></a>递归代码的问题</h1><h2 id="堆栈溢出"><a href="#堆栈溢出" class="headerlink" title="堆栈溢出"></a>堆栈溢出</h2><p>在实际的软件开发中，编写递归代码时，我们会遇到很多问题，比如堆栈溢出。而堆栈溢出会造成系统性崩溃，后果会非常严重。为什么递归代码容易造成堆栈溢出呢？我们又该如何预防堆栈溢出呢？</p>
-<p>前面讲过，函数调用会使用栈来保存临时变量。每调用一个函数，都会将临时变量封装为栈帧压入内存栈，等函数执行完成返回时，才出栈。系统栈或者虚拟机栈空间一般都不大。如果递归求解的数据规模很大，调用层次很深，一直压入栈，就会有堆栈溢出的风险。比如前面的讲到的电影院的例子，如果我们将系统栈或者 JVM 堆栈大小设置为 1KB，在求解 <code>f(19999)</code> 时便会出现如下堆栈报错：</p>
-<pre><code>Exception in thread &quot;main&quot; java.lang.StackOverflowError
-</code></pre>
-<p>那么，如何避免出现堆栈溢出呢？</p>
-<p>可以通过在代码中限制递归调用的最大深度的方式来解决这个问题。递归调用超过一定深度（比如 1000）之后，就不继续往下再递归了，直接返回报错。还是电影院那个例子，可以改造成下面这样子，就可以避免堆栈溢出了。不过，我写的代码是伪代码，为了代码简洁，有些边界条件没有考虑，比如 <code>x&lt;=0</code>。</p>
-<pre><code>// 全局变量，表示递归的深度。
-int depth = 0;
-
-int f(int n) &#123;
-  ++depth；
-  if (depth &gt; 1000) throw exception;
-  
-  if (n == 1) return 1;
-  return f(n-1) + 1;
-&#125;
-</code></pre>
-<p>但这种做法并不能完全解决问题，因为最大允许的递归深度跟当前线程剩余的栈空间大小有关，事先无法计算。如果实时计算，代码过于复杂，就会影响代码的可读性。所以，如果最大深度比较小，比如 10、50，就可以用这种方法，否则这种方法并不是很实用。</p>
-<h2 id="重复计算"><a href="#重复计算" class="headerlink" title="重复计算"></a>重复计算</h2><p>除此之外，使用递归时还会出现重复计算的问题。刚才的第二个递归代码的例子，如果把整个递归过程分解一下的话，就是这样的：</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/e7/bf/e7e778994e90265344f6ac9da39e01bf.jpg"></p>
-<p>从图中，可以直观地看到，想要计算 f(5)，需要先计算 f(4) 和 f(3)，而计算 f(4) 还需要计算 f(3)，因此，f(3) 就被计算了很多次，这就是重复计算问题。</p>
-<p>为了避免重复计算，可以通过一个数据结构（比如散列表）来保存已经求解过的 f(k)。当递归调用到 f(k) 时，先看下是否已经求解过了。如果是，则直接从散列表中取值返回，不需要重复计算，这样就能避免刚讲的问题了。按照上面的思路改造一下刚才的代码：</p>
-<pre><code class="java">public int f(int n) &#123;
-    if (n == 1) return 1;
-    if (n == 2) return 2;
-    
-    // hasSolvedList可以理解成一个Map，key是n，value是f(n)
-    if (hasSolvedList.containsKey(n)) &#123;
-        return hasSolvedList.get(n);
-    &#125;
-  
-    int ret = f(n-1) + f(n-2);
-    hasSolvedList.put(n, ret);
-    return ret;
-&#125;
-</code></pre>
-<p>除了堆栈溢出、重复计算这两个常见的问题。递归代码还有很多别的问题。</p>
-<p>在时间效率上，递归代码里多了很多函数调用，当这些函数调用的数量较大时，就会积聚成一个可观的时间成本。在空间复杂度上，因为递归调用一次就会在内存栈中保存一次现场数据，所以在分析递归代码空间复杂度时，需要额外考虑这部分的开销，比如我们前面讲到的电影院递归代码，空间复杂度并不是 <code>O(1)</code>，而是 <code>O(n)</code>。</p>
-<h1 id="怎么将递归代码改写为非递归代码"><a href="#怎么将递归代码改写为非递归代码" class="headerlink" title="怎么将递归代码改写为非递归代码"></a>怎么将递归代码改写为非递归代码</h1><p>刚刚说了，递归有利有弊，利是递归代码的表达力很强，写起来非常简洁；而弊就是空间复杂度高、有堆栈溢出的风险、存在重复计算、过多的函数调用会耗时较多等问题。所以，在开发过程中，我们要根据实际情况来选择是否需要用递归的方式来实现。</p>
-<p>那是否可以把递归代码改写为非递归代码呢？比如刚才那个电影院的例子，抛开场景，只看 <code>f(x) =f(x-1)+1</code> 这个递推公式。这样改写看看：</p>
-<pre><code>int f(int n) &#123;
-    int ret = 1;
-      for (int i = 2; i &lt;= n; ++i) &#123;
-        ret = ret + 1;
-      &#125;
-      return ret;
-&#125;
-</code></pre>
-<p>同样，第二个例子也可以改为非递归的实现方式。</p>
-<pre><code>int f(int n) &#123;
-    if (n == 1) return 1;
-    if (n == 2) return 2;
-
-      int ret = 0;
-      int pre = 2;
-      int prepre = 1;
-      for (int i = 3; i &lt;= n; ++i) &#123;
-        ret = pre + prepre;
-        prepre = pre;
-        pre = ret;
-      &#125;
-      return ret;
-&#125;
-</code></pre>
+<p>装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降。</p>
+<h2 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h2><p>链表法是一种更加常用的散列冲突解决办法，相比开放寻址法，它要简单很多。在散列表中，每个”桶（bucket）”或者 “槽（slot）” 会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/a4/7f/a4b77d593e4cb76acb2b0689294ec17f.jpg"></p>
+<p>当插入的时候，只需要通过散列函数计算出对应的散列槽位，将其插入到对应链表中即可，所以插入的时间复杂度是 <code>O(1)</code>。当查找、删除一个元素时，同样通过散列函数计算出对应的槽，然后遍历链表查找或者删除。那查找或删除操作的时间复杂度是多少呢？</p>
+<p>实际上，这两个操作的时间复杂度跟链表的长度 k 成正比，也就是 <code>O(k)</code>。对于散列比较均匀的散列函数来说，理论上讲，<code>k=n/m</code>，其中 n 表示散列中数据的个数，m 表示散列表中 “”槽” 的个数。</p>
+<h1 id="如何设计散列函数？"><a href="#如何设计散列函数？" class="headerlink" title="如何设计散列函数？"></a>如何设计散列函数？</h1><h1 id="装载因子过大了怎么办？"><a href="#装载因子过大了怎么办？" class="headerlink" title="装载因子过大了怎么办？"></a>装载因子过大了怎么办？</h1><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>Word 文档中单词拼写检查功能是如何实现的？</p>
 <blockquote>
-<p>这个很简单，ret代表当前台阶的走法，pre代表上一个台阶的走法，prepre代表上上个台阶的走法，ret=pre+prepre，也就是使用递推公式计算当前台阶的走法，计算完当前台阶的走法后，为计算下一台阶做准备：将pre设置为ret，也就是下次计算的上一个台阶的走法，把prepre设置为pre，也就是下次计算的上上个台阶的走法。下一次计算就再次使用ret=pre+prepre 了。</p>
-<p>这里的ret为当前阶梯往下走的所有走法； pre为下一阶阶梯开始往下走的所有走法； prepre为下两阶阶梯开始往下走的所有方法。 而当前阶梯往下走一次的话只能走一阶或者两阶，只有这两种选择，所以当前阶梯的往下走的所有走法为：下一阶往下的所有走法+下两阶往下的所有走法，即 ret = pre + prepre 而每一次执行循环体后相当于阶数+1，当前阶梯ret的值变成了下一阶pre的值，下一阶pre的值变成了下两阶prepre的值。 所以可以看到这是一种从下往上推的方法，而递归是一种从上往下推的方法。</p>
+<p>常用的英文单词有 20 万个左右，假设单词的平均长度是 10 个字母，平均一个单词占用 10 个字节的内存空间，那 20 万英文单词大约占 2MB 的存储空间，就算放大 10 倍也就是 20MB。对于现在的计算机来说，这个大小完全可以放在内存里面。所以可以用散列表来存储整个英文单词词典。当用户输入某个英文单词时，拿用户输入的单词去散列表中查找。如果查到，则说明拼写正确；如果没有查到，则说明拼写可能有误，给予提示。借助散列表这种数据结构，就可以轻松实现快速判断是否存在拼写错误。</p>
 </blockquote>
-<p>那是不是所有的递归代码都可以改为这种迭代循环的非递归写法呢？</p>
-<p>笼统地讲，是的。因为递归本身就是借助栈来实现的，只不过我们使用的栈是系统或者虚拟机本身提供的，我们没有感知罢了。如果我们自己在内存堆上实现栈，手动模拟入栈、出栈过程，这样任何递归代码都可以改写成看上去不是递归代码的样子。但是这种思路实际上是将递归改为了“手动”递归，本质并没有变，而且也并没有解决前面讲到的某些问题，徒增了实现的复杂度。</p>
+<p>假设有 10 万条 URL 访问日志，如何按照访问次数给 URL 排序？</p>
 <blockquote>
-<p>前面说的那个限制递归深度的做法只适合规模比较小的情况，那如果规模大了，就可以自己实现一个栈，使用非递归的方式实现</p>
+<p>遍历 10 万条数据，以 URL 为 key，访问次数为 value，存入散列表，同时记录下访问次数的最大值 K，时间复杂度 <code>O(n)</code>。</p>
+<p>如果 K 不是很大，可以使用桶排序，时间复杂度 <code>O(n)</code>。如果 K 非常大（比如大于 10 万），就使用快速排序，复杂度 <code>O(nlogn)</code>。</p>
 </blockquote>
-<h1 id="解答开篇"><a href="#解答开篇" class="headerlink" title="解答开篇"></a>解答开篇</h1><p>到此为止，递归相关的基础知识已经讲完了，咱们来看一下开篇的问题：如何找到“最终推荐人”？我的解决方案是这样的：</p>
-<pre><code class="java">long findRootReferrerId(long actorId) &#123;  
-    Long referrerId = select referrer_id from [table] where actor_id = actorId;  
-    if (referrerId == null) return actorId;  
-    return findRootReferrerId(referrerId);
-&#125;
-</code></pre>
-<p>是不是非常简洁？用三行代码就能搞定了，不过在实际项目中，上面的代码并不能工作，为什么呢？这里面有两个问题。第一，如果递归很深，可能会有堆栈溢出的问题。第二，如果数据库里存在脏数据，我们还需要处理由此产生的无限递归问题。比如 demo 环境下数据库中，测试工程师为了方便测试，会人为地插入一些数据，就会出现脏数据。如果 A 的推荐人是 B，B 的推荐人是 C，C 的推荐人是 A，这样就会发生死循环。第一个问题，我前面已经解答过了，可以用限制递归深度来解决。第二个问题，也可以用限制递归深度来解决。不过，还有一个更高级的处理方法，就是自动检测 A-B-C-A 这种“环”的存在。这个我暂时不细说，你可以自己思考下。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>如何来检测上面提到的环的存在呢？</p>
+<p>有两个字符串数组，每个数组大约有 10 万条字符串，如何快速找出两个数组中相同的字符串？</p>
 <blockquote>
-</blockquote>
-<p>我们平时调试代码喜欢使用 IDE 的单步跟踪功能，像规模比较大、递归层次很深的递归代码，几乎无法使用这种调试方式。对于递归代码，有什么好的调试方法呢？</p>
-<blockquote>
-<p>我常用的办法是，打印一个树型结构的日志，每进入一层，深度加一然后打印深度，比如“–”，再接上值，换行，这样可以很清楚的看到信息</p>
-<p>调试递归就像写递归一样，不要被每一步的细节所困，重点在于确认递推关系与结束条件是否正确，用条件断点着重调试最初两步与最终两步即可。</p>
+<p>以第一个字符串数组构建散列表，key 为字符串，value 为出现次数。再遍历第二个字符串数组，以字符串为 key 在散列表中查找，如果 value 大于零，说明存在相同字符串。时间复杂度 <code>O(n)</code>。</p>
 </blockquote>
 ]]></content>
       <categories>
@@ -31918,6 +31996,324 @@ public class BufferedReader extends Reader &#123;
       </tags>
   </entry>
   <entry>
+    <title>Java IO之 CharArrayReader详解</title>
+    <url>/2020/07/22/Java-IO-CharArrayReader/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="CharArrayReader-简介"><a href="#CharArrayReader-简介" class="headerlink" title="CharArrayReader 简介"></a>CharArrayReader 简介</h1><p><code>CharArrayReader</code>是字符数组输入流。它和<code>ByteArrayInputStream</code>类似，只不过<code>ByteArrayInputStream</code>是字节数组输入流，而<code>CharArray</code>是字符数组输入流。<code>CharArrayReader</code>是用于读取字符数组，它继承于<code>Reader</code>。操作的数据是以字符为单位。</p>
+<h2 id="CharArrayReader-函数列表"><a href="#CharArrayReader-函数列表" class="headerlink" title="CharArrayReader 函数列表"></a>CharArrayReader 函数列表</h2><pre><code class="java">// 构造函数
+public CharArrayReader(char buf[])
+public CharArrayReader(char buf[], int offset, int length)
+// 常用方法
+int      read()
+int      read(char b[], int off, int len)
+long     skip(long n)
+boolean  ready()
+boolean  markSupport()
+void     mark(int readAheadLimit)
+void     reset()
+void     close()
+</code></pre>
+<p>说明：<code>CharArrayReader</code>实际上是通过字符数组去保存数据。</p>
+<ul>
+<li>通过<code>CharArrayReader(char[] buf)</code>或<code>CharArrayReader(char[] buf, int offset, int length)</code>，我们可以根据<code>buf</code>数组来创建<code>CharArrayReader</code>对象</li>
+<li><code>read()</code>的作用是从<code>CharArrayReader</code>中读取下一个字符。</li>
+<li><code>read(char[] b, int offset, int len)</code>的作用是从<code>CharArrayReader</code>读取字符数据，并写入到字符数组<code>b</code>中。<code>off</code>是将字符写入到<code>b</code>的起始位置，<code>len</code>是写入的字符的长度。</li>
+<li><code>markSupported()</code>是判断<code>CharArrayReader</code>是否支持标记功能。它始终返回<code>true</code>。</li>
+<li><code>mark(int readlimit)</code>的作用是记录标记位置。记录标记位置之后，某一时刻调用<code>reset()</code>则将<code>CharArrayReader</code>下一个被读取的位置重置到<code>mark(int readlimit)</code>所标记的位置；也就是说，<code>reset()</code>之后再读取<code>CharArrayReader</code>时，是从<code>mark(int readlimit)</code>所标记的位置开始读取。</li>
+</ul>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.CharArrayReader;
+import java.io.CharArrayWriter;
+import java.io.IOException;
+
+public class CharArrayReaderTest &#123;
+
+    private static final int LEN = 5;
+    private static final char[] ArrayLetters = new char[] &#123;&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;,&#39;f&#39;,&#39;g&#39;,&#39;h&#39;,&#39;i&#39;,&#39;j&#39;,&#39;k&#39;,&#39;l&#39;,&#39;m&#39;,&#39;n&#39;,&#39;o&#39;,&#39;p&#39;,&#39;q&#39;,&#39;r&#39;,&#39;s&#39;,&#39;t&#39;,&#39;u&#39;,&#39;v&#39;,&#39;w&#39;,&#39;x&#39;,&#39;y&#39;,&#39;z&#39;&#125;;
+
+    public static void main(String[] args) &#123;
+        tesCharArrayReader() ;
+    &#125;
+
+
+    private static void tesCharArrayReader() &#123;
+        try &#123;
+            // 创建CharArrayReader字符流，内容是ArrayLetters数组
+            CharArrayReader car = new CharArrayReader(ArrayLetters);
+
+            for (int i=0; i&lt;LEN; i++) &#123;
+                // 若能继续读取下一个字符，则读取下一个字符
+                if (car.ready() == true) &#123;
+                    // 读取字符流的下一个字符
+                    char tmp = (char)car.read();
+                    System.out.printf(&quot;%d : %c\n&quot;, i, tmp);
+                &#125;
+            &#125;
+
+            // 若该字符流不支持标记功能，则直接退出
+            if (!car.markSupported()) &#123;
+                System.out.println(&quot;make not supported!&quot;);
+                return ;
+            &#125;
+
+            // 标记字符流中下一个被读取的位置。即--标记f，因为因为前面已经读取了5个字符，所以下一个被读取的位置是第6个字符
+            // 01   CharArrayReader类的mark(0)函数中的参数0是没有实际意义的。
+            // 02   mark()与reset()是配套的，reset()会将字符流中下一个被读取的位置重置为mark()中所保存的位置
+            car.mark(0);
+
+            // 跳过5个字符。跳过5个字符后，字符流中下一个被读取的值应该是k。
+            car.skip(5);
+
+            // 从字符流中读取5个数据。即读取klmno
+            char[] buf = new char[LEN];
+            car.read(buf, 0, LEN);
+            System.out.printf(&quot;buf=%s\n&quot;, String.valueOf(buf));
+
+            // 重置字符流：即，将字符流中下一个被读取的位置重置到mark()所标记的位置，即f。
+            car.reset();
+            // 从重置后的字符流中读取5个字符到buf中。即读取fghij
+            car.read(buf, 0, LEN);
+            System.out.printf(&quot;buf=%s\n&quot;, String.valueOf(buf));
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>0 : a
+1 : b
+2 : c
+3 : d
+4 : e
+buf=klmno
+buf=fghij
+</code></pre>
+<h1 id="CharArrayReader-源码"><a href="#CharArrayReader-源码" class="headerlink" title="CharArrayReader 源码"></a>CharArrayReader 源码</h1><h2 id="Reader-源码"><a href="#Reader-源码" class="headerlink" title="Reader 源码"></a>Reader 源码</h2><pre><code class="java">package java.io;
+
+public abstract class Reader implements Readable, Closeable &#123;
+
+   
+    protected Object lock;
+
+
+    protected Reader() &#123;
+        this.lock = this;
+    &#125;
+
+    
+    protected Reader(Object lock) &#123;
+        if (lock == null) &#123;
+            throw new NullPointerException();
+        &#125;
+        this.lock = lock;
+    &#125;
+
+    
+    public int read(java.nio.CharBuffer target) throws IOException &#123;
+        int len = target.remaining();
+        char[] cbuf = new char[len];
+        int n = read(cbuf, 0, len);
+        if (n &gt; 0)
+            target.put(cbuf, 0, n);
+        return n;
+    &#125;
+
+    
+    public int read() throws IOException &#123;
+        char cb[] = new char[1];
+        if (read(cb, 0, 1) == -1)
+            return -1;
+        else
+            return cb[0];
+    &#125;
+
+    
+    public int read(char cbuf[]) throws IOException &#123;
+        return read(cbuf, 0, cbuf.length);
+    &#125;
+
+    
+    abstract public int read(char cbuf[], int off, int len) throws IOException;
+
+    /** Maximum skip-buffer size */
+    private static final int maxSkipBufferSize = 8192;
+
+    /** Skip buffer, null until allocated */
+    private char skipBuffer[] = null;
+
+    
+    public long skip(long n) throws IOException &#123;
+        if (n &lt; 0L)
+            throw new IllegalArgumentException(&quot;skip value is negative&quot;);
+        int nn = (int) Math.min(n, maxSkipBufferSize);
+        synchronized (lock) &#123;
+            if ((skipBuffer == null) || (skipBuffer.length &lt; nn))
+                skipBuffer = new char[nn];
+            long r = n;
+            while (r &gt; 0) &#123;
+                int nc = read(skipBuffer, 0, (int)Math.min(r, nn));
+                if (nc == -1)
+                    break;
+                r -= nc;
+            &#125;
+            return n - r;
+        &#125;
+    &#125;
+
+    
+    public boolean ready() throws IOException &#123;
+        return false;
+    &#125;
+
+    
+    public boolean markSupported() &#123;
+        return false;
+    &#125;
+
+    
+    public void mark(int readAheadLimit) throws IOException &#123;
+        throw new IOException(&quot;mark() not supported&quot;);
+    &#125;
+
+    
+    public void reset() throws IOException &#123;
+        throw new IOException(&quot;reset() not supported&quot;);
+    &#125;
+
+     abstract public void close() throws IOException;
+
+&#125;
+</code></pre>
+<h2 id="CharArrayReader"><a href="#CharArrayReader" class="headerlink" title="CharArrayReader"></a>CharArrayReader</h2><pre><code class="java">package java.io;
+
+public class CharArrayReader extends Reader &#123;
+    
+    protected char buf[];
+
+    /** The current buffer position. */
+    protected int pos;
+
+    protected int markedPos = 0;
+
+    
+    protected int count;
+
+    public CharArrayReader(char buf[]) &#123;
+        this.buf = buf;
+        this.pos = 0;
+        this.count = buf.length;
+    &#125;
+
+    public CharArrayReader(char buf[], int offset, int length) &#123;
+        if ((offset &lt; 0) || (offset &gt; buf.length) || (length &lt; 0) ||
+            ((offset + length) &lt; 0)) &#123;
+            throw new IllegalArgumentException();
+        &#125;
+        this.buf = buf;
+        this.pos = offset;
+        this.count = Math.min(offset + length, buf.length);
+        this.markedPos = offset;
+    &#125;
+
+    private void ensureOpen() throws IOException &#123;
+        if (buf == null)
+            throw new IOException(&quot;Stream closed&quot;);
+    &#125;
+
+    public int read() throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            if (pos &gt;= count)
+                return -1;
+            else
+                return buf[pos++];
+        &#125;
+    &#125;
+
+    public int read(char b[], int off, int len) throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            if ((off &lt; 0) || (off &gt; b.length) || (len &lt; 0) ||
+                ((off + len) &gt; b.length) || ((off + len) &lt; 0)) &#123;
+                throw new IndexOutOfBoundsException();
+            &#125; else if (len == 0) &#123;
+                return 0;
+            &#125;
+
+            if (pos &gt;= count) &#123;
+                return -1;
+            &#125;
+
+            int avail = count - pos;
+            if (len &gt; avail) &#123;
+                len = avail;
+            &#125;
+            if (len &lt;= 0) &#123;
+                return 0;
+            &#125;
+            System.arraycopy(buf, pos, b, off, len);
+            pos += len;
+            return len;
+        &#125;
+    &#125;
+
+    public long skip(long n) throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+
+            long avail = count - pos;
+            if (n &gt; avail) &#123;
+                n = avail;
+            &#125;
+            if (n &lt; 0) &#123;
+                return 0;
+            &#125;
+            pos += n;
+            return n;
+        &#125;
+    &#125;
+    
+    public boolean ready() throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            return (count - pos) &gt; 0;
+        &#125;
+    &#125;
+
+    public boolean markSupported() &#123;
+        return true;
+    &#125;
+
+    public void mark(int readAheadLimit) throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            markedPos = pos;
+        &#125;
+    &#125;
+
+    public void reset() throws IOException &#123;
+        synchronized (lock) &#123;
+            ensureOpen();
+            pos = markedPos;
+        &#125;
+    &#125;
+
+    public void close() &#123;
+        buf = null;
+    &#125;
+&#125;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java IO之 PipedOutputStream/PipedInputStream详解</title>
     <url>/2020/07/22/Java-IO-PipedOutputStream-PipedInputStream/</url>
     <content><![CDATA[<p>-</p>
@@ -32443,324 +32839,6 @@ public class PipedInputStream extends InputStream &#123;
         synchronized (this) &#123;
             in = -1;
         &#125;
-    &#125;
-&#125;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java IO之 CharArrayReader详解</title>
-    <url>/2020/07/22/Java-IO-CharArrayReader/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="CharArrayReader-简介"><a href="#CharArrayReader-简介" class="headerlink" title="CharArrayReader 简介"></a>CharArrayReader 简介</h1><p><code>CharArrayReader</code>是字符数组输入流。它和<code>ByteArrayInputStream</code>类似，只不过<code>ByteArrayInputStream</code>是字节数组输入流，而<code>CharArray</code>是字符数组输入流。<code>CharArrayReader</code>是用于读取字符数组，它继承于<code>Reader</code>。操作的数据是以字符为单位。</p>
-<h2 id="CharArrayReader-函数列表"><a href="#CharArrayReader-函数列表" class="headerlink" title="CharArrayReader 函数列表"></a>CharArrayReader 函数列表</h2><pre><code class="java">// 构造函数
-public CharArrayReader(char buf[])
-public CharArrayReader(char buf[], int offset, int length)
-// 常用方法
-int      read()
-int      read(char b[], int off, int len)
-long     skip(long n)
-boolean  ready()
-boolean  markSupport()
-void     mark(int readAheadLimit)
-void     reset()
-void     close()
-</code></pre>
-<p>说明：<code>CharArrayReader</code>实际上是通过字符数组去保存数据。</p>
-<ul>
-<li>通过<code>CharArrayReader(char[] buf)</code>或<code>CharArrayReader(char[] buf, int offset, int length)</code>，我们可以根据<code>buf</code>数组来创建<code>CharArrayReader</code>对象</li>
-<li><code>read()</code>的作用是从<code>CharArrayReader</code>中读取下一个字符。</li>
-<li><code>read(char[] b, int offset, int len)</code>的作用是从<code>CharArrayReader</code>读取字符数据，并写入到字符数组<code>b</code>中。<code>off</code>是将字符写入到<code>b</code>的起始位置，<code>len</code>是写入的字符的长度。</li>
-<li><code>markSupported()</code>是判断<code>CharArrayReader</code>是否支持标记功能。它始终返回<code>true</code>。</li>
-<li><code>mark(int readlimit)</code>的作用是记录标记位置。记录标记位置之后，某一时刻调用<code>reset()</code>则将<code>CharArrayReader</code>下一个被读取的位置重置到<code>mark(int readlimit)</code>所标记的位置；也就是说，<code>reset()</code>之后再读取<code>CharArrayReader</code>时，是从<code>mark(int readlimit)</code>所标记的位置开始读取。</li>
-</ul>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.CharArrayReader;
-import java.io.CharArrayWriter;
-import java.io.IOException;
-
-public class CharArrayReaderTest &#123;
-
-    private static final int LEN = 5;
-    private static final char[] ArrayLetters = new char[] &#123;&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;,&#39;f&#39;,&#39;g&#39;,&#39;h&#39;,&#39;i&#39;,&#39;j&#39;,&#39;k&#39;,&#39;l&#39;,&#39;m&#39;,&#39;n&#39;,&#39;o&#39;,&#39;p&#39;,&#39;q&#39;,&#39;r&#39;,&#39;s&#39;,&#39;t&#39;,&#39;u&#39;,&#39;v&#39;,&#39;w&#39;,&#39;x&#39;,&#39;y&#39;,&#39;z&#39;&#125;;
-
-    public static void main(String[] args) &#123;
-        tesCharArrayReader() ;
-    &#125;
-
-
-    private static void tesCharArrayReader() &#123;
-        try &#123;
-            // 创建CharArrayReader字符流，内容是ArrayLetters数组
-            CharArrayReader car = new CharArrayReader(ArrayLetters);
-
-            for (int i=0; i&lt;LEN; i++) &#123;
-                // 若能继续读取下一个字符，则读取下一个字符
-                if (car.ready() == true) &#123;
-                    // 读取字符流的下一个字符
-                    char tmp = (char)car.read();
-                    System.out.printf(&quot;%d : %c\n&quot;, i, tmp);
-                &#125;
-            &#125;
-
-            // 若该字符流不支持标记功能，则直接退出
-            if (!car.markSupported()) &#123;
-                System.out.println(&quot;make not supported!&quot;);
-                return ;
-            &#125;
-
-            // 标记字符流中下一个被读取的位置。即--标记f，因为因为前面已经读取了5个字符，所以下一个被读取的位置是第6个字符
-            // 01   CharArrayReader类的mark(0)函数中的参数0是没有实际意义的。
-            // 02   mark()与reset()是配套的，reset()会将字符流中下一个被读取的位置重置为mark()中所保存的位置
-            car.mark(0);
-
-            // 跳过5个字符。跳过5个字符后，字符流中下一个被读取的值应该是k。
-            car.skip(5);
-
-            // 从字符流中读取5个数据。即读取klmno
-            char[] buf = new char[LEN];
-            car.read(buf, 0, LEN);
-            System.out.printf(&quot;buf=%s\n&quot;, String.valueOf(buf));
-
-            // 重置字符流：即，将字符流中下一个被读取的位置重置到mark()所标记的位置，即f。
-            car.reset();
-            // 从重置后的字符流中读取5个字符到buf中。即读取fghij
-            car.read(buf, 0, LEN);
-            System.out.printf(&quot;buf=%s\n&quot;, String.valueOf(buf));
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>0 : a
-1 : b
-2 : c
-3 : d
-4 : e
-buf=klmno
-buf=fghij
-</code></pre>
-<h1 id="CharArrayReader-源码"><a href="#CharArrayReader-源码" class="headerlink" title="CharArrayReader 源码"></a>CharArrayReader 源码</h1><h2 id="Reader-源码"><a href="#Reader-源码" class="headerlink" title="Reader 源码"></a>Reader 源码</h2><pre><code class="java">package java.io;
-
-public abstract class Reader implements Readable, Closeable &#123;
-
-   
-    protected Object lock;
-
-
-    protected Reader() &#123;
-        this.lock = this;
-    &#125;
-
-    
-    protected Reader(Object lock) &#123;
-        if (lock == null) &#123;
-            throw new NullPointerException();
-        &#125;
-        this.lock = lock;
-    &#125;
-
-    
-    public int read(java.nio.CharBuffer target) throws IOException &#123;
-        int len = target.remaining();
-        char[] cbuf = new char[len];
-        int n = read(cbuf, 0, len);
-        if (n &gt; 0)
-            target.put(cbuf, 0, n);
-        return n;
-    &#125;
-
-    
-    public int read() throws IOException &#123;
-        char cb[] = new char[1];
-        if (read(cb, 0, 1) == -1)
-            return -1;
-        else
-            return cb[0];
-    &#125;
-
-    
-    public int read(char cbuf[]) throws IOException &#123;
-        return read(cbuf, 0, cbuf.length);
-    &#125;
-
-    
-    abstract public int read(char cbuf[], int off, int len) throws IOException;
-
-    /** Maximum skip-buffer size */
-    private static final int maxSkipBufferSize = 8192;
-
-    /** Skip buffer, null until allocated */
-    private char skipBuffer[] = null;
-
-    
-    public long skip(long n) throws IOException &#123;
-        if (n &lt; 0L)
-            throw new IllegalArgumentException(&quot;skip value is negative&quot;);
-        int nn = (int) Math.min(n, maxSkipBufferSize);
-        synchronized (lock) &#123;
-            if ((skipBuffer == null) || (skipBuffer.length &lt; nn))
-                skipBuffer = new char[nn];
-            long r = n;
-            while (r &gt; 0) &#123;
-                int nc = read(skipBuffer, 0, (int)Math.min(r, nn));
-                if (nc == -1)
-                    break;
-                r -= nc;
-            &#125;
-            return n - r;
-        &#125;
-    &#125;
-
-    
-    public boolean ready() throws IOException &#123;
-        return false;
-    &#125;
-
-    
-    public boolean markSupported() &#123;
-        return false;
-    &#125;
-
-    
-    public void mark(int readAheadLimit) throws IOException &#123;
-        throw new IOException(&quot;mark() not supported&quot;);
-    &#125;
-
-    
-    public void reset() throws IOException &#123;
-        throw new IOException(&quot;reset() not supported&quot;);
-    &#125;
-
-     abstract public void close() throws IOException;
-
-&#125;
-</code></pre>
-<h2 id="CharArrayReader"><a href="#CharArrayReader" class="headerlink" title="CharArrayReader"></a>CharArrayReader</h2><pre><code class="java">package java.io;
-
-public class CharArrayReader extends Reader &#123;
-    
-    protected char buf[];
-
-    /** The current buffer position. */
-    protected int pos;
-
-    protected int markedPos = 0;
-
-    
-    protected int count;
-
-    public CharArrayReader(char buf[]) &#123;
-        this.buf = buf;
-        this.pos = 0;
-        this.count = buf.length;
-    &#125;
-
-    public CharArrayReader(char buf[], int offset, int length) &#123;
-        if ((offset &lt; 0) || (offset &gt; buf.length) || (length &lt; 0) ||
-            ((offset + length) &lt; 0)) &#123;
-            throw new IllegalArgumentException();
-        &#125;
-        this.buf = buf;
-        this.pos = offset;
-        this.count = Math.min(offset + length, buf.length);
-        this.markedPos = offset;
-    &#125;
-
-    private void ensureOpen() throws IOException &#123;
-        if (buf == null)
-            throw new IOException(&quot;Stream closed&quot;);
-    &#125;
-
-    public int read() throws IOException &#123;
-        synchronized (lock) &#123;
-            ensureOpen();
-            if (pos &gt;= count)
-                return -1;
-            else
-                return buf[pos++];
-        &#125;
-    &#125;
-
-    public int read(char b[], int off, int len) throws IOException &#123;
-        synchronized (lock) &#123;
-            ensureOpen();
-            if ((off &lt; 0) || (off &gt; b.length) || (len &lt; 0) ||
-                ((off + len) &gt; b.length) || ((off + len) &lt; 0)) &#123;
-                throw new IndexOutOfBoundsException();
-            &#125; else if (len == 0) &#123;
-                return 0;
-            &#125;
-
-            if (pos &gt;= count) &#123;
-                return -1;
-            &#125;
-
-            int avail = count - pos;
-            if (len &gt; avail) &#123;
-                len = avail;
-            &#125;
-            if (len &lt;= 0) &#123;
-                return 0;
-            &#125;
-            System.arraycopy(buf, pos, b, off, len);
-            pos += len;
-            return len;
-        &#125;
-    &#125;
-
-    public long skip(long n) throws IOException &#123;
-        synchronized (lock) &#123;
-            ensureOpen();
-
-            long avail = count - pos;
-            if (n &gt; avail) &#123;
-                n = avail;
-            &#125;
-            if (n &lt; 0) &#123;
-                return 0;
-            &#125;
-            pos += n;
-            return n;
-        &#125;
-    &#125;
-    
-    public boolean ready() throws IOException &#123;
-        synchronized (lock) &#123;
-            ensureOpen();
-            return (count - pos) &gt; 0;
-        &#125;
-    &#125;
-
-    public boolean markSupported() &#123;
-        return true;
-    &#125;
-
-    public void mark(int readAheadLimit) throws IOException &#123;
-        synchronized (lock) &#123;
-            ensureOpen();
-            markedPos = pos;
-        &#125;
-    &#125;
-
-    public void reset() throws IOException &#123;
-        synchronized (lock) &#123;
-            ensureOpen();
-            pos = markedPos;
-        &#125;
-    &#125;
-
-    public void close() &#123;
-        buf = null;
     &#125;
 &#125;
 </code></pre>
@@ -34218,181 +34296,6 @@ chararr[chararr_count++]=(char)(((c &amp; 0x1F) &lt;&lt; 6) | (char2 &amp; 0x3F)
       </tags>
   </entry>
   <entry>
-    <title>Java IO之 ObjectInputStream/ObjectOutPutStream详解</title>
-    <url>/2020/07/21/Java-IO-ObjectInputStream-ObjectOutPutStream/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="ObjectInputStream-和-ObjectOutputStream-简介"><a href="#ObjectInputStream-和-ObjectOutputStream-简介" class="headerlink" title="ObjectInputStream 和 ObjectOutputStream 简介"></a>ObjectInputStream 和 ObjectOutputStream 简介</h1><p><code>ObjectOutputStream</code>和<code>ObjectInputStream</code>地作用是：对基本数据和对象进行序列化操作支持。</p>
-<p>创建文件输出流对应的<code>ObjectOutputStream</code>对象，该<code>ObjectOutputStream</code>对象能提供对基本数据或对象的持久存储。当我们需要读取这些存储的基本数据或对象时，可以创建文件输入流对应的<code>ObjectInputStream</code>，进而读取出这些基本数据或对象。</p>
-<blockquote>
-<p>注意：只有支持<code>java.io.Serializable</code>或<code>java.io.Externalizable</code>接口的对象才能被<code>ObjectInputStream/ObjectOutputStream</code>所操作!</p>
-</blockquote>
-<p>ObjectOutputStream 函数列表</p>
-<pre><code>// 构造函数
-ObjectOutputStream(OutputStream output)
-// 常用方法
-void                           close()
-void                           defaultWriteObject()
-void                           flush()
-ObjectOutputStream.PutField     putFields()
-void                           reset()
-void                           useProtocolVersion(int version)
-void                           write(int value)
-void                           write(byte[] buffer, int offset, int length)
-void                           writeBoolean(boolean value)
-void                           writeByte(int value)
-void                           writeBytes(String value)
-void                           writeChar(int value)
-void                           writeChars(String value)
-void                           writeDouble(double value)
-void                           writeFields()
-void                           writeFloat(float value)
-void                           writeInt(int value)
-void                           writeLong(long value)
-final      void                writeObject(Object object)
-void                           writeShort(int value)
-void                           writeUTF(String value)
-void                           writeUnshared(Object object)
-</code></pre>
-<p>ObjetInputStream 函数列表</p>
-<pre><code>// 构造函数
-ObjectInputStream(InputStream input)
-// 常用方法
-int                         available()
-void                         close()
-void                         defaultReadObject()
-int                         read(byte[] buffer, int offset, int length)
-int                         read()
-boolean                     readBoolean()
-byte                         readByte()
-char                         readChar()
-double                         readDouble()
-ObjectInputStream.GetField   readFields()
-float                         readFloat()
-void                         readFully(byte[] dst)
-void                         readFully(byte[] dst, int offset, int byteCount)
-int                         readInt()
-String                         readLine()
-long                         readLong()
-final Object                 readObject()
-short                         readShort()
-String                         readUTF()
-Object                         readUnshared()
-int                         readUnsignedByte()
-int                         readUnsignedShort()
-synchronized void             registerValidation(ObjectInputValidation object, int priority)
-int                         skipBytes(int length)
-</code></pre>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">/**
- * ObjectInputStream 和 ObjectOutputStream 测试程序
- *
- * 注意：通过ObjectInputStream, ObjectOutputStream操作的对象，必须是实现了Serializable或Externalizable序列化接口的类的实例。
- */
-
-import java.io.FileInputStream;   
-import java.io.FileOutputStream;   
-import java.io.ObjectInputStream;   
-import java.io.ObjectOutputStream;   
-import java.io.Serializable;   
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-
-public class ObjectStreamTest &#123; 
-    private static final String TMP_FILE = &quot;box.tmp&quot;;
-
-    public static void main(String[] args) &#123;   
-        testWrite();
-        testRead();
-    &#125;
-
-
-    /**
-     * ObjectOutputStream 测试函数
-     */
-    private static void testWrite() &#123;   
-        try &#123;
-            ObjectOutputStream out = new ObjectOutputStream(
-                    new FileOutputStream(TMP_FILE));
-            out.writeBoolean(true);
-            out.writeByte((byte)65);
-            out.writeChar(&#39;a&#39;);
-            out.writeInt(20131015);
-            out.writeFloat(3.14F);
-            out.writeDouble(1.414D);
-            // 写入HashMap对象
-            HashMap map = new HashMap();
-            map.put(&quot;one&quot;, &quot;red&quot;);
-            map.put(&quot;two&quot;, &quot;green&quot;);
-            map.put(&quot;three&quot;, &quot;blue&quot;);
-            out.writeObject(map);
-            // 写入自定义的Box对象，Box实现了Serializable接口
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            out.writeObject(box);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-    // ObjectInputStream 测试函数
-    private static void testRead() &#123;
-        try &#123;
-            ObjectInputStream in = new ObjectInputStream(
-                    new FileInputStream(TMP_FILE));
-            System.out.printf(&quot;boolean:%b\n&quot; , in.readBoolean());
-            System.out.printf(&quot;byte:%d\n&quot; , (in.readByte()&amp;0xff));
-            System.out.printf(&quot;char:%c\n&quot; , in.readChar());
-            System.out.printf(&quot;int:%d\n&quot; , in.readInt());
-            System.out.printf(&quot;float:%f\n&quot; , in.readFloat());
-            System.out.printf(&quot;double:%f\n&quot; , in.readDouble());
-            // 读取HashMap对象
-            HashMap map = (HashMap) in.readObject();
-            Iterator iter = map.entrySet().iterator();
-            while (iter.hasNext()) &#123;
-                Map.Entry entry = (Map.Entry)iter.next();
-                System.out.printf(&quot;%-6s -- %s\n&quot; , entry.getKey(), entry.getValue());
-            &#125;
-            // 读取Box对象，Box实现了Serializable接口
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;box: &quot; + box);
-
-            in.close();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-
-
-class Box implements Serializable &#123;
-    private int width;   
-    private int height; 
-    private String name;   
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;) ]&quot;;
-    &#125;
-&#125;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java IO之 ByteArrayOutputStream详解</title>
     <url>/2020/07/21/Java-IO-ByteArrayOutputStream/</url>
     <content><![CDATA[<p>-</p>
@@ -34654,6 +34557,181 @@ public class ByteArrayOutputStream extends OutputStream &#123;
 <li><code>writeTo(OutputStream out)</code>将该字节数组输出流的数据全部写入到输出流<code>out</code>中。</li>
 </ul>
 <h1 id=""><a href="#" class="headerlink" title=""></a></h1>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO之 ObjectInputStream/ObjectOutPutStream详解</title>
+    <url>/2020/07/21/Java-IO-ObjectInputStream-ObjectOutPutStream/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="ObjectInputStream-和-ObjectOutputStream-简介"><a href="#ObjectInputStream-和-ObjectOutputStream-简介" class="headerlink" title="ObjectInputStream 和 ObjectOutputStream 简介"></a>ObjectInputStream 和 ObjectOutputStream 简介</h1><p><code>ObjectOutputStream</code>和<code>ObjectInputStream</code>地作用是：对基本数据和对象进行序列化操作支持。</p>
+<p>创建文件输出流对应的<code>ObjectOutputStream</code>对象，该<code>ObjectOutputStream</code>对象能提供对基本数据或对象的持久存储。当我们需要读取这些存储的基本数据或对象时，可以创建文件输入流对应的<code>ObjectInputStream</code>，进而读取出这些基本数据或对象。</p>
+<blockquote>
+<p>注意：只有支持<code>java.io.Serializable</code>或<code>java.io.Externalizable</code>接口的对象才能被<code>ObjectInputStream/ObjectOutputStream</code>所操作!</p>
+</blockquote>
+<p>ObjectOutputStream 函数列表</p>
+<pre><code>// 构造函数
+ObjectOutputStream(OutputStream output)
+// 常用方法
+void                           close()
+void                           defaultWriteObject()
+void                           flush()
+ObjectOutputStream.PutField     putFields()
+void                           reset()
+void                           useProtocolVersion(int version)
+void                           write(int value)
+void                           write(byte[] buffer, int offset, int length)
+void                           writeBoolean(boolean value)
+void                           writeByte(int value)
+void                           writeBytes(String value)
+void                           writeChar(int value)
+void                           writeChars(String value)
+void                           writeDouble(double value)
+void                           writeFields()
+void                           writeFloat(float value)
+void                           writeInt(int value)
+void                           writeLong(long value)
+final      void                writeObject(Object object)
+void                           writeShort(int value)
+void                           writeUTF(String value)
+void                           writeUnshared(Object object)
+</code></pre>
+<p>ObjetInputStream 函数列表</p>
+<pre><code>// 构造函数
+ObjectInputStream(InputStream input)
+// 常用方法
+int                         available()
+void                         close()
+void                         defaultReadObject()
+int                         read(byte[] buffer, int offset, int length)
+int                         read()
+boolean                     readBoolean()
+byte                         readByte()
+char                         readChar()
+double                         readDouble()
+ObjectInputStream.GetField   readFields()
+float                         readFloat()
+void                         readFully(byte[] dst)
+void                         readFully(byte[] dst, int offset, int byteCount)
+int                         readInt()
+String                         readLine()
+long                         readLong()
+final Object                 readObject()
+short                         readShort()
+String                         readUTF()
+Object                         readUnshared()
+int                         readUnsignedByte()
+int                         readUnsignedShort()
+synchronized void             registerValidation(ObjectInputValidation object, int priority)
+int                         skipBytes(int length)
+</code></pre>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">/**
+ * ObjectInputStream 和 ObjectOutputStream 测试程序
+ *
+ * 注意：通过ObjectInputStream, ObjectOutputStream操作的对象，必须是实现了Serializable或Externalizable序列化接口的类的实例。
+ */
+
+import java.io.FileInputStream;   
+import java.io.FileOutputStream;   
+import java.io.ObjectInputStream;   
+import java.io.ObjectOutputStream;   
+import java.io.Serializable;   
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class ObjectStreamTest &#123; 
+    private static final String TMP_FILE = &quot;box.tmp&quot;;
+
+    public static void main(String[] args) &#123;   
+        testWrite();
+        testRead();
+    &#125;
+
+
+    /**
+     * ObjectOutputStream 测试函数
+     */
+    private static void testWrite() &#123;   
+        try &#123;
+            ObjectOutputStream out = new ObjectOutputStream(
+                    new FileOutputStream(TMP_FILE));
+            out.writeBoolean(true);
+            out.writeByte((byte)65);
+            out.writeChar(&#39;a&#39;);
+            out.writeInt(20131015);
+            out.writeFloat(3.14F);
+            out.writeDouble(1.414D);
+            // 写入HashMap对象
+            HashMap map = new HashMap();
+            map.put(&quot;one&quot;, &quot;red&quot;);
+            map.put(&quot;two&quot;, &quot;green&quot;);
+            map.put(&quot;three&quot;, &quot;blue&quot;);
+            out.writeObject(map);
+            // 写入自定义的Box对象，Box实现了Serializable接口
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            out.writeObject(box);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+    // ObjectInputStream 测试函数
+    private static void testRead() &#123;
+        try &#123;
+            ObjectInputStream in = new ObjectInputStream(
+                    new FileInputStream(TMP_FILE));
+            System.out.printf(&quot;boolean:%b\n&quot; , in.readBoolean());
+            System.out.printf(&quot;byte:%d\n&quot; , (in.readByte()&amp;0xff));
+            System.out.printf(&quot;char:%c\n&quot; , in.readChar());
+            System.out.printf(&quot;int:%d\n&quot; , in.readInt());
+            System.out.printf(&quot;float:%f\n&quot; , in.readFloat());
+            System.out.printf(&quot;double:%f\n&quot; , in.readDouble());
+            // 读取HashMap对象
+            HashMap map = (HashMap) in.readObject();
+            Iterator iter = map.entrySet().iterator();
+            while (iter.hasNext()) &#123;
+                Map.Entry entry = (Map.Entry)iter.next();
+                System.out.printf(&quot;%-6s -- %s\n&quot; , entry.getKey(), entry.getValue());
+            &#125;
+            // 读取Box对象，Box实现了Serializable接口
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;box: &quot; + box);
+
+            in.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+
+
+class Box implements Serializable &#123;
+    private int width;   
+    private int height; 
+    private String name;   
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;) ]&quot;;
+    &#125;
+&#125;
+</code></pre>
+]]></content>
       <categories>
         <category>Java</category>
       </categories>
@@ -35655,383 +35733,6 @@ public class BufferedOutputStream extends FilterOutputStream &#123;
       </tags>
   </entry>
   <entry>
-    <title>Java IO之 FilterOutputStream详解</title>
-    <url>/2020/07/20/Java-IO-FilterOutputStream/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="FilterOutputStream-介绍"><a href="#FilterOutputStream-介绍" class="headerlink" title="FilterOutputStream 介绍"></a>FilterOutputStream 介绍</h1><p><code>FilterOutputStream</code>的作用是用来封装其它的输出流，并为它们提供额外的功能。它主要包括<code>BufferedOutputStream</code>, <code>DataOutputStream</code>和<code>PrintStream</code>。</p>
-<ul>
-<li><code>BufferedOutputStream</code>的作用是为输出流提供缓冲功能。</li>
-<li><code>DataOutputStream</code>是用来装饰其它输出流，将<code>DataOutputStream</code>和<code>DataInputStream</code>输入流配合使用，允许应用程序以与机器无关方式从底层输入流中读写基本 Java 数据类型。</li>
-<li><code>PrintStream</code>是用来装饰其它输出流。它能为其他输出流添加功能，使它们能够方便地打印各种数据值表示形式。</li>
-</ul>
-<h1 id="FilterOutputStream-源码"><a href="#FilterOutputStream-源码" class="headerlink" title="FilterOutputStream 源码"></a>FilterOutputStream 源码</h1><pre><code class="java">package java.io;
-
-public class FilterOutputStream extends OutputStream &#123;
-    protected OutputStream out;
-
-    public FilterOutputStream(OutputStream out) &#123;
-        this.out = out;
-    &#125;
-
-    public void write(int b) throws IOException &#123;
-        out.write(b);
-    &#125;
-
-    public void write(byte b[]) throws IOException &#123;
-        write(b, 0, b.length);
-    &#125;
-
-    public void write(byte b[], int off, int len) throws IOException &#123;
-        if ((off | len | (b.length - (len + off)) | (off + len)) &lt; 0)
-            throw new IndexOutOfBoundsException();
-
-        for (int i = 0 ; i &lt; len ; i++) &#123;
-            write(b[off + i]);
-        &#125;
-    &#125;
-
-    public void flush() throws IOException &#123;
-        out.flush();
-    &#125;
-
-    public void close() throws IOException &#123;
-        try &#123;
-          flush();
-        &#125; catch (IOException ignored) &#123;
-        &#125;
-        out.close();
-    &#125;
-&#125;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java IO之 FileInputStream/FileOutputStream详解</title>
-    <url>/2020/07/20/Java-IO-FileInputStream-FileOutputStream/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="FileInputStream-和-FileOutputStream-简介"><a href="#FileInputStream-和-FileOutputStream-简介" class="headerlink" title="FileInputStream 和 FileOutputStream 简介"></a>FileInputStream 和 FileOutputStream 简介</h1><p><code>FileInputStream</code>是文件输入流，它继承于<code>InputStream</code>。<br>通常，使用<code>FileInputStream</code>从某个文件中获得输入字节。</p>
-<p><code>FileOutputStream</code>是文件输出流，它继承于<code>OutputStream</code>。<br>通常，使用<code>FileOutputStream</code>将数据写入<code>File</code>或 <code>FileDescriptor</code>的输出流。</p>
-<p>FileInputStream 函数接口</p>
-<pre><code class="java">FileInputStream(File file)         // 构造函数1：创建File对象对应的文件输入流
-FileInputStream(FileDescriptor fd) // 构造函数2：创建文件描述符对应的文件输入流
-FileInputStream(String path)       // 构造函数3：创建文件(路径为path)对应的文件输入流
-    
-// 常用方法
-int      available()             // 返回剩余的可读取的字节数或者skip的字节数
-void     close()                 // 关闭文件输入流
-FileChannel      getChannel()    // 返回FileChannel
-final FileDescriptor     getFD() // 返回文件描述符
-int                  read()      // 返回文件输入流的下一个字节
-// 读取文件输入流的数据并存在到buffer，从byteOffset开始存储，存储长度是byteCount。
-int      read(byte[] buffer, int byteOffset, int byteCount) 
-long     skip(long byteCount)    // 跳过byteCount个字节
-</code></pre>
-<p>FileOutputStream 函数接口</p>
-<pre><code class="java">// 构造函数1：创建File对象对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(File file)     
-// 构造函数2：创建File对象对应的文件输入流；指定追加模式。
-FileOutputStream(File file, boolean append)   
-// 构造函数3：创建文件描述符对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(FileDescriptor fd)
-// 构造函数4：创建文件(路径为path)对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(String path) 
-// 构造函数5：创建文件(路径为path)对应的文件输入流；指定追加模式。
-FileOutputStream(String path, boolean append) 
-
-// 常用方法
-void                    close()      // 关闭输出流
-FileChannel             getChannel() // 返回FileChannel
-final FileDescriptor    getFD()      // 返回文件描述符
-// 将buffer写入到文件输出流中，从buffer的byteOffset开始写，写入长度是byteCount。
-void                    write(byte[] buffer, int byteOffset, int byteCount) 
-void                    write(int oneByte)  // 写入字节oneByte到文件输出流中
-</code></pre>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
-
-
-public class FileStreamTest &#123;
-
-    private static final String FileName = &quot;file.txt&quot;;
-
-    public static void main(String[] args) &#123;
-        testWrite();
-        testRead();
-    &#125;
-
-    /**
-     * FileOutputStream 演示函数
-     *
-     * 运行结果：
-     * 在源码所在目录生成文件file.txt，文件内容是abcdefghijklmnopqrstuvwxyz0123456789
-     *
-     * 加入，我们将 FileOutputStream fileOut2 = new FileOutputStream(file, true);
-     *       修改为 FileOutputStream fileOut2 = new FileOutputStream(file, false);
-     * 然后再执行程序，file.txt的内容变成0123456789。
-     * 原因是：
-     * 1 FileOutputStream fileOut2 = new FileOutputStream(file, true);
-     *      它是以追加模式将内容写入文件的。即写入的内容，追加到原始的内容之后。
-     * 2 FileOutputStream fileOut2 = new FileOutputStream(file, false);
-     *      它是以新建模式将内容写入文件的。即删除文件原始的内容之后，再重新写入。
-     */
-    private static void testWrite() &#123;
-        try &#123;
-            // 创建文件file.txt对应File对象
-            File file = new File(FileName);
-            // 创建文件file.txt对应的FileOutputStream对象，默认是关闭追加模式
-            FileOutputStream fileOut1 = new FileOutputStream(file);
-            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
-            PrintStream out1 = new PrintStream(fileOut1);
-            // 向文件中写入26个字母
-            out1.print(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
-            out1.close();
-
-            // 创建文件file.txt对应的FileOutputStream对象，打开追加模式
-            FileOutputStream fileOut2 = new FileOutputStream(file, true);
-            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
-            PrintStream out2 = new PrintStream(fileOut2);
-            // 向文件中写入0123456789+换行符
-            out2.println(&quot;0123456789&quot;);
-            out2.close();
-
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-
- 
-    // FileInputStream 演示程序
-    private static void testRead() &#123;
-        try &#123;
-            // 方法1：新建FileInputStream对象
-            // 新建文件file.txt对应File对象
-            File file = new File(FileName);
-            FileInputStream in1 = new FileInputStream(file);
-
-            // 方法2：新建FileInputStream对象
-            FileInputStream in2 = new FileInputStream(FileName);
-
-            // 方法3：新建FileInputStream对象
-            // 获取文件file.txt对应的文件描述符
-            FileDescriptor fdin = in2.getFD();
-            // 根据文件描述符创建FileInputStream对象
-            FileInputStream in3 = new FileInputStream(fdin);
-
-            // 测试read()，从中读取一个字节
-            char c1 = (char)in1.read();
-            System.out.println(&quot;c1=&quot;+c1);
-
-            // 测试skip(long byteCount)，跳过4个字节
-            in1.skip(25);
-
-            // 测试read(byte[] buffer, int byteOffset, int byteCount)
-            byte[] buf = new byte[10];
-            in1.read(buf, 0, buf.length);
-            System.out.println(&quot;buf=&quot;+(new String(buf)));
-
-
-            // 创建FileInputStream对象对应的BufferedInputStream
-            BufferedInputStream bufIn = new BufferedInputStream(in3);
-            // 读取一个字节
-            char c2 = (char)bufIn.read();
-            System.out.println(&quot;c2=&quot;+c2);
-
-            in1.close();
-            in2.close();
-            in3.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>c1=a
-buf=0123456789
-c2=a
-</code></pre>
-<p>结果说明：</p>
-<p>运行程序，会在源码所在位置新生成一个文件<code>file.txt</code>。它的内容是<code>abcdefghijklmnopqrstuvwxyz0123456789</code>。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java IO之 FileDescriptor详解</title>
-    <url>/2020/07/20/Java-IO-FileDescriptor/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-
-
-<h1 id="FileDescriptor-简介"><a href="#FileDescriptor-简介" class="headerlink" title="FileDescriptor 简介"></a>FileDescriptor 简介</h1><p><code>FileDescriptor</code>是文件描述符。<br><code>FileDescriptor</code>可以被用来表示开放文件、开放套接字等。<br>以<code>FileDescriptor</code>表示文件来说：当<code>FileDescriptor</code>表示某文件时，我们可以通俗的将<code>FileDescriptor</code>看成是该文件。但是，我们不能直接通过<code>FileDescriptor</code>对该文件进行操作；若需要通过<code>FileDescriptor</code>对该文件进行操作，则需要新创建<code>FileDescriptor</code>对应的<code>FileOutputStream</code>，再对文件进行操作。</p>
-<p><strong>in、out、err介绍</strong></p>
-<ul>
-<li>in – 标准输入(键盘)的描述符</li>
-<li>out – 标准输出(屏幕)的描述符</li>
-<li>err – 标准错误输出(屏幕)的描述符</li>
-</ul>
-<p>它们3个的原理和用法都类似，下面我们通过<code>out</code>来进行深入研究。</p>
-<h2 id="out-的作用和原理"><a href="#out-的作用和原理" class="headerlink" title="out 的作用和原理"></a>out 的作用和原理</h2><p><code>out</code>是标准输出(屏幕)的描述符。但是它有什么作用呢？<br>我们可以通俗理解，<code>out</code>就代表了标准输出(屏幕)。若我们要输出信息到屏幕上，即可通过<code>out</code>来进行操作；但是，<code>out</code>又没有提供输出信息到屏幕的接口(因为<code>out</code>本质是<code>FileDescriptor</code>对象，而<code>FileDescriptor</code>没有输出接口)。怎么办呢？<br>很简单，我们创建<code>out</code>对应的“输出流对象”，然后通过输出流的<code>write()</code>等输出接口就可以将信息输出到屏幕上。如下代码：</p>
-<pre><code class="java">try &#123;
-    FileOutputStream out = new FileOutputStream(FileDescriptor.out);
-    out.write(&#39;A&#39;);
-    out.close();
-&#125; catch (IOException e) &#123;
-&#125;
-</code></pre>
-<p>执行上面的程序，会在屏幕上输出字母<code>A</code>。</p>
-<p>为了方便我们操作，Java早已为我们封装好了“能方便的在屏幕上输出信息的接口”：通过<code>System.out</code>，我们能方便的输出信息到屏幕上。<br>因此，我们可以等价的将上面的程序转换为如下代码：</p>
-<pre><code class="java">System.out.print(&#39;A&#39;);
-</code></pre>
-<p>下面讲讲上面两段代码的原理<br>查看看<code>out</code>的定义。它的定义在<code>FileDescriptor</code>中，相关源码如下：</p>
-<pre><code class="java">public final class FileDescriptor &#123;
-
-    private int fd;
-
-    public static final FileDescriptor out = new FileDescriptor(1);
-
-    private FileDescriptor(int fd) &#123;
-        this.fd = fd;
-        useCount = new AtomicInteger();
-    &#125;
-
-    ...
-&#125;
-</code></pre>
-<p>从中，可以看出</p>
-<ul>
-<li>out就是一个FileDescriptor对象。它是通过构造函数FileDescriptor(int fd)创建的。</li>
-<li><code>FileDescriptor(int fd)</code>的操作：就是给<code>fd</code>对象(int类型)赋值，并新建一个使用计数变量<code>useCount</code>。<br><code>fd</code>对象是非常重要的一个变量，<code>fd=1</code>就代表了标准输出，<code>fd=0</code>就代表了标准输入，<code>fd=2</code>就代表了标准错误输出。</li>
-</ul>
-<p><code>FileOutputStream out = new FileOutputStream(FileDescriptor.out);</code> 就是利用构造函数<code>FileOutputStream(FileDescriptor fdObj)</code>来创建<code>Filed.out</code>对应的<code>FileOutputStream</code>对象。</p>
-<p>关于<code>System.out</code>是如何定义的。可以参考<a href="">深入了解System.out.println(“hello world”)</a> </p>
-<p>通过上面的学习，我们知道，我们可以自定义标准的文件描述符 [即，<code>in</code>(标准输入)，<code>out</code>(标准输出)，<code>err</code>(标准错误输出)] 的流，从而完成输入/输出功能；但是，Java已经为我们封装好了相应的接口，即我们可以更方便的<code>System.in</code>，<code>System.out</code>，<code>System.err</code>去使用它们。<br>另外，我们也可以自定义文件、Socket等的文件描述符，进而对它们进行操作。参考下面示例代码中的<code>testWrite()</code>，<code>testRead()</code>等接口。</p>
-<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><pre><code class="java">import java.io.PrintStream;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-
-// FileDescriptor 测试程序
-public class FileDescriptorTest &#123;
-
-    private static final String FileName = &quot;file.txt&quot;;
-    private static final String OutText = &quot;Hi FileDescriptor&quot;;
-    public static void main(String[] args) &#123;
-        testWrite();
-        testRead();
-
-        testStandFD() ;
-        //System.out.println(OutText);
-    &#125;
-
-    /**
-     * FileDescriptor.out 的测试程序
-     * 该程序的效果 等价于 System.out.println(OutText);
-     */
-    private static void testStandFD() &#123;
-        // 创建FileDescriptor.out 对应的PrintStream
-        PrintStream out = new PrintStream(new FileOutputStream(FileDescriptor.out));
-        // 在屏幕上输出 Hi FileDescriptor
-        out.println(OutText);
-        out.close();
-    &#125;
-
-    /**
-     * FileDescriptor写入示例程序
-     * 
-     * (01) 为了说明，通过文件名创建FileOutputStream与通过文件描述符创建FileOutputStream对象是等效的
-     * (02) 该程序会在“该源文件”所在目录新建文件&quot;file.txt&quot;，并且文件内容是&quot;Aa&quot;。
-     */
-    private static void testWrite() &#123;
-        try &#123;
-            // 新建文件“file.txt”对应的FileOutputStream对象
-            FileOutputStream out1 = new FileOutputStream(FileName);
-            // 获取文件“file.txt”对应的“文件描述符”
-            FileDescriptor fdout = out1.getFD();
-            // 根据“文件描述符”创建“FileOutputStream”对象
-            FileOutputStream out2 = new FileOutputStream(fdout);
-
-            out1.write(&#39;A&#39;);    // 通过out1向“file.txt”中写入&#39;A&#39;
-            out2.write(&#39;a&#39;);    // 通过out2向“file.txt”中写入&#39;A&#39;
-
-            if (fdout!=null)
-                System.out.printf(&quot;fdout(%s) is %s\n&quot;,fdout, fdout.valid());
-
-            out1.close();
-            out2.close();
-
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-
-    /**
-     * FileDescriptor读取示例程序
-     *
-     * 为了说明，&quot;通过文件名创建FileInputStream&quot;与“通过文件描述符创建FileInputStream”对象是等效的
-     */
-    private static void testRead() &#123;
-        try &#123;
-            // 新建文件“file.txt”对应的FileInputStream对象
-            FileInputStream in1 = new FileInputStream(FileName);
-            // 获取文件“file.txt”对应的“文件描述符”
-            FileDescriptor fdin = in1.getFD();
-            // 根据“文件描述符”创建“FileInputStream”对象
-            FileInputStream in2 = new FileInputStream(fdin);
-
-            System.out.println(&quot;in1.read():&quot;+(char)in1.read());
-            System.out.println(&quot;in2.read():&quot;+(char)in2.read());
-
-            if (fdin!=null)
-                System.out.printf(&quot;fdin(%s) is %s\n&quot;, fdin, fdin.valid());
-
-            in1.close();
-            in2.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>fdout(java.io.FileDescriptor@2b820dda) is true
-in1.read():A
-in2.read():a
-fdin(java.io.FileDescriptor@675b7986) is true
-Hi FileDescriptor
-</code></pre>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java IO之 ByteArrayInputStream详解</title>
     <url>/2020/07/20/Java-IO-ByteArrayInputStream/</url>
     <content><![CDATA[<p>-</p>
@@ -36359,6 +36060,324 @@ public class ByteArrayInputStream extends InputStream &#123;
       </tags>
   </entry>
   <entry>
+    <title>Java IO之 FileDescriptor详解</title>
+    <url>/2020/07/20/Java-IO-FileDescriptor/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+
+
+<h1 id="FileDescriptor-简介"><a href="#FileDescriptor-简介" class="headerlink" title="FileDescriptor 简介"></a>FileDescriptor 简介</h1><p><code>FileDescriptor</code>是文件描述符。<br><code>FileDescriptor</code>可以被用来表示开放文件、开放套接字等。<br>以<code>FileDescriptor</code>表示文件来说：当<code>FileDescriptor</code>表示某文件时，我们可以通俗的将<code>FileDescriptor</code>看成是该文件。但是，我们不能直接通过<code>FileDescriptor</code>对该文件进行操作；若需要通过<code>FileDescriptor</code>对该文件进行操作，则需要新创建<code>FileDescriptor</code>对应的<code>FileOutputStream</code>，再对文件进行操作。</p>
+<p><strong>in、out、err介绍</strong></p>
+<ul>
+<li>in – 标准输入(键盘)的描述符</li>
+<li>out – 标准输出(屏幕)的描述符</li>
+<li>err – 标准错误输出(屏幕)的描述符</li>
+</ul>
+<p>它们3个的原理和用法都类似，下面我们通过<code>out</code>来进行深入研究。</p>
+<h2 id="out-的作用和原理"><a href="#out-的作用和原理" class="headerlink" title="out 的作用和原理"></a>out 的作用和原理</h2><p><code>out</code>是标准输出(屏幕)的描述符。但是它有什么作用呢？<br>我们可以通俗理解，<code>out</code>就代表了标准输出(屏幕)。若我们要输出信息到屏幕上，即可通过<code>out</code>来进行操作；但是，<code>out</code>又没有提供输出信息到屏幕的接口(因为<code>out</code>本质是<code>FileDescriptor</code>对象，而<code>FileDescriptor</code>没有输出接口)。怎么办呢？<br>很简单，我们创建<code>out</code>对应的“输出流对象”，然后通过输出流的<code>write()</code>等输出接口就可以将信息输出到屏幕上。如下代码：</p>
+<pre><code class="java">try &#123;
+    FileOutputStream out = new FileOutputStream(FileDescriptor.out);
+    out.write(&#39;A&#39;);
+    out.close();
+&#125; catch (IOException e) &#123;
+&#125;
+</code></pre>
+<p>执行上面的程序，会在屏幕上输出字母<code>A</code>。</p>
+<p>为了方便我们操作，Java早已为我们封装好了“能方便的在屏幕上输出信息的接口”：通过<code>System.out</code>，我们能方便的输出信息到屏幕上。<br>因此，我们可以等价的将上面的程序转换为如下代码：</p>
+<pre><code class="java">System.out.print(&#39;A&#39;);
+</code></pre>
+<p>下面讲讲上面两段代码的原理<br>查看看<code>out</code>的定义。它的定义在<code>FileDescriptor</code>中，相关源码如下：</p>
+<pre><code class="java">public final class FileDescriptor &#123;
+
+    private int fd;
+
+    public static final FileDescriptor out = new FileDescriptor(1);
+
+    private FileDescriptor(int fd) &#123;
+        this.fd = fd;
+        useCount = new AtomicInteger();
+    &#125;
+
+    ...
+&#125;
+</code></pre>
+<p>从中，可以看出</p>
+<ul>
+<li>out就是一个FileDescriptor对象。它是通过构造函数FileDescriptor(int fd)创建的。</li>
+<li><code>FileDescriptor(int fd)</code>的操作：就是给<code>fd</code>对象(int类型)赋值，并新建一个使用计数变量<code>useCount</code>。<br><code>fd</code>对象是非常重要的一个变量，<code>fd=1</code>就代表了标准输出，<code>fd=0</code>就代表了标准输入，<code>fd=2</code>就代表了标准错误输出。</li>
+</ul>
+<p><code>FileOutputStream out = new FileOutputStream(FileDescriptor.out);</code> 就是利用构造函数<code>FileOutputStream(FileDescriptor fdObj)</code>来创建<code>Filed.out</code>对应的<code>FileOutputStream</code>对象。</p>
+<p>关于<code>System.out</code>是如何定义的。可以参考<a href="">深入了解System.out.println(“hello world”)</a> </p>
+<p>通过上面的学习，我们知道，我们可以自定义标准的文件描述符 [即，<code>in</code>(标准输入)，<code>out</code>(标准输出)，<code>err</code>(标准错误输出)] 的流，从而完成输入/输出功能；但是，Java已经为我们封装好了相应的接口，即我们可以更方便的<code>System.in</code>，<code>System.out</code>，<code>System.err</code>去使用它们。<br>另外，我们也可以自定义文件、Socket等的文件描述符，进而对它们进行操作。参考下面示例代码中的<code>testWrite()</code>，<code>testRead()</code>等接口。</p>
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><pre><code class="java">import java.io.PrintStream;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+
+// FileDescriptor 测试程序
+public class FileDescriptorTest &#123;
+
+    private static final String FileName = &quot;file.txt&quot;;
+    private static final String OutText = &quot;Hi FileDescriptor&quot;;
+    public static void main(String[] args) &#123;
+        testWrite();
+        testRead();
+
+        testStandFD() ;
+        //System.out.println(OutText);
+    &#125;
+
+    /**
+     * FileDescriptor.out 的测试程序
+     * 该程序的效果 等价于 System.out.println(OutText);
+     */
+    private static void testStandFD() &#123;
+        // 创建FileDescriptor.out 对应的PrintStream
+        PrintStream out = new PrintStream(new FileOutputStream(FileDescriptor.out));
+        // 在屏幕上输出 Hi FileDescriptor
+        out.println(OutText);
+        out.close();
+    &#125;
+
+    /**
+     * FileDescriptor写入示例程序
+     * 
+     * (01) 为了说明，通过文件名创建FileOutputStream与通过文件描述符创建FileOutputStream对象是等效的
+     * (02) 该程序会在“该源文件”所在目录新建文件&quot;file.txt&quot;，并且文件内容是&quot;Aa&quot;。
+     */
+    private static void testWrite() &#123;
+        try &#123;
+            // 新建文件“file.txt”对应的FileOutputStream对象
+            FileOutputStream out1 = new FileOutputStream(FileName);
+            // 获取文件“file.txt”对应的“文件描述符”
+            FileDescriptor fdout = out1.getFD();
+            // 根据“文件描述符”创建“FileOutputStream”对象
+            FileOutputStream out2 = new FileOutputStream(fdout);
+
+            out1.write(&#39;A&#39;);    // 通过out1向“file.txt”中写入&#39;A&#39;
+            out2.write(&#39;a&#39;);    // 通过out2向“file.txt”中写入&#39;A&#39;
+
+            if (fdout!=null)
+                System.out.printf(&quot;fdout(%s) is %s\n&quot;,fdout, fdout.valid());
+
+            out1.close();
+            out2.close();
+
+        &#125; catch(IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    /**
+     * FileDescriptor读取示例程序
+     *
+     * 为了说明，&quot;通过文件名创建FileInputStream&quot;与“通过文件描述符创建FileInputStream”对象是等效的
+     */
+    private static void testRead() &#123;
+        try &#123;
+            // 新建文件“file.txt”对应的FileInputStream对象
+            FileInputStream in1 = new FileInputStream(FileName);
+            // 获取文件“file.txt”对应的“文件描述符”
+            FileDescriptor fdin = in1.getFD();
+            // 根据“文件描述符”创建“FileInputStream”对象
+            FileInputStream in2 = new FileInputStream(fdin);
+
+            System.out.println(&quot;in1.read():&quot;+(char)in1.read());
+            System.out.println(&quot;in2.read():&quot;+(char)in2.read());
+
+            if (fdin!=null)
+                System.out.printf(&quot;fdin(%s) is %s\n&quot;, fdin, fdin.valid());
+
+            in1.close();
+            in2.close();
+        &#125; catch(IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>fdout(java.io.FileDescriptor@2b820dda) is true
+in1.read():A
+in2.read():a
+fdin(java.io.FileDescriptor@675b7986) is true
+Hi FileDescriptor
+</code></pre>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO之 FileInputStream/FileOutputStream详解</title>
+    <url>/2020/07/20/Java-IO-FileInputStream-FileOutputStream/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="FileInputStream-和-FileOutputStream-简介"><a href="#FileInputStream-和-FileOutputStream-简介" class="headerlink" title="FileInputStream 和 FileOutputStream 简介"></a>FileInputStream 和 FileOutputStream 简介</h1><p><code>FileInputStream</code>是文件输入流，它继承于<code>InputStream</code>。<br>通常，使用<code>FileInputStream</code>从某个文件中获得输入字节。</p>
+<p><code>FileOutputStream</code>是文件输出流，它继承于<code>OutputStream</code>。<br>通常，使用<code>FileOutputStream</code>将数据写入<code>File</code>或 <code>FileDescriptor</code>的输出流。</p>
+<p>FileInputStream 函数接口</p>
+<pre><code class="java">FileInputStream(File file)         // 构造函数1：创建File对象对应的文件输入流
+FileInputStream(FileDescriptor fd) // 构造函数2：创建文件描述符对应的文件输入流
+FileInputStream(String path)       // 构造函数3：创建文件(路径为path)对应的文件输入流
+    
+// 常用方法
+int      available()             // 返回剩余的可读取的字节数或者skip的字节数
+void     close()                 // 关闭文件输入流
+FileChannel      getChannel()    // 返回FileChannel
+final FileDescriptor     getFD() // 返回文件描述符
+int                  read()      // 返回文件输入流的下一个字节
+// 读取文件输入流的数据并存在到buffer，从byteOffset开始存储，存储长度是byteCount。
+int      read(byte[] buffer, int byteOffset, int byteCount) 
+long     skip(long byteCount)    // 跳过byteCount个字节
+</code></pre>
+<p>FileOutputStream 函数接口</p>
+<pre><code class="java">// 构造函数1：创建File对象对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
+FileOutputStream(File file)     
+// 构造函数2：创建File对象对应的文件输入流；指定追加模式。
+FileOutputStream(File file, boolean append)   
+// 构造函数3：创建文件描述符对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
+FileOutputStream(FileDescriptor fd)
+// 构造函数4：创建文件(路径为path)对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
+FileOutputStream(String path) 
+// 构造函数5：创建文件(路径为path)对应的文件输入流；指定追加模式。
+FileOutputStream(String path, boolean append) 
+
+// 常用方法
+void                    close()      // 关闭输出流
+FileChannel             getChannel() // 返回FileChannel
+final FileDescriptor    getFD()      // 返回文件描述符
+// 将buffer写入到文件输出流中，从buffer的byteOffset开始写，写入长度是byteCount。
+void                    write(byte[] buffer, int byteOffset, int byteCount) 
+void                    write(int oneByte)  // 写入字节oneByte到文件输出流中
+</code></pre>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.PrintStream;
+import java.io.IOException;
+
+
+public class FileStreamTest &#123;
+
+    private static final String FileName = &quot;file.txt&quot;;
+
+    public static void main(String[] args) &#123;
+        testWrite();
+        testRead();
+    &#125;
+
+    /**
+     * FileOutputStream 演示函数
+     *
+     * 运行结果：
+     * 在源码所在目录生成文件file.txt，文件内容是abcdefghijklmnopqrstuvwxyz0123456789
+     *
+     * 加入，我们将 FileOutputStream fileOut2 = new FileOutputStream(file, true);
+     *       修改为 FileOutputStream fileOut2 = new FileOutputStream(file, false);
+     * 然后再执行程序，file.txt的内容变成0123456789。
+     * 原因是：
+     * 1 FileOutputStream fileOut2 = new FileOutputStream(file, true);
+     *      它是以追加模式将内容写入文件的。即写入的内容，追加到原始的内容之后。
+     * 2 FileOutputStream fileOut2 = new FileOutputStream(file, false);
+     *      它是以新建模式将内容写入文件的。即删除文件原始的内容之后，再重新写入。
+     */
+    private static void testWrite() &#123;
+        try &#123;
+            // 创建文件file.txt对应File对象
+            File file = new File(FileName);
+            // 创建文件file.txt对应的FileOutputStream对象，默认是关闭追加模式
+            FileOutputStream fileOut1 = new FileOutputStream(file);
+            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
+            PrintStream out1 = new PrintStream(fileOut1);
+            // 向文件中写入26个字母
+            out1.print(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
+            out1.close();
+
+            // 创建文件file.txt对应的FileOutputStream对象，打开追加模式
+            FileOutputStream fileOut2 = new FileOutputStream(file, true);
+            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
+            PrintStream out2 = new PrintStream(fileOut2);
+            // 向文件中写入0123456789+换行符
+            out2.println(&quot;0123456789&quot;);
+            out2.close();
+
+        &#125; catch(IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+ 
+    // FileInputStream 演示程序
+    private static void testRead() &#123;
+        try &#123;
+            // 方法1：新建FileInputStream对象
+            // 新建文件file.txt对应File对象
+            File file = new File(FileName);
+            FileInputStream in1 = new FileInputStream(file);
+
+            // 方法2：新建FileInputStream对象
+            FileInputStream in2 = new FileInputStream(FileName);
+
+            // 方法3：新建FileInputStream对象
+            // 获取文件file.txt对应的文件描述符
+            FileDescriptor fdin = in2.getFD();
+            // 根据文件描述符创建FileInputStream对象
+            FileInputStream in3 = new FileInputStream(fdin);
+
+            // 测试read()，从中读取一个字节
+            char c1 = (char)in1.read();
+            System.out.println(&quot;c1=&quot;+c1);
+
+            // 测试skip(long byteCount)，跳过4个字节
+            in1.skip(25);
+
+            // 测试read(byte[] buffer, int byteOffset, int byteCount)
+            byte[] buf = new byte[10];
+            in1.read(buf, 0, buf.length);
+            System.out.println(&quot;buf=&quot;+(new String(buf)));
+
+
+            // 创建FileInputStream对象对应的BufferedInputStream
+            BufferedInputStream bufIn = new BufferedInputStream(in3);
+            // 读取一个字节
+            char c2 = (char)bufIn.read();
+            System.out.println(&quot;c2=&quot;+c2);
+
+            in1.close();
+            in2.close();
+            in3.close();
+        &#125; catch(IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>c1=a
+buf=0123456789
+c2=a
+</code></pre>
+<p>结果说明：</p>
+<p>运行程序，会在源码所在位置新生成一个文件<code>file.txt</code>。它的内容是<code>abcdefghijklmnopqrstuvwxyz0123456789</code>。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java IO之 FilterInputStream详解</title>
     <url>/2020/07/20/Java-IO-FilterInputStream/</url>
     <content><![CDATA[<p>-</p>
@@ -36422,754 +36441,55 @@ public class FilterInputStream extends InputStream &#123;
       </tags>
   </entry>
   <entry>
-    <title>Java IO之 序列化(Serializable和Externalizable)详解</title>
-    <url>/2020/07/19/Java-IO-Serializable-Externalizable/</url>
+    <title>Java IO之 FilterOutputStream详解</title>
+    <url>/2020/07/20/Java-IO-FilterOutputStream/</url>
     <content><![CDATA[<p>-</p>
 <span id="more"></span>
 
-<h1 id="序列化的作用和用途"><a href="#序列化的作用和用途" class="headerlink" title="序列化的作用和用途"></a>序列化的作用和用途</h1><p>序列化就是为了保存对象的状态，而与之对应的反序列化则可以把保存的对象状态再读取出来。</p>
-<p>简言之：序列化/反序列化，是Java提供一种专门用于的保存/恢复对象状态的机制。</p>
-<p>一般在以下几种情况下会用到序列化：</p>
+<h1 id="FilterOutputStream-介绍"><a href="#FilterOutputStream-介绍" class="headerlink" title="FilterOutputStream 介绍"></a>FilterOutputStream 介绍</h1><p><code>FilterOutputStream</code>的作用是用来封装其它的输出流，并为它们提供额外的功能。它主要包括<code>BufferedOutputStream</code>, <code>DataOutputStream</code>和<code>PrintStream</code>。</p>
 <ul>
-<li>当你想把内存中的对象保存到一个文件中或者数据库中时候</li>
-<li>当你想用套接字在网络上传送对象的时候</li>
-<li>当你想通过RMI传输对象的时候</li>
+<li><code>BufferedOutputStream</code>的作用是为输出流提供缓冲功能。</li>
+<li><code>DataOutputStream</code>是用来装饰其它输出流，将<code>DataOutputStream</code>和<code>DataInputStream</code>输入流配合使用，允许应用程序以与机器无关方式从底层输入流中读写基本 Java 数据类型。</li>
+<li><code>PrintStream</code>是用来装饰其它输出流。它能为其他输出流添加功能，使它们能够方便地打印各种数据值表示形式。</li>
 </ul>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="SerialTest1"><a href="#SerialTest1" class="headerlink" title="SerialTest1"></a>SerialTest1</h2><pre><code class="java">import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+<h1 id="FilterOutputStream-源码"><a href="#FilterOutputStream-源码" class="headerlink" title="FilterOutputStream 源码"></a>FilterOutputStream 源码</h1><pre><code class="java">package java.io;
 
-public class  SerialTest1 &#123;
-    private static final String TMP_FILE = &quot;.serialtest1.txt&quot;;
-    public static void main(String[] args) &#123;
-        // 将对象通过序列化保存
-        testWrite();
-        // 将序列化的对象读取出来
-        testRead();
+public class FilterOutputStream extends OutputStream &#123;
+    protected OutputStream out;
+
+    public FilterOutputStream(OutputStream out) &#123;
+        this.out = out;
     &#125;
 
-    // 将Box对象通过序列化，保存到文件中
-    private static void testWrite() &#123;
+    public void write(int b) throws IOException &#123;
+        out.write(b);
+    &#125;
+
+    public void write(byte b[]) throws IOException &#123;
+        write(b, 0, b.length);
+    &#125;
+
+    public void write(byte b[], int off, int len) throws IOException &#123;
+        if ((off | len | (b.length - (len + off)) | (off + len)) &lt; 0)
+            throw new IndexOutOfBoundsException();
+
+        for (int i = 0 ; i &lt; len ; i++) &#123;
+            write(b[off + i]);
+        &#125;
+    &#125;
+
+    public void flush() throws IOException &#123;
+        out.flush();
+    &#125;
+
+    public void close() throws IOException &#123;
         try &#123;
-            // 获取文件TMP_FILE对应的对象输出流
-            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            // 创建Box对象，Box实现了Serializable序列化接口
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
-            out.writeObject(box);
-            // 打印Box对象
-            System.out.println(&quot;testWrite() box:&quot; + box);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
+          flush();
+        &#125; catch (IOException ignored) &#123;
         &#125;
-    &#125;
-
-    // 从文件中读取序列化的Box对象
-    private static void testRead() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输入流
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            // 从对象输入流中读取先前保存的Box对象
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead box: &quot; + box);
-            
-            in.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
+        out.close();
     &#125;
 &#125;
-// Box类支持序列化。因为Box实现了Serializable接口
-// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
-class Box implements Serializable &#123;
-    private String name;
-    private int width;
-    private int height;
-    
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot; + name + &quot;: (&quot; + width +&quot;, &quot;+ height +&quot;)]&quot;; 
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>testWrite() box:[desk: (80, 48)]
-testRead box: [desk: (80, 48)]
-</code></pre>
-<p>说明：</p>
-<ul>
-<li>程序的作用就是：先将<code>Box</code>对象通过对象输出流保存到文件中，之后再通过对象输入流将文件保存的<code>Box</code>对象读取出来。</li>
-<li><code>Box</code>类说明：<code>Box</code>类是我们自己定义的类，它实现了<code>Serialable</code>接口，因此它支持序列化操作。即：<code>Box</code>支持通过<code>ObjectOutputStream</code>从输入流中读取出来。</li>
-<li><code>testWrite()</code>方法说明：<code>testWrite()</code>的作用就是新建一个<code>Box</code>对象，然后将该<code>Box</code>对象写入到文件中。首先，新建文件<code>TMP_FILE</code>的文件输出流对象(即<code>FileOutputStream</code>对象)，再创建该文件输出流的对象输出流(即<code>ObjcetOutputStream</code>对象)。然后新建<code>Box</code>对象，最后通过<code>out.writeObject(box)</code>将<code>box</code>对象写入到对象输出流中。实际上，相当于将<code>box</code>写入到文件<code>TMP_FILE</code>中。</li>
-<li><code>testRead()</code>方法说明：<code>testRead()</code>的作用就是从文件中读出<code>Box</code>对象。首先，新建文件<code>TMP_FILE</code>的文件对象输入流(即：<code>FileInputStream</code>)，再创建文件对象输入流的对象输入流(即：<code>ObjectInputStream</code>)。然后通过<code>in.readObject()</code>从对象输入流中读取出<code>Box</code>对象。实际上，相当于从文件<code>TMP_FILE</code>中读取<code>Box</code>对象。</li>
-</ul>
-<p>通过上面的示例知道：我们可以自定义类，让它支持序列化(即实现<code>Serializable</code>接口)，从而能支持对象的保存/恢复。<br>若要支持序列化，除了自定义实现<code>Serializable</code>接口的类之外，Java的基本类型和Java自带的实现了<code>Serializable</code>接口的类，都支持序列化。</p>
-<h2 id="SerialTest2"><a href="#SerialTest2" class="headerlink" title="SerialTest2"></a>SerialTest2</h2><pre><code class="java">import java.io.FileInputStream;   
-import java.io.FileOutputStream;   
-import java.io.ObjectInputStream;   
-import java.io.ObjectOutputStream;   
-import java.io.Serializable;   
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-
-public class SerialTest2 &#123;
-    private static final String TMP_FILE = &quot;.SerialableTest2.txt&quot;;
-        
-    public static void main(String[] args) &#123;
-        testWrite();
-        testRead();
-    &#125;
-
-    private static void testWrite() &#123;
-        try &#123;
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            out.writeBoolean(true);
-            out.writeByte((byte)65);
-            out.writeChar(&#39;a&#39;);
-            out.writeInt(20200719);
-            out.writeFloat(3.14F);  
-            out.writeDouble(1.414D);
-            // 写入HashMap对象
-            HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();
-            map.put(&quot;one&quot;, &quot;red&quot;);
-            map.put(&quot;two&quot;, &quot;green&quot;);
-            map.put(&quot;three&quot;, &quot;blue&quot;);
-            out.writeObject(map);
-
-            out.close();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-    
-    private static void testRead() &#123;
-        try &#123;
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            System.out.printf(&quot;boolean:%b\n&quot; , in.readBoolean());
-            System.out.printf(&quot;byte:%d\n&quot; , (in.readByte()&amp;0xff));
-            System.out.printf(&quot;char:%c\n&quot; , in.readChar());
-            System.out.printf(&quot;int:%d\n&quot; , in.readInt());
-            System.out.printf(&quot;float:%f\n&quot; , in.readFloat());
-            System.out.printf(&quot;double:%f\n&quot; , in.readDouble());
-            // 读取HashMap对象
-            HashMap map = (HashMap) in.readObject();
-            Iterator iter = map.entrySet().iterator();
-            while(iter.hasNext()) &#123;
-                Map.Entry entry = (Map.Entry)iter.next();
-                System.out.printf(&quot;%-6s -- %s\n&quot; , entry.getKey(), entry.getValue());
-            &#125;
-            in.close();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code class="j">boolean:true
-byte:65
-char:a
-int:20200719
-float:3.140000
-double:1.414000
-one    -- red
-two    -- green
-three  -- blue
-</code></pre>
-<p>说明：</p>
-<p>在前面，我们提到过：若要支持序列化，除了自定义实现<code>Serializable</code>接口的类之外；Java的基本类型和Java自带的实现了<code>Serializable</code>接口的类，都支持序列化。为了验证这句话，我们看看<code>HashMap</code>是否实现了<code>Serializable</code>接口。</p>
-<p><code>HashMap</code>是<code>java.util</code>包中定义的类，它的接口声明如下：</p>
-<pre><code class="java">public class HashMap&lt;K,V&gt; extends AbstractMap&lt;K,V&gt;
-    implements Map&lt;K,V&gt;, Cloneable, Serializable &#123;&#125; 
-</code></pre>
-<p>可以看到<code>HashMap</code>实现了<code>Serializable</code>接口所以可以实现序列化。</p>
-<p>我们在介绍序列化定义时，说过：序列化/反序列化，是专门用于的保存/恢复对象状态的机制。<br>从中，我们知道：<strong>序列化/反序列化，只支持保存/恢复对象状态，即仅支持保存/恢复类的成员变量，但不支持保存类的成员方法！</strong><br>但是，序列化是不是对类的所有的成员变量的状态都能保存呢？</p>
-<p>答案当然是否定的！</p>
-<ul>
-<li><p>序列化对<code>static</code>和<code>transient</code>变量是不会自动进行状态保存的。</p>
-<p><code>transient</code>的作用就是：用<code>transient</code>声明的变量不会被自动序列化。</p>
-</li>
-<li><p>对于<code>Socket</code>，<code>Thread</code>类，不支持序列化。若实现序列化的接口中，有<code>Thread</code>成员，在对该类进行序列化操作时，编译会出错。</p>
-<p>这主要是基于资源分配方面的原因。如果<code>Socket</code>，<code>Thread</code>类可以被序列化，但是被反序列化之后也无法对他们进行重新的资源分配；再者，也是没有必要这样实现。</p>
-</li>
-</ul>
-<h2 id="SerialTest3"><a href="#SerialTest3" class="headerlink" title="SerialTest3"></a>SerialTest3</h2><p>通过示例来查看“序列化对static和transient的处理。</p>
-<p>前面的SerialTest1进行简单修改，得到源文件SerialTest3如下</p>
-<pre><code class="java">import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-public class  SerialTest3 &#123;
-    private static final String TMP_FILE = &quot;.serialtest3.txt&quot;;
-    public static void main(String[] args) &#123;
-        // 将对象通过序列化保存
-        testWrite();
-        // 将序列化的对象读取出来
-        testRead();
-    &#125;
-
-    // 将Box对象通过序列化，保存到文件中
-    private static void testWrite() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输出流
-            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            // 创建Box对象，Box实现了Serializable序列化接口
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
-            out.writeObject(box);
-            // 打印Box对象
-            System.out.println(&quot;testWrite() box:&quot; + box);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-    // 从文件中读取序列化的Box对象
-    private static void testRead() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输入流
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            // 从对象输入流中读取先前保存的Box对象
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead box: &quot; + box);
-            
-            in.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-// Box类支持序列化。因为Box实现了Serializable接口
-// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
-class Box implements Serializable &#123;
-    private String name;
-    private static int width;
-    private transient int height;
-    
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot; + name + &quot;: (&quot; + width +&quot;, &quot;+ height +&quot;) ]&quot;; 
-    &#125;
-&#125;
-</code></pre>
-<p>和<code>SerialTest1</code>相比这里仅仅对<code>Box</code>类中的<code>width</code>和<code>height</code>变量的定义做了修改：</p>
-<pre><code class="java">private static int width;
-private transient int height;
-</code></pre>
-<p>运行结果</p>
-<pre><code class="java">testWrite() box:[desk: (80, 48) ]
-testRead box: [desk: (80, 48) ]
-</code></pre>
-<p>结果分析：</p>
-<p>我们前面说过，序列化不对<code>static</code>和<code>transient</code>变量进行状态保存。因此，<code>testWrite()</code>中保存Box对象时，不会保存<code>width</code>和<code>height</code>的值。这点是毋庸置疑的！</p>
-<p>但是，为什么<code>testRead()</code>中读取出来的<code>Box</code>对象的<code>width=80</code>，而<code>height=0</code>呢？</p>
-<ul>
-<li>先说，为什么<code>height=0</code>。因为<code>Box</code>对象中<code>height</code>是<code>int</code>类型，而<code>int</code>类型的默认值是0。</li>
-<li>再说，为什么<code>width=80</code>。这是因为<code>height</code>是<code>static</code>类型，而<code>static</code>类型就意味着所有的<code>Box</code>对象都共用一个<code>height</code>值；而在<code>testWrite()</code>中，我们已经将<code>height</code>初始化为80了。因此，我们通过序列化读取出来的<code>Box</code>对象的<code>height</code>值，也被就是80。</li>
-</ul>
-<p>理解上面的内容之后，我们应该可以推断出下面的代码的运行结果。</p>
-<h2 id="SerialTest4"><a href="#SerialTest4" class="headerlink" title="SerialTest4"></a>SerialTest4</h2><pre><code class="java">import java.io.FileInputStream;   
-import java.io.FileOutputStream;   
-import java.io.ObjectInputStream;   
-import java.io.ObjectOutputStream;   
-import java.io.Serializable;   
-
-public class SerialTest4 &#123; 
-    private static final String TMP_FILE = &quot;.serialtest4.txt&quot;;
-
-    public static void main(String[] args) &#123;   
-        testWrite();
-        testRead();
-    &#125;
-
-
-    /**
-     * 将Box对象通过序列化，保存到文件中
-     */
-    private static void testWrite() &#123;   
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输出流。
-            // ObjectOutputStream中，只能写入“基本数据”或“支持序列化的对象”
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            out.writeObject(box);
-            System.out.println(&quot;testWrite box: &quot; + box);
-            // 修改box的值
-            box = new Box(&quot;room&quot;, 100, 50);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-    /**
-     * 从文件中读取出“序列化的Box对象”
-     */
-    private static void testRead() &#123;
-        try &#123;
-
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead  box: &quot; + box);
-
-            in.close();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-
-
-class Box implements Serializable &#123;
-    private static int width;   
-    private transient int height; 
-    private String name;   
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p><code>SerialTest4</code>相比于<code>SerialTest3</code>，在<code>testWrite()</code>中添加了一行代码<code>box = new Box(&quot;room&quot;, 100, 50)</code></p>
-<p>运行结果：</p>
-<pre><code>testWrite box: [desk: (80, 48)]
-testRead  box: [desk: (100, 0)]
-</code></pre>
-<p>现在，我们更加确认序列化不对<code>static</code>和<code>transient</code>变量进行状态保存。但是，若我们想要保存<code>static</code>或<code>transient</code>变量，能不能办到呢？<br>当然可以！我们在类中重写两个方法<code>writeObject()</code>和<code>readObject()</code>即可。下面程序演示了如何手动保存<code>static</code>和<code>transient</code>变量。</p>
-<h2 id="SerialTest5"><a href="#SerialTest5" class="headerlink" title="SerialTest5"></a>SerialTest5</h2><p>对<code>SerialTest4</code>进行简单修改，以达到：序列化存储<code>static</code>和<code>transient</code>变量的目的。</p>
-<pre><code class="java">import java.io.FileInputStream;   
-import java.io.FileOutputStream;   
-import java.io.ObjectInputStream;   
-import java.io.ObjectOutputStream;   
-import java.io.Serializable;   
-import java.io.IOException;   
-import java.lang.ClassNotFoundException;   
-
-public class SerialTest5 &#123; 
-    private static final String TMP_FILE = &quot;.serialtest5.txt&quot;;
-
-    public static void main(String[] args) &#123;   
-        testWrite();
-        testRead();
-    &#125;
-
-
-
-    // 将Box对象通过序列化，保存到文件中
-    private static void testWrite() &#123;   
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输出流。
-            // ObjectOutputStream中，只能写入“基本数据”或“支持序列化的对象”
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            out.writeObject(box);
-            System.out.println(&quot;testWrite box: &quot; + box);
-            box = new Box(&quot;room&quot;, 100, 50);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-
-    // 从文件中读取出“序列化的Box对象”
-    private static void testRead() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输入流。
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead  box: &quot; + box);
-
-            in.close();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-
-
-/**
- * Box类“支持序列化”。因为Box实现了Serializable接口。
- *
- * 实际上，一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数。
- */
-class Box implements Serializable &#123;
-    private static int width;   
-    private transient int height; 
-    private String name;   
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    private void writeObject(ObjectOutputStream out) throws IOException&#123; 
-        out.defaultWriteObject();//使定制的writeObject()方法可以利用自动序列化中内置的逻辑。 
-        out.writeInt(height); 
-        out.writeInt(width); 
-        //System.out.println(&quot;Box--writeObject width=&quot;+width+&quot;, height=&quot;+height);
-    &#125;
-
-    private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException&#123; 
-        in.defaultReadObject();//defaultReadObject()补充自动序列化 
-        height = in.readInt(); 
-        width = in.readInt(); 
-        //System.out.println(&quot;Box---readObject width=&quot;+width+&quot;, height=&quot;+height);
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>testWrite box: [desk: (80, 48)]
-testRead  box: [desk: (80, 48)]
-</code></pre>
-<p>程序说明：</p>
-<p>序列化不会自动保存<code>static</code>和<code>transient</code>变量，因此我们若要保存它们，则需要通过<code>writeObject()</code>和<code>readObject()</code>去手动读写。</p>
-<ul>
-<li>通过<code>writeObject()</code>方法，写入要保存的变量。<code>writeObject()</code>的原始定义是在<code>ObjectOutputStream.java</code>中，我们按照如下示例覆盖即可：</li>
-</ul>
-<pre><code class="java">private void writeObject(ObjectOutputStream out) throws IOException&#123; 
-    out.defaultWriteObject();// 使定制的writeObject()方法可以利用自动序列化中内置的逻辑。 
-    out.writeInt(ival);      // 若要保存int类型的值，则使用writeInt()
-    out.writeObject(obj);    // 若要保存Object对象，则使用writeObject()
-&#125;
-</code></pre>
-<ul>
-<li>通过<code>readObject()</code>方法，读取之前保存的变量。<code>readObject()</code>的原始定义是在<code>ObjectInputStream.java</code>中，我们按照如下示例覆盖即可：</li>
-</ul>
-<pre><code class="java">private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException&#123; 
-    in.defaultReadObject();       // 使定制的readObject()方法可以利用自动序列化中内置的逻辑。 
-    int ival = in.readInt();      // 若要读取int类型的值，则使用readInt()
-    Object obj = in.readObject(); // 若要读取Object对象，则使用readObject()
-&#125;
-</code></pre>
-<h2 id="SerialTest6"><a href="#SerialTest6" class="headerlink" title="SerialTest6"></a>SerialTest6</h2><p>接下来，我们来研究“对于Socket, Thread类，不支持序列化。还是通过示例来查看。</p>
-<p>我们修改<code>SerialTest5</code>，在<code>Box</code>类中添加一个<code>Thread</code>成员</p>
-<pre><code class="java">import java.io.FileInputStream;   
-import java.io.FileOutputStream;   
-import java.io.ObjectInputStream;   
-import java.io.ObjectOutputStream;   
-import java.io.Serializable;   
-import java.io.IOException;   
-import java.lang.ClassNotFoundException;   
-
-public class SerialTest5 &#123; 
-    private static final String TMP_FILE = &quot;.serialtest5.txt&quot;;
-
-    public static void main(String[] args) &#123;   
-        testWrite();
-        testRead();
-    &#125;
-
-
-
-    // 将Box对象通过序列化，保存到文件中
-    private static void testWrite() &#123;   
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输出流。
-            // ObjectOutputStream中，只能写入“基本数据”或“支持序列化的对象”
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            out.writeObject(box);
-            System.out.println(&quot;testWrite box: &quot; + box);
-            box = new Box(&quot;room&quot;, 100, 50);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-
-    // 从文件中读取出“序列化的Box对象”
-    private static void testRead() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输入流。
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead  box: &quot; + box);
-
-            in.close();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-
-
-/**
- * Box类“支持序列化”。因为Box实现了Serializable接口。
- *
- * 实际上，一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数。
- */
-class Box implements Serializable &#123;
-    private static int width;   
-    private transient int height; 
-    private String name;   
-    private Thread thread = new Thread() &#123;
-        @Override
-        public void run() &#123;
-            System.out.println(&quot;Serializable thread&quot;);
-        &#125;
-    &#125;;
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    private void writeObject(ObjectOutputStream out) throws IOException&#123; 
-        out.defaultWriteObject();//使定制的writeObject()方法可以利用自动序列化中内置的逻辑。 
-        out.writeInt(height); 
-        out.writeInt(width); 
-        //System.out.println(&quot;Box--writeObject width=&quot;+width+&quot;, height=&quot;+height);
-    &#125;
-
-    private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException&#123; 
-        in.defaultReadObject();//defaultReadObject()补充自动序列化 
-        height = in.readInt(); 
-        width = in.readInt(); 
-        //System.out.println(&quot;Box---readObject width=&quot;+width+&quot;, height=&quot;+height);
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p>结果是编译报错。</p>
-<p>事实证明不能对<code>Thread</code>进行序列化。若希望程序能编译通过，可以对<code>Thread</code>变量添加<code>static</code>或<code>transient</code>修饰即可。即：</p>
-<pre><code class="java">private transient Thread thread = new Thread() &#123;
-    @Override
-     public void run() &#123;
-         System.out.println(&quot;Serializable thread&quot;);
-     &#125;
-&#125;;
-</code></pre>
-<p>至此，是关于Serializable接口实现序列化的所有内容。但是，实现序列化，除了<code>Serializable</code>之外，还有其它的方式，就是通过实现<code>Externalizable</code>来实现序列化。</p>
-<h1 id="Externalizable和完全定制序列化过程"><a href="#Externalizable和完全定制序列化过程" class="headerlink" title="Externalizable和完全定制序列化过程"></a>Externalizable和完全定制序列化过程</h1><p>如果一个类要完全自己的序列化，则实现<code>Externalizable</code>接口，而不是<code>Serializable</code>接口。</p>
-<p><code>Externalizable</code>接口定义包括两个方法<code>writeExternalizable()</code>和<code>readExternal()</code>。需要注意的是：声明类实现<code>Externalizable</code>接口会有重大的安全风险。<code>writeExternalizable()</code>和<code>readExternal()</code>方法声明为<code>public</code>，恶意类可以用这些方法读取和写入对象数据。如果对象包含敏感信息，则要格外小心。</p>
-<p>修改之前<code>SerialTest1</code>的测试程序，将其中<code>Box</code>的实现由<code>Serializable</code>接口改为<code>Externalizable</code>接口</p>
-<pre><code class="java">import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-public class  SerialTest1 &#123;
-    private static final String TMP_FILE = &quot;.serialtest1.txt&quot;;
-    public static void main(String[] args) &#123;
-        // 将对象通过序列化保存
-        testWrite();
-        // 将序列化的对象读取出来
-        testRead();
-    &#125;
-
-    // 将Box对象通过序列化，保存到文件中
-    private static void testWrite() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输出流
-            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            // 创建Box对象，Box实现了Serializable序列化接口
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
-            out.writeObject(box);
-            // 打印Box对象
-            System.out.println(&quot;testWrite() box:&quot; + box);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-    // 从文件中读取序列化的Box对象
-    private static void testRead() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输入流
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            // 从对象输入流中读取先前保存的Box对象
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead box: &quot; + box);
-            
-            in.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-// Box类支持序列化。因为Box实现了Serializable接口
-// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
-class Box implements Externalizable &#123;
-    private String name;
-    private int width;
-    private int height;
-    
-    public Box() &#123;
-    &#125;
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-    
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException &#123;
-    &#125;
-    
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException &#123;
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot; + name + &quot;: (&quot; + width +&quot;, &quot;+ height +&quot;)]&quot;; 
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>testWrite box: [desk: (80, 48)]
-testRead  box: [null: (0, 0)]
-</code></pre>
-<p>说明：</p>
-<ul>
-<li>实现<code>Externalizable</code>接口的类，不会像实现<code>Serializable</code>接口那样，会自动将数据保存。</li>
-<li>实现<code>Externalizable</code>接口的类，必须实现<code>writeExternal()</code>和<code>readExternal()</code>接口！<br>否则，程序无法正常编译！</li>
-<li>实现<code>Externalizable</code>接口的类，必须定义不带参数的构造函数！<br>否则，程序无法正常编译！</li>
-<li><code>writeExternal()</code>和<code>readExternal()</code>的方法都是<code>public</code>的，不是非常安全！</li>
-</ul>
-<p>接着，修改上面的程序实现<code>Box</code>类中的<code>writeExternal()</code>和<code>readExternal()</code>接口！</p>
-<pre><code class="java">import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-public class  SerialTest1 &#123;
-    private static final String TMP_FILE = &quot;.serialtest1.txt&quot;;
-    public static void main(String[] args) &#123;
-        // 将对象通过序列化保存
-        testWrite();
-        // 将序列化的对象读取出来
-        testRead();
-    &#125;
-
-    // 将Box对象通过序列化，保存到文件中
-    private static void testWrite() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输出流
-            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
-            // 创建Box对象，Box实现了Serializable序列化接口
-            Box box = new Box(&quot;desk&quot;, 80, 48);
-            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
-            out.writeObject(box);
-            // 打印Box对象
-            System.out.println(&quot;testWrite() box:&quot; + box);
-
-            out.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-
-    // 从文件中读取序列化的Box对象
-    private static void testRead() &#123;
-        try &#123;
-            // 获取文件TMP_FILE对应的对象输入流
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
-            // 从对象输入流中读取先前保存的Box对象
-            Box box = (Box) in.readObject();
-            System.out.println(&quot;testRead box: &quot; + box);
-            
-            in.close();
-        &#125; catch (Exception ex) &#123;
-            ex.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-// Box类支持序列化。因为Box实现了Serializable接口
-// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
-class Box implements Externalizable &#123;
-    private int width;   
-    private int height; 
-    private String name;   
-
-    public Box() &#123;
-    &#125;
-
-    public Box(String name, int width, int height) &#123;
-        this.name = name;
-        this.width = width;
-        this.height = height;
-    &#125;
-
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException &#123;
-        out.writeObject(name);
-        out.writeInt(width);
-        out.writeInt(height);
-    &#125;
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException &#123;
-        name = (String) in.readObject();
-        width = in.readInt();
-        height = in.readInt();
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果如下：</p>
-<pre><code>testWrite box: [desk: (80, 48)]
-testRead  box: [desk: (80, 48)]
 </code></pre>
 ]]></content>
       <categories>
@@ -39755,6 +39075,764 @@ public class File
         return result;
     &#125;
 &#125;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO之 序列化(Serializable和Externalizable)详解</title>
+    <url>/2020/07/19/Java-IO-Serializable-Externalizable/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="序列化的作用和用途"><a href="#序列化的作用和用途" class="headerlink" title="序列化的作用和用途"></a>序列化的作用和用途</h1><p>序列化就是为了保存对象的状态，而与之对应的反序列化则可以把保存的对象状态再读取出来。</p>
+<p>简言之：序列化/反序列化，是Java提供一种专门用于的保存/恢复对象状态的机制。</p>
+<p>一般在以下几种情况下会用到序列化：</p>
+<ul>
+<li>当你想把内存中的对象保存到一个文件中或者数据库中时候</li>
+<li>当你想用套接字在网络上传送对象的时候</li>
+<li>当你想通过RMI传输对象的时候</li>
+</ul>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="SerialTest1"><a href="#SerialTest1" class="headerlink" title="SerialTest1"></a>SerialTest1</h2><pre><code class="java">import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class  SerialTest1 &#123;
+    private static final String TMP_FILE = &quot;.serialtest1.txt&quot;;
+    public static void main(String[] args) &#123;
+        // 将对象通过序列化保存
+        testWrite();
+        // 将序列化的对象读取出来
+        testRead();
+    &#125;
+
+    // 将Box对象通过序列化，保存到文件中
+    private static void testWrite() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流
+            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            // 创建Box对象，Box实现了Serializable序列化接口
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
+            out.writeObject(box);
+            // 打印Box对象
+            System.out.println(&quot;testWrite() box:&quot; + box);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+    // 从文件中读取序列化的Box对象
+    private static void testRead() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输入流
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            // 从对象输入流中读取先前保存的Box对象
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead box: &quot; + box);
+            
+            in.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+// Box类支持序列化。因为Box实现了Serializable接口
+// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
+class Box implements Serializable &#123;
+    private String name;
+    private int width;
+    private int height;
+    
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot; + name + &quot;: (&quot; + width +&quot;, &quot;+ height +&quot;)]&quot;; 
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>testWrite() box:[desk: (80, 48)]
+testRead box: [desk: (80, 48)]
+</code></pre>
+<p>说明：</p>
+<ul>
+<li>程序的作用就是：先将<code>Box</code>对象通过对象输出流保存到文件中，之后再通过对象输入流将文件保存的<code>Box</code>对象读取出来。</li>
+<li><code>Box</code>类说明：<code>Box</code>类是我们自己定义的类，它实现了<code>Serialable</code>接口，因此它支持序列化操作。即：<code>Box</code>支持通过<code>ObjectOutputStream</code>从输入流中读取出来。</li>
+<li><code>testWrite()</code>方法说明：<code>testWrite()</code>的作用就是新建一个<code>Box</code>对象，然后将该<code>Box</code>对象写入到文件中。首先，新建文件<code>TMP_FILE</code>的文件输出流对象(即<code>FileOutputStream</code>对象)，再创建该文件输出流的对象输出流(即<code>ObjcetOutputStream</code>对象)。然后新建<code>Box</code>对象，最后通过<code>out.writeObject(box)</code>将<code>box</code>对象写入到对象输出流中。实际上，相当于将<code>box</code>写入到文件<code>TMP_FILE</code>中。</li>
+<li><code>testRead()</code>方法说明：<code>testRead()</code>的作用就是从文件中读出<code>Box</code>对象。首先，新建文件<code>TMP_FILE</code>的文件对象输入流(即：<code>FileInputStream</code>)，再创建文件对象输入流的对象输入流(即：<code>ObjectInputStream</code>)。然后通过<code>in.readObject()</code>从对象输入流中读取出<code>Box</code>对象。实际上，相当于从文件<code>TMP_FILE</code>中读取<code>Box</code>对象。</li>
+</ul>
+<p>通过上面的示例知道：我们可以自定义类，让它支持序列化(即实现<code>Serializable</code>接口)，从而能支持对象的保存/恢复。<br>若要支持序列化，除了自定义实现<code>Serializable</code>接口的类之外，Java的基本类型和Java自带的实现了<code>Serializable</code>接口的类，都支持序列化。</p>
+<h2 id="SerialTest2"><a href="#SerialTest2" class="headerlink" title="SerialTest2"></a>SerialTest2</h2><pre><code class="java">import java.io.FileInputStream;   
+import java.io.FileOutputStream;   
+import java.io.ObjectInputStream;   
+import java.io.ObjectOutputStream;   
+import java.io.Serializable;   
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class SerialTest2 &#123;
+    private static final String TMP_FILE = &quot;.SerialableTest2.txt&quot;;
+        
+    public static void main(String[] args) &#123;
+        testWrite();
+        testRead();
+    &#125;
+
+    private static void testWrite() &#123;
+        try &#123;
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            out.writeBoolean(true);
+            out.writeByte((byte)65);
+            out.writeChar(&#39;a&#39;);
+            out.writeInt(20200719);
+            out.writeFloat(3.14F);  
+            out.writeDouble(1.414D);
+            // 写入HashMap对象
+            HashMap&lt;String, String&gt; map = new HashMap&lt;&gt;();
+            map.put(&quot;one&quot;, &quot;red&quot;);
+            map.put(&quot;two&quot;, &quot;green&quot;);
+            map.put(&quot;three&quot;, &quot;blue&quot;);
+            out.writeObject(map);
+
+            out.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+    
+    private static void testRead() &#123;
+        try &#123;
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            System.out.printf(&quot;boolean:%b\n&quot; , in.readBoolean());
+            System.out.printf(&quot;byte:%d\n&quot; , (in.readByte()&amp;0xff));
+            System.out.printf(&quot;char:%c\n&quot; , in.readChar());
+            System.out.printf(&quot;int:%d\n&quot; , in.readInt());
+            System.out.printf(&quot;float:%f\n&quot; , in.readFloat());
+            System.out.printf(&quot;double:%f\n&quot; , in.readDouble());
+            // 读取HashMap对象
+            HashMap map = (HashMap) in.readObject();
+            Iterator iter = map.entrySet().iterator();
+            while(iter.hasNext()) &#123;
+                Map.Entry entry = (Map.Entry)iter.next();
+                System.out.printf(&quot;%-6s -- %s\n&quot; , entry.getKey(), entry.getValue());
+            &#125;
+            in.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code class="j">boolean:true
+byte:65
+char:a
+int:20200719
+float:3.140000
+double:1.414000
+one    -- red
+two    -- green
+three  -- blue
+</code></pre>
+<p>说明：</p>
+<p>在前面，我们提到过：若要支持序列化，除了自定义实现<code>Serializable</code>接口的类之外；Java的基本类型和Java自带的实现了<code>Serializable</code>接口的类，都支持序列化。为了验证这句话，我们看看<code>HashMap</code>是否实现了<code>Serializable</code>接口。</p>
+<p><code>HashMap</code>是<code>java.util</code>包中定义的类，它的接口声明如下：</p>
+<pre><code class="java">public class HashMap&lt;K,V&gt; extends AbstractMap&lt;K,V&gt;
+    implements Map&lt;K,V&gt;, Cloneable, Serializable &#123;&#125; 
+</code></pre>
+<p>可以看到<code>HashMap</code>实现了<code>Serializable</code>接口所以可以实现序列化。</p>
+<p>我们在介绍序列化定义时，说过：序列化/反序列化，是专门用于的保存/恢复对象状态的机制。<br>从中，我们知道：<strong>序列化/反序列化，只支持保存/恢复对象状态，即仅支持保存/恢复类的成员变量，但不支持保存类的成员方法！</strong><br>但是，序列化是不是对类的所有的成员变量的状态都能保存呢？</p>
+<p>答案当然是否定的！</p>
+<ul>
+<li><p>序列化对<code>static</code>和<code>transient</code>变量是不会自动进行状态保存的。</p>
+<p><code>transient</code>的作用就是：用<code>transient</code>声明的变量不会被自动序列化。</p>
+</li>
+<li><p>对于<code>Socket</code>，<code>Thread</code>类，不支持序列化。若实现序列化的接口中，有<code>Thread</code>成员，在对该类进行序列化操作时，编译会出错。</p>
+<p>这主要是基于资源分配方面的原因。如果<code>Socket</code>，<code>Thread</code>类可以被序列化，但是被反序列化之后也无法对他们进行重新的资源分配；再者，也是没有必要这样实现。</p>
+</li>
+</ul>
+<h2 id="SerialTest3"><a href="#SerialTest3" class="headerlink" title="SerialTest3"></a>SerialTest3</h2><p>通过示例来查看“序列化对static和transient的处理。</p>
+<p>前面的SerialTest1进行简单修改，得到源文件SerialTest3如下</p>
+<pre><code class="java">import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class  SerialTest3 &#123;
+    private static final String TMP_FILE = &quot;.serialtest3.txt&quot;;
+    public static void main(String[] args) &#123;
+        // 将对象通过序列化保存
+        testWrite();
+        // 将序列化的对象读取出来
+        testRead();
+    &#125;
+
+    // 将Box对象通过序列化，保存到文件中
+    private static void testWrite() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流
+            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            // 创建Box对象，Box实现了Serializable序列化接口
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
+            out.writeObject(box);
+            // 打印Box对象
+            System.out.println(&quot;testWrite() box:&quot; + box);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+    // 从文件中读取序列化的Box对象
+    private static void testRead() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输入流
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            // 从对象输入流中读取先前保存的Box对象
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead box: &quot; + box);
+            
+            in.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+// Box类支持序列化。因为Box实现了Serializable接口
+// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
+class Box implements Serializable &#123;
+    private String name;
+    private static int width;
+    private transient int height;
+    
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot; + name + &quot;: (&quot; + width +&quot;, &quot;+ height +&quot;) ]&quot;; 
+    &#125;
+&#125;
+</code></pre>
+<p>和<code>SerialTest1</code>相比这里仅仅对<code>Box</code>类中的<code>width</code>和<code>height</code>变量的定义做了修改：</p>
+<pre><code class="java">private static int width;
+private transient int height;
+</code></pre>
+<p>运行结果</p>
+<pre><code class="java">testWrite() box:[desk: (80, 48) ]
+testRead box: [desk: (80, 48) ]
+</code></pre>
+<p>结果分析：</p>
+<p>我们前面说过，序列化不对<code>static</code>和<code>transient</code>变量进行状态保存。因此，<code>testWrite()</code>中保存Box对象时，不会保存<code>width</code>和<code>height</code>的值。这点是毋庸置疑的！</p>
+<p>但是，为什么<code>testRead()</code>中读取出来的<code>Box</code>对象的<code>width=80</code>，而<code>height=0</code>呢？</p>
+<ul>
+<li>先说，为什么<code>height=0</code>。因为<code>Box</code>对象中<code>height</code>是<code>int</code>类型，而<code>int</code>类型的默认值是0。</li>
+<li>再说，为什么<code>width=80</code>。这是因为<code>height</code>是<code>static</code>类型，而<code>static</code>类型就意味着所有的<code>Box</code>对象都共用一个<code>height</code>值；而在<code>testWrite()</code>中，我们已经将<code>height</code>初始化为80了。因此，我们通过序列化读取出来的<code>Box</code>对象的<code>height</code>值，也被就是80。</li>
+</ul>
+<p>理解上面的内容之后，我们应该可以推断出下面的代码的运行结果。</p>
+<h2 id="SerialTest4"><a href="#SerialTest4" class="headerlink" title="SerialTest4"></a>SerialTest4</h2><pre><code class="java">import java.io.FileInputStream;   
+import java.io.FileOutputStream;   
+import java.io.ObjectInputStream;   
+import java.io.ObjectOutputStream;   
+import java.io.Serializable;   
+
+public class SerialTest4 &#123; 
+    private static final String TMP_FILE = &quot;.serialtest4.txt&quot;;
+
+    public static void main(String[] args) &#123;   
+        testWrite();
+        testRead();
+    &#125;
+
+
+    /**
+     * 将Box对象通过序列化，保存到文件中
+     */
+    private static void testWrite() &#123;   
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流。
+            // ObjectOutputStream中，只能写入“基本数据”或“支持序列化的对象”
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            out.writeObject(box);
+            System.out.println(&quot;testWrite box: &quot; + box);
+            // 修改box的值
+            box = new Box(&quot;room&quot;, 100, 50);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+    /**
+     * 从文件中读取出“序列化的Box对象”
+     */
+    private static void testRead() &#123;
+        try &#123;
+
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead  box: &quot; + box);
+
+            in.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+
+
+class Box implements Serializable &#123;
+    private static int width;   
+    private transient int height; 
+    private String name;   
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p><code>SerialTest4</code>相比于<code>SerialTest3</code>，在<code>testWrite()</code>中添加了一行代码<code>box = new Box(&quot;room&quot;, 100, 50)</code></p>
+<p>运行结果：</p>
+<pre><code>testWrite box: [desk: (80, 48)]
+testRead  box: [desk: (100, 0)]
+</code></pre>
+<p>现在，我们更加确认序列化不对<code>static</code>和<code>transient</code>变量进行状态保存。但是，若我们想要保存<code>static</code>或<code>transient</code>变量，能不能办到呢？<br>当然可以！我们在类中重写两个方法<code>writeObject()</code>和<code>readObject()</code>即可。下面程序演示了如何手动保存<code>static</code>和<code>transient</code>变量。</p>
+<h2 id="SerialTest5"><a href="#SerialTest5" class="headerlink" title="SerialTest5"></a>SerialTest5</h2><p>对<code>SerialTest4</code>进行简单修改，以达到：序列化存储<code>static</code>和<code>transient</code>变量的目的。</p>
+<pre><code class="java">import java.io.FileInputStream;   
+import java.io.FileOutputStream;   
+import java.io.ObjectInputStream;   
+import java.io.ObjectOutputStream;   
+import java.io.Serializable;   
+import java.io.IOException;   
+import java.lang.ClassNotFoundException;   
+
+public class SerialTest5 &#123; 
+    private static final String TMP_FILE = &quot;.serialtest5.txt&quot;;
+
+    public static void main(String[] args) &#123;   
+        testWrite();
+        testRead();
+    &#125;
+
+
+
+    // 将Box对象通过序列化，保存到文件中
+    private static void testWrite() &#123;   
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流。
+            // ObjectOutputStream中，只能写入“基本数据”或“支持序列化的对象”
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            out.writeObject(box);
+            System.out.println(&quot;testWrite box: &quot; + box);
+            box = new Box(&quot;room&quot;, 100, 50);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+
+    // 从文件中读取出“序列化的Box对象”
+    private static void testRead() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输入流。
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead  box: &quot; + box);
+
+            in.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+
+
+/**
+ * Box类“支持序列化”。因为Box实现了Serializable接口。
+ *
+ * 实际上，一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数。
+ */
+class Box implements Serializable &#123;
+    private static int width;   
+    private transient int height; 
+    private String name;   
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    private void writeObject(ObjectOutputStream out) throws IOException&#123; 
+        out.defaultWriteObject();//使定制的writeObject()方法可以利用自动序列化中内置的逻辑。 
+        out.writeInt(height); 
+        out.writeInt(width); 
+        //System.out.println(&quot;Box--writeObject width=&quot;+width+&quot;, height=&quot;+height);
+    &#125;
+
+    private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException&#123; 
+        in.defaultReadObject();//defaultReadObject()补充自动序列化 
+        height = in.readInt(); 
+        width = in.readInt(); 
+        //System.out.println(&quot;Box---readObject width=&quot;+width+&quot;, height=&quot;+height);
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>testWrite box: [desk: (80, 48)]
+testRead  box: [desk: (80, 48)]
+</code></pre>
+<p>程序说明：</p>
+<p>序列化不会自动保存<code>static</code>和<code>transient</code>变量，因此我们若要保存它们，则需要通过<code>writeObject()</code>和<code>readObject()</code>去手动读写。</p>
+<ul>
+<li>通过<code>writeObject()</code>方法，写入要保存的变量。<code>writeObject()</code>的原始定义是在<code>ObjectOutputStream.java</code>中，我们按照如下示例覆盖即可：</li>
+</ul>
+<pre><code class="java">private void writeObject(ObjectOutputStream out) throws IOException&#123; 
+    out.defaultWriteObject();// 使定制的writeObject()方法可以利用自动序列化中内置的逻辑。 
+    out.writeInt(ival);      // 若要保存int类型的值，则使用writeInt()
+    out.writeObject(obj);    // 若要保存Object对象，则使用writeObject()
+&#125;
+</code></pre>
+<ul>
+<li>通过<code>readObject()</code>方法，读取之前保存的变量。<code>readObject()</code>的原始定义是在<code>ObjectInputStream.java</code>中，我们按照如下示例覆盖即可：</li>
+</ul>
+<pre><code class="java">private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException&#123; 
+    in.defaultReadObject();       // 使定制的readObject()方法可以利用自动序列化中内置的逻辑。 
+    int ival = in.readInt();      // 若要读取int类型的值，则使用readInt()
+    Object obj = in.readObject(); // 若要读取Object对象，则使用readObject()
+&#125;
+</code></pre>
+<h2 id="SerialTest6"><a href="#SerialTest6" class="headerlink" title="SerialTest6"></a>SerialTest6</h2><p>接下来，我们来研究“对于Socket, Thread类，不支持序列化。还是通过示例来查看。</p>
+<p>我们修改<code>SerialTest5</code>，在<code>Box</code>类中添加一个<code>Thread</code>成员</p>
+<pre><code class="java">import java.io.FileInputStream;   
+import java.io.FileOutputStream;   
+import java.io.ObjectInputStream;   
+import java.io.ObjectOutputStream;   
+import java.io.Serializable;   
+import java.io.IOException;   
+import java.lang.ClassNotFoundException;   
+
+public class SerialTest5 &#123; 
+    private static final String TMP_FILE = &quot;.serialtest5.txt&quot;;
+
+    public static void main(String[] args) &#123;   
+        testWrite();
+        testRead();
+    &#125;
+
+
+
+    // 将Box对象通过序列化，保存到文件中
+    private static void testWrite() &#123;   
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流。
+            // ObjectOutputStream中，只能写入“基本数据”或“支持序列化的对象”
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            out.writeObject(box);
+            System.out.println(&quot;testWrite box: &quot; + box);
+            box = new Box(&quot;room&quot;, 100, 50);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+
+    // 从文件中读取出“序列化的Box对象”
+    private static void testRead() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输入流。
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead  box: &quot; + box);
+
+            in.close();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+
+
+/**
+ * Box类“支持序列化”。因为Box实现了Serializable接口。
+ *
+ * 实际上，一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数。
+ */
+class Box implements Serializable &#123;
+    private static int width;   
+    private transient int height; 
+    private String name;   
+    private Thread thread = new Thread() &#123;
+        @Override
+        public void run() &#123;
+            System.out.println(&quot;Serializable thread&quot;);
+        &#125;
+    &#125;;
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    private void writeObject(ObjectOutputStream out) throws IOException&#123; 
+        out.defaultWriteObject();//使定制的writeObject()方法可以利用自动序列化中内置的逻辑。 
+        out.writeInt(height); 
+        out.writeInt(width); 
+        //System.out.println(&quot;Box--writeObject width=&quot;+width+&quot;, height=&quot;+height);
+    &#125;
+
+    private void readObject(ObjectInputStream in) throws IOException,ClassNotFoundException&#123; 
+        in.defaultReadObject();//defaultReadObject()补充自动序列化 
+        height = in.readInt(); 
+        width = in.readInt(); 
+        //System.out.println(&quot;Box---readObject width=&quot;+width+&quot;, height=&quot;+height);
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>结果是编译报错。</p>
+<p>事实证明不能对<code>Thread</code>进行序列化。若希望程序能编译通过，可以对<code>Thread</code>变量添加<code>static</code>或<code>transient</code>修饰即可。即：</p>
+<pre><code class="java">private transient Thread thread = new Thread() &#123;
+    @Override
+     public void run() &#123;
+         System.out.println(&quot;Serializable thread&quot;);
+     &#125;
+&#125;;
+</code></pre>
+<p>至此，是关于Serializable接口实现序列化的所有内容。但是，实现序列化，除了<code>Serializable</code>之外，还有其它的方式，就是通过实现<code>Externalizable</code>来实现序列化。</p>
+<h1 id="Externalizable和完全定制序列化过程"><a href="#Externalizable和完全定制序列化过程" class="headerlink" title="Externalizable和完全定制序列化过程"></a>Externalizable和完全定制序列化过程</h1><p>如果一个类要完全自己的序列化，则实现<code>Externalizable</code>接口，而不是<code>Serializable</code>接口。</p>
+<p><code>Externalizable</code>接口定义包括两个方法<code>writeExternalizable()</code>和<code>readExternal()</code>。需要注意的是：声明类实现<code>Externalizable</code>接口会有重大的安全风险。<code>writeExternalizable()</code>和<code>readExternal()</code>方法声明为<code>public</code>，恶意类可以用这些方法读取和写入对象数据。如果对象包含敏感信息，则要格外小心。</p>
+<p>修改之前<code>SerialTest1</code>的测试程序，将其中<code>Box</code>的实现由<code>Serializable</code>接口改为<code>Externalizable</code>接口</p>
+<pre><code class="java">import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class  SerialTest1 &#123;
+    private static final String TMP_FILE = &quot;.serialtest1.txt&quot;;
+    public static void main(String[] args) &#123;
+        // 将对象通过序列化保存
+        testWrite();
+        // 将序列化的对象读取出来
+        testRead();
+    &#125;
+
+    // 将Box对象通过序列化，保存到文件中
+    private static void testWrite() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流
+            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            // 创建Box对象，Box实现了Serializable序列化接口
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
+            out.writeObject(box);
+            // 打印Box对象
+            System.out.println(&quot;testWrite() box:&quot; + box);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+    // 从文件中读取序列化的Box对象
+    private static void testRead() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输入流
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            // 从对象输入流中读取先前保存的Box对象
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead box: &quot; + box);
+            
+            in.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+// Box类支持序列化。因为Box实现了Serializable接口
+// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
+class Box implements Externalizable &#123;
+    private String name;
+    private int width;
+    private int height;
+    
+    public Box() &#123;
+    &#125;
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+    
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException &#123;
+    &#125;
+    
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException &#123;
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot; + name + &quot;: (&quot; + width +&quot;, &quot;+ height +&quot;)]&quot;; 
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>testWrite box: [desk: (80, 48)]
+testRead  box: [null: (0, 0)]
+</code></pre>
+<p>说明：</p>
+<ul>
+<li>实现<code>Externalizable</code>接口的类，不会像实现<code>Serializable</code>接口那样，会自动将数据保存。</li>
+<li>实现<code>Externalizable</code>接口的类，必须实现<code>writeExternal()</code>和<code>readExternal()</code>接口！<br>否则，程序无法正常编译！</li>
+<li>实现<code>Externalizable</code>接口的类，必须定义不带参数的构造函数！<br>否则，程序无法正常编译！</li>
+<li><code>writeExternal()</code>和<code>readExternal()</code>的方法都是<code>public</code>的，不是非常安全！</li>
+</ul>
+<p>接着，修改上面的程序实现<code>Box</code>类中的<code>writeExternal()</code>和<code>readExternal()</code>接口！</p>
+<pre><code class="java">import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class  SerialTest1 &#123;
+    private static final String TMP_FILE = &quot;.serialtest1.txt&quot;;
+    public static void main(String[] args) &#123;
+        // 将对象通过序列化保存
+        testWrite();
+        // 将序列化的对象读取出来
+        testRead();
+    &#125;
+
+    // 将Box对象通过序列化，保存到文件中
+    private static void testWrite() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输出流
+            // ObjectOutputStream中，只能写入基本数据或支持序列化的对象
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(TMP_FILE));
+            // 创建Box对象，Box实现了Serializable序列化接口
+            Box box = new Box(&quot;desk&quot;, 80, 48);
+            // 将box对象写入到对象输出流out中，即相当于将对象保存到文件TMP_FILE中
+            out.writeObject(box);
+            // 打印Box对象
+            System.out.println(&quot;testWrite() box:&quot; + box);
+
+            out.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+
+    // 从文件中读取序列化的Box对象
+    private static void testRead() &#123;
+        try &#123;
+            // 获取文件TMP_FILE对应的对象输入流
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(TMP_FILE));
+            // 从对象输入流中读取先前保存的Box对象
+            Box box = (Box) in.readObject();
+            System.out.println(&quot;testRead box: &quot; + box);
+            
+            in.close();
+        &#125; catch (Exception ex) &#123;
+            ex.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+// Box类支持序列化。因为Box实现了Serializable接口
+// 实际上一个类只需要实现Serializable即可实现序列化，而不需要实现任何函数
+class Box implements Externalizable &#123;
+    private int width;   
+    private int height; 
+    private String name;   
+
+    public Box() &#123;
+    &#125;
+
+    public Box(String name, int width, int height) &#123;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+    &#125;
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException &#123;
+        out.writeObject(name);
+        out.writeInt(width);
+        out.writeInt(height);
+    &#125;
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException &#123;
+        name = (String) in.readObject();
+        width = in.readInt();
+        height = in.readInt();
+    &#125;
+
+    @Override
+    public String toString() &#123;
+        return &quot;[&quot;+name+&quot;: (&quot;+width+&quot;, &quot;+height+&quot;)]&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果如下：</p>
+<pre><code>testWrite box: [desk: (80, 48)]
+testRead  box: [desk: (80, 48)]
 </code></pre>
 ]]></content>
       <categories>
