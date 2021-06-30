@@ -190,11 +190,11 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  GitHub: https://github.com/hugh-zhan9 || fab fa-github
-  E-Mail: hugh_zhan9@163.com || fa fa-envelope
-  Weibo: https://weibo.com || fab fa-weibo
+  #GitHub: https://github.com/hugh-zhan9 || fab fa-github
+  #E-Mail: hugh_zhan9@163.com || fa fa-envelope
+  #Weibo: https://weibo.com || fab fa-weibo
   #Google: https://plus.google.com/yourname || google
-  Twitter: https://twitter.com/yourname || fab fa-twitter
+  #Twitter: https://twitter.com/yourname || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || facebook
   #StackOverflow: https://stackoverflow.com/yourname || stack-overflow
   #YouTube: https://youtube.com/yourname || youtube
@@ -213,8 +213,8 @@ links_settings:
   # Available values: block | inline
   layout: block
 
-links:
-  友链: http://yoursite.com
+#links:
+  #友链: http://yoursite.com
 
 
 # Table of Contents in the Sidebar
