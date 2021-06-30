@@ -29,8 +29,13 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/5c/d5/5c31a3127cbc00f0c63409bbe1fbd0d5.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/fe/1d/fe7482ba09670cbe05a9dfe4dd49bd1d.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/a4/7f/a4b77d593e4cb76acb2b0689294ec17f.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/67/43/67d12e07a7d673a9c1d14354ad029443.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/ea/6e/eaefd5f4028cc7d4cfbb56b24ce8ae6e.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/17/98/17ac41d9dac454e454dcb289100bf198.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/fe/8c/fe313ed327bcf234c73ba738d975b18c.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/b5/11/b5e07bb34d532d46d127f4fcc4b78f11.jpg">
 <meta property="article:published_time" content="2021-06-29T20:41:00.000Z">
-<meta property="article:modified_time" content="2021-06-30T03:08:52.260Z">
+<meta property="article:modified_time" content="2021-06-30T09:53:57.444Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -258,7 +263,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-30 03:08:52" itemprop="dateModified" datetime="2021-06-30T03:08:52+00:00">2021-06-30</time>
+                <time title="修改时间：2021-06-30 09:53:57" itemprop="dateModified" datetime="2021-06-30T09:53:57+00:00">2021-06-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,14 +302,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.2k</span>
+              <span>15k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>13 分钟</span>
             </span>
 
         </div>
@@ -370,7 +375,139 @@
 <p><img data-src="https://static001.geekbang.org/resource/image/a4/7f/a4b77d593e4cb76acb2b0689294ec17f.jpg"></p>
 <p>当插入的时候，只需要通过散列函数计算出对应的散列槽位，将其插入到对应链表中即可，所以插入的时间复杂度是 <code>O(1)</code>。当查找、删除一个元素时，同样通过散列函数计算出对应的槽，然后遍历链表查找或者删除。那查找或删除操作的时间复杂度是多少呢？</p>
 <p>实际上，这两个操作的时间复杂度跟链表的长度 k 成正比，也就是 <code>O(k)</code>。对于散列比较均匀的散列函数来说，理论上讲，<code>k=n/m</code>，其中 n 表示散列中数据的个数，m 表示散列表中 “”槽” 的个数。</p>
-<h1 id="如何设计散列函数？"><a href="#如何设计散列函数？" class="headerlink" title="如何设计散列函数？"></a>如何设计散列函数？</h1><h1 id="装载因子过大了怎么办？"><a href="#装载因子过大了怎么办？" class="headerlink" title="装载因子过大了怎么办？"></a>装载因子过大了怎么办？</h1><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>Word 文档中单词拼写检查功能是如何实现的？</p>
+<h1 id="如何设计散列函数？"><a href="#如何设计散列函数？" class="headerlink" title="如何设计散列函数？"></a>如何设计散列函数？</h1><p>散列表的查询效率并不能笼统地说成是 <code>O(1)</code>。它跟散列函数、装载因子、散列冲突等都有关系。如果散列函数设计得不好，或者装载因子过高，都可能导致散列冲突发生的概率升高，查询效率下降。在极端情况下，有些恶意的攻击者，还有可能通过精心构造的数据，使得所有的数据经过散列函数之后，都散列到同一个槽里。</p>
+<p>如果使用的是基于链表的冲突解决方法，那这个时候散列表就会退化为链表，查询的时间复杂度就从 <code>O(1)</code> 急剧退化为 <code>O(n)</code>。如果散列表中有 10 万个数据，退化后的散列表查询的效率就下降了 10 万倍。更直接点说，如果之前运行 100 次查询只需要 0.1 秒，那现在就需要 1 万秒。这样就有可能因为查询操作消耗大量 CPU 或者线程资源，导致系统无法响应其他请求，从而达到拒绝服务攻击（DoS）的目的。这也就是散列表碰撞攻击的基本原理。</p>
+<p>散列函数设计的好坏，决定了散列表冲突的概率大小，也直接决定了散列表的性能。那什么才是好的散列函数呢？</p>
+<ul>
+<li><strong>首先，散列函数的设计不能太复杂。</strong>过于复杂的散列函数，势必会消耗很多计算时间，也就间接地影响到散列表的性能。</li>
+<li>其次，<strong>散列函数生成的值要尽可能随机并且均匀分布</strong>，这样才能避免或者最小化散列冲突，而且即便出现冲突，散列到每个槽里的数据也会比较平均，不会出现某个槽内数据特别多的情况。</li>
+</ul>
+<p>实际工作中，还需要综合考虑各种因素。这些因素有关键字的长度、特点、分布、还有散列表的大小等。散列函数各式各样，举几个常用的、简单的散列函数的设计方法。</p>
+<p>第一个例子还是学生运动会的例子，通过分析参赛编号的特征，把编号中的后两位作为散列值。还可以用类似的散列函数处理手机号码，因为手机号码前几位重复的可能性很大，但是后面几位就比较随机，可以取手机号的后四位作为散列值。这种散列函数的设计方法，叫做“数据分析法”。</p>
+<p>第二个例子就是如何实现 Word 拼写检查功能的例子。这里面的散列函数，就可以这样设计：将单词中每个字母的 ASCll 码值 “进位” 相加，然后再跟散列表的大小求余、取模，作为散列值。比如，英文单词 nice 转化出来的散列值就是下面这样：</p>
+<pre><code>
+hash(&quot;nice&quot;)=((&quot;n&quot; - &quot;a&quot;) * 26*26*26 + (&quot;i&quot; - &quot;a&quot;)*26*26 + (&quot;c&quot; - &quot;a&quot;)*26+ (&quot;e&quot;-&quot;a&quot;)) / 78978
+</code></pre>
+<p>实际上，散列函数的设计方法还有很多，比如直接寻址法、平方取中法、折叠法、随机数法等，这些你只要了解就行了，不需要全都掌握。</p>
+<h1 id="装载因子过大了怎么办？"><a href="#装载因子过大了怎么办？" class="headerlink" title="装载因子过大了怎么办？"></a>装载因子过大了怎么办？</h1><p>装载因子越大，说明散列表中的元素越多，空闲位置越少，散列冲突的概率就越大。不仅插入数据的过程要多次寻址或者拉很长的链，查找的过程也会因此变得很慢。</p>
+<p>对于没有频繁插入和删除的静态数据集合来说，很容易根据数据的特点、分布等，设计出完美的、极少冲突的散列函数，因为毕竟之前数据都是已知的。对于动态散列表来说，数据集合是频繁变动的，无法预估将要加入的数据个数，所以也无法事先申请一个足够大的散列表。随着数据慢慢加入，装载因子就会慢慢变大。当装载因子大到一定程度之后，散列冲突就会变得不可接受。这个时候该如何处理呢？</p>
+<p>还记得前面多次讲的“动态扩容”吗？你回想一下，数组、栈、队列是如何动态扩容的。针对散列表，当装载因子过大时也可以进行动态扩容，重新申请一个更大的散列表，将数据搬移到这个新散列表中。</p>
+<p>假设每次扩容都申请一个原来散列表大小两倍的空间。如果原来散列表的装载因子是 0.8，那经过扩容之后，新散列表的装载因子就下降为原来的一半，变成了 0.4。针对数组的扩容，数据搬移操作比较简单。但是，针对散列表的扩容，数据搬移操作要复杂很多。因为散列表的大小变了，数据的存储位置也变了，所以需要通过散列函数重新计算每个数据的存储位置。如下图这个例子，在原来的散列表中，21 这个元素原来存储在下标为 0 的位置，搬移到新的散列表中，存储在下标为 7 的位置。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/67/43/67d12e07a7d673a9c1d14354ad029443.jpg"></p>
+<p>对于支持动态扩容的散列表，插入操作的时间复杂度是多少呢？</p>
+<p>插入一个数据，最好情况下，不需要扩容，最好时间复杂度是 <code>O(1)</code>。最坏情况下，散列表装载因子过高，启动扩容，需要重新申请内存空间，重新计算哈希位置，并且搬移数据，所以时间复杂度是 <code>O(n)</code>。用摊还分析法，均摊情况下，时间复杂度接近最好情况，就是 <code>O(1)</code>。</p>
+<p>实际上，对于动态散列表，随着数据的删除，散列表中的数据会越来越少，空闲空间会越来越多。如果对空间消耗非常敏感，可以在装载因子小于某个值之后，启动动态缩容。当然，如果更加在意执行效率，能够容忍多消耗一点内存空间，那就可以不用费劲来缩容了。</p>
+<p>前面讲到当散列表的装载因子超过某个阈值时，就需要进行扩容。装载因子阈值需要选择得当。如果太大，会导致冲突过多；如果太小，会导致内存浪费严重。装载因子阈值的设置要权衡时间、空间复杂度。如果内存空间不紧张，对执行效率要求很高，可以降低负载因子的阈值；相反，如果内存空间紧张，对执行效率要求又不高，可以增加负载因子的值，甚至可以大于 1。</p>
+<h1 id="如何避免低效的扩容"><a href="#如何避免低效的扩容" class="headerlink" title="如何避免低效的扩容"></a>如何避免低效的扩容</h1><p>大部分情况下，动态扩容的散列表插入一个数据都很快，但是在特殊情况下，当装载因子已经到达阈值，需要先进行扩容，再插入数据。这个时候，插入数据就会变得很慢，甚至会无法接受。举一个极端的例子，如果散列表当前大小为 1GB，要想扩容为原来的两倍大小，那就需要对 1GB 的数据重新计算哈希值，并且从原来的散列表搬移到新的散列表，听起来就很耗时是不是？如果业务代码直接服务于用户，尽管大部分情况下，插入一个数据的操作都很快，但是，极个别非常慢的插入操作，也会让用户崩溃。这个时候，“一次性”扩容的机制就不合适了。</p>
+<p>为了解决一次性扩容耗时过多的情况，可以将扩容操作穿插在插入操作的过程中，分批完成。当装载因子触达阈值之后，只申请新空间，但并不将老的数据搬移到新散列表中。当有新数据要插入时，将新数据插入新散列表中，并且从老的散列表中拿出一个数据放入到新散列表。每次插入一个数据到散列表都重复上面的过程。经过多次插入操作之后，老的散列表中的数据就一点一点全部搬移到新散列表中了。这样没有了集中的一次性数据搬移，插入操作就都变得很快了。</p>
+<p>这期间的查询操作怎么来做呢？对于查询操作，为了兼容了新、老散列表中的数据，先从新散列表中查找，如果没有找到，再去老的散列表中查找。通过这样均摊的方法，将一次性扩容的代价，均摊到多次插入操作中，就避免了一次性扩容耗时过多的情况。这种实现方式，任何情况下，插入一个数据的时间复杂度都是 <code>O(1)</code>。</p>
+<h1 id="如何选择冲突解决方法"><a href="#如何选择冲突解决方法" class="headerlink" title="如何选择冲突解决方法"></a>如何选择冲突解决方法</h1><p>前面提到了开放寻址法和链表法。这两种冲突解决办法在实际的软件开发中都非常常用。比如，Java 中 LinkedHashMap 就采用了链表法解决冲突，ThreadLocalMap 是通过线性探测的开放寻址法来解决冲突。那你知道，这两种冲突解决方法各有什么优势和劣势，又各自适用哪些场景吗？</p>
+<h2 id="开放寻址法-1"><a href="#开放寻址法-1" class="headerlink" title="开放寻址法"></a>开放寻址法</h2><p>先来看看开放寻址法的优点有哪些。开放寻址法不像链表法，需要拉很多链表。散列表中的数据都存储在数组中，可以有效地利用 CPU 缓存加快查询速度。而且，这种方法实现的散列表，序列化起来比较简单。链表法包含指针，序列化起来就没那么容易。你可不要小看序列化，很多场合都会用到的。</p>
+<p>再来看下开放寻址法有哪些缺点。前面讲到，用开放寻址法解决冲突的散列表，删除数据的时候比较麻烦，需要特殊标记已经删除掉的数据。而且在开放寻址法中，所有的数据都存储在一个数组中，比起链表法来说，冲突的代价更高。所以，使用开放寻址法解决冲突的散列表，装载因子的上限不能太大。这也导致这种方法比链表法更浪费内存空间。</p>
+<p>总结一下：当数据量比较小、装载因子小的时候，适合采用开放寻址法。这也是 Java 中的ThreadLocalMap使用开放寻址法解决散列冲突的原因。</p>
+<h2 id="链表法-1"><a href="#链表法-1" class="headerlink" title="链表法"></a>链表法</h2><p>首先，链表法对内存的利用率比开放寻址法要高。因为链表结点可以在需要的时候再创建，并不需要像开放寻址法那样事先申请好。实际上，这一点也是链表优于数组的地方。</p>
+<p>链表法比起开放寻址法，对大装载因子的容忍度更高。开放寻址法只能适用装载因子小于 1 的情况。接近 1 时，就可能会有大量的散列冲突，导致大量的探测、再散列等，性能会下降很多。但是对于链表法来说，只要散列函数的值随机均匀，即便装载因子变成 10，也就是链表的长度变长了而已，虽然查找效率有所下降，但是比起顺序查找还是快很多。</p>
+<p>链表因为要存储指针，所以对于比较小的对象的存储，是比较消耗内存的，还有可能会让内存的消耗翻倍。而且，因为链表中的结点是零散分布在内存中的，不是连续的，所以对 CPU 缓存是不友好的，这方面对于执行效率也有一定的影响。当然如果存储的是大对象，也就是说要存储的对象的大小远远大于一个指针的大小（4 个字节或者 8 个字节），那链表中指针的内存消耗在大对象面前就可以忽略了。</p>
+<p>实际上对链表法稍加改造可以实现一个更加高效的散列表。那就是将链表法中的链表改造为其他高效的动态数据结构，比如跳表、红黑树。这样即便出现散列冲突，极端情况下所有的数据都散列到同一个桶内，那最终退化成的散列表的查找时间也只不过是 <code>O(logn)</code>。这样也就有效避免了散列碰撞攻击。</p>
+<p><strong>总结一下</strong>：基于链表的散列冲突处理方法比较适合存储大对象、大数据量的散列表，而且，比起开放寻址法，它更加灵活，支持更多的优化策略，比如用红黑树代替链表。</p>
+<h1 id="工业级散列表举例分析"><a href="#工业级散列表举例分析" class="headerlink" title="工业级散列表举例分析"></a>工业级散列表举例分析</h1><p>来具体看下一下 Java 中的 HashMap 这样一个工业级的散列表，这些技术是怎么应用的。</p>
+<ol>
+<li><p><strong>初始大小HashMap</strong> </p>
+<p>默认的初始大小是 16，当然这个默认值是可以设置的，如果事先知道大概的数据量有多大，可以通过修改默认初始大小，减少动态扩容的次数，这样会大大提高 HashMap 的性能。</p>
+</li>
+<li><p><strong>装载因子和动态扩容</strong></p>
+<p>最大装载因子默认是 0.75，当 HashMap 中元素个数超过 <code>0.75*capacity</code>（capacity 表示散列表的容量）的时候，就会启动扩容，每次扩容都会扩容为原来的两倍大小。</p>
+</li>
+<li><p><strong>散列冲突解决方法</strong> </p>
+<p>HashMap 底层采用链表法来解决冲突。即使负载因子和散列函数设计得再合理，也免不了会出现拉链过长的情况，一旦出现拉链过长则会严重影响 HashMap 的性能。于是，在 JDK1.8 版本中，为了对 HashMap 做进一步优化，引入了红黑树。而当链表长度太长（默认超过 8）时，链表就转换为红黑树。利用红黑树快速增删改查的特点，提高 HashMap 的性能。当红黑树结点个数少于 6 个的时候，又会将红黑树转化为链表。因为在数据量较小的情况下，红黑树要维护平衡，比起链表性能上的优势并不明显。</p>
+</li>
+<li><p><strong>散列函数</strong></p>
+<p>散列函数的设计并不复杂，追求的是简单高效、分布均匀。</p>
+<pre><code class="java">int hash(Object key) &#123;
+    int h = key.hashCode()；
+    return (h ^ (h &gt;&gt;&gt; 16)) &amp; (capicity -1); //capicity表示散列表的大小
+&#125;
+</code></pre>
+<p>其中，<code>hashCode()</code> 返回的是 Java 对象的 hash code。比如 String 类型的对象的 <code>hashCode()</code> 就是下面这样：</p>
+<pre><code class="java">public int hashCode() &#123;
+    int var1 = this.hash;
+    if(var1 == 0 &amp;&amp; this.value.length &gt; 0) &#123;
+        char[] var2 = this.value;
+        for(int var3 = 0; var3 &lt; this.value.length; ++var3) &#123;
+            var1 = 31 * var1 + var2[var3];
+        &#125;
+        this.hash = var1;
+    &#125;
+    return var1;
+&#125;
+</code></pre>
+</li>
+</ol>
+<h1 id="LRU-缓存淘汰算法"><a href="#LRU-缓存淘汰算法" class="headerlink" title="LRU 缓存淘汰算法"></a>LRU 缓存淘汰算法</h1><p>在链表那一节中，提到借助散列表可以把 LRU 缓存淘汰算法的时间复杂度降低为 <code>O(1)</code>。那现在就来看看它是如何做到的。</p>
+<p>首先回顾一下当时是如何通过链表实现 LRU 缓存淘汰算法的。需要维护一个按照访问时间从大到小有序排列的链表结构。因为缓存大小有限，当缓存空间不够，需要淘汰一个数据的时候，就直接将链表头部的结点删除。当要缓存某个数据的时候，先在链表中查找这个数据。如果没有找到，则直接将数据放到链表的尾部；如果找到了就把它移动到链表的尾部。</p>
+<p>因为查找数据需要遍历链表，所以单纯用链表实现的 LRU 缓存淘汰算法的时间复杂是 <code>O(n)</code>。实际上一个缓存（cache）系统主要包含下面这几个操作：</p>
+<ul>
+<li>往缓存中添加一个数据；</li>
+<li>从缓存中删除一个数据；</li>
+<li>在缓存中查找一个数据。</li>
+</ul>
+<p>这三个操作都要涉及 “查找” 操作，如果单纯地采用链表的话，时间复杂度只能是 <code>O(n)</code>。如果将散列表和链表两种数据结构组合使用，可以将这三个操作的时间复杂度都降低到 <code>O(1)</code>。具体的结构就是下面这个样子：</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/ea/6e/eaefd5f4028cc7d4cfbb56b24ce8ae6e.jpg"></p>
+<p>使用双向链表存储数据，链表中的每个结点处理存储数据（data）、前驱指针（prev）、后继指针（next）之外，还新增了一个特殊的字段 <code>hnext</code>。这个 <code>hnext</code> 有什么作用呢？</p>
+<p>因为散列表是通过链表法解决散列冲突的，所以每个结点会在两条链中。一个链是刚刚提到的双向链表，另一个链是散列表中的拉链。<strong>前驱和后继指针是为了将结点串在双向链表中，<code>hnext</code> 指针是为了将结点串在散列表的拉链中。</strong></p>
+<p>了解了这个散列表和双向链表的组合存储结构之后，再来看前面讲到的缓存的三个操作，是如何做到时间复杂度是 <code>O(1)</code> 的？</p>
+<p>首先来看如何查找一个数据。前面讲过，散列表中查找数据的时间复杂度接近 <code>O(1)</code>，所以通过散列表，可以很快地在缓存中找到一个数据。当找到数据之后，还需要将它移动到双向链表的尾部。</p>
+<p>其次来看如何删除一个数据。需要找到数据所在的结点，然后将结点删除。借助散列表，可以在 <code>O(1)</code> 时间复杂度里找到要删除的结点。因为链表是双向链表，双向链表可以通过前驱指针 <code>O(1)</code> 时间复杂度获取前驱结点，所以在双向链表中，删除结点只需要 <code>O(1)</code> 的时间复杂度。</p>
+<p>最后来看如何添加一个数据。添加数据到缓存稍微有点麻烦，需要先看这个数据是否已经在缓存中。如果已经在其中，需要将其移动到双向链表的尾部；如果不在其中，还要看缓存有没有满。如果满了，则将双向链表头部的结点删除，然后再将数据放到链表的尾部；如果没有满，就直接将数据放到链表的尾部。这整个过程涉及的查找操作都可以通过散列表来完成。其他的操作，比如删除头结点、链表尾部插入数据等，都可以在 <code>O(1)</code> 的时间复杂度内完成。</p>
+<p>所以，这三个操作的时间复杂度都是 <code>O(1)</code>。至此就通过散列表和双向链表的组合使用，实现了一个高效的、支持 LRU 缓存淘汰算法的缓存系统原型。</p>
+<h1 id="Redis-有序集合"><a href="#Redis-有序集合" class="headerlink" title="Redis 有序集合"></a>Redis 有序集合</h1><p>在跳表那一节讲到有序集合的操作时稍微做了些简化。实际上在有序集合中，每个成员对象有两个重要的属性，key（键值）和 score（分值）。实际情况中不仅会通过 score 来查找数据，还会通过 key 来查找数据。</p>
+<p>举个例子，比如用户积分排行榜有这样一个功能：可以通过用户的 ID 来查找积分信息，也可以通过积分区间来查找用户 ID 或者姓名信息。这里包含 ID、姓名和积分的用户信息，就是成员对象，用户 ID 就是 key，积分就是 score。所以，如果细化一下 Redis 有序集合的操作，那就是下面这样：</p>
+<ul>
+<li>添加一个成员对象；</li>
+<li>按照键值来删除一个成员对象；</li>
+<li>按照键值来查找一个成员对象；</li>
+<li>按照分值区间查找数据，比如查找积分在[100, 356]之间的成员对象；</li>
+<li>按照分值从小到大排序成员变量；</li>
+</ul>
+<p>如果仅仅按照分值将成员对象组织成跳表的结构，那按照键值来删除、查询成员对象就会很慢，解决方法与 LRU 缓存淘汰算法的解决方法类似。可以再按照键值构建一个散列表，这样按照 key 来删除、查找一个成员对象的时间复杂度就变成了 <code>O(1)</code>。同时，借助跳表结构，其他操作也非常高效。实际上，Redis 有序集合的操作还有另外一类，也就是查找成员对象的排名（Rank）或者根据排名区间查找成员对象。这个功能单纯用刚刚讲的这种组合结构就无法高效实现了。</p>
+<h1 id="Java-LinkedHashMap"><a href="#Java-LinkedHashMap" class="headerlink" title="Java LinkedHashMap"></a>Java LinkedHashMap</h1><p>HashMap 底层是通过散列表这种数据结构实现的。而 LinkedHashMap 前面比 HashMap 多了一个 “Linked”，这里的 “Linked” 是不是说，LinkedHashMap 是一个通过链表法解决散列冲突的散列表呢？</p>
+<p>实际上，LinkedHashMap 并没有这么简单，其中的 “Linked” 也并不仅仅代表它是通过链表法解决散列冲突的。先来看一段代码。你觉得这段代码会以什么样的顺序打印 3，1，5，2 这几个 key 呢？原因又是什么呢？</p>
+<pre><code class="java">HashMap&lt;Integer, Integer&gt; m = new LinkedHashMap&lt;&gt;();
+m.put(3, 11);
+m.put(1, 12);
+m.put(5, 23);
+m.put(2, 22);
+
+for (Map.Entry e : m.entrySet()) &#123;
+    System.out.println(e.getKey());
+&#125;
+</code></pre>
+<p>上面的代码会按照数据插入的顺序依次来打印，也就是说，打印的顺序就是 3，1，5，2。你有没有觉得奇怪？散列表中数据是经过散列函数打乱之后无规律存储的，这里是如何实现按照数据的插入顺序来遍历打印的呢？</p>
+<p>LinkedHashMap 也是通过散列表和链表组合在一起实现的。实际上它不仅支持按照插入顺序遍历数据，还支持按照访问顺序来遍历数据。你可以看下面这段代码：</p>
+<pre><code class="java">// 10是初始大小，0.75是装载因子，true是表示按照访问时间排序
+HashMap&lt;Integer, Integer&gt; m = new LinkedHashMap&lt;&gt;(10, 0.75f, true);
+m.put(3, 11);
+m.put(1, 12);
+m.put(5, 23);
+m.put(2, 22);
+
+m.put(3, 26);
+m.get(5);
+
+for (Map.Entry e : m.entrySet()) &#123;
+    System.out.println(e.getKey());
+&#125;
+</code></pre>
+<p>这段代码打印的结果是 1，2，3，5。</p>
+<p>来具体分析一下，为什么这段代码会按照这样顺序来打印。每次调用 <code>put()</code> 函数往 LinkedHashMap 中添加数据的时候，都会将数据添加到链表的尾部，所以在前四个操作完成之后，链表中的数据是下面这样：</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/17/98/17ac41d9dac454e454dcb289100bf198.jpg"></p>
+<p>在 <code>m.put(3, 26);</code> 这行代码中，再次将键值为 3 的数据放入到 LinkedHashMap 的时候，会先查找这个键值是否已经有了，然后再将已经存在的 (3,11) 删除，并且将新的 (3,26) 放到链表的尾部。所以这个时候链表中的数据就是下面这样：</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/fe/8c/fe313ed327bcf234c73ba738d975b18c.jpg"></p>
+<p>当第 9 行代码访问到 key 为 5 的数据的时候，将被访问到的数据移动到链表的尾部。所以，第 9 行代码之后，链表中的数据是下面这样：</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/b5/11/b5e07bb34d532d46d127f4fcc4b78f11.jpg"></p>
+<p>所以，最后打印出来的数据是 1，2，3，5。从上面的分析，你有没有发现，按照访问时间排序的 LinkedHashMap 本身就是一个支持 LRU 缓存淘汰策略的缓存系统？实际上，它们两个的实现原理也是一模一样的。</p>
+<p>总结一下，实际上 LinkedHashMap 是通过双向链表和散列表这两种数据结构组合实现的。LinkedHashMap 中的 “Linked” 实际上是指的是双向链表，并非指用链表法解决散列冲突。</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>Word 文档中单词拼写检查功能是如何实现的？</p>
 <blockquote>
 <p>常用的英文单词有 20 万个左右，假设单词的平均长度是 10 个字母，平均一个单词占用 10 个字节的内存空间，那 20 万英文单词大约占 2MB 的存储空间，就算放大 10 倍也就是 20MB。对于现在的计算机来说，这个大小完全可以放在内存里面。所以可以用散列表来存储整个英文单词词典。当用户输入某个英文单词时，拿用户输入的单词去散列表中查找。如果查到，则说明拼写正确；如果没有查到，则说明拼写可能有误，给予提示。借助散列表这种数据结构，就可以轻松实现快速判断是否存在拼写错误。</p>
 </blockquote>
@@ -382,6 +519,71 @@
 <p>有两个字符串数组，每个数组大约有 10 万条字符串，如何快速找出两个数组中相同的字符串？</p>
 <blockquote>
 <p>以第一个字符串数组构建散列表，key 为字符串，value 为出现次数。再遍历第二个字符串数组，以字符串为 key 在散列表中查找，如果 value 大于零，说明存在相同字符串。时间复杂度 <code>O(n)</code>。</p>
+</blockquote>
+<p>如何设计一个可以应对各种异常情况的工业级散列表，来避免在散列冲突的情况下，散列表性能的急剧下降，并且能抵抗散列碰撞攻击？</p>
+<blockquote>
+<p>支持快速地查询、插入、删除操作；内存占用合理，不能浪费过多的内存空间；性能稳定，极端情况下，散列表的性能也不会退化到无法接受的情况。</p>
+<p>如何实现这样一个散列表呢？根据前面讲到的知识，从这三个方面来考虑设计思路：设计一个合适的散列函数；定义装载因子阈值，并且设计动态扩容策略；选择合适的散列冲突解决方法。</p>
+<p>关于散列函数、装载因子、动态扩容策略，还有散列冲突的解决办法，前面都讲过了，具体如何选择，还要结合具体的业务场景、具体的业务数据来具体分析。不过只要朝这三个方向努力，就离设计出工业级的散列表不远了。</p>
+</blockquote>
+<p>为什么散列表和链表经常会一起使用？</p>
+<blockquote>
+<p>在链表那一节，讲到如何用链表来实现 LRU 缓存淘汰算法，但是链表实现的 LRU 缓存淘汰算法的时间复杂度是 <code>O(n)</code>，当时也提到了，通过散列表可以将这个时间复杂度降低到 <code>O(1)</code>。在跳表那一节，提到 Redis 的有序集合是使用跳表来实现的，跳表可以看作一种改进版的链表。当时也提到，Redis 有序集合不仅使用了跳表，还用到了散列表。除此之外， Java 中 LinkedHashMap 也用到了散列表和链表两种数据结构。</p>
+<p>散列表这种数据结构虽然支持非常高效的数据插入、删除、查找操作，但是散列表中的数据都是通过散列函数打乱之后无规律存储的。也就说，它无法支持按照某种顺序快速地遍历数据。如果希望按照顺序遍历散列表中的数据，那我们需要将散列表中的数据拷贝到数组中，然后排序，再遍历。因为散列表是动态数据结构，不停地有数据的插入、删除，所以每当我们希望按顺序遍历散列表中的数据的时候，都需要先排序，那效率势必会很低。为了解决这个问题，将散列表和链表（或者跳表）结合在一起使用。</p>
+</blockquote>
+<p>上面讲的几个散列表和链表结合使用的例子里，用的都是双向链表。如果把双向链表改成单链表，还能否正常工作呢？为什么呢？</p>
+<blockquote>
+<p>在删除一个元素时，虽然能 <code>O(1)</code> 的找到目标结点，但是要删除该结点需要拿到前一个结点的指针，遍历到前一个结点复杂度会变为 <code>O(n)</code>，所以用双链表实现比较合适。（但其实硬要操作的话，单链表也是可以实现 <code>O(1)</code> 时间复杂度删除结点的）。</p>
+</blockquote>
+<p>假设猎聘网有 10 万名猎头，每个猎头都可以通过做任务（比如发布职位）来积累积分，然后通过积分来下载简历。假设你是猎聘网的一名工程师，如何在内存中存储这 10 万个猎头 ID 和积分信息，让它能够支持这样几个操作：</p>
+<ul>
+<li>根据猎头的 ID 快速查找、删除、更新这个猎头的积分信息；</li>
+<li>查找积分在某个区间的猎头 ID 列表； (区间查找 —— 使用跳表)</li>
+<li>查找按照积分从小到大排名在第 x 位到第 y 位之间的猎头 ID 列表。</li>
+</ul>
+<blockquote>
+<p>以积分排序构建一个跳表，再以猎头 ID 构建一个散列表。</p>
+<p>1）ID 在散列表中所以可以 <code>O(1)</code> 查找到这个猎头；<br>2）积分以跳表存储，跳表支持区间查询；<br>3）这点根据目前学习的知识暂时无法实现，老师文中也提到了。</p>
+</blockquote>
+<hr>
+<pre><code>int hash(Object key) &#123;
+    int h = key.hashCode()；
+    return (h ^ (h &gt;&gt;&gt; 16)) &amp; (capitity -1); //capicity 表示散列表的大小
+&#125;
+
+先补充下老师使用的这段代码的一些问题：在JDK HashMap源码中，是分两步走的：
+1. hash值的计算，源码如下：
+static final int hash(Object key) &#123;
+        int hash;
+        return key == null ? 0 : (hash = key.hashCode()) ^ hash &gt;&gt;&gt; 16;
+ &#125;
+
+2. 在插入或查找的时候，计算Key被映射到桶的位置：
+int index = hash(key) &amp; (capacity - 1)
+
+----------------------------
+JDK HashMap中hash函数的设计，确实很巧妙：
+
+hashcode本身是个32位整型值，获取对象的hashcode以后，先进行移位运算，然后再和自己做异或运算，即：hashcode ^ (hashcode &gt;&gt;&gt; 16)，这一步甚是巧妙，是将高16位移到低16位，这样计算出来的整型值将“具有”高位和低位的性质
+
+最后，用hash表当前的容量减去一，再和刚刚计算出来的整型值做位与运算。进行位与运算，很好理解，是为了计算出数组中的位置。但这里有个问题：
+为什么要用容量减去一？
+因为 A % B = A &amp; (B - 1)，所以，(h ^ (h &gt;&gt;&gt; 16)) &amp; (capitity -1) = (h ^ (h &gt;&gt;&gt; 16)) % capitity，可以看出这里本质上是使用了「除留余数法」
+
+综上，可以看出，hashcode的随机性，加上移位异或算法，得到一个非常随机的hash值，再通过「除留余数法」，得到index，整体的设计过程与老师所说的“散列函数”设计原则非常吻合！
+
+---------
+有分析不准确的地方，请指正！
+</code></pre>
+<blockquote>
+<p>补充一下文中的一个错误之处。<br>当hashMap中节点少于6时，会由红黑树转变成链表，当hashMap中节点数为6时，链表的平均查找6/2=3。<br>当hashMap中节点多于8个时，会由链表转化成红黑树，红黑树的平均查找为log(8)=3。如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。<br>还有一个问题就是6和8的选择？6和8之间有一个7可以有效防止链表和红黑树频繁转换。<br>假设一下如果设计成hashMap中数据超过8，由链表转换成红黑树。hashMap中数据少于8，有红黑树转换成链表。若一个hashMap不停的插入，删除。hashMap中的个数不停的在8左右徘徊，就会频繁发生链表转红黑树，红黑树转链表，效率会非常低。<br>王铮老师的专栏写的非常好，感谢！</p>
+</blockquote>
+<blockquote>
+<p>通过这 20 节课学习下来，个人感觉其实就两种数据结构，链表和数组。</p>
+<p>数组占据随机访问的优势，却有需要连续内存的缺点。</p>
+<p>链表具有可不连续存储的优势，但访问查找是线性的。</p>
+<p>散列表和链表、跳表的混合使用，是为了结合数组和链表的优势，规避它们的不足。</p>
+<p>我们可以得出数据结构和算法的重要性排行榜：连续空间 &gt; 时间 &gt; 碎片空间。</p>
 </blockquote>
 
     </div>
@@ -470,7 +672,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E6%80%9D%E6%83%B3"><span class="nav-text">散列思想</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0"><span class="nav-text">散列函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E5%86%B2%E7%AA%81"><span class="nav-text">散列冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E5%AF%BB%E5%9D%80%E6%B3%95"><span class="nav-text">开放寻址法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E6%B3%95"><span class="nav-text">链表法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="nav-text">如何设计散列函数？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A3%85%E8%BD%BD%E5%9B%A0%E5%AD%90%E8%BF%87%E5%A4%A7%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-text">装载因子过大了怎么办？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E6%80%9D%E6%83%B3"><span class="nav-text">散列思想</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0"><span class="nav-text">散列函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E5%88%97%E5%86%B2%E7%AA%81"><span class="nav-text">散列冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E5%AF%BB%E5%9D%80%E6%B3%95"><span class="nav-text">开放寻址法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E6%B3%95"><span class="nav-text">链表法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="nav-text">如何设计散列函数？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A3%85%E8%BD%BD%E5%9B%A0%E5%AD%90%E8%BF%87%E5%A4%A7%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-text">装载因子过大了怎么办？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E4%BD%8E%E6%95%88%E7%9A%84%E6%89%A9%E5%AE%B9"><span class="nav-text">如何避免低效的扩容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">如何选择冲突解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E5%AF%BB%E5%9D%80%E6%B3%95-1"><span class="nav-text">开放寻址法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E6%B3%95-1"><span class="nav-text">链表法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%B8%9A%E7%BA%A7%E6%95%A3%E5%88%97%E8%A1%A8%E4%B8%BE%E4%BE%8B%E5%88%86%E6%9E%90"><span class="nav-text">工业级散列表举例分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LRU-%E7%BC%93%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95"><span class="nav-text">LRU 缓存淘汰算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88"><span class="nav-text">Redis 有序集合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-LinkedHashMap"><span class="nav-text">Java LinkedHashMap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -611,7 +813,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">23:45</span>
+    <span title="站点阅读时长">23:54</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 
