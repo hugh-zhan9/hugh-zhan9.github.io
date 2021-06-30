@@ -95,6 +95,585 @@
       </tags>
   </entry>
   <entry>
+    <title>数据结构 - 散列表</title>
+    <url>/2021/06/29/%5Barithmetic%5D-%E6%95%A3%E5%88%97%E8%A1%A8/</url>
+    <content><![CDATA[<p><img data-src=""></p>
+<span id="more"></span>
+
+<blockquote>
+<p><a href="https://time.geekbang.org/column/article/64233">课程地址</a></p>
+</blockquote>
+<h1 id="散列思想"><a href="#散列思想" class="headerlink" title="散列思想"></a>散列思想</h1><p>散列表的英文叫 “Hash Table”，也叫它 “哈希表” 或者 “Hash 表”。<strong>散列表用的是数组支持按照下标随机访问数据的特性，所以散列表其实就是数组的一种扩展，由数组演化而来。</strong></p>
+<p>可以说，如果没有数组，就没有散列表。举个例子，假如有 89 名选手参加学校运动会。为了方便记录成绩，每个选手胸前都会贴上自己的参赛号码。这 89 名选手的编号依次是 1 到 89。现在希望编程实现这样一个功能：通过编号快速找到对应的选手信息。你会怎么做呢？</p>
+<p>可以把这 89 名选手的信息放在数组里。编号为 1 的选手，放到数组中下标为 1 的位置；编号为 2 的选手，放到数组中下标为 2 的位置。以此类推，编号为 k 的选手放到数组中下标为 k 的位置。因为参赛编号跟数组下标一一对应，当需要查询参赛编号为 x 的选手的时候，只需要将下标为 x 的数组元素取出来就可以了，时间复杂度就是 <code>O(1)</code>。这样按照编号查找选手信息，效率是不是很高？</p>
+<p>实际上，这个例子已经用到了散列的思想。在这个例子里，参赛编号是自然数，并且与数组的下标形成一一映射，所以利用数组支持根据下标随机访问的时候，时间复杂度是 <code>O(1)</code> 这一特性，就可以实现快速查找编号对应的选手信息。</p>
+<p>这个例子中蕴含的散列思想还不够明显，来改造一下这个例子。</p>
+<p>假设校长说，参赛编号不能设置得这么简单，要加上年级、班级这些更详细的信息，所以把编号的规则稍微修改了一下，用 6 位数字来表示。比如 051167，其中，前两位 05 表示年级，中间两位 11 表示班级，最后两位还是原来的编号 1 到 89。这个时候该如何存储选手信息，才能够支持通过编号来快速查找选手信息呢？思路还是跟前面类似。尽管不能直接把编号作为数组下标，但可以截取参赛编号的后两位作为数组下标，来存取选手信息数据。当通过参赛编号查询选手信息的时候，用同样的方法，取参赛编号的后两位，作为数组下标，来读取数组中的数据。这就是典型的散列思想。</p>
+<p>其中，参赛选手的编号叫做<strong>键</strong>（key）或者关键字用来标识一个选手。参赛编号转化为数组下标的映射方法就叫作<strong>散列函数</strong>（或 “Hash 函数”、”哈希函数”），而散列函数计算得到的值就叫作<strong>散列值</strong>（或”Hash 值”、”哈希值”）。</p>
+<p><strong>散列表用的就是数组支持按照下标随机访问的时候，时间复杂度是 <code>O(1)</code> 的特性。通过散列函数把元素的键值映射为下标，然后将数据存储在数组中对应下标的位置。当按照键值查询元素时，用同样的散列函数，将键值转化数组下标，从对应的数组下标的位置取数据。</strong></p>
+<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>从上面的例子我们可以看到，散列函数在散列表中起着非常关键的作用。顾名思义，散列函数是一个函数，可以把它定义成 <code>hash(key)</code>，其中 key 表示元素的键值，<code>hash(key)</code> 的值表示经过散列函数计算得到的散列值。那第一个例子中，编号就是数组下标，所以 <code>hash(key)</code> 就等于 key。改造后的例子，用伪代码将它写成函数就是下面这样：</p>
+<pre><code>int hash(String key) &#123;
+    // 获取后两位字符
+    string lastTwoChars = key.substr(length-2, length);
+    // 将后两位字符转换为整数
+    int hashValue = convert lastTwoChas to int-type;
+    return hashValue;
+&#125;
+</code></pre>
+<p>刚刚举的学校运动会的例子，散列函数比较简单，也比较容易想到。但是，如果参赛选手的编号是随机生成的 6 位数字，又或者用的是 a 到 z 之间的字符串，该如何构造散列函数呢？</p>
+<p>这里总结了三点散列函数设计的基本要求：</p>
+<ul>
+<li>散列函数计算得到的散列值是一个非负整数；</li>
+<li>如果 <code>key1 = key2</code>，那 <code>hash(key1) == hash(key2)</code>；</li>
+<li>如果 <code>key1 ≠ key2</code>，那 <code>hash(key1) ≠ hash(key2)</code>。</li>
+</ul>
+<p>其中，第一点理解起来应该没有任何问题。因为数组下标是从 0 开始的，所以散列函数生成的散列值也要是非负整数。第二点也很好理解。相同的 key，经过散列函数得到的散列值也应该是相同的。</p>
+<p>第三点理解起来可能会有问题，着重说一下。这个要求看起来合情合理，但是在真实的情况下，要想找到一个不同的 key 对应的散列值都不一样的散列函数，几乎是不可能的。即便像业界著名的MD5、SHA、CRC等哈希算法，也无法完全避免这种散列冲突。而且，因为数组的存储空间有限，也会加大散列冲突的概率。所以几乎无法找到一个完美的无冲突的散列函数，即便能找到，付出的时间成本、计算成本也是很大的，所以针对散列冲突问题，需要通过其他途径来解决。</p>
+<h1 id="散列冲突"><a href="#散列冲突" class="headerlink" title="散列冲突"></a>散列冲突</h1><p>再好的散列函数也无法避免散列冲突。那究竟该如何解决散列冲突问题呢？常用的散列冲突解决方法有两类，开放寻址法（open addressing）和链表法（chaining）。</p>
+<h2 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h2><p>开放寻址法的核心思想是，如果出现了散列冲突，就重新探测一个空闲位置将其插入。那如何重新探测新的位置呢？</p>
+<p>先讲一个比较简单的探测方法，线性探测（Linear Probing）。</p>
+<p>当往散列表中插入数据时，如果某个数据经过散列函数散列之后，存储位置已经被占用了，就从当前位置开始依次往后查找，看是否有空闲位置直到找到为止。举一个例子说明一下，这里面黄色的色块表示空闲位置，橙色的色块表示已经存储了数据。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/5c/d5/5c31a3127cbc00f0c63409bbe1fbd0d5.jpg"></p>
+<p>从图中可以看出，散列表的大小为 10，在元素 x 插入散列表之前，已经 6 个元素插入到散列表中。x 经过 Hash 算法之后，被散列到位置下标为 7 的位置，但是这个位置已经有数据了，所以就产生了冲突。于是就顺序地往后一个一个找，看有没有空闲的位置，遍历到尾部都没有找到空闲的位置，于是我们再从表头开始找，直到找到空闲位置 2，于是将其插入到这个位置。</p>
+<p>在散列表中查找元素的过程有点儿类似插入过程。通过散列函数求出要查找元素的键值对应的散列值，然后比较数组中下标为散列值的元素和要查找的元素是否相等。如果相等，则说明就是要找的元素；否则就顺序往后依次查找。<strong>如果遍历到数组中的空闲位置，还没有找到，就说明要查找的元素并没有在散列表中。</strong></p>
+<p>散列表跟数组一样，不仅支持插入、查找操作，还支持删除操作。对于使用线性探测法解决冲突的散列表，删除操作稍微有些特别。不能单纯地把要删除的元素设置为空。这是为什么呢？</p>
+<p>在查找的时候，一旦我们通过线性探测方法，找到一个空闲位置，就可以认定散列表中不存在这个数据。但是，如果这个空闲位置是后来删除的，就会导致原来的查找算法失效。本来存在的数据，会被认定为不存在。这个问题如何解决呢？可以将删除的元素，特殊标记为 deleted。当线性探测查找的时候，遇到标记为 deleted 的空间，并不是停下来，而是继续往下探测。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/fe/1d/fe7482ba09670cbe05a9dfe4dd49bd1d.jpg"></p>
+<p>线性探测法其实存在很大问题。当散列表中插入的数据越来越多时，散列冲突发生的可能性就会越来越大，空闲位置会越来越少，线性探测的时间就会越来越久。极端情况下，可能需要探测整个散列表，所以最坏情况下的时间复杂度为 <code>O(n)</code>。同理，在删除和查找时，也有可能会线性探测整张散列表，才能找到要查找或者删除的数据。</p>
+<p>对于开放寻址冲突解决方法，除了线性探测方法之外，还有另外两种比较经典的探测方法，<strong>二次探测</strong>（Quadratic probing）和<strong>双重散列</strong>（Double hashing）。</p>
+<p>所谓二次探测，跟线性探测很像，线性探测每次探测的步长是 1，那它探测的下标序列就是 <code>hash(key)+0，hash(key)+1，hash(key)+2……</code> 而二次探测探测的步长就变成了原来的“二次方”，也就是说，它探测的下标序列就是 <code>hash(key)+0，hash(key)+12，hash(key)+22……</code></p>
+<p>所谓双重散列，不是简单的使用一个散列函数。而是使用一组散列函数 <code>hash1(key)，hash2(key)，hash3(key)……</code>，先用第一个散列函数，如果计算得到的存储位置已经被占用，再用第二个散列函数，依次类推，直到找到空闲的存储位置。</p>
+<p>不管采用哪种探测方法，当散列表中空闲位置不多的时候，散列冲突的概率就会大大提高。为了尽可能保证散列表的操作效率，一般情况下，会尽可能保证散列表中有一定比例的空闲槽位。用<strong>装载因子</strong>（load factor）来表示空位的多少。装载因子的计算公式是：</p>
+<pre><code>散列表的装载因子 = 填入表中的元素个数 / 散列表的长度
+</code></pre>
+<p>装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降。</p>
+<h2 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h2><p>链表法是一种更加常用的散列冲突解决办法，相比开放寻址法，它要简单很多。在散列表中，每个”桶（bucket）”或者 “槽（slot）” 会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/a4/7f/a4b77d593e4cb76acb2b0689294ec17f.jpg"></p>
+<p>当插入的时候，只需要通过散列函数计算出对应的散列槽位，将其插入到对应链表中即可，所以插入的时间复杂度是 <code>O(1)</code>。当查找、删除一个元素时，同样通过散列函数计算出对应的槽，然后遍历链表查找或者删除。那查找或删除操作的时间复杂度是多少呢？</p>
+<p>实际上，这两个操作的时间复杂度跟链表的长度 k 成正比，也就是 <code>O(k)</code>。对于散列比较均匀的散列函数来说，理论上讲，<code>k=n/m</code>，其中 n 表示散列中数据的个数，m 表示散列表中 “”槽” 的个数。</p>
+<h1 id="如何设计散列函数？"><a href="#如何设计散列函数？" class="headerlink" title="如何设计散列函数？"></a>如何设计散列函数？</h1><h1 id="装载因子过大了怎么办？"><a href="#装载因子过大了怎么办？" class="headerlink" title="装载因子过大了怎么办？"></a>装载因子过大了怎么办？</h1><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>Word 文档中单词拼写检查功能是如何实现的？</p>
+<blockquote>
+<p>常用的英文单词有 20 万个左右，假设单词的平均长度是 10 个字母，平均一个单词占用 10 个字节的内存空间，那 20 万英文单词大约占 2MB 的存储空间，就算放大 10 倍也就是 20MB。对于现在的计算机来说，这个大小完全可以放在内存里面。所以可以用散列表来存储整个英文单词词典。当用户输入某个英文单词时，拿用户输入的单词去散列表中查找。如果查到，则说明拼写正确；如果没有查到，则说明拼写可能有误，给予提示。借助散列表这种数据结构，就可以轻松实现快速判断是否存在拼写错误。</p>
+</blockquote>
+<p>假设有 10 万条 URL 访问日志，如何按照访问次数给 URL 排序？</p>
+<blockquote>
+<p>遍历 10 万条数据，以 URL 为 key，访问次数为 value，存入散列表，同时记录下访问次数的最大值 K，时间复杂度 <code>O(n)</code>。</p>
+<p>如果 K 不是很大，可以使用桶排序，时间复杂度 <code>O(n)</code>。如果 K 非常大（比如大于 10 万），就使用快速排序，复杂度 <code>O(nlogn)</code>。</p>
+</blockquote>
+<p>有两个字符串数组，每个数组大约有 10 万条字符串，如何快速找出两个数组中相同的字符串？</p>
+<blockquote>
+<p>以第一个字符串数组构建散列表，key 为字符串，value 为出现次数。再遍历第二个字符串数组，以字符串为 key 在散列表中查找，如果 value 大于零，说明存在相同字符串。时间复杂度 <code>O(n)</code>。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构与算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构 - 跳表</title>
+    <url>/2021/06/28/%5Barithmetic%5D-%E8%B7%B3%E8%A1%A8/</url>
+    <content><![CDATA[<p><img data-src="http://47.98.158.110:8888/group1/M00/00/00/L2KebmDZlUCAd0X9AAK1bzjqMOw870.jpg"></p>
+<span id="more"></span>
+
+<blockquote>
+<p><a href="https://time.geekbang.org/column/article/42896">课程地址</a></p>
+</blockquote>
+<p>二分查找底层依赖的是数组随机访问的特性，所以只能用数组来实现。如果数据存储在链表中，就真的没法用二分查找算法了吗？</p>
+<p>实际上，只需要对链表稍加改造，就可以支持类似“二分”的查找算法。这种改造后的数据结构叫做跳表（Skip list）。跳表是一种各方面性能都比较优秀的动态数据结构，可以支持快速地插入、删除、查找操作，写起来也不复杂，甚至可以替代红黑树（Red-black tree）。</p>
+<p>Redis 中的有序集合（Sorted Set）就是用跳表来实现的。红黑树也可以实现快速地插入、删除和查找操作。那 Redis 为什么会选择用跳表来实现有序集合呢？ 为什么不用红黑树呢？</p>
+<h1 id="什么是跳表"><a href="#什么是跳表" class="headerlink" title="什么是跳表"></a>什么是跳表</h1><p>对于一个单链表来讲，即便链表中存储的数据是有序的，如果要想在其中查找某个数据，也只能从头到尾遍历链表。这样查找效率就会很低，时间复杂度会是 <code>O(n)</code>。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/e1/6d/e18303fcedc068e5a168de04df956f6d.jpg"></p>
+<p>那怎么来提高查找效率呢？如果像图中那样，对链表建立一级“索引”，查找起来是不是就会更快一些呢？每两个结点提取一个结点到上一级，把抽出来的那一级叫做索引或索引层。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/14/8e/14753c824a5ee4a976ea799727adc78e.jpg"></p>
+<p>图中的 down 表示 down 指针，指向下一级结点。如果现在要查找某个结点，比如 16。可以先在索引层遍历，当遍历到索引层中值为 13 的结点时，发现下一个结点是 17，那要查找的结点 16 肯定就在这两个结点之间。然后通过索引层结点的 down 指针，下降到原始链表这一层，继续遍历。这个时候，只需要再遍历 2 个结点，就可以找到值等于 16 的这个结点了。这样，原来如果要查找 16，需要遍历 10 个结点，现在只需要遍历 7 个结点。</p>
+<p>从这个例子里可以看出，加来一层索引之后，查找一个结点需要遍历的结点个数减少了，也就是说查找效率提高了。那如果再加一级索引呢？效率会不会提升更多呢？</p>
+<p>跟前面建立第一级索引的方式相似，在第一级索引的基础之上，每两个结点就抽出一个结点到第二级索引。现在再来查找 16，只需要遍历 6 个结点了，需要遍历的结点数量又减少了。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/49/65/492206afe5e2fef9f683c7cff83afa65.jpg"></p>
+<p>上面的例子数据量不大，所以即便加了两级索引，查找效率的提升也并不明显。为了能真切地感受索引提升查询效率。下面画了一个包含 64 个结点的链表，按照前面讲的这种思路，建立了五级索引。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/46/a9/46d283cd82c987153b3fe0c76dfba8a9.jpg"></p>
+<p>从图中可以看出，原来没有索引的时候，查找 62 需要遍历 62 个结点，现在只需要遍历 11 个结点，速度是不是提高了很多？所以，当链表的长度 n 比较大时，比如 1000、10000 的时候，在构建索引之后，查找效率的提升就会非常明显。</p>
+<p>前面讲的<strong>这种链表加多级索引的结构，就是跳表。</strong></p>
+<h1 id="跳表有多快"><a href="#跳表有多快" class="headerlink" title="跳表有多快"></a>跳表有多快</h1><p>算法的执行效率可以通过时间复杂度来度量，这里依旧可以用。在一个单链表中查询某个数据的时间复杂度是 <code>O(n)</code>。那在一个具有多级索引的跳表中，查询某个数据的时间复杂度是多少呢？</p>
+<p>这个时间复杂度的分析方法比较难想到。把问题分解一下，先来看这样一个问题，如果链表里有 n 个结点，会有多少级索引呢？按照刚才讲的，每两个结点会抽出一个结点作为上一级索引的结点，那第一级索引的结点个数大约就是 <code>n/2</code>，第二级索引的结点个数大约就是 <code>n/4</code>，第三级索引的结点个数大约就是 <code>n/8</code>，依次类推，也就是说，第 k 级索引的结点个数是第 k-1 级索引的结点个数的 1/2，那第 k级索引结点的个数就是 <code>n/(2k)</code>。</p>
+<p>假设索引有 h 级，最高级的索引有 2 个结点。通过上面的公式，可以得到 <code>n/(2h)=2</code>，从而求得 <code>h=log2n-1</code>。如果包含原始链表这一层，整个跳表的高度就是 <code>log2n</code>。在跳表中查询某个数据的时候，如果每一层都要遍历 m 个结点，那在跳表中查询一个数据的时间复杂度就是 <code>O(m*logn)</code>。</p>
+<p>那这个 m 的值是多少呢？按照前面这种索引结构，每一级索引都最多只需要遍历 3 个结点，也就是说 <code>m=3</code>，为什么是 3 呢？我来解释一下。假设我们要查找的数据是 x，在第 k 级索引中，遍历到 y 结点之后，发现 x 大于 y，小于后面的结点 z，所以通过 y 的 down 指针，从第 k 级索引下降到第 k-1 级索引。在第 k-1 级索引中，y 和 z 之间只有 3 个结点（包含 y 和 z），所以，在 K-1 级索引中最多只需要遍历 3 个结点，依次类推，每一级索引都最多只需要遍历 3 个结点。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/d0/0c/d03bef9a64a0368e6a0d23ace8bd450c.jpg"></p>
+<p>通过上面的分析，得到 m=3，所以在跳表中查询任意数据的时间复杂度就是 <code>O(logn)</code>。这个查找的时间复杂度跟二分查找是一样的。换句话说，其实是基于单链表实现了二分查找。不过天下没有免费的午餐，这种查询效率的提升，前提是建立了很多级索引，也就是空间换时间的设计思路。</p>
+<h1 id="跳表的空间消耗"><a href="#跳表的空间消耗" class="headerlink" title="跳表的空间消耗"></a>跳表的空间消耗</h1><p>比起单纯的单链表，跳表需要存储多级索引，肯定要消耗更多的存储空间。那到底需要消耗多少额外的存储空间呢？来分析一下跳表的空间复杂度。假设原始链表大小为 n，那第一级索引大约有 n/2 个结点，第二级索引大约有 n/4 个结点，以此类推，每上升一级就减少一半，直到剩下 2 个结点。如果我们把每层索引的结点数写出来，就是一个等比数列。</p>
+<pre><code>n/2, n/4, n/8 ... 2
+</code></pre>
+<p>这几级索引的结点总和就是 n/2+n/4+n/8…+8+4+2=n-2。所以跳表的空间复杂度是 <code>O(n)</code>。也就是说，如果将包含 n 个结点的单链表构造成跳表，需要额外再用接近 n 个结点的存储空间。那有没有办法降低索引占用的内存空间呢？</p>
+<p>前面都是每两个结点抽一个结点到上级索引，如果每三个结点或五个结点，抽一个结点到上级索引，是不是就不用那么多索引结点了呢？通过等比数列求和公式，总的索引结点大约就是 n/3+n/9+n/27+…+9+3+1=n/2。尽管空间复杂度还是 <code>O(n)</code>，但比上面的每两个结点抽一个结点的索引构建方法，要减少了一半的索引结点存储空间。</p>
+<p>实际上在软件开发中，不必太在意索引占用的额外空间。在讲数据结构和算法时，习惯性地把要处理的数据看成整数，但是在实际的软件开发中，原始链表中存储的有可能是很大的对象，而索引结点只需要存储关键值和几个指针，并不需要存储对象，所以当对象比索引结点大很多时，那索引占用的额外空间就可以忽略了。</p>
+<h1 id="高效的动态插入与删除"><a href="#高效的动态插入与删除" class="headerlink" title="高效的动态插入与删除"></a>高效的动态插入与删除</h1><p>实际上跳表这个动态数据结构，不仅支持查找操作，还支持动态的插入、删除操作，而且插入、删除操作的时间复杂度也是 <code>O(logn)</code>。</p>
+<p>现在来看下， 如何在跳表中插入一个数据，以及它是如何做到 <code>O(logn)</code> 的时间复杂度的？在单链表中，一旦定位好要插入的位置，插入结点的时间复杂度是很低的，就是 <code>O(1)</code>。但是，这里为了保证原始链表中数据的有序性，需要先找到要插入的位置，这个查找操作就会比较耗时。对于纯粹的单链表，需要遍历每个结点，来找到插入的位置。但是，对于跳表来说，查找某个结点的时间复杂度是 <code>O(logn)</code>，所以这里查找某个数据应该插入的位置，方法也是类似的，时间复杂度也是 <code>O(logn)</code>。</p>
+<p>再来看删除操作。如果这个结点在索引中也有出现，除了要删除原始链表中的结点，还要删除索引中的。因为单链表中的删除操作需要拿到要删除结点的前驱结点，然后通过指针操作完成删除。所以在查找要删除的结点的时候，一定要获取前驱结点。当然，如果用的是双向链表，就不需要考虑这个问题了。</p>
+<h1 id="索引的动态更新"><a href="#索引的动态更新" class="headerlink" title="索引的动态更新"></a>索引的动态更新</h1><p>在跳表中不停地往跳表中插入数据时，如果不更新索引，就有可能出现某 2 个索引结点之间数据非常多的情况。极端情况下，跳表还会退化成单链表。</p>
+<p>作为一种动态数据结构，需要某种手段来维护索引与原始链表大小之间的平衡，也就是说如果链表中结点多了，索引结点就相应地增加一些，避免复杂度退化，以及查找、插入、删除操作性能下降。</p>
+<p>如果你了解红黑树、AVL 树这样平衡二叉树，它们是通过左右旋的方式保持左右子树的大小平衡，而跳表是通过随机函数来维护前面提到的“平衡性”。</p>
+<p>当往跳表中插入数据的时候，可以选择同时将这个数据插入到部分索引层中。如何选择加入哪些索引层呢？可以通过一个随机函数，来决定将这个结点插入到哪几级索引中，比如随机函数生成了值 K，那就将这个结点添加到第一级到第 K 级这 K 级索引中。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/a8/a7/a861445d0b53fc842f38919365b004a7.jpg"></p>
+<p>随机函数的选择很有讲究，从概率上来讲，能够保证跳表的索引大小和数据大小平衡性，不至于性能过度退化。</p>
+<p>至于随机函数的选择，如果你感兴趣的话，可以看看 Redis 中关于有序集合的跳表实现。</p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>为什么 Redis 要用跳表来实现有序集合，而不是红黑树？</p>
+<blockquote>
+<p>Redis 中的有序集合是通过跳表来实现的，严格点讲，其实还用到了散列表。</p>
+<p>如果你去查看 Redis 的开发手册，就会发现，Redis 中的有序集合支持的核心操作主要有下面这几个：插入一个数据；删除一个数据；查找一个数据；按照区间查找数据（比如查找值在[100, 356]之间的数据）；迭代输出有序序列。</p>
+<p>其中，插入、删除、查找以及迭代输出有序序列这几个操作，红黑树也可以完成，时间复杂度跟跳表是一样的。但是，按照区间来查找数据这个操作，红黑树的效率没有跳表高。对于按照区间查找数据这个操作，跳表可以做到 <code>O(logn)</code> 的时间复杂度定位区间的起点，然后在原始链表中顺序往后遍历就可以了。这样做非常高效。</p>
+<p>当然，Redis 之所以用跳表来实现有序集合，还有其他原因。比如，跳表更容易代码实现。虽然跳表的实现也不简单，但比起红黑树来说还是好懂、好写多了，而简单就意味着可读性好，不容易出错。还有，跳表更加灵活，它可以通过改变索引构建策略，有效平衡执行效率和内存消耗。</p>
+<p>不过，跳表也不能完全替代红黑树。因为红黑树比跳表的出现要早一些，很多编程语言中的 Map 类型都是通过红黑树来实现的。做业务开发的时候，直接拿来用就可以了，不用费劲自己去实现一个红黑树，但是跳表并没有一个现成的实现，所以在开发中，如果你想使用跳表，必须要自己实现。</p>
+</blockquote>
+<p>如果每三个或者五个结点提取一个结点作为上级索引，对应的在跳表中查询数据的时间复杂度是多少呢？</p>
+<blockquote>
+<p>时间复杂度仍然是：<code>log(n)</code>，以几个节点提取影响的只是前面的系数 m</p>
+</blockquote>
+<p>跳表的实现：</p>
+<pre><code class="java">/**
+ * 跳表的一种实现方法。
+ * 跳表中存储的是正整数，并且存储的是不重复的。
+ *
+ * Author：ZHENG
+ */
+public class SkipList &#123;
+
+    private static final float SKIPLIST_P = 0.5f;
+    private static final int MAX_LEVEL = 16;
+
+    private int levelCount = 1;
+
+    private Node head = new Node();  // 带头链表
+
+    public Node find(int value) &#123;
+        Node p = head;
+        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                p = p.forwards[i];
+            &#125;
+        &#125;
+
+        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
+            return p.forwards[0];
+        &#125; else &#123;
+            return null;
+        &#125;
+    &#125;
+
+    public void insert(int value) &#123;
+        int level = randomLevel();
+        Node newNode = new Node();
+        newNode.data = value;
+        newNode.maxLevel = level;
+        Node update[] = new Node[level];
+        for (int i = 0; i &lt; level; ++i) &#123;
+            update[i] = head;
+        &#125;
+
+        // record every level largest value which smaller than insert value in update[]
+        Node p = head;
+        for (int i = level - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                p = p.forwards[i];
+            &#125;
+            update[i] = p;// use update save node in search path
+        &#125;
+
+        // in search path node next node become new node forwords(next)
+        for (int i = 0; i &lt; level; ++i) &#123;
+            newNode.forwards[i] = update[i].forwards[i];
+            update[i].forwards[i] = newNode;
+        &#125;
+
+        // update node hight
+        if (levelCount &lt; level) levelCount = level;
+    &#125;
+
+    public void delete(int value) &#123;
+        Node[] update = new Node[levelCount];
+        Node p = head;
+        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                p = p.forwards[i];
+            &#125;
+            update[i] = p;
+        &#125;
+
+        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
+            for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+                if (update[i].forwards[i] != null &amp;&amp; update[i].forwards[i].data == value) &#123;
+                    update[i].forwards[i] = update[i].forwards[i].forwards[i];
+                &#125;
+            &#125;
+        &#125;
+
+        while (levelCount&gt;1&amp;&amp;head.forwards[levelCount]==null)&#123;
+            levelCount--;
+        &#125;
+
+    &#125;
+
+    // 理论来讲，一级索引中元素个数应该占原始数据的 50%，二级索引中元素个数占 25%，三级索引12.5% ，一直到最顶层。
+    // 因为这里每一层的晋升概率是 50%。对于每一个新插入的节点，都需要调用 randomLevel 生成一个合理的层数。
+    // 该 randomLevel 方法会随机生成 1~MAX_LEVEL 之间的数，且 ：
+    //        50%的概率返回 1
+    //        25%的概率返回 2
+    //      12.5%的概率返回 3 ...
+    private int randomLevel() &#123;
+        int level = 1;
+
+        while (Math.random() &lt; SKIPLIST_P &amp;&amp; level &lt; MAX_LEVEL)
+            level += 1;
+        return level;
+    &#125;
+
+    public void printAll() &#123;
+        Node p = head;
+        while (p.forwards[0] != null) &#123;
+            System.out.print(p.forwards[0] + &quot; &quot;);
+            p = p.forwards[0];
+        &#125;
+        System.out.println();
+    &#125;
+
+    public class Node &#123;
+        private int data = -1;
+        private Node forwards[] = new Node[MAX_LEVEL];
+        private int maxLevel = 0;
+
+        @Override
+        public String toString() &#123;
+            StringBuilder builder = new StringBuilder();
+            builder.append(&quot;&#123; data: &quot;);
+            builder.append(data);
+            builder.append(&quot;; levels: &quot;);
+            builder.append(maxLevel);
+            builder.append(&quot; &#125;&quot;);
+
+            return builder.toString();
+        &#125;
+    &#125;
+    
+&#125;
+</code></pre>
+<p>王老师的Java实现版本，有几个关键点理解到了，基本上就明白是怎么实现的了：<br>1.每次插入数据的时候随机产生的level:决定了新节点的层数；<br>2.数组update的作用：用以存储新节点所有层数上，各自的前一个节点的信息；<br>3.节点内的forwards数组：用以存储该节点所有层的下一个节点的信息；<br>4.当所有节点的最大层级变量 <code>maxlevel=1</code> 的时候，跳表退化成一个普通链表</p>
+<pre><code class="java">package com.study.skiplist;
+
+import java.util.Random;
+
+/**
+ * 1，跳表的一种实现方法，用于练习。跳表中存储的是正整数，并且存储的是不重复的。
+ * 2，本类是参考作者zheng ，自己学习，优化了添加方法
+ * 3，看完这个，我觉得再看ConcurrentSkipListMap 源码，会有很大收获
+ * Author：ldb
+ */
+public class SkipList2 &#123;
+
+    private static final int MAX_LEVEL = 16;
+    private int levelCount = 1;
+
+    /**
+     * 带头链表
+     */
+    private Node head = new Node(MAX_LEVEL);
+    private Random r = new Random();
+
+    public Node find(int value) &#123;
+        Node p = head;
+        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
+        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                // 找到前一节点
+                p = p.forwards[i];
+            &#125;
+        &#125;
+
+        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
+            return p.forwards[0];
+        &#125; else &#123;
+            return null;
+        &#125;
+    &#125;
+
+    /**
+     * 优化了作者zheng的插入方法
+     *
+     * @param value 值
+     */
+    public void insert(int value) &#123;
+        int level = head.forwards[0] == null ? 1 : randomLevel();
+        // 每次只增加一层，如果条件满足
+        if (level &gt; levelCount) &#123;
+            level = ++levelCount;
+        &#125;
+        Node newNode = new Node(level);
+        newNode.data = value;
+        Node update[] = new Node[level];
+        for (int i = 0; i &lt; level; ++i) &#123;
+            update[i] = head;
+        &#125;
+
+        Node p = head;
+        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
+        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                // 找到前一节点
+                p = p.forwards[i];
+            &#125;
+            // levelCount 会 &gt; level，所以加上判断
+            if (level &gt; i) &#123;
+                update[i] = p;
+            &#125;
+
+        &#125;
+        for (int i = 0; i &lt; level; ++i) &#123;
+            newNode.forwards[i] = update[i].forwards[i];
+            update[i].forwards[i] = newNode;
+        &#125;
+
+    &#125;
+
+    /**
+     * 优化了作者zheng的插入方法2
+     *
+     * @param value 值
+     */
+    public void insert2(int value) &#123;
+        int level = head.forwards[0] == null ? 1 : randomLevel();
+        // 每次只增加一层，如果条件满足
+        if (level &gt; levelCount) &#123;
+            level = ++levelCount;
+        &#125;
+        Node newNode = new Node(level);
+        newNode.data = value;
+        Node p = head;
+        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
+        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                // 找到前一节点
+                p = p.forwards[i];
+            &#125;
+            // levelCount 会 &gt; level，所以加上判断
+            if (level &gt; i) &#123;
+                if (p.forwards[i] == null) &#123;
+                    p.forwards[i] = newNode;
+                &#125; else &#123;
+                    Node next = p.forwards[i];
+                    p.forwards[i] = newNode;
+                    newNode.forwards[i] = next;
+                &#125;
+            &#125;
+
+        &#125;
+
+    &#125;
+
+    /**
+     * 作者zheng的插入方法，未优化前，优化后参见上面insert()
+     *
+     * @param value
+     * @param level 0 表示随机层数，不为0，表示指定层数，指定层数
+     *              可以让每次打印结果不变动，这里是为了便于学习理解
+     */
+    public void insert(int value, int level) &#123;
+        // 随机一个层数
+        if (level == 0) &#123;
+            level = randomLevel();
+        &#125;
+        // 创建新节点
+        Node newNode = new Node(level);
+        newNode.data = value;
+        // 表示从最大层到低层，都要有节点数据
+        newNode.maxLevel = level;
+        // 记录要更新的层数，表示新节点要更新到哪几层
+        Node update[] = new Node[level];
+        for (int i = 0; i &lt; level; ++i) &#123;
+            update[i] = head;
+        &#125;
+
+        /**
+         *
+         * 1，说明：层是从下到上的，这里最下层编号是0，最上层编号是15
+         * 2，这里没有从已有数据最大层（编号最大）开始找，（而是随机层的最大层）导致有些问题。
+         *    如果数据量为1亿，随机level=1 ，那么插入时间复杂度为O（n）
+         */
+        Node p = head;
+        for (int i = level - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                p = p.forwards[i];
+            &#125;
+            // 这里update[i]表示当前层节点的前一节点，因为要找到前一节点，才好插入数据
+            update[i] = p;
+        &#125;
+
+        // 将每一层节点和后面节点关联
+        for (int i = 0; i &lt; level; ++i) &#123;
+            // 记录当前层节点后面节点指针
+            newNode.forwards[i] = update[i].forwards[i];
+            // 前一个节点的指针，指向当前节点
+            update[i].forwards[i] = newNode;
+        &#125;
+
+        // 更新层高
+        if (levelCount &lt; level) levelCount = level;
+    &#125;
+
+    public void delete(int value) &#123;
+        Node[] update = new Node[levelCount];
+        Node p = head;
+        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
+                p = p.forwards[i];
+            &#125;
+            update[i] = p;
+        &#125;
+
+        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
+            for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
+                if (update[i].forwards[i] != null &amp;&amp; update[i].forwards[i].data == value) &#123;
+                    update[i].forwards[i] = update[i].forwards[i].forwards[i];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+
+    /**
+     * 随机 level 次，如果是奇数层数 +1，防止伪随机
+     *
+     * @return
+     */
+    private int randomLevel() &#123;
+        int level = 1;
+        for (int i = 1; i &lt; MAX_LEVEL; ++i) &#123;
+            if (r.nextInt() % 2 == 1) &#123;
+                level++;
+            &#125;
+        &#125;
+        return level;
+    &#125;
+
+    /**
+     * 打印每个节点数据和最大层数
+     */
+    public void printAll() &#123;
+        Node p = head;
+        while (p.forwards[0] != null) &#123;
+            System.out.print(p.forwards[0] + &quot; &quot;);
+            p = p.forwards[0];
+        &#125;
+        System.out.println();
+    &#125;
+
+    /**
+     * 打印所有数据
+     */
+    public void printAll_beautiful() &#123;
+        Node p = head;
+        Node[] c = p.forwards;
+        Node[] d = c;
+        int maxLevel = c.length;
+        for (int i = maxLevel - 1; i &gt;= 0; i--) &#123;
+            do &#123;
+                System.out.print((d[i] != null ? d[i].data : null) + &quot;:&quot; + i + &quot;-------&quot;);
+            &#125; while (d[i] != null &amp;&amp; (d = d[i].forwards)[i] != null);
+            System.out.println();
+            d = c;
+        &#125;
+    &#125;
+
+    /**
+     * 跳表的节点，每个节点记录了当前节点数据和所在层数数据
+     */
+    public class Node &#123;
+        private int data = -1;
+        /**
+         * 表示当前节点位置的下一个节点所有层的数据，从上层切换到下层，就是数组下标-1，
+         * forwards[3]表示当前节点在第三层的下一个节点。
+         */
+        private Node forwards[];
+
+        /**
+         * 这个值其实可以不用，看优化insert()
+         */
+        private int maxLevel = 0;
+
+        public Node(int level) &#123;
+            forwards = new Node[level];
+        &#125;
+
+        @Override
+        public String toString() &#123;
+            StringBuilder builder = new StringBuilder();
+            builder.append(&quot;&#123; data: &quot;);
+            builder.append(data);
+            builder.append(&quot;; levels: &quot;);
+            builder.append(maxLevel);
+            builder.append(&quot; &#125;&quot;);
+            return builder.toString();
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        SkipList2 list = new SkipList2();
+        list.insert(1, 3);
+        list.insert(2, 3);
+        list.insert(3, 2);
+        list.insert(4, 4);
+        list.insert(5, 10);
+        list.insert(6, 4);
+        list.insert(8, 5);
+        list.insert(7, 4);
+        list.printAll_beautiful();
+        list.printAll();
+        /**
+         * 结果如下：
+         *                                         null:15-------
+         *                                         null:14-------
+         *                                         null:13-------
+         *                                         null:12-------
+         *                                         null:11-------
+         *                                         null:10-------
+         *                                            5:9-------
+         *                                            5:8-------
+         *                                            5:7-------
+         *                                            5:6-------
+         *                                            5:5-------
+         *                                            5:4-------                     8:4-------
+         *                                  4:3-------5:3-------6:3-------7:3-------8:3-------
+         * 1:2-------2:2-------             4:2-------5:2-------6:2-------7:2-------8:2-------
+         * 1:1-------2:1-------3:1-------4:1-------5:1-------6:1-------7:1-------8:1-------
+         * 1:0-------2:0-------3:0-------4:0-------5:0-------6:0-------7:0-------8:0-------
+         * &#123; data: 1; levels: 3 &#125; &#123; data: 2; levels: 3 &#125; &#123; data: 3; levels: 2 &#125; &#123; data: 4; levels: 4 &#125;
+         * &#123; data: 5; levels: 10 &#125; &#123; data: 6; levels: 4 &#125; &#123; data: 7; levels: 4 &#125; &#123; data: 8; levels: 5 &#125;
+         */
+        // 优化后insert()
+
+        SkipList2 list2 = new SkipList2();
+        list2.insert2(1);
+        list2.insert2(2);
+        list2.insert2(6);
+        list2.insert2(7);
+        list2.insert2(8);
+        list2.insert2(3);
+        list2.insert2(4);
+        list2.insert2(5);
+        System.out.println();
+        list2.printAll_beautiful();
+    &#125;
+
+&#125;
+</code></pre>
+<p><a href="https://cloud.tencent.com/developer/article/1353762">Redis源码学习之跳表</a></p>
+]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构与算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>算法 - 二分查找</title>
     <url>/2021/06/25/%5Barithmetic%5D-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</url>
     <content><![CDATA[<p><img data-src="https://wallpapers.com/images/high/forest-road-winding-dark-nature-shsyax3tzax42p9o.jpg"></p>
@@ -2713,585 +3292,6 @@ int f(int n) &#123;
 <blockquote>
 <p>我常用的办法是，打印一个树型结构的日志，每进入一层，深度加一然后打印深度，比如“–”，再接上值，换行，这样可以很清楚的看到信息</p>
 <p>调试递归就像写递归一样，不要被每一步的细节所困，重点在于确认递推关系与结束条件是否正确，用条件断点着重调试最初两步与最终两步即可。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>数据结构与算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据结构 - 跳表</title>
-    <url>/2021/06/09/%5Barithmetic%5D-%E8%B7%B3%E8%A1%A8/</url>
-    <content><![CDATA[<p><img data-src="http://47.98.158.110:8888/group1/M00/00/00/L2KebmDZlUCAd0X9AAK1bzjqMOw870.jpg"></p>
-<span id="more"></span>
-
-<blockquote>
-<p><a href="https://time.geekbang.org/column/article/42896">课程地址</a></p>
-</blockquote>
-<p>二分查找底层依赖的是数组随机访问的特性，所以只能用数组来实现。如果数据存储在链表中，就真的没法用二分查找算法了吗？</p>
-<p>实际上，只需要对链表稍加改造，就可以支持类似“二分”的查找算法。这种改造后的数据结构叫做跳表（Skip list）。跳表是一种各方面性能都比较优秀的动态数据结构，可以支持快速地插入、删除、查找操作，写起来也不复杂，甚至可以替代红黑树（Red-black tree）。</p>
-<p>Redis 中的有序集合（Sorted Set）就是用跳表来实现的。红黑树也可以实现快速地插入、删除和查找操作。那 Redis 为什么会选择用跳表来实现有序集合呢？ 为什么不用红黑树呢？</p>
-<h1 id="什么是跳表"><a href="#什么是跳表" class="headerlink" title="什么是跳表"></a>什么是跳表</h1><p>对于一个单链表来讲，即便链表中存储的数据是有序的，如果要想在其中查找某个数据，也只能从头到尾遍历链表。这样查找效率就会很低，时间复杂度会是 <code>O(n)</code>。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/e1/6d/e18303fcedc068e5a168de04df956f6d.jpg"></p>
-<p>那怎么来提高查找效率呢？如果像图中那样，对链表建立一级“索引”，查找起来是不是就会更快一些呢？每两个结点提取一个结点到上一级，把抽出来的那一级叫做索引或索引层。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/14/8e/14753c824a5ee4a976ea799727adc78e.jpg"></p>
-<p>图中的 down 表示 down 指针，指向下一级结点。如果现在要查找某个结点，比如 16。可以先在索引层遍历，当遍历到索引层中值为 13 的结点时，发现下一个结点是 17，那要查找的结点 16 肯定就在这两个结点之间。然后通过索引层结点的 down 指针，下降到原始链表这一层，继续遍历。这个时候，只需要再遍历 2 个结点，就可以找到值等于 16 的这个结点了。这样，原来如果要查找 16，需要遍历 10 个结点，现在只需要遍历 7 个结点。</p>
-<p>从这个例子里可以看出，加来一层索引之后，查找一个结点需要遍历的结点个数减少了，也就是说查找效率提高了。那如果再加一级索引呢？效率会不会提升更多呢？</p>
-<p>跟前面建立第一级索引的方式相似，在第一级索引的基础之上，每两个结点就抽出一个结点到第二级索引。现在再来查找 16，只需要遍历 6 个结点了，需要遍历的结点数量又减少了。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/49/65/492206afe5e2fef9f683c7cff83afa65.jpg"></p>
-<p>上面的例子数据量不大，所以即便加了两级索引，查找效率的提升也并不明显。为了能真切地感受索引提升查询效率。下面画了一个包含 64 个结点的链表，按照前面讲的这种思路，建立了五级索引。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/46/a9/46d283cd82c987153b3fe0c76dfba8a9.jpg"></p>
-<p>从图中可以看出，原来没有索引的时候，查找 62 需要遍历 62 个结点，现在只需要遍历 11 个结点，速度是不是提高了很多？所以，当链表的长度 n 比较大时，比如 1000、10000 的时候，在构建索引之后，查找效率的提升就会非常明显。</p>
-<p>前面讲的<strong>这种链表加多级索引的结构，就是跳表。</strong></p>
-<h1 id="跳表有多快"><a href="#跳表有多快" class="headerlink" title="跳表有多快"></a>跳表有多快</h1><p>算法的执行效率可以通过时间复杂度来度量，这里依旧可以用。在一个单链表中查询某个数据的时间复杂度是 <code>O(n)</code>。那在一个具有多级索引的跳表中，查询某个数据的时间复杂度是多少呢？</p>
-<p>这个时间复杂度的分析方法比较难想到。把问题分解一下，先来看这样一个问题，如果链表里有 n 个结点，会有多少级索引呢？按照刚才讲的，每两个结点会抽出一个结点作为上一级索引的结点，那第一级索引的结点个数大约就是 <code>n/2</code>，第二级索引的结点个数大约就是 <code>n/4</code>，第三级索引的结点个数大约就是 <code>n/8</code>，依次类推，也就是说，第 k 级索引的结点个数是第 k-1 级索引的结点个数的 1/2，那第 k级索引结点的个数就是 <code>n/(2k)</code>。</p>
-<p>假设索引有 h 级，最高级的索引有 2 个结点。通过上面的公式，可以得到 <code>n/(2h)=2</code>，从而求得 <code>h=log2n-1</code>。如果包含原始链表这一层，整个跳表的高度就是 <code>log2n</code>。在跳表中查询某个数据的时候，如果每一层都要遍历 m 个结点，那在跳表中查询一个数据的时间复杂度就是 <code>O(m*logn)</code>。</p>
-<p>那这个 m 的值是多少呢？按照前面这种索引结构，每一级索引都最多只需要遍历 3 个结点，也就是说 <code>m=3</code>，为什么是 3 呢？我来解释一下。假设我们要查找的数据是 x，在第 k 级索引中，遍历到 y 结点之后，发现 x 大于 y，小于后面的结点 z，所以通过 y 的 down 指针，从第 k 级索引下降到第 k-1 级索引。在第 k-1 级索引中，y 和 z 之间只有 3 个结点（包含 y 和 z），所以，在 K-1 级索引中最多只需要遍历 3 个结点，依次类推，每一级索引都最多只需要遍历 3 个结点。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/d0/0c/d03bef9a64a0368e6a0d23ace8bd450c.jpg"></p>
-<p>通过上面的分析，得到 m=3，所以在跳表中查询任意数据的时间复杂度就是 <code>O(logn)</code>。这个查找的时间复杂度跟二分查找是一样的。换句话说，其实是基于单链表实现了二分查找。不过天下没有免费的午餐，这种查询效率的提升，前提是建立了很多级索引，也就是空间换时间的设计思路。</p>
-<h1 id="跳表的空间消耗"><a href="#跳表的空间消耗" class="headerlink" title="跳表的空间消耗"></a>跳表的空间消耗</h1><p>比起单纯的单链表，跳表需要存储多级索引，肯定要消耗更多的存储空间。那到底需要消耗多少额外的存储空间呢？来分析一下跳表的空间复杂度。假设原始链表大小为 n，那第一级索引大约有 n/2 个结点，第二级索引大约有 n/4 个结点，以此类推，每上升一级就减少一半，直到剩下 2 个结点。如果我们把每层索引的结点数写出来，就是一个等比数列。</p>
-<pre><code>n/2, n/4, n/8 ... 2
-</code></pre>
-<p>这几级索引的结点总和就是 n/2+n/4+n/8…+8+4+2=n-2。所以跳表的空间复杂度是 <code>O(n)</code>。也就是说，如果将包含 n 个结点的单链表构造成跳表，需要额外再用接近 n 个结点的存储空间。那有没有办法降低索引占用的内存空间呢？</p>
-<p>前面都是每两个结点抽一个结点到上级索引，如果每三个结点或五个结点，抽一个结点到上级索引，是不是就不用那么多索引结点了呢？通过等比数列求和公式，总的索引结点大约就是 n/3+n/9+n/27+…+9+3+1=n/2。尽管空间复杂度还是 <code>O(n)</code>，但比上面的每两个结点抽一个结点的索引构建方法，要减少了一半的索引结点存储空间。</p>
-<p>实际上在软件开发中，不必太在意索引占用的额外空间。在讲数据结构和算法时，习惯性地把要处理的数据看成整数，但是在实际的软件开发中，原始链表中存储的有可能是很大的对象，而索引结点只需要存储关键值和几个指针，并不需要存储对象，所以当对象比索引结点大很多时，那索引占用的额外空间就可以忽略了。</p>
-<h1 id="高效的动态插入与删除"><a href="#高效的动态插入与删除" class="headerlink" title="高效的动态插入与删除"></a>高效的动态插入与删除</h1><p>实际上跳表这个动态数据结构，不仅支持查找操作，还支持动态的插入、删除操作，而且插入、删除操作的时间复杂度也是 <code>O(logn)</code>。</p>
-<p>现在来看下， 如何在跳表中插入一个数据，以及它是如何做到 <code>O(logn)</code> 的时间复杂度的？在单链表中，一旦定位好要插入的位置，插入结点的时间复杂度是很低的，就是 <code>O(1)</code>。但是，这里为了保证原始链表中数据的有序性，需要先找到要插入的位置，这个查找操作就会比较耗时。对于纯粹的单链表，需要遍历每个结点，来找到插入的位置。但是，对于跳表来说，查找某个结点的时间复杂度是 <code>O(logn)</code>，所以这里查找某个数据应该插入的位置，方法也是类似的，时间复杂度也是 <code>O(logn)</code>。</p>
-<p>再来看删除操作。如果这个结点在索引中也有出现，除了要删除原始链表中的结点，还要删除索引中的。因为单链表中的删除操作需要拿到要删除结点的前驱结点，然后通过指针操作完成删除。所以在查找要删除的结点的时候，一定要获取前驱结点。当然，如果用的是双向链表，就不需要考虑这个问题了。</p>
-<h1 id="索引的动态更新"><a href="#索引的动态更新" class="headerlink" title="索引的动态更新"></a>索引的动态更新</h1><p>在跳表中不停地往跳表中插入数据时，如果不更新索引，就有可能出现某 2 个索引结点之间数据非常多的情况。极端情况下，跳表还会退化成单链表。</p>
-<p>作为一种动态数据结构，需要某种手段来维护索引与原始链表大小之间的平衡，也就是说如果链表中结点多了，索引结点就相应地增加一些，避免复杂度退化，以及查找、插入、删除操作性能下降。</p>
-<p>如果你了解红黑树、AVL 树这样平衡二叉树，它们是通过左右旋的方式保持左右子树的大小平衡，而跳表是通过随机函数来维护前面提到的“平衡性”。</p>
-<p>当往跳表中插入数据的时候，可以选择同时将这个数据插入到部分索引层中。如何选择加入哪些索引层呢？可以通过一个随机函数，来决定将这个结点插入到哪几级索引中，比如随机函数生成了值 K，那就将这个结点添加到第一级到第 K 级这 K 级索引中。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/a8/a7/a861445d0b53fc842f38919365b004a7.jpg"></p>
-<p>随机函数的选择很有讲究，从概率上来讲，能够保证跳表的索引大小和数据大小平衡性，不至于性能过度退化。</p>
-<p>至于随机函数的选择，如果你感兴趣的话，可以看看 Redis 中关于有序集合的跳表实现。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>为什么 Redis 要用跳表来实现有序集合，而不是红黑树？</p>
-<blockquote>
-<p>Redis 中的有序集合是通过跳表来实现的，严格点讲，其实还用到了散列表。</p>
-<p>如果你去查看 Redis 的开发手册，就会发现，Redis 中的有序集合支持的核心操作主要有下面这几个：插入一个数据；删除一个数据；查找一个数据；按照区间查找数据（比如查找值在[100, 356]之间的数据）；迭代输出有序序列。</p>
-<p>其中，插入、删除、查找以及迭代输出有序序列这几个操作，红黑树也可以完成，时间复杂度跟跳表是一样的。但是，按照区间来查找数据这个操作，红黑树的效率没有跳表高。对于按照区间查找数据这个操作，跳表可以做到 <code>O(logn)</code> 的时间复杂度定位区间的起点，然后在原始链表中顺序往后遍历就可以了。这样做非常高效。</p>
-<p>当然，Redis 之所以用跳表来实现有序集合，还有其他原因。比如，跳表更容易代码实现。虽然跳表的实现也不简单，但比起红黑树来说还是好懂、好写多了，而简单就意味着可读性好，不容易出错。还有，跳表更加灵活，它可以通过改变索引构建策略，有效平衡执行效率和内存消耗。</p>
-<p>不过，跳表也不能完全替代红黑树。因为红黑树比跳表的出现要早一些，很多编程语言中的 Map 类型都是通过红黑树来实现的。做业务开发的时候，直接拿来用就可以了，不用费劲自己去实现一个红黑树，但是跳表并没有一个现成的实现，所以在开发中，如果你想使用跳表，必须要自己实现。</p>
-</blockquote>
-<p>如果每三个或者五个结点提取一个结点作为上级索引，对应的在跳表中查询数据的时间复杂度是多少呢？</p>
-<blockquote>
-<p>时间复杂度仍然是：<code>log(n)</code>，以几个节点提取影响的只是前面的系数 m</p>
-</blockquote>
-<p>跳表的实现：</p>
-<pre><code class="java">/**
- * 跳表的一种实现方法。
- * 跳表中存储的是正整数，并且存储的是不重复的。
- *
- * Author：ZHENG
- */
-public class SkipList &#123;
-
-    private static final float SKIPLIST_P = 0.5f;
-    private static final int MAX_LEVEL = 16;
-
-    private int levelCount = 1;
-
-    private Node head = new Node();  // 带头链表
-
-    public Node find(int value) &#123;
-        Node p = head;
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-        &#125;
-
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            return p.forwards[0];
-        &#125; else &#123;
-            return null;
-        &#125;
-    &#125;
-
-    public void insert(int value) &#123;
-        int level = randomLevel();
-        Node newNode = new Node();
-        newNode.data = value;
-        newNode.maxLevel = level;
-        Node update[] = new Node[level];
-        for (int i = 0; i &lt; level; ++i) &#123;
-            update[i] = head;
-        &#125;
-
-        // record every level largest value which smaller than insert value in update[]
-        Node p = head;
-        for (int i = level - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            update[i] = p;// use update save node in search path
-        &#125;
-
-        // in search path node next node become new node forwords(next)
-        for (int i = 0; i &lt; level; ++i) &#123;
-            newNode.forwards[i] = update[i].forwards[i];
-            update[i].forwards[i] = newNode;
-        &#125;
-
-        // update node hight
-        if (levelCount &lt; level) levelCount = level;
-    &#125;
-
-    public void delete(int value) &#123;
-        Node[] update = new Node[levelCount];
-        Node p = head;
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            update[i] = p;
-        &#125;
-
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-                if (update[i].forwards[i] != null &amp;&amp; update[i].forwards[i].data == value) &#123;
-                    update[i].forwards[i] = update[i].forwards[i].forwards[i];
-                &#125;
-            &#125;
-        &#125;
-
-        while (levelCount&gt;1&amp;&amp;head.forwards[levelCount]==null)&#123;
-            levelCount--;
-        &#125;
-
-    &#125;
-
-    // 理论来讲，一级索引中元素个数应该占原始数据的 50%，二级索引中元素个数占 25%，三级索引12.5% ，一直到最顶层。
-    // 因为这里每一层的晋升概率是 50%。对于每一个新插入的节点，都需要调用 randomLevel 生成一个合理的层数。
-    // 该 randomLevel 方法会随机生成 1~MAX_LEVEL 之间的数，且 ：
-    //        50%的概率返回 1
-    //        25%的概率返回 2
-    //      12.5%的概率返回 3 ...
-    private int randomLevel() &#123;
-        int level = 1;
-
-        while (Math.random() &lt; SKIPLIST_P &amp;&amp; level &lt; MAX_LEVEL)
-            level += 1;
-        return level;
-    &#125;
-
-    public void printAll() &#123;
-        Node p = head;
-        while (p.forwards[0] != null) &#123;
-            System.out.print(p.forwards[0] + &quot; &quot;);
-            p = p.forwards[0];
-        &#125;
-        System.out.println();
-    &#125;
-
-    public class Node &#123;
-        private int data = -1;
-        private Node forwards[] = new Node[MAX_LEVEL];
-        private int maxLevel = 0;
-
-        @Override
-        public String toString() &#123;
-            StringBuilder builder = new StringBuilder();
-            builder.append(&quot;&#123; data: &quot;);
-            builder.append(data);
-            builder.append(&quot;; levels: &quot;);
-            builder.append(maxLevel);
-            builder.append(&quot; &#125;&quot;);
-
-            return builder.toString();
-        &#125;
-    &#125;
-    
-&#125;
-</code></pre>
-<p>王老师的Java实现版本，有几个关键点理解到了，基本上就明白是怎么实现的了：<br>1.每次插入数据的时候随机产生的level:决定了新节点的层数；<br>2.数组update的作用：用以存储新节点所有层数上，各自的前一个节点的信息；<br>3.节点内的forwards数组：用以存储该节点所有层的下一个节点的信息；<br>4.当所有节点的最大层级变量 <code>maxlevel=1</code> 的时候，跳表退化成一个普通链表</p>
-<pre><code class="java">package com.study.skiplist;
-
-import java.util.Random;
-
-/**
- * 1，跳表的一种实现方法，用于练习。跳表中存储的是正整数，并且存储的是不重复的。
- * 2，本类是参考作者zheng ，自己学习，优化了添加方法
- * 3，看完这个，我觉得再看ConcurrentSkipListMap 源码，会有很大收获
- * Author：ldb
- */
-public class SkipList2 &#123;
-
-    private static final int MAX_LEVEL = 16;
-    private int levelCount = 1;
-
-    /**
-     * 带头链表
-     */
-    private Node head = new Node(MAX_LEVEL);
-    private Random r = new Random();
-
-    public Node find(int value) &#123;
-        Node p = head;
-        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                // 找到前一节点
-                p = p.forwards[i];
-            &#125;
-        &#125;
-
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            return p.forwards[0];
-        &#125; else &#123;
-            return null;
-        &#125;
-    &#125;
-
-    /**
-     * 优化了作者zheng的插入方法
-     *
-     * @param value 值
-     */
-    public void insert(int value) &#123;
-        int level = head.forwards[0] == null ? 1 : randomLevel();
-        // 每次只增加一层，如果条件满足
-        if (level &gt; levelCount) &#123;
-            level = ++levelCount;
-        &#125;
-        Node newNode = new Node(level);
-        newNode.data = value;
-        Node update[] = new Node[level];
-        for (int i = 0; i &lt; level; ++i) &#123;
-            update[i] = head;
-        &#125;
-
-        Node p = head;
-        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                // 找到前一节点
-                p = p.forwards[i];
-            &#125;
-            // levelCount 会 &gt; level，所以加上判断
-            if (level &gt; i) &#123;
-                update[i] = p;
-            &#125;
-
-        &#125;
-        for (int i = 0; i &lt; level; ++i) &#123;
-            newNode.forwards[i] = update[i].forwards[i];
-            update[i].forwards[i] = newNode;
-        &#125;
-
-    &#125;
-
-    /**
-     * 优化了作者zheng的插入方法2
-     *
-     * @param value 值
-     */
-    public void insert2(int value) &#123;
-        int level = head.forwards[0] == null ? 1 : randomLevel();
-        // 每次只增加一层，如果条件满足
-        if (level &gt; levelCount) &#123;
-            level = ++levelCount;
-        &#125;
-        Node newNode = new Node(level);
-        newNode.data = value;
-        Node p = head;
-        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                // 找到前一节点
-                p = p.forwards[i];
-            &#125;
-            // levelCount 会 &gt; level，所以加上判断
-            if (level &gt; i) &#123;
-                if (p.forwards[i] == null) &#123;
-                    p.forwards[i] = newNode;
-                &#125; else &#123;
-                    Node next = p.forwards[i];
-                    p.forwards[i] = newNode;
-                    newNode.forwards[i] = next;
-                &#125;
-            &#125;
-
-        &#125;
-
-    &#125;
-
-    /**
-     * 作者zheng的插入方法，未优化前，优化后参见上面insert()
-     *
-     * @param value
-     * @param level 0 表示随机层数，不为0，表示指定层数，指定层数
-     *              可以让每次打印结果不变动，这里是为了便于学习理解
-     */
-    public void insert(int value, int level) &#123;
-        // 随机一个层数
-        if (level == 0) &#123;
-            level = randomLevel();
-        &#125;
-        // 创建新节点
-        Node newNode = new Node(level);
-        newNode.data = value;
-        // 表示从最大层到低层，都要有节点数据
-        newNode.maxLevel = level;
-        // 记录要更新的层数，表示新节点要更新到哪几层
-        Node update[] = new Node[level];
-        for (int i = 0; i &lt; level; ++i) &#123;
-            update[i] = head;
-        &#125;
-
-        /**
-         *
-         * 1，说明：层是从下到上的，这里最下层编号是0，最上层编号是15
-         * 2，这里没有从已有数据最大层（编号最大）开始找，（而是随机层的最大层）导致有些问题。
-         *    如果数据量为1亿，随机level=1 ，那么插入时间复杂度为O（n）
-         */
-        Node p = head;
-        for (int i = level - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            // 这里update[i]表示当前层节点的前一节点，因为要找到前一节点，才好插入数据
-            update[i] = p;
-        &#125;
-
-        // 将每一层节点和后面节点关联
-        for (int i = 0; i &lt; level; ++i) &#123;
-            // 记录当前层节点后面节点指针
-            newNode.forwards[i] = update[i].forwards[i];
-            // 前一个节点的指针，指向当前节点
-            update[i].forwards[i] = newNode;
-        &#125;
-
-        // 更新层高
-        if (levelCount &lt; level) levelCount = level;
-    &#125;
-
-    public void delete(int value) &#123;
-        Node[] update = new Node[levelCount];
-        Node p = head;
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            update[i] = p;
-        &#125;
-
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-                if (update[i].forwards[i] != null &amp;&amp; update[i].forwards[i].data == value) &#123;
-                    update[i].forwards[i] = update[i].forwards[i].forwards[i];
-                &#125;
-            &#125;
-        &#125;
-    &#125;
-
-    /**
-     * 随机 level 次，如果是奇数层数 +1，防止伪随机
-     *
-     * @return
-     */
-    private int randomLevel() &#123;
-        int level = 1;
-        for (int i = 1; i &lt; MAX_LEVEL; ++i) &#123;
-            if (r.nextInt() % 2 == 1) &#123;
-                level++;
-            &#125;
-        &#125;
-        return level;
-    &#125;
-
-    /**
-     * 打印每个节点数据和最大层数
-     */
-    public void printAll() &#123;
-        Node p = head;
-        while (p.forwards[0] != null) &#123;
-            System.out.print(p.forwards[0] + &quot; &quot;);
-            p = p.forwards[0];
-        &#125;
-        System.out.println();
-    &#125;
-
-    /**
-     * 打印所有数据
-     */
-    public void printAll_beautiful() &#123;
-        Node p = head;
-        Node[] c = p.forwards;
-        Node[] d = c;
-        int maxLevel = c.length;
-        for (int i = maxLevel - 1; i &gt;= 0; i--) &#123;
-            do &#123;
-                System.out.print((d[i] != null ? d[i].data : null) + &quot;:&quot; + i + &quot;-------&quot;);
-            &#125; while (d[i] != null &amp;&amp; (d = d[i].forwards)[i] != null);
-            System.out.println();
-            d = c;
-        &#125;
-    &#125;
-
-    /**
-     * 跳表的节点，每个节点记录了当前节点数据和所在层数数据
-     */
-    public class Node &#123;
-        private int data = -1;
-        /**
-         * 表示当前节点位置的下一个节点所有层的数据，从上层切换到下层，就是数组下标-1，
-         * forwards[3]表示当前节点在第三层的下一个节点。
-         */
-        private Node forwards[];
-
-        /**
-         * 这个值其实可以不用，看优化insert()
-         */
-        private int maxLevel = 0;
-
-        public Node(int level) &#123;
-            forwards = new Node[level];
-        &#125;
-
-        @Override
-        public String toString() &#123;
-            StringBuilder builder = new StringBuilder();
-            builder.append(&quot;&#123; data: &quot;);
-            builder.append(data);
-            builder.append(&quot;; levels: &quot;);
-            builder.append(maxLevel);
-            builder.append(&quot; &#125;&quot;);
-            return builder.toString();
-        &#125;
-    &#125;
-
-    public static void main(String[] args) &#123;
-        SkipList2 list = new SkipList2();
-        list.insert(1, 3);
-        list.insert(2, 3);
-        list.insert(3, 2);
-        list.insert(4, 4);
-        list.insert(5, 10);
-        list.insert(6, 4);
-        list.insert(8, 5);
-        list.insert(7, 4);
-        list.printAll_beautiful();
-        list.printAll();
-        /**
-         * 结果如下：
-         *                                         null:15-------
-         *                                         null:14-------
-         *                                         null:13-------
-         *                                         null:12-------
-         *                                         null:11-------
-         *                                         null:10-------
-         *                                            5:9-------
-         *                                            5:8-------
-         *                                            5:7-------
-         *                                            5:6-------
-         *                                            5:5-------
-         *                                            5:4-------                     8:4-------
-         *                                  4:3-------5:3-------6:3-------7:3-------8:3-------
-         * 1:2-------2:2-------             4:2-------5:2-------6:2-------7:2-------8:2-------
-         * 1:1-------2:1-------3:1-------4:1-------5:1-------6:1-------7:1-------8:1-------
-         * 1:0-------2:0-------3:0-------4:0-------5:0-------6:0-------7:0-------8:0-------
-         * &#123; data: 1; levels: 3 &#125; &#123; data: 2; levels: 3 &#125; &#123; data: 3; levels: 2 &#125; &#123; data: 4; levels: 4 &#125;
-         * &#123; data: 5; levels: 10 &#125; &#123; data: 6; levels: 4 &#125; &#123; data: 7; levels: 4 &#125; &#123; data: 8; levels: 5 &#125;
-         */
-        // 优化后insert()
-
-        SkipList2 list2 = new SkipList2();
-        list2.insert2(1);
-        list2.insert2(2);
-        list2.insert2(6);
-        list2.insert2(7);
-        list2.insert2(8);
-        list2.insert2(3);
-        list2.insert2(4);
-        list2.insert2(5);
-        System.out.println();
-        list2.printAll_beautiful();
-    &#125;
-
-&#125;
-</code></pre>
-<p><a href="https://cloud.tencent.com/developer/article/1353762">Redis源码学习之跳表</a></p>
-]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>数据结构与算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据结构 - 跳表</title>
-    <url>/2021/06/09/%5Barithmetic%5D-%E6%95%A3%E5%88%97%E8%A1%A8/</url>
-    <content><![CDATA[<p><img data-src=""></p>
-<span id="more"></span>
-
-<blockquote>
-<p><a href="https://time.geekbang.org/column/article/64233">课程地址</a></p>
-</blockquote>
-<h1 id="散列思想"><a href="#散列思想" class="headerlink" title="散列思想"></a>散列思想</h1><p>散列表的英文叫 “Hash Table”，也叫它 “哈希表” 或者 “Hash 表”。<strong>散列表用的是数组支持按照下标随机访问数据的特性，所以散列表其实就是数组的一种扩展，由数组演化而来。</strong></p>
-<p>可以说，如果没有数组，就没有散列表。举个例子，假如有 89 名选手参加学校运动会。为了方便记录成绩，每个选手胸前都会贴上自己的参赛号码。这 89 名选手的编号依次是 1 到 89。现在希望编程实现这样一个功能：通过编号快速找到对应的选手信息。你会怎么做呢？</p>
-<p>可以把这 89 名选手的信息放在数组里。编号为 1 的选手，放到数组中下标为 1 的位置；编号为 2 的选手，放到数组中下标为 2 的位置。以此类推，编号为 k 的选手放到数组中下标为 k 的位置。因为参赛编号跟数组下标一一对应，当需要查询参赛编号为 x 的选手的时候，只需要将下标为 x 的数组元素取出来就可以了，时间复杂度就是 <code>O(1)</code>。这样按照编号查找选手信息，效率是不是很高？</p>
-<p>实际上，这个例子已经用到了散列的思想。在这个例子里，参赛编号是自然数，并且与数组的下标形成一一映射，所以利用数组支持根据下标随机访问的时候，时间复杂度是 <code>O(1)</code> 这一特性，就可以实现快速查找编号对应的选手信息。</p>
-<p>这个例子中蕴含的散列思想还不够明显，来改造一下这个例子。</p>
-<p>假设校长说，参赛编号不能设置得这么简单，要加上年级、班级这些更详细的信息，所以把编号的规则稍微修改了一下，用 6 位数字来表示。比如 051167，其中，前两位 05 表示年级，中间两位 11 表示班级，最后两位还是原来的编号 1 到 89。这个时候该如何存储选手信息，才能够支持通过编号来快速查找选手信息呢？思路还是跟前面类似。尽管不能直接把编号作为数组下标，但可以截取参赛编号的后两位作为数组下标，来存取选手信息数据。当通过参赛编号查询选手信息的时候，用同样的方法，取参赛编号的后两位，作为数组下标，来读取数组中的数据。这就是典型的散列思想。</p>
-<p>其中，参赛选手的编号叫做<strong>键</strong>（key）或者关键字用来标识一个选手。参赛编号转化为数组下标的映射方法就叫作<strong>散列函数</strong>（或 “Hash 函数”、”哈希函数”），而散列函数计算得到的值就叫作<strong>散列值</strong>（或”Hash 值”、”哈希值”）。</p>
-<p><strong>散列表用的就是数组支持按照下标随机访问的时候，时间复杂度是 <code>O(1)</code> 的特性。通过散列函数把元素的键值映射为下标，然后将数据存储在数组中对应下标的位置。当按照键值查询元素时，用同样的散列函数，将键值转化数组下标，从对应的数组下标的位置取数据。</strong></p>
-<h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>从上面的例子我们可以看到，散列函数在散列表中起着非常关键的作用。顾名思义，散列函数是一个函数，可以把它定义成 <code>hash(key)</code>，其中 key 表示元素的键值，<code>hash(key)</code> 的值表示经过散列函数计算得到的散列值。那第一个例子中，编号就是数组下标，所以 <code>hash(key)</code> 就等于 key。改造后的例子，用伪代码将它写成函数就是下面这样：</p>
-<pre><code>int hash(String key) &#123;
-    // 获取后两位字符
-    string lastTwoChars = key.substr(length-2, length);
-    // 将后两位字符转换为整数
-    int hashValue = convert lastTwoChas to int-type;
-    return hashValue;
-&#125;
-</code></pre>
-<p>刚刚举的学校运动会的例子，散列函数比较简单，也比较容易想到。但是，如果参赛选手的编号是随机生成的 6 位数字，又或者用的是 a 到 z 之间的字符串，该如何构造散列函数呢？</p>
-<p>这里总结了三点散列函数设计的基本要求：</p>
-<ul>
-<li>散列函数计算得到的散列值是一个非负整数；</li>
-<li>如果 <code>key1 = key2</code>，那 <code>hash(key1) == hash(key2)</code>；</li>
-<li>如果 <code>key1 ≠ key2</code>，那 <code>hash(key1) ≠ hash(key2)</code>。</li>
-</ul>
-<p>其中，第一点理解起来应该没有任何问题。因为数组下标是从 0 开始的，所以散列函数生成的散列值也要是非负整数。第二点也很好理解。相同的 key，经过散列函数得到的散列值也应该是相同的。</p>
-<p>第三点理解起来可能会有问题，着重说一下。这个要求看起来合情合理，但是在真实的情况下，要想找到一个不同的 key 对应的散列值都不一样的散列函数，几乎是不可能的。即便像业界著名的MD5、SHA、CRC等哈希算法，也无法完全避免这种散列冲突。而且，因为数组的存储空间有限，也会加大散列冲突的概率。所以几乎无法找到一个完美的无冲突的散列函数，即便能找到，付出的时间成本、计算成本也是很大的，所以针对散列冲突问题，需要通过其他途径来解决。</p>
-<h1 id="散列冲突"><a href="#散列冲突" class="headerlink" title="散列冲突"></a>散列冲突</h1><p>再好的散列函数也无法避免散列冲突。那究竟该如何解决散列冲突问题呢？常用的散列冲突解决方法有两类，开放寻址法（open addressing）和链表法（chaining）。</p>
-<h2 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h2><p>开放寻址法的核心思想是，如果出现了散列冲突，就重新探测一个空闲位置将其插入。那如何重新探测新的位置呢？</p>
-<p>先讲一个比较简单的探测方法，线性探测（Linear Probing）。</p>
-<p>当往散列表中插入数据时，如果某个数据经过散列函数散列之后，存储位置已经被占用了，就从当前位置开始依次往后查找，看是否有空闲位置直到找到为止。举一个例子说明一下，这里面黄色的色块表示空闲位置，橙色的色块表示已经存储了数据。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/5c/d5/5c31a3127cbc00f0c63409bbe1fbd0d5.jpg"></p>
-<p>从图中可以看出，散列表的大小为 10，在元素 x 插入散列表之前，已经 6 个元素插入到散列表中。x 经过 Hash 算法之后，被散列到位置下标为 7 的位置，但是这个位置已经有数据了，所以就产生了冲突。于是就顺序地往后一个一个找，看有没有空闲的位置，遍历到尾部都没有找到空闲的位置，于是我们再从表头开始找，直到找到空闲位置 2，于是将其插入到这个位置。</p>
-<p>在散列表中查找元素的过程有点儿类似插入过程。通过散列函数求出要查找元素的键值对应的散列值，然后比较数组中下标为散列值的元素和要查找的元素是否相等。如果相等，则说明就是要找的元素；否则就顺序往后依次查找。<strong>如果遍历到数组中的空闲位置，还没有找到，就说明要查找的元素并没有在散列表中。</strong></p>
-<p>散列表跟数组一样，不仅支持插入、查找操作，还支持删除操作。对于使用线性探测法解决冲突的散列表，删除操作稍微有些特别。不能单纯地把要删除的元素设置为空。这是为什么呢？</p>
-<p>在查找的时候，一旦我们通过线性探测方法，找到一个空闲位置，就可以认定散列表中不存在这个数据。但是，如果这个空闲位置是后来删除的，就会导致原来的查找算法失效。本来存在的数据，会被认定为不存在。这个问题如何解决呢？可以将删除的元素，特殊标记为 deleted。当线性探测查找的时候，遇到标记为 deleted 的空间，并不是停下来，而是继续往下探测。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/fe/1d/fe7482ba09670cbe05a9dfe4dd49bd1d.jpg"></p>
-<p>线性探测法其实存在很大问题。当散列表中插入的数据越来越多时，散列冲突发生的可能性就会越来越大，空闲位置会越来越少，线性探测的时间就会越来越久。极端情况下，可能需要探测整个散列表，所以最坏情况下的时间复杂度为 <code>O(n)</code>。同理，在删除和查找时，也有可能会线性探测整张散列表，才能找到要查找或者删除的数据。</p>
-<p>对于开放寻址冲突解决方法，除了线性探测方法之外，还有另外两种比较经典的探测方法，<strong>二次探测</strong>（Quadratic probing）和<strong>双重散列</strong>（Double hashing）。</p>
-<p>所谓二次探测，跟线性探测很像，线性探测每次探测的步长是 1，那它探测的下标序列就是 <code>hash(key)+0，hash(key)+1，hash(key)+2……</code> 而二次探测探测的步长就变成了原来的“二次方”，也就是说，它探测的下标序列就是 <code>hash(key)+0，hash(key)+12，hash(key)+22……</code></p>
-<p>所谓双重散列，不是简单的使用一个散列函数。而是使用一组散列函数 <code>hash1(key)，hash2(key)，hash3(key)……</code>，先用第一个散列函数，如果计算得到的存储位置已经被占用，再用第二个散列函数，依次类推，直到找到空闲的存储位置。</p>
-<p>不管采用哪种探测方法，当散列表中空闲位置不多的时候，散列冲突的概率就会大大提高。为了尽可能保证散列表的操作效率，一般情况下，会尽可能保证散列表中有一定比例的空闲槽位。用<strong>装载因子</strong>（load factor）来表示空位的多少。装载因子的计算公式是：</p>
-<pre><code>散列表的装载因子 = 填入表中的元素个数 / 散列表的长度
-</code></pre>
-<p>装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降。</p>
-<h2 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h2><p>链表法是一种更加常用的散列冲突解决办法，相比开放寻址法，它要简单很多。在散列表中，每个”桶（bucket）”或者 “槽（slot）” 会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/a4/7f/a4b77d593e4cb76acb2b0689294ec17f.jpg"></p>
-<p>当插入的时候，只需要通过散列函数计算出对应的散列槽位，将其插入到对应链表中即可，所以插入的时间复杂度是 <code>O(1)</code>。当查找、删除一个元素时，同样通过散列函数计算出对应的槽，然后遍历链表查找或者删除。那查找或删除操作的时间复杂度是多少呢？</p>
-<p>实际上，这两个操作的时间复杂度跟链表的长度 k 成正比，也就是 <code>O(k)</code>。对于散列比较均匀的散列函数来说，理论上讲，<code>k=n/m</code>，其中 n 表示散列中数据的个数，m 表示散列表中 “”槽” 的个数。</p>
-<h1 id="如何设计散列函数？"><a href="#如何设计散列函数？" class="headerlink" title="如何设计散列函数？"></a>如何设计散列函数？</h1><h1 id="装载因子过大了怎么办？"><a href="#装载因子过大了怎么办？" class="headerlink" title="装载因子过大了怎么办？"></a>装载因子过大了怎么办？</h1><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>Word 文档中单词拼写检查功能是如何实现的？</p>
-<blockquote>
-<p>常用的英文单词有 20 万个左右，假设单词的平均长度是 10 个字母，平均一个单词占用 10 个字节的内存空间，那 20 万英文单词大约占 2MB 的存储空间，就算放大 10 倍也就是 20MB。对于现在的计算机来说，这个大小完全可以放在内存里面。所以可以用散列表来存储整个英文单词词典。当用户输入某个英文单词时，拿用户输入的单词去散列表中查找。如果查到，则说明拼写正确；如果没有查到，则说明拼写可能有误，给予提示。借助散列表这种数据结构，就可以轻松实现快速判断是否存在拼写错误。</p>
-</blockquote>
-<p>假设有 10 万条 URL 访问日志，如何按照访问次数给 URL 排序？</p>
-<blockquote>
-<p>遍历 10 万条数据，以 URL 为 key，访问次数为 value，存入散列表，同时记录下访问次数的最大值 K，时间复杂度 <code>O(n)</code>。</p>
-<p>如果 K 不是很大，可以使用桶排序，时间复杂度 <code>O(n)</code>。如果 K 非常大（比如大于 10 万），就使用快速排序，复杂度 <code>O(nlogn)</code>。</p>
-</blockquote>
-<p>有两个字符串数组，每个数组大约有 10 万条字符串，如何快速找出两个数组中相同的字符串？</p>
-<blockquote>
-<p>以第一个字符串数组构建散列表，key 为字符串，value 为出现次数。再遍历第二个字符串数组，以字符串为 key 在散列表中查找，如果 value 大于零，说明存在相同字符串。时间复杂度 <code>O(n)</code>。</p>
 </blockquote>
 ]]></content>
       <categories>
@@ -18661,246 +18661,6 @@ public class ThymeleafProperties &#123;
       </tags>
   </entry>
   <entry>
-    <title>JSP &amp; EL表达式</title>
-    <url>/2020/09/25/%5BJava%5D-JSP&amp;EL/</url>
-    <content><![CDATA[<p><a href="https://imgchr.com/i/ByLY5j"><img data-src="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg"></a></p>
-<span id="more"></span>
-
-<h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h2 id="JSP规范介绍"><a href="#JSP规范介绍" class="headerlink" title="JSP规范介绍"></a>JSP规范介绍</h2><ul>
-<li>来自于JavaEE规范中一种</li>
-<li>JSP规范制定了如何开发JSP文件代替响应对象将处理结果写入到响应体的开发流程</li>
-<li>JSP规范制定Http服务器应该如何调用管理JSP文件</li>
-<li>JSP文件在执行时，自动将文件所有内容写入到响应体，从而不用书写<code>respone.getWriter().print();</code></li>
-</ul>
-<p><strong>优势：</strong></p>
-<ul>
-<li>JSP文件在互谅网通信过程，是响应对象代替品</li>
-<li>降低将处理结果写入到响应体的开发工作量降低处理结果维护难度</li>
-<li>在JSP文件开发时，可以直接将处理结果写入到JSP文件不需要手写<code>respone.getWriter().print();</code>命令，在Http服务器调用JSP文件时，根据JSP规范要求自动的将JSP文件书写的所有内容通过输出流写入到响应体</li>
-</ul>
-<h2 id="响应对象存在的弊端"><a href="#响应对象存在的弊端" class="headerlink" title="响应对象存在的弊端"></a>响应对象存在的弊端</h2><ul>
-<li>适合将数据量较少的处理结果写入到响应体</li>
-<li>如果处理数量过多，使用响应对象增加开发难度</li>
-</ul>
-<h2 id="JSP文件内置对象"><a href="#JSP文件内置对象" class="headerlink" title="JSP文件内置对象"></a>JSP文件内置对象</h2><h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>类型：HttpServletRequst</p>
-<p>作用：在JSP文件运行时，读取请求包信息与Servlet在请求转发过程中实现数据共享</p>
-<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>类型：HTTPSession</p>
-<p>作用：在JSP文件运行时，session可以指向当前用户私人储物柜，添加共享数据或者读取共享数据</p>
-<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><p>类型：ServletContext()</p>
-<p>作用：在JSP文件运行时，通过全局作用域对象实现数据共享</p>
-<h2 id="Servlet-与-JSP分工"><a href="#Servlet-与-JSP分工" class="headerlink" title="Servlet 与 JSP分工"></a>Servlet 与 JSP分工</h2><p><strong>Servlet：</strong>负责处理业务并得到处理结果 — 大厨师</p>
-<p><strong>JSP：</strong>不负责处理业务，主要任务将Servlet中处理结果写入到响应体 — 传菜员</p>
-<p><strong>Servlet</strong> 与 <strong>JSP</strong>之间的调用关系：Servlet工作完毕后，一般通过【请求转发】方式向Tomcat申请调用JSP</p>
-<h2 id="Servlet与JSP之间如何实现数据共享"><a href="#Servlet与JSP之间如何实现数据共享" class="headerlink" title="Servlet与JSP之间如何实现数据共享"></a>Servlet与JSP之间如何实现数据共享</h2><ol>
-<li><p>使用【请求作用域对象】实现数据共享</p>
-</li>
-<li><p>使用【全局作用对象】实现数据共享</p>
-</li>
-</ol>
-<p>Servlet将处理结果添加到【请求作用域对象(request)】</p>
-<p>JSP文件在运行时从【请求作用域对象(request)】得到处理结果</p>
-<p>代码示例：</p>
-<p>在Servlet接口实现类下(OneServlet.java)</p>
-<pre><code class="java">Person p1 = new Person(1,&quot;a&quot;);
-Person p2 = new Person(2,&quot;b&quot;);
-List&lt;Person&gt; personList = new ArrayList&lt;&gt;();
-personList.add(p1);
-personList.add(p2);
-// 将处理结果添加到请求作用域对象
-request.setAttribute(&quot;key&quot;,personList);
-// 通过请求转发方案，向Tomcat申请调用user_show.jsp，同时将request与response通过Tomcat交给user_show.jsp使用
-request.getRequestDispatcher(&quot;/user_show.jsp&quot;).forward(request,response);
-</code></pre>
-<p>在JSP文件中读取：</p>
-<pre><code class="jsp">&lt;%=
-    List&lt;Person&gt; personList = (List&lt;Person&gt;) application.getAttributee(&quot;key&quot;);
-%&gt;
-</code></pre>
-<h2 id="Http服务器调用JSP文件步骤-面试题"><a href="#Http服务器调用JSP文件步骤-面试题" class="headerlink" title="Http服务器调用JSP文件步骤(面试题)"></a>Http服务器调用JSP文件步骤(面试题)</h2><ol>
-<li><p>Http服务器将JSP文件内容【编辑】为一个Servlet接口实现类(.java)</p>
-</li>
-<li><p>Http服务器将Servlet接口实现类【编译】为class文件(.class)</p>
-</li>
-<li><p>Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象</p>
-</li>
-<li><p>Http服务器通过Servlet实例对象调用<code>jsp_service</code>方法，将JSP文件内容写入到响应体</p>
-</li>
-</ol>
-<p><strong>Http服务器【编辑】与【编译】JSP文件位置：</strong></p>
-<p><code>tomcat\[网站工作空间]\work\Catalina\localhost\[网站别名]\org\apache\jsp</code></p>
-<h1 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h1><h2 id="El工具包介绍"><a href="#El工具包介绍" class="headerlink" title="El工具包介绍"></a>El工具包介绍</h2><ul>
-<li>由Java技术开发的一个jar包</li>
-<li>作用降低JSP文件开发时Java命令开发强度</li>
-<li>Tomcat服务器本身自带了EL工具包(在Tomcat安装地址<code>/lib/el-api.jar</code>)</li>
-<li>JSP文件作用：代替响应对象将Servlet中<code>doGet/doPost</code>的执行结果写入到响应体</li>
-</ul>
-<h2 id="EL表达式与作用域对象别名"><a href="#EL表达式与作用域对象别名" class="headerlink" title="EL表达式与作用域对象别名"></a>EL表达式与作用域对象别名</h2><ol>
-<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据&#125;</code>  例子：<code>$&#123;applicationScope.key&#125;</code></p>
-</li>
-<li><p>命令作用：</p>
-<ul>
-<li>EL表达式是EL工具包提供一种特殊命令格式【表达式命令格式】</li>
-<li>EL表达式在JSP文件上使用，负责在JSP文件上从作用域对象读取指定的共享数据并输出到响应体</li>
-</ul>
-</li>
-<li><p>JSP文件可以使用的作用域对象</p>
-<ul>
-<li><p>全局作用域对象(application)：<code>ServletContext application = new ServletContext();</code></p>
-</li>
-<li><p>会话作用域对象(session)：<code>HttpSession session = new HttpSession();</code></p>
-</li>
-<li><p>请求作用域对象(request)：<code>HttpServletRequest request = new HttpServletRequest();</code></p>
-</li>
-<li><p>当前页作用域对象(pageContext)：<code>PageContext pageContext = new PageContext();</code></p>
-<p>这是JSP文件独有的作用域对象，Servlet中不存在。在【当前作用域对象】存放的共享数据仅能在当前JSP文件中使用，不能共享给其他Servlet或者其他JSP文件。在真实开发过程中，主要用于JSTL标签与JSP文件之间数据共享。<code>JSTL---&gt;数据---&gt; pageContex---&gt; JSP</code></p>
-</li>
-</ul>
-</li>
-<li><p>EL表达式提供作用域对象别名</p>
-<table>
-<thead>
-<tr>
-<th align="center">JSP</th>
-<th align="center">EL表达式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">application</td>
-<td align="center">${applicationScope.共享数据名}</td>
-</tr>
-<tr>
-<td align="center">session</td>
-<td align="center">${sessionScope.共享数据名}</td>
-</tr>
-<tr>
-<td align="center">request</td>
-<td align="center">${requestScope.共享数据名}</td>
-</tr>
-<tr>
-<td align="center">pageContex</td>
-<td align="center">${pageScope.共享数据}</td>
-</tr>
-</tbody></table>
-</li>
-</ol>
-<h2 id="用EL表达式将引用对象属性写入到响应体"><a href="#用EL表达式将引用对象属性写入到响应体" class="headerlink" title="用EL表达式将引用对象属性写入到响应体"></a>用EL表达式将引用对象属性写入到响应体</h2><ol>
-<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据名.属性名&#125;</code></p>
-<p>例如：</p>
-<pre><code class="jsp">Student student = new Student(100,&quot;alex&quot;);
-　　request.setAttribute(&quot;key&quot;,student);
-　　&lt;body&gt;
-　　　　学号：$&#123;requestScope.key.studentNumber&#125; &lt;!--studentNumber来自于Student类属性,大小完全一致--&gt;
-　　　　姓名：$&#123;requestScope.key.studentName&#125;
-　　&lt;/body&gt;
-　　$&#123;&quot;A&quot; == requestScope.key.answer?&quot;cheched&quot;:&quot;&quot;&#125;
-</code></pre>
-</li>
-<li><p>命令作用：从作用域对象读取指定共享数据关联的引用对象的属性值，并自动将属性的结果写入到响应体</p>
-</li>
-<li><p>属性名：一定要与类中的属性名一致</p>
-</li>
-<li><p>EL表达式没有提供遍历集合方法，因此无法从作用域对象读取集合内容输出</p>
-</li>
-</ol>
-<h2 id="EL表达式简化版"><a href="#EL表达式简化版" class="headerlink" title="EL表达式简化版"></a>EL表达式简化版</h2><ol>
-<li><p>命令格式：<code>$&#123;共享数据名&#125;</code></p>
-</li>
-<li><p>命令作用：EL表达式允许开发人员开发时省略作用域对象别名</p>
-</li>
-<li><p>工作原理：</p>
-<p>EL表达式简化版由于没有指定作用域对象，所以在执行时采用【猜】算法，首先到<code>pageContext</code>定位共享数据，如果存在直接输出并结束执行，如果在<code>pageContext</code>没有定位成功，到<code>request</code>定位共享数据，如果存在直接输出并结束执行，由此类推，再到<code>session、application</code>。如果都没定位成功则返回null。</p>
-<p>总结：查找顺序(自上而下)<code>pageContext --&gt; request --&gt; session --&gt; application --&gt; null</code></p>
-</li>
-<li><p>存在隐患：</p>
-<p>容易降低程序执行的速度（南辕北辙），容易导致数据定位错误</p>
-</li>
-<li><p>应用场景：</p>
-<p>简化从<code>pageContext</code>读取共享数据并输出难度</p>
-</li>
-<li><p><strong>EL表达式简化版尽管存在很多隐患，但是在实际开发过程中，为了节省时间，一般都使用简化版，拒绝使用标准版</strong></p>
-</li>
-</ol>
-<h2 id="EL表达式-–-支持运算表达式"><a href="#EL表达式-–-支持运算表达式" class="headerlink" title="EL表达式 – 支持运算表达式"></a>EL表达式 – 支持运算表达式</h2><ol>
-<li><p>前提：在JSP文件有时需要将读取共享数据进行一番运算之后，将运算结果写入到响应体</p>
-<pre><code class="jsp">&lt;!--传统的Java命令--&gt;
-&lt;%
-　　String num1 = (String) request.getAttribute(&quot;key1&quot;);
-　　Integer num2 = (Integer) request.getAttribute(&quot;key2&quot;);
-　　int sum = Integer.valueOf(num1) + num2;
-%&gt;
-sum=&lt;%=sum%&gt;
-</code></pre>
-<p>El表达式简化版(支持运算)</p>
-<pre><code class="jsp">&lt;!--不用写读取语句直接就可以获取--&gt;
-sum=$&#123;key1+key2&#125;
-</code></pre>
-</li>
-<li><p>运算表达式（JSP只做简单输出，复杂判断一般交给Servlet）</p>
-<ul>
-<li><p>数学运算</p>
-</li>
-<li><p>关系运算：&gt; &lt; = &gt;= &lt;= !=</p>
-<p>部分代码示例：</p>
-<pre><code class="jsp">request.setAttribute(&quot;age&quot;,22);
---------------------------------
-$&#123;age&gt;18?&quot;欢迎光临&quot;:&quot;谢绝入内&quot;&#125;
-</code></pre>
-</li>
-<li><p>逻辑运算： &amp;&amp; || !</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="EL表达式提供的内置对象"><a href="#EL表达式提供的内置对象" class="headerlink" title="EL表达式提供的内置对象"></a>EL表达式提供的内置对象</h2><ol>
-<li><p>命令格式：<code>$&#123;param.请求参数名&#125;</code></p>
-</li>
-<li><p>命令作用：通过请求对象读取当前请求包中请求参数内容，并将请求参数内容写入到响应体</p>
-</li>
-<li><p>代替命令：浏览器发送请求Http://localhost:8080/myWeb/index.jsp?userName=alex&amp;passWord=123时获取请求参数的值</p>
-<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
-&lt;%
-    String userName = request.getParameter(&quot;userName&quot;);
-    String passWord = request.getParameter(&quot;passWord&quot;);
-%&gt;
-用户名：&lt;%=userName%&gt;
-密  码：&lt;%=passWord%&gt;
-------------------------------------------------------
-&lt;!--EL表达式获取--&gt;
-用户名：$&#123;param.userName&#125;
-密  码：$&#123;param.passWord&#125;
-</code></pre>
-</li>
-<li><p>命令格式：<code>$&#123;paramValues.请求参数名[下标]&#125;</code></p>
-</li>
-<li><p>命令作用：如果浏览器发送的请求参数时，一个请求参数关联多个值，此时可以通过<code>paramValues</code>读取请求参数下指定位置的值，并写入到响应体</p>
-</li>
-<li><p>代替命令：浏览器发送请求<a href="http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3%EF%BC%8C%E6%AD%A4%E6%97%B6page%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%9C%A8%E3%80%90http%E8%AF%B7%E6%B1%82%E5%8C%85%E3%80%91%E4%BB%A5%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E5%AD%98%E5%9C%A8----%60page:%5B1,2,3%5D%60">http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3，此时page请求参数在【http请求包】以数组形式存在----`page:[1,2,3]`</a></p>
-<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
-&lt;%
-　　　　String[] array = request.getParameterValues(&quot;page&quot;);
-%&gt;
-第一个值：&lt;%=array[0]%&gt;
-第二个值：&lt;%=array[1]%&gt;
-第三个值：&lt;%=array[2]%&gt;
------------------------------------------
-&lt;!--EL表达式获取--&gt;
-第一个值：$&#123;paramValues.page[0]&#125;
-第二个值：$&#123;paramValues.page[1]&#125;
-第三个值：$&#123;paramValues.page[2]&#125;
-</code></pre>
-</li>
-</ol>
-<h2 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h2><p><code>javax.el.PropertyNotFoundException</code>：在对象中没有找到指定属性。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>JSP</tag>
-        <tag>EL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Servlet</title>
     <url>/2020/09/25/%5BJava%5D-Servlet/</url>
     <content><![CDATA[<p>假装有封面.jpg</p>
@@ -20220,6 +19980,246 @@ public class OneFilter implements Filter &#123;
       <tags>
         <tag>Java</tag>
         <tag>Servlet</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JSP &amp; EL表达式</title>
+    <url>/2020/09/25/%5BJava%5D-JSP&amp;EL/</url>
+    <content><![CDATA[<p><a href="https://imgchr.com/i/ByLY5j"><img data-src="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg"></a></p>
+<span id="more"></span>
+
+<h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h2 id="JSP规范介绍"><a href="#JSP规范介绍" class="headerlink" title="JSP规范介绍"></a>JSP规范介绍</h2><ul>
+<li>来自于JavaEE规范中一种</li>
+<li>JSP规范制定了如何开发JSP文件代替响应对象将处理结果写入到响应体的开发流程</li>
+<li>JSP规范制定Http服务器应该如何调用管理JSP文件</li>
+<li>JSP文件在执行时，自动将文件所有内容写入到响应体，从而不用书写<code>respone.getWriter().print();</code></li>
+</ul>
+<p><strong>优势：</strong></p>
+<ul>
+<li>JSP文件在互谅网通信过程，是响应对象代替品</li>
+<li>降低将处理结果写入到响应体的开发工作量降低处理结果维护难度</li>
+<li>在JSP文件开发时，可以直接将处理结果写入到JSP文件不需要手写<code>respone.getWriter().print();</code>命令，在Http服务器调用JSP文件时，根据JSP规范要求自动的将JSP文件书写的所有内容通过输出流写入到响应体</li>
+</ul>
+<h2 id="响应对象存在的弊端"><a href="#响应对象存在的弊端" class="headerlink" title="响应对象存在的弊端"></a>响应对象存在的弊端</h2><ul>
+<li>适合将数据量较少的处理结果写入到响应体</li>
+<li>如果处理数量过多，使用响应对象增加开发难度</li>
+</ul>
+<h2 id="JSP文件内置对象"><a href="#JSP文件内置对象" class="headerlink" title="JSP文件内置对象"></a>JSP文件内置对象</h2><h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>类型：HttpServletRequst</p>
+<p>作用：在JSP文件运行时，读取请求包信息与Servlet在请求转发过程中实现数据共享</p>
+<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>类型：HTTPSession</p>
+<p>作用：在JSP文件运行时，session可以指向当前用户私人储物柜，添加共享数据或者读取共享数据</p>
+<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><p>类型：ServletContext()</p>
+<p>作用：在JSP文件运行时，通过全局作用域对象实现数据共享</p>
+<h2 id="Servlet-与-JSP分工"><a href="#Servlet-与-JSP分工" class="headerlink" title="Servlet 与 JSP分工"></a>Servlet 与 JSP分工</h2><p><strong>Servlet：</strong>负责处理业务并得到处理结果 — 大厨师</p>
+<p><strong>JSP：</strong>不负责处理业务，主要任务将Servlet中处理结果写入到响应体 — 传菜员</p>
+<p><strong>Servlet</strong> 与 <strong>JSP</strong>之间的调用关系：Servlet工作完毕后，一般通过【请求转发】方式向Tomcat申请调用JSP</p>
+<h2 id="Servlet与JSP之间如何实现数据共享"><a href="#Servlet与JSP之间如何实现数据共享" class="headerlink" title="Servlet与JSP之间如何实现数据共享"></a>Servlet与JSP之间如何实现数据共享</h2><ol>
+<li><p>使用【请求作用域对象】实现数据共享</p>
+</li>
+<li><p>使用【全局作用对象】实现数据共享</p>
+</li>
+</ol>
+<p>Servlet将处理结果添加到【请求作用域对象(request)】</p>
+<p>JSP文件在运行时从【请求作用域对象(request)】得到处理结果</p>
+<p>代码示例：</p>
+<p>在Servlet接口实现类下(OneServlet.java)</p>
+<pre><code class="java">Person p1 = new Person(1,&quot;a&quot;);
+Person p2 = new Person(2,&quot;b&quot;);
+List&lt;Person&gt; personList = new ArrayList&lt;&gt;();
+personList.add(p1);
+personList.add(p2);
+// 将处理结果添加到请求作用域对象
+request.setAttribute(&quot;key&quot;,personList);
+// 通过请求转发方案，向Tomcat申请调用user_show.jsp，同时将request与response通过Tomcat交给user_show.jsp使用
+request.getRequestDispatcher(&quot;/user_show.jsp&quot;).forward(request,response);
+</code></pre>
+<p>在JSP文件中读取：</p>
+<pre><code class="jsp">&lt;%=
+    List&lt;Person&gt; personList = (List&lt;Person&gt;) application.getAttributee(&quot;key&quot;);
+%&gt;
+</code></pre>
+<h2 id="Http服务器调用JSP文件步骤-面试题"><a href="#Http服务器调用JSP文件步骤-面试题" class="headerlink" title="Http服务器调用JSP文件步骤(面试题)"></a>Http服务器调用JSP文件步骤(面试题)</h2><ol>
+<li><p>Http服务器将JSP文件内容【编辑】为一个Servlet接口实现类(.java)</p>
+</li>
+<li><p>Http服务器将Servlet接口实现类【编译】为class文件(.class)</p>
+</li>
+<li><p>Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象</p>
+</li>
+<li><p>Http服务器通过Servlet实例对象调用<code>jsp_service</code>方法，将JSP文件内容写入到响应体</p>
+</li>
+</ol>
+<p><strong>Http服务器【编辑】与【编译】JSP文件位置：</strong></p>
+<p><code>tomcat\[网站工作空间]\work\Catalina\localhost\[网站别名]\org\apache\jsp</code></p>
+<h1 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h1><h2 id="El工具包介绍"><a href="#El工具包介绍" class="headerlink" title="El工具包介绍"></a>El工具包介绍</h2><ul>
+<li>由Java技术开发的一个jar包</li>
+<li>作用降低JSP文件开发时Java命令开发强度</li>
+<li>Tomcat服务器本身自带了EL工具包(在Tomcat安装地址<code>/lib/el-api.jar</code>)</li>
+<li>JSP文件作用：代替响应对象将Servlet中<code>doGet/doPost</code>的执行结果写入到响应体</li>
+</ul>
+<h2 id="EL表达式与作用域对象别名"><a href="#EL表达式与作用域对象别名" class="headerlink" title="EL表达式与作用域对象别名"></a>EL表达式与作用域对象别名</h2><ol>
+<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据&#125;</code>  例子：<code>$&#123;applicationScope.key&#125;</code></p>
+</li>
+<li><p>命令作用：</p>
+<ul>
+<li>EL表达式是EL工具包提供一种特殊命令格式【表达式命令格式】</li>
+<li>EL表达式在JSP文件上使用，负责在JSP文件上从作用域对象读取指定的共享数据并输出到响应体</li>
+</ul>
+</li>
+<li><p>JSP文件可以使用的作用域对象</p>
+<ul>
+<li><p>全局作用域对象(application)：<code>ServletContext application = new ServletContext();</code></p>
+</li>
+<li><p>会话作用域对象(session)：<code>HttpSession session = new HttpSession();</code></p>
+</li>
+<li><p>请求作用域对象(request)：<code>HttpServletRequest request = new HttpServletRequest();</code></p>
+</li>
+<li><p>当前页作用域对象(pageContext)：<code>PageContext pageContext = new PageContext();</code></p>
+<p>这是JSP文件独有的作用域对象，Servlet中不存在。在【当前作用域对象】存放的共享数据仅能在当前JSP文件中使用，不能共享给其他Servlet或者其他JSP文件。在真实开发过程中，主要用于JSTL标签与JSP文件之间数据共享。<code>JSTL---&gt;数据---&gt; pageContex---&gt; JSP</code></p>
+</li>
+</ul>
+</li>
+<li><p>EL表达式提供作用域对象别名</p>
+<table>
+<thead>
+<tr>
+<th align="center">JSP</th>
+<th align="center">EL表达式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">application</td>
+<td align="center">${applicationScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">session</td>
+<td align="center">${sessionScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">request</td>
+<td align="center">${requestScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">pageContex</td>
+<td align="center">${pageScope.共享数据}</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h2 id="用EL表达式将引用对象属性写入到响应体"><a href="#用EL表达式将引用对象属性写入到响应体" class="headerlink" title="用EL表达式将引用对象属性写入到响应体"></a>用EL表达式将引用对象属性写入到响应体</h2><ol>
+<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据名.属性名&#125;</code></p>
+<p>例如：</p>
+<pre><code class="jsp">Student student = new Student(100,&quot;alex&quot;);
+　　request.setAttribute(&quot;key&quot;,student);
+　　&lt;body&gt;
+　　　　学号：$&#123;requestScope.key.studentNumber&#125; &lt;!--studentNumber来自于Student类属性,大小完全一致--&gt;
+　　　　姓名：$&#123;requestScope.key.studentName&#125;
+　　&lt;/body&gt;
+　　$&#123;&quot;A&quot; == requestScope.key.answer?&quot;cheched&quot;:&quot;&quot;&#125;
+</code></pre>
+</li>
+<li><p>命令作用：从作用域对象读取指定共享数据关联的引用对象的属性值，并自动将属性的结果写入到响应体</p>
+</li>
+<li><p>属性名：一定要与类中的属性名一致</p>
+</li>
+<li><p>EL表达式没有提供遍历集合方法，因此无法从作用域对象读取集合内容输出</p>
+</li>
+</ol>
+<h2 id="EL表达式简化版"><a href="#EL表达式简化版" class="headerlink" title="EL表达式简化版"></a>EL表达式简化版</h2><ol>
+<li><p>命令格式：<code>$&#123;共享数据名&#125;</code></p>
+</li>
+<li><p>命令作用：EL表达式允许开发人员开发时省略作用域对象别名</p>
+</li>
+<li><p>工作原理：</p>
+<p>EL表达式简化版由于没有指定作用域对象，所以在执行时采用【猜】算法，首先到<code>pageContext</code>定位共享数据，如果存在直接输出并结束执行，如果在<code>pageContext</code>没有定位成功，到<code>request</code>定位共享数据，如果存在直接输出并结束执行，由此类推，再到<code>session、application</code>。如果都没定位成功则返回null。</p>
+<p>总结：查找顺序(自上而下)<code>pageContext --&gt; request --&gt; session --&gt; application --&gt; null</code></p>
+</li>
+<li><p>存在隐患：</p>
+<p>容易降低程序执行的速度（南辕北辙），容易导致数据定位错误</p>
+</li>
+<li><p>应用场景：</p>
+<p>简化从<code>pageContext</code>读取共享数据并输出难度</p>
+</li>
+<li><p><strong>EL表达式简化版尽管存在很多隐患，但是在实际开发过程中，为了节省时间，一般都使用简化版，拒绝使用标准版</strong></p>
+</li>
+</ol>
+<h2 id="EL表达式-–-支持运算表达式"><a href="#EL表达式-–-支持运算表达式" class="headerlink" title="EL表达式 – 支持运算表达式"></a>EL表达式 – 支持运算表达式</h2><ol>
+<li><p>前提：在JSP文件有时需要将读取共享数据进行一番运算之后，将运算结果写入到响应体</p>
+<pre><code class="jsp">&lt;!--传统的Java命令--&gt;
+&lt;%
+　　String num1 = (String) request.getAttribute(&quot;key1&quot;);
+　　Integer num2 = (Integer) request.getAttribute(&quot;key2&quot;);
+　　int sum = Integer.valueOf(num1) + num2;
+%&gt;
+sum=&lt;%=sum%&gt;
+</code></pre>
+<p>El表达式简化版(支持运算)</p>
+<pre><code class="jsp">&lt;!--不用写读取语句直接就可以获取--&gt;
+sum=$&#123;key1+key2&#125;
+</code></pre>
+</li>
+<li><p>运算表达式（JSP只做简单输出，复杂判断一般交给Servlet）</p>
+<ul>
+<li><p>数学运算</p>
+</li>
+<li><p>关系运算：&gt; &lt; = &gt;= &lt;= !=</p>
+<p>部分代码示例：</p>
+<pre><code class="jsp">request.setAttribute(&quot;age&quot;,22);
+--------------------------------
+$&#123;age&gt;18?&quot;欢迎光临&quot;:&quot;谢绝入内&quot;&#125;
+</code></pre>
+</li>
+<li><p>逻辑运算： &amp;&amp; || !</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="EL表达式提供的内置对象"><a href="#EL表达式提供的内置对象" class="headerlink" title="EL表达式提供的内置对象"></a>EL表达式提供的内置对象</h2><ol>
+<li><p>命令格式：<code>$&#123;param.请求参数名&#125;</code></p>
+</li>
+<li><p>命令作用：通过请求对象读取当前请求包中请求参数内容，并将请求参数内容写入到响应体</p>
+</li>
+<li><p>代替命令：浏览器发送请求Http://localhost:8080/myWeb/index.jsp?userName=alex&amp;passWord=123时获取请求参数的值</p>
+<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
+&lt;%
+    String userName = request.getParameter(&quot;userName&quot;);
+    String passWord = request.getParameter(&quot;passWord&quot;);
+%&gt;
+用户名：&lt;%=userName%&gt;
+密  码：&lt;%=passWord%&gt;
+------------------------------------------------------
+&lt;!--EL表达式获取--&gt;
+用户名：$&#123;param.userName&#125;
+密  码：$&#123;param.passWord&#125;
+</code></pre>
+</li>
+<li><p>命令格式：<code>$&#123;paramValues.请求参数名[下标]&#125;</code></p>
+</li>
+<li><p>命令作用：如果浏览器发送的请求参数时，一个请求参数关联多个值，此时可以通过<code>paramValues</code>读取请求参数下指定位置的值，并写入到响应体</p>
+</li>
+<li><p>代替命令：浏览器发送请求<a href="http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3%EF%BC%8C%E6%AD%A4%E6%97%B6page%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%9C%A8%E3%80%90http%E8%AF%B7%E6%B1%82%E5%8C%85%E3%80%91%E4%BB%A5%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E5%AD%98%E5%9C%A8----%60page:%5B1,2,3%5D%60">http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3，此时page请求参数在【http请求包】以数组形式存在----`page:[1,2,3]`</a></p>
+<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
+&lt;%
+　　　　String[] array = request.getParameterValues(&quot;page&quot;);
+%&gt;
+第一个值：&lt;%=array[0]%&gt;
+第二个值：&lt;%=array[1]%&gt;
+第三个值：&lt;%=array[2]%&gt;
+-----------------------------------------
+&lt;!--EL表达式获取--&gt;
+第一个值：$&#123;paramValues.page[0]&#125;
+第二个值：$&#123;paramValues.page[1]&#125;
+第三个值：$&#123;paramValues.page[2]&#125;
+</code></pre>
+</li>
+</ol>
+<h2 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h2><p><code>javax.el.PropertyNotFoundException</code>：在对象中没有找到指定属性。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>JSP</tag>
+        <tag>EL</tag>
       </tags>
   </entry>
   <entry>
