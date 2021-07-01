@@ -303,18 +303,8 @@ n >= 1+2+4+8+...+2^(L-2)+1
 n <= 1+2+4+8+...+2^(L-2)+2^(L-1)
 ```
 
-借助等比数列的求和公式，可以计算出，L 的范围是 
-$$
-[ \log_2(n-1) , log_2n+1]
-$$
-完全二叉树的层数小于等于 
-$$
-log_2n+1
-$$
-也就是说，完全二叉树的高度小于等于 
-$$
-log_2n
-$$
+<div class="se-81b700fd " data-slate-type="paragraph" data-slate-object="block" data-key="1175"><span data-slate-object="text" data-key="1176"><span data-slate-leaf="true" data-offset-key="1176:0" data-first-offset="true"><span data-slate-string="true">借助等比数列的求和公式，可以计算出，L 的范围是[log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1177" class="se-26e7ac08"><span data-slate-object="text" data-key="1178"><span data-slate-leaf="true" data-offset-key="1178:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1179"><span data-slate-leaf="true" data-offset-key="1179:0" data-first-offset="true"><span data-slate-string="true">(n+1), log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1180" class="se-26e7ac08"><span data-slate-object="text" data-key="1181"><span data-slate-leaf="true" data-offset-key="1181:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1182"><span data-slate-leaf="true" data-offset-key="1182:0" data-first-offset="true"><span data-slate-string="true">n +1]。完全二叉树的层数小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1183" class="se-26e7ac08"><span data-slate-object="text" data-key="1184"><span data-slate-leaf="true" data-offset-key="1184:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1185"><span data-slate-leaf="true" data-offset-key="1185:0" data-first-offset="true"><span data-slate-string="true">n +1，也就是说，完全二叉树的高度小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1186" class="se-26e7ac08"><span data-slate-object="text" data-key="1187"><span data-slate-leaf="true" data-offset-key="1187:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1188"><span data-slate-leaf="true" data-offset-key="1188:0" data-first-offset="true"><span data-slate-string="true">n。</span></span></span></div>
+
 显然极度不平衡的二叉查找树，它的查找性能肯定不能满足需求。需要构建一种不管怎么删除、插入数据，在任何时候都能保持任意节点左右子树都比较平衡的二叉查找树，这是一种特殊的二叉查找树，平衡二叉查找树。平衡二叉查找树的高度接近 `logn`，所以插入、删除、查找操作的时间复杂度也比较稳定，是 `O(logn)`。
 
 # 思考
