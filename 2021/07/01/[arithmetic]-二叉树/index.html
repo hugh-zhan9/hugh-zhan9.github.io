@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/25/17/254a4800703d31612c0af63870260517.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/e3/d9/e3d9b2977d350526d2156f01960383d9.jpg">
 <meta property="article:published_time" content="2021-07-01T14:55:07.000Z">
-<meta property="article:modified_time" content="2021-07-01T15:55:40.512Z">
+<meta property="article:modified_time" content="2021-07-01T16:05:11.338Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -264,7 +264,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-01 14:55:07 / 修改时间：15:55:40" itemprop="dateCreated datePublished" datetime="2021-07-01T14:55:07+00:00">2021-07-01</time>
+              <time title="创建时间：2021-07-01 14:55:07 / 修改时间：16:05:11" itemprop="dateCreated datePublished" datetime="2021-07-01T14:55:07+00:00">2021-07-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -524,7 +524,9 @@ void postOrder(Node* root) &#123;
 <pre><code>n &gt;= 1+2+4+8+...+2^(L-2)+1
 n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 </code></pre>
-<p>借助等比数列的求和公式，可以计算出，L 的范围是<br>$$<br>[ \log_2(n-1) , log_2n+1]<br>$$<br>完全二叉树的层数小于等于<br>$$<br>log_2n+1<br>$$<br>也就是说，完全二叉树的高度小于等于<br>$$<br>log_2n<br>$$<br>显然极度不平衡的二叉查找树，它的查找性能肯定不能满足需求。需要构建一种不管怎么删除、插入数据，在任何时候都能保持任意节点左右子树都比较平衡的二叉查找树，这是一种特殊的二叉查找树，平衡二叉查找树。平衡二叉查找树的高度接近 <code>logn</code>，所以插入、删除、查找操作的时间复杂度也比较稳定，是 <code>O(logn)</code>。</p>
+<div class="se-81b700fd " data-slate-type="paragraph" data-slate-object="block" data-key="1175"><span data-slate-object="text" data-key="1176"><span data-slate-leaf="true" data-offset-key="1176:0" data-first-offset="true"><span data-slate-string="true">借助等比数列的求和公式，可以计算出，L 的范围是[log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1177" class="se-26e7ac08"><span data-slate-object="text" data-key="1178"><span data-slate-leaf="true" data-offset-key="1178:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1179"><span data-slate-leaf="true" data-offset-key="1179:0" data-first-offset="true"><span data-slate-string="true">(n+1), log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1180" class="se-26e7ac08"><span data-slate-object="text" data-key="1181"><span data-slate-leaf="true" data-offset-key="1181:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1182"><span data-slate-leaf="true" data-offset-key="1182:0" data-first-offset="true"><span data-slate-string="true">n +1]。完全二叉树的层数小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1183" class="se-26e7ac08"><span data-slate-object="text" data-key="1184"><span data-slate-leaf="true" data-offset-key="1184:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1185"><span data-slate-leaf="true" data-offset-key="1185:0" data-first-offset="true"><span data-slate-string="true">n +1，也就是说，完全二叉树的高度小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1186" class="se-26e7ac08"><span data-slate-object="text" data-key="1187"><span data-slate-leaf="true" data-offset-key="1187:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1188"><span data-slate-leaf="true" data-offset-key="1188:0" data-first-offset="true"><span data-slate-string="true">n。</span></span></span></div>
+
+<p>显然极度不平衡的二叉查找树，它的查找性能肯定不能满足需求。需要构建一种不管怎么删除、插入数据，在任何时候都能保持任意节点左右子树都比较平衡的二叉查找树，这是一种特殊的二叉查找树，平衡二叉查找树。平衡二叉查找树的高度接近 <code>logn</code>，所以插入、删除、查找操作的时间复杂度也比较稳定，是 <code>O(logn)</code>。</p>
 <h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>二叉树有哪几种存储方式？什么样的二叉树适合用数组来存储？</p>
 <blockquote>
 <p>二叉树既可以用链式存储，也可以用数组顺序存储。数组顺序存储的方式比较适合完全二叉树，其他类型的二叉树用数组存储会比较浪费存储空间。</p>
