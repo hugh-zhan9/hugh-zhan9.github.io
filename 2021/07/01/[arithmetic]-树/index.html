@@ -22,8 +22,8 @@
   </script>
 
   <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构 - 二叉树">
-<meta property="og:url" content="http://example.com/2021/07/01/[arithmetic]-%E4%BA%8C%E5%8F%89%E6%A0%91/index.html">
+<meta property="og:title" content="数据结构 - 树">
+<meta property="og:url" content="http://example.com/2021/07/01/[arithmetic]-%E6%A0%91/index.html">
 <meta property="og:site_name" content="日积硅步">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wallpapers.com/images/high/lake-nature-bofipjv7vzsti6gm.jpg">
@@ -41,6 +41,9 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/fb/ff/fb7b320efd59a05469d6d6fcf0c98eff.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/25/17/254a4800703d31612c0af63870260517.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/e3/d9/e3d9b2977d350526d2156f01960383d9.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/dd/9b/dd9f5a4525f5029a8339c89ad1c8159b.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/90/9a/903ee0dcb62bce2f5b47819541f9069a.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/7e/ed/7e6ecc308fe44120f30de809822215ed.jpg">
 <meta property="article:published_time" content="2021-07-01T14:55:07.000Z">
 <meta property="article:modified_time" content="2021-07-02T05:46:10.167Z">
 <meta property="article:author" content="深南大道">
@@ -48,7 +51,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wallpapers.com/images/high/lake-nature-bofipjv7vzsti6gm.jpg">
 
-<link rel="canonical" href="http://example.com/2021/07/01/[arithmetic]-%E4%BA%8C%E5%8F%89%E6%A0%91/">
+<link rel="canonical" href="http://example.com/2021/07/01/[arithmetic]-%E6%A0%91/">
 
 
 <script id="page-configurations">
@@ -61,7 +64,7 @@
   };
 </script>
 
-  <title>数据结构 - 二叉树 | 日积硅步</title>
+  <title>数据结构 - 树 | 日积硅步</title>
   
 
 
@@ -240,7 +243,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/01/[arithmetic]-%E4%BA%8C%E5%8F%89%E6%A0%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/01/[arithmetic]-%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -253,7 +256,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数据结构 - 二叉树
+          数据结构 - 树
         </h1>
 
         <div class="post-meta">
@@ -298,8 +301,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/07/01/%5Barithmetic%5D-%E4%BA%8C%E5%8F%89%E6%A0%91/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/01/%5Barithmetic%5D-%E4%BA%8C%E5%8F%89%E6%A0%91/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/07/01/%5Barithmetic%5D-%E6%A0%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/01/%5Barithmetic%5D-%E6%A0%91/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -309,14 +312,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.6k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -530,10 +533,42 @@ void postOrder(Node* root) &#123;
 <pre><code>n &gt;= 1+2+4+8+...+2^(L-2)+1
 n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 </code></pre>
-<div class="se-81b700fd " data-slate-type="paragraph" data-slate-object="block" data-key="1175"><span data-slate-object="text" data-key="1176"><span data-slate-leaf="true" data-offset-key="1176:0" data-first-offset="true"><span data-slate-string="true">借助等比数列的求和公式，可以计算出，L 的范围是[log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1177" class="se-26e7ac08"><span data-slate-object="text" data-key="1178"><span data-slate-leaf="true" data-offset-key="1178:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1179"><span data-slate-leaf="true" data-offset-key="1179:0" data-first-offset="true"><span data-slate-string="true">(n+1), log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1180" class="se-26e7ac08"><span data-slate-object="text" data-key="1181"><span data-slate-leaf="true" data-offset-key="1181:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1182"><span data-slate-leaf="true" data-offset-key="1182:0" data-first-offset="true"><span data-slate-string="true">n +1]。完全二叉树的层数小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1183" class="se-26e7ac08"><span data-slate-object="text" data-key="1184"><span data-slate-leaf="true" data-offset-key="1184:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1185"><span data-slate-leaf="true" data-offset-key="1185:0" data-first-offset="true"><span data-slate-string="true">n +1，也就是说，完全二叉树的高度小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1186" class="se-26e7ac08"><span data-slate-object="text" data-key="1187"><span data-slate-leaf="true" data-offset-key="1187:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1188"><span data-slate-leaf="true" data-offset-key="1188:0" data-first-offset="true"><span data-slate-string="true">n。</span></span></span></div>
-
+<p>借助等比数列的求和公式，我们可以计算出，L 的范围是[log₂(n+1), log₂n +1]。完全二叉树的层数小于等于 log₂n +1，也就是说，完全二叉树的高度小于等于 log₂n。</p>
 <p>显然极度不平衡的二叉查找树，它的查找性能肯定不能满足需求。需要构建一种不管怎么删除、插入数据，在任何时候都能保持任意节点左右子树都比较平衡的二叉查找树，这是一种特殊的二叉查找树，平衡二叉查找树。平衡二叉查找树的高度接近 <code>logn</code>，所以插入、删除、查找操作的时间复杂度也比较稳定，是 <code>O(logn)</code>。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>二叉树有哪几种存储方式？什么样的二叉树适合用数组来存储？</p>
+<h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><h2 id="什么是平衡二叉查找树"><a href="#什么是平衡二叉查找树" class="headerlink" title="什么是平衡二叉查找树"></a>什么是平衡二叉查找树</h2><p><strong>平衡二叉树的严格定义是这样的：二叉树中任意一个节点的左右子树的高度相差不能大于 1。</strong>从这个定义来看，前面的完全二叉树、满二叉树其实都是平衡二叉树，但是非完全二叉树也有可能是平衡二叉树。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/dd/9b/dd9f5a4525f5029a8339c89ad1c8159b.jpg"></p>
+<p>平衡二叉查找树不仅满足上面平衡二叉树的定义，还满足二叉查找树的特点。最先被发明的平衡二叉查找树是 AVL 树，它严格符合平衡二叉查找树的定义，即任何节点的左右子树高度相差不超过 1，是一种高度平衡的二叉查找树。</p>
+<p>但是很多平衡二叉查找树其实并没有严格符合上面的定义（树中任意一个节点的左右子树的高度相差不能大于 1），比如红黑树，它从根节点到各个叶子节点的最长路径，有可能会比最短路径大一倍。</p>
+<p>学习数据结构和算法是为了应用到实际的开发中的，所以没必去死抠定义。<strong>对于平衡二叉查找树这个概念，要从这个数据结构的由来去理解“平衡”的意思。</strong></p>
+<p>发明平衡二叉查找树这类数据结构的初衷是：解决普通二叉查找树在频繁的插入、删除等动态更新的情况下，出现时间复杂度退化的问题。<strong>所以，平衡二叉查找树中 “平衡” 的意思，其实就是让整棵树左右看起来比较 “对称”、比较 “平衡”，不要出现左子树很高、右子树很矮的情况。这样就能让整棵树的高度相对来说低一些，相应的插入、删除、查找等操作的效率高一些。</strong></p>
+<p>所以如果现在设计一个新的平衡二叉查找树，只要树的高度不比 <code>log₂n</code> 大很多（比如树的高度仍然是对数量级的），尽管它不符合前面讲的严格的平衡二叉查找树的定义，但仍然可以说这是一个合格的平衡二叉查找树。</p>
+<h2 id="如何定义一棵-“红黑树”"><a href="#如何定义一棵-“红黑树”" class="headerlink" title="如何定义一棵 “红黑树”"></a>如何定义一棵 “红黑树”</h2><p>平衡二叉查找树其实有很多，比如：Splay Tree（伸展树）、Treap（树堆）等，但是提到平衡二叉查找树，听到的基本都是红黑树。它的出镜率甚至要高于 “平衡二叉查找树” 这几个字，有时候甚至默认平衡二叉查找树就是红黑树。</p>
+<p>红黑树的英文是 “Red-Black Tree”，简称 R-B Tree。它是一种不严格的平衡二叉查找树，前面说了，它的定义是不严格符合平衡二叉查找树的定义的。那红黑树究竟是怎么定义的呢？</p>
+<p>顾名思义，红黑树中的节点，一类被标记为黑色，一类被标记为红色。除此之外，一棵红黑树还需要满足这样几个要求：</p>
+<blockquote>
+<p>黑色节点保证了效率，保证树不会退化为线性结构，红色节点提供了灵活性，在不退化的前提下，可以简单插入红色节点。当红色节点过多时，旋转算法可以在对数的复杂度将树调整到位。红黑树兼顾了效率和灵活，是工程领域的创新。</p>
+</blockquote>
+<ul>
+<li>根节点是黑色的；</li>
+<li>每个叶子节点都是黑色的空节点（NIL），也就是说，叶子节点不存储数据；</li>
+<li>任何相邻的节点都不能同时为红色，也就是说，红色节点是被黑色节点隔开的；</li>
+<li>每个节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点；</li>
+</ul>
+<p>这里的第二点要求 “叶子节点都是黑色的空节点”，稍微有些奇怪，它主要是为了简化红黑树的代码实现而设置的，</p>
+<p>下一节我们讲红黑树的实现的时候会讲到。这节我们暂时不考虑这一点</p>
+<p>所以在画图和讲解的时候将黑色的、空的叶子节点都省略掉了。下面是两个红黑树的图例，你可以对照着看下。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/90/9a/903ee0dcb62bce2f5b47819541f9069a.jpg"></p>
+<h2 id="为什么说红黑树是-“近似平衡”"><a href="#为什么说红黑树是-“近似平衡”" class="headerlink" title="为什么说红黑树是 “近似平衡”"></a>为什么说红黑树是 “近似平衡”</h2><p>前面讲到了，平衡二叉查找树的初衷是为了解决二叉查找树因为动态更新导致的性能退化问题。所以，“平衡” 的意思可以等价为性能不退化。“近似平衡” 就等价为性能不会退化得太严重。</p>
+<p>二叉查找树很多操作的性能都跟树的高度成正比。一棵极其平衡的二叉树（满二叉树或完全二叉树）的高度大约是 <code>log₂n</code>，所以如果要证明红黑树是近似平衡的，只需要分析，红黑树的高度是否比较稳定地趋近 <code>log₂n</code> 就好了。</p>
+<p>红黑树的高度不是很好分析<strong>。首先，如果将红色节点从红黑树中去掉，那单纯包含黑色节点的红黑树的高度是多少呢？</strong>红色节点删除之后，有些节点就没有父节点了，它们会直接拿这些节点的祖父节点（父节点的父节点）作为父节点。所以之前的二叉树就变成了四叉树。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/7e/ed/7e6ecc308fe44120f30de809822215ed.jpg"></p>
+<p>前面红黑树的定义里有这么一条：从任意节点到可达的叶子节点的每个路径包含相同数目的黑色节点。从四叉树中取出某些节点，放到叶节点位置，四叉树就变成了完全二叉树。所以仅包含黑色节点的四叉树的高度，比包含相同节点个数的完全二叉树的高度还要小。</p>
+<p>完全二叉树的高度近似 <code>log₂n</code>，这里的四叉“黑树”的高度要低于完全二叉树，所以去掉红色节点的 “黑树” 的高度也不会超过 <code>log₂n</code>。</p>
+<p><strong>现在知道只包含黑色节点的“黑树”的高度，那现在把红色节点加回去，高度会变成多少呢？</strong></p>
+<p>从上面画的红黑树的例子和定义看，在红黑树中，红色节点不能相邻，也就是说，有一个红色节点就要至少有一个黑色节点，将它跟其他红色节点隔开。红黑树中包含最多黑色节点的路径不会超过 <code>log₂n</code>，所以加入红色节点之后，最长路径不会超过 <code>2log₂n</code>，也就是说，红黑树的高度近似 <code>2log₂n</code>。所以，红黑树的高度只比高度平衡的 AVL 树的高度（ <code>log₂n</code>）仅仅大了一倍，在性能上下降得并不多。这样推导出来的结果不够精确，<strong>实际上红黑树的性能更好。</strong></p>
+<pre><code>
+</code></pre>
+<h1 id="递归树"><a href="#递归树" class="headerlink" title="递归树"></a>递归树</h1><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>二叉树有哪几种存储方式？什么样的二叉树适合用数组来存储？</p>
 <blockquote>
 <p>二叉树既可以用链式存储，也可以用数组顺序存储。数组顺序存储的方式比较适合完全二叉树，其他类型的二叉树用数组存储会比较浪费存储空间。</p>
 </blockquote>
@@ -546,6 +581,59 @@ n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 </blockquote>
 <p>二叉查找树最大的特点就是，支持动态数据集合的快速插入、删除、查找操作。之前说过，散列表也是支持这些操作的，并且散列表的这些操作比二叉查找树更高效，时间复杂度是 <code>O(1)</code>。既然有了这么高效的散列表，使用二叉树的地方是不是都可以替换成散列表呢？有没有哪些地方是散列表做不了，必须要用二叉树来做的呢？</p>
 <blockquote>
+<p>第一，散列表中的数据是无序存储的，如果要输出有序的数据，需要先进行排序。而对于二叉查找树来说，只需要中序遍历，就可以在 <code>O(n)</code> 的时间复杂度内，输出有序的数据序列。</p>
+<p>第二，散列表扩容耗时很多，而且当遇到散列冲突时，性能不稳定，尽管二叉查找树的性能不稳定，但是在工程中，最常用的平衡二叉查找树的性能非常稳定，时间复杂度稳定在 <code>O(logn)</code>。</p>
+<p>第三，笼统地来说，尽管散列表的查找等操作的时间复杂度是常量级的，但因为哈希冲突的存在，这个常量不一定比 <code>logn</code> 小，所以实际的查找速度可能不一定比 <code>O(logn)</code> 快。加上哈希函数的耗时，也不一定就比平衡二叉查找树的效率高。</p>
+<p>第四，散列表的构造比二叉查找树要复杂，需要考虑的东西很多。比如散列函数的设计、冲突解决办法、扩容、缩容等。平衡二叉查找树只需要考虑平衡性这一个问题，而且这个问题的解决方案比较成熟、固定。</p>
+<p>最后，为了避免过多的散列冲突，散列表装载因子不能太大，特别是基于开放寻址法解决冲突的散列表，不然会浪费一定的存储空间。</p>
+<p>综合这几点，平衡二叉查找树在某些方面还是优于散列表的，所以这两者的存在并不冲突。在实际的开发过程中，需要结合具体的需求来选择使用哪一个。</p>
+</blockquote>
+<p>如何通过编程，求出一棵给定二叉树的确切高度？</p>
+<blockquote>
+<p>确定二叉树高度有两种思路：</p>
+<p>第一种是深度优先思想的递归，分别求左右子树的高度。当前节点的高度就是左右子树中较大的那个+1；</p>
+<p>第二种可以采用层次遍历的方式，每一层记录都记录下当前队列的长度，这个是队尾，每一层队头从0开始。然后每遍历一个元素，队头下标+1。直到队头下标等于队尾下标。这个时候表示当前层遍历完成。每一层刚开始遍历的时候，树的高度+1。最后队列为空，就能得到树的高度。</p>
+<pre><code class="java">// 层次遍历求高度的代码
+public int maxDepth(TreeNode root) &#123;
+   if(root == null)&#123;        
+       return 0;
+   &#125;
+   TreeNode node = root;
+   Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+   queue.offer(node);
+   int front = 0;// 队头
+   int rear = queue.size();// 队尾
+   int floor = 1;
+   while (!queue.isEmpty())&#123;
+       node = queue.poll();
+       front++;
+       if(node.left != null)&#123;
+           queue.offer(node.left);
+       &#125;
+       if(node.right != null)&#123;
+           queue.offer(node.right);
+       &#125;
+       if(front == rear)&#123;// 进入下一层
+           front = 0;
+           rear = queue.size();
+           floor++;// 层数+1
+       &#125;
+   &#125;
+   return floor;
+&#125;
+</code></pre>
+</blockquote>
+<p>为什么在工程中大家都喜欢用红黑树这种平衡二叉查找树？</p>
+<blockquote>
+<p>前面提到 Treap、Splay Tree，绝大部分情况下，它们操作的效率都很高，但是也无法避免极端情况下时间复杂度的退化。尽管这种情况出现的概率不大，但是对于单次操作时间非常敏感的场景来说，它们并不适用。</p>
+<p>AVL 树是一种高度平衡的二叉树，所以查找的效率非常高，但是，有利就有弊，AVL 树为了维持这种高度的平衡，就要付出更多的代价。每次插入、删除都要做调整，就比较复杂、耗时。所以，对于有频繁的插入、删除操作的数据集合，使用 AVL 树的代价就有点高了。</p>
+<p>红黑树只是做到了近似平衡，并不是严格的平衡，所以在维护平衡的成本上，要比 AVL 树要低。所以，红黑树的插入、删除、查找各种操作性能都比较稳定。对于工程应用来说，要面对各种异常情况，为了支撑这种工业级的应用，更倾向于这种性能稳定的平衡二叉查找树。</p>
+</blockquote>
+<p>动态数据结构支持动态的数据插入、删除、查找操作，除了红黑树，还有哪些呢？能对比一下各自的优势、劣势，以及应用场景吗？</p>
+<blockquote>
+<p>散列表：插入删除查找都是O(1), 是最常用的，但其缺点是不能顺序遍历以及扩容缩容的性能损耗。适用于那些不需要顺序遍历，数据更新不那么频繁的。</p>
+<p>跳表：插入删除查找都是O(logn), 并且能顺序遍历。缺点是空间复杂度O(n)。适用于不那么在意内存空间的，其顺序遍历和区间查找非常方便。</p>
+<p>红黑树：插入删除查找都是O(logn), 中序遍历即是顺序遍历，稳定。缺点是难以实现，去查找不方便。其实跳表更佳，但红黑树已经用于很多地方了。</p>
 </blockquote>
 <hr>
 <p>老师 你在计算便利二叉树时间复杂度的时候说，“从我前面画的前、中、后序遍历的顺序图，可以看出来，每个节点最多会被访问两次”， 我想知道都是哪两次呢？ 可否帮忙解惑，从图中没看出来</p>
@@ -558,6 +646,19 @@ n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 </blockquote>
 <p>一篇总结二叉树的4种遍历方式（含迭代和递归模板）。包括3种深度优先搜索（DFS）和1种广度优先搜索（BFS）。<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/0b5OsnFLLg18Td4CuR51_Q">https://mp.weixin.qq.com/s/0b5OsnFLLg18Td4CuR51_Q</a></p>
 <p>补充下层次遍历的方案，建立一个队列，先入队根节点，出队根节点，如果根节点有左子节点，将左子节点加入，如果有右子节点将其加入队列，开始出队左子节点，如果左子节点有左子节点加入队列，如果左子节点有右子节点，右子入队，依次操作直到队列为空。</p>
+<p>我觉得红黑树对于我们初学者来说最大的疑惑是，红黑节点有什么区别，是怎么演化来的？老师讲的很好，但是这个问题并没有在文中解决，所以不能深刻地理解红黑树的存在价值。我找到一篇文章，在这方面讲的很清楚，可以作为这篇讲义的补充：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/tiancai/p/9072813.html">https://www.cnblogs.com/tiancai/p/9072813.html</a></p>
+<p>感觉红黑树老师讲的很急，对于没有基础的同学有点跳跃，我看了这个链接的文章搞明白了。<a target="_blank" rel="noopener" href="https://blog.csdn.net/fei33423/article/details/79132930">https://blog.csdn.net/fei33423/article/details/79132930</a></p>
+<p>动态数据结构的动态是什么意思？动态是指在运行时该数据结构所占的内存会扩大或缩小。</p>
+<p>数组是一种静态的数据结构，在创建时内存大小已经确定，不管有没有插入数据。而链表是动态的数据结构，插入数据 alloc 内存，删除数据 release 内存。</p>
+<p>栈、队列、散列表、跳表、树都是抽象的数据结构，它们在内存中存在的形式都要依赖于数组或者链表。如果用链表实现，很明显它们是动态的数据结构；如果用数组实现，那么在扩容的时候会创建更大内存的数组，原数组被废弃，从抽象角度看，它们仍旧是动态的。</p>
+<blockquote>
+<p>我看smallfly大牛好像对动态数据结构有些误解，可能其他同学也会有。所以我解释一下：动态数据结构是支持动态的更新操作，里面存储的数据是时刻在变化的，通俗一点讲，它不仅仅支持查询，还支持删除、插入数据。而且，这些操作都非常高效。如果不高效，也就算不上是有效的动态数据结构了。所以，这里的红黑树算一个，支持动态的插入、删除、查找，而且效率都很高。链表、队列、栈实际上算不上，因为操作非常有限，查询效率不高。那现在你再想一下还有哪些支持动态插入、删除、查找数据并且效率都很高的的数据结构呢？？</p>
+</blockquote>
+<p>动态数据结构有链表，栈，队列，哈希表等等。链表适合遍历的场景，插入和删除操作方便，栈和队列可以算一种特殊的链表，分别适用先进后出和先进先出的场景。哈希表适合插入和删除比较少（尽量少的扩容和缩容），查找比较多的时候。红黑树对数据要求有序，对数据增删查都有一定要求的时候。</p>
+<p>红黑树的节点颜色，是如何确定的，如何知道在新增一个节点时，该节点是什么颜色？从红黑树需要满足的四个要求来看，好像我一根树全是黑色，也是满足其定义的。这里用红黑两色区分各节点，意义是啥？</p>
+<blockquote>
+<p>作者回复: 新插入的节点都是红色的。全黑不可能的。红黑区分的意义你等下一节课看看能懂不</p>
+</blockquote>
 
     </div>
 
@@ -582,13 +683,10 @@ n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/06/30/%5Barithmetic%5D-%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/" rel="prev" title="算法 - 哈希算法">
-      <i class="fa fa-chevron-left"></i> 算法 - 哈希算法
+    <a href="/2021/07/01/%5Barithmetic%5D-%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="prev" title="数据结构 - 二叉树">
+      <i class="fa fa-chevron-left"></i> 数据结构 - 二叉树
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/07/01/%5Barithmetic%5D-%E6%A0%91/" rel="next" title="数据结构 - 树">
-      数据结构 - 树 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -648,7 +746,7 @@ n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%EF%BC%88Tree%EF%BC%89"><span class="nav-text">树（Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%88Binary-Tree%EF%BC%89"><span class="nav-text">二叉树（Binary Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-text">二叉树的遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88Binary-Search-Tree%EF%BC%89"><span class="nav-text">二叉查找树（Binary Search Tree）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-text">二叉查找树的查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5"><span class="nav-text">二叉查找树的插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4"><span class="nav-text">二叉查找树的删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-text">二叉查找树的其他操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">支持重复数据的二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">二叉查找树的时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%EF%BC%88Tree%EF%BC%89"><span class="nav-text">树（Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%88Binary-Tree%EF%BC%89"><span class="nav-text">二叉树（Binary Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-text">二叉树的遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88Binary-Search-Tree%EF%BC%89"><span class="nav-text">二叉查找树（Binary Search Tree）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-text">二叉查找树的查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5"><span class="nav-text">二叉查找树的插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4"><span class="nav-text">二叉查找树的删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-text">二叉查找树的其他操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">支持重复数据的二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">二叉查找树的时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-text">红黑树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">什么是平衡二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%80%E6%A3%B5-%E2%80%9C%E7%BA%A2%E9%BB%91%E6%A0%91%E2%80%9D"><span class="nav-text">如何定义一棵 “红黑树”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BA%A2%E9%BB%91%E6%A0%91%E6%98%AF-%E2%80%9C%E8%BF%91%E4%BC%BC%E5%B9%B3%E8%A1%A1%E2%80%9D"><span class="nav-text">为什么说红黑树是 “近似平衡”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%A0%91"><span class="nav-text">递归树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
