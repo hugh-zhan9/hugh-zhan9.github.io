@@ -301,7 +301,7 @@ n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 </code></pre>
 <p>借助等比数列的求和公式，我们可以计算出，L 的范围是[log₂(n+1), log₂n +1]。完全二叉树的层数小于等于 log₂n +1，也就是说，完全二叉树的高度小于等于 log₂n。</p>
 <p>显然极度不平衡的二叉查找树，它的查找性能肯定不能满足需求。需要构建一种不管怎么删除、插入数据，在任何时候都能保持任意节点左右子树都比较平衡的二叉查找树，这是一种特殊的二叉查找树，平衡二叉查找树。平衡二叉查找树的高度接近 <code>logn</code>，所以插入、删除、查找操作的时间复杂度也比较稳定，是 <code>O(logn)</code>。</p>
-<h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><h2 id="什么是平衡二叉查找树"><a href="#什么是平衡二叉查找树" class="headerlink" title="什么是平衡二叉查找树"></a>什么是平衡二叉查找树</h2><p><strong>平衡二叉树的严格定义是这样的：二叉树中任意一个节点的左右子树的高度相差不能大于 1。</strong>从这个定义来看，前面的完全二叉树、满二叉树其实都是平衡二叉树，但是非完全二叉树也有可能是平衡二叉树。</p>
+<h1 id="红黑树（Read-Black-Tree）"><a href="#红黑树（Read-Black-Tree）" class="headerlink" title="红黑树（Read Black Tree）"></a>红黑树（Read Black Tree）</h1><h2 id="什么是平衡二叉查找树"><a href="#什么是平衡二叉查找树" class="headerlink" title="什么是平衡二叉查找树"></a>什么是平衡二叉查找树</h2><p><strong>平衡二叉树的严格定义是这样的：二叉树中任意一个节点的左右子树的高度相差不能大于 1。</strong>从这个定义来看，前面的完全二叉树、满二叉树其实都是平衡二叉树，但是非完全二叉树也有可能是平衡二叉树。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/dd/9b/dd9f5a4525f5029a8339c89ad1c8159b.jpg"></p>
 <p>平衡二叉查找树不仅满足上面平衡二叉树的定义，还满足二叉查找树的特点。最先被发明的平衡二叉查找树是 AVL 树，它严格符合平衡二叉查找树的定义，即任何节点的左右子树高度相差不超过 1，是一种高度平衡的二叉查找树。</p>
 <p>但是很多平衡二叉查找树其实并没有严格符合上面的定义（树中任意一个节点的左右子树的高度相差不能大于 1），比如红黑树，它从根节点到各个叶子节点的最长路径，有可能会比最短路径大一倍。</p>
@@ -425,247 +425,6 @@ public int maxDepth(TreeNode root) &#123;
 <blockquote>
 <p>作者回复: 新插入的节点都是红色的。全黑不可能的。红黑区分的意义你等下一节课看看能懂不</p>
 </blockquote>
-]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>数据结构与算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据结构 - 二叉树</title>
-    <url>/2021/07/01/%5Barithmetic%5D-%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
-    <content><![CDATA[<p><img data-src="https://wallpapers.com/images/high/lake-nature-bofipjv7vzsti6gm.jpg"></p>
-<span id="more"></span>
-
-<blockquote>
-<p><a href="https://time.geekbang.org/column/article/67856">课程地址</a></p>
-</blockquote>
-<h1 id="树（Tree）"><a href="#树（Tree）" class="headerlink" title="树（Tree）"></a>树（Tree）</h1><p>前面的数据结构都是线性表结构，栈、队列等等。接下来是非线性表结构：树。树这种数据结构比线性表的数据结构要复杂得多。</p>
-<p>“树” 这种数据结构很像现实生活中的 “树”，数里面的每个元素叫做 “节点” ；用来连接相邻节点之间的关系，叫做“父子关系”。</p>
-<p>比如下面这幅图，A 节点就是 B 节点的<strong>父节点</strong>，B 节点是 A 节点的<strong>子节点</strong>。B、C、D 这三个节点的父节点是同一个节点，所以它们之间互称为<strong>兄弟节点</strong>。没有父节点的节点叫做<strong>根节点</strong>，也就是图中的节点 E。没有子节点的节点叫做<strong>叶子节点</strong>或者<strong>叶节点</strong>，比如图中的 G、H、I、J、K、L 都是叶子节点。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/22/ae/220043e683ea33b9912425ef759556ae.jpg"></p>
-<p>除此之外，关于 “树”，还有三个比较相似的概念：<strong>高度</strong>（Height）、<strong>深度</strong>（Depth）、<strong>层</strong>（Level）。它们的定义是这样的：</p>
-<ul>
-<li>节点的高度：节点到叶子节点的<strong>最长路径</strong>（边数）</li>
-<li>节点的深度：根节点到这个节点所经历的边的个数</li>
-<li>节点的层数：节点的高度+1</li>
-<li>树的高度：根节点的高度</li>
-</ul>
-<p><img data-src="https://static001.geekbang.org/resource/image/50/b4/50f89510ad1f7570791dd12f4e9adeb4.jpg"></p>
-<h1 id="二叉树（Binary-Tree）"><a href="#二叉树（Binary-Tree）" class="headerlink" title="二叉树（Binary Tree）"></a>二叉树（Binary Tree）</h1><p>树结构多种多样，一般最常用的是二叉树。二叉树，顾名思义每个节点最多有两个 “叉”，也就是两个子节点，分别是左子节点和右子节点。</p>
-<p>不过二叉树并不要求每个节点都有两个子节点，有的节点只有左子节点，有的节点只有右子节点。下面画的这几个都是二叉树。以此类推可以想象一下四叉树、八叉树长什么样子。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/09/2b/09c2972d56eb0cf67e727deda0e9412b.jpg"></p>
-<p>这个图里面，有两个比较特殊的二叉树，分别是编号 2 和编号 3 这两个。</p>
-<p>其中，编号 2 的二叉树中，叶子节点全都在最底层，除了叶子节点之外，每个节点都有左右两个子节点，这种二叉树就叫做<strong>满二叉树</strong>。</p>
-<p>编号 3 的二叉树中，叶子节点都在最底下两层，最后一层的子节点都靠左，并且连续排列，除了最后一层其他层的节点个数都要达到最大，这种二叉树叫做<strong>完全二叉树</strong>。</p>
-<blockquote>
-<p>完全二叉树的特点有两个：</p>
-<ol>
-<li>除去最后一层节点，就是一个满二叉树。</li>
-<li>最后一层至少存在左节点。如果存在右节点，则必须同时存在左节点。</li>
-</ol>
-</blockquote>
-<p>满二叉树很好理解也很好识别，但是完全二叉树，有的人可能就分不清了。下面画了几个完全二叉树和非完全二叉树的例子，你可以对比着看看。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/18/60/18413c6597c2850b75367393b401ad60.jpg"></p>
-<p>为什么偏偏把最后一层的叶子节点靠左排列的叫完全二叉树？如果靠右排列就不能叫完全二叉树了吗？这个定义的由来或者说目的在哪里？</p>
-<p>要理解完全二叉树定义的由来，需要先了解如何表示（或者存储）一棵二叉树？想要存储一棵二叉树有两种方法，一种是基于指针或者引用的二叉链式存储法，一种是基于数组的顺序存储法。</p>
-<p>先来看比较简单、直观的链式存储法。从图中可以很清楚地看到，每个节点有三个字段，其中一个存储数据，另外两个是指向左右子节点的指针。只要拎住根节点，就可以通过左右子节点的指针，把整棵树都串起来。这种存储方式比较常用。大部分二叉树代码都是通过这种结构来实现的。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/12/8e/12cd11b2432ed7c4dfc9a2053cb70b8e.jpg"></p>
-<p>再来看基于数组的顺序存储法。把根节点存储在下标 i = 1 的位置，那左子节点存储在下标 2 * i = 2 的位置，右子节点存储在 2 * i + 1 = 3 的位置。以此类推，B 节点的左子节点存储在 2 * i = 2 * 2 = 4 的位置，右子节点存储在 2 * i + 1 = 2 * 2 + 1 = 5 的位置。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/14/30/14eaa820cb89a17a7303e8847a412330.jpg"></p>
-<p>总结一下，如果节点 X 存储在数组中下标为 i 的位置，下标为 2 * i 的位置存储的就是左子节点，下标为 2 * i + 1 的位置存储的就是右子节点。反过来，下标为 i/2 的位置存储就是它的父节点。</p>
-<p>通过这种方式，只要知道根节点存储的位置（一般情况下为了方便计算子节点，根节点会存储在下标为 1 的位置），这样就可以通过下标计算，把整棵树都串起来。不过，刚刚的例子是一棵完全二叉树，所以仅仅“浪费”了一个下标为 0 的存储位置。如果是非完全二叉树，其实会浪费比较多的数组存储空间。可以看我下面的这个例子。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/08/23/08bd43991561ceeb76679fbb77071223.jpg"></p>
-<p>所以如果某棵二叉树是一棵完全二叉树，用数组存储无疑是最节省内存的一种方式。因为数组的存储方式并不需要像链式存储法那样，要存储额外的左右子节点的指针。这也是为什么完全二叉树会单独拎出来的原因，也是为什么完全二叉树要求最后一层的子节点都靠左的原因。其实堆就是一种完全二叉树，最常用的存储方式就是数组。</p>
-<h1 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h1><p>前面讲了二叉树的基本定义和存储方法，现在来看看二叉树中非常重要的操作：二叉树的遍历。这也是非常常见的面试题。</p>
-<p>如何将所有节点都遍历打印出来呢？经典的方法有三种，<strong>前序遍历</strong>、<strong>中序遍历</strong>和<strong>后序遍历</strong>。其中，前、中、后序，表示的是节点与它的左右子树节点遍历打印的先后顺序。</p>
-<ul>
-<li>前序遍历是指，对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印它的右子树。</li>
-<li>中序遍历是指，对于树中的任意节点来说，先打印它的左子树，然后再打印它本身，最后打印它的右子树。</li>
-<li>后序遍历是指，对于树中的任意节点来说，先打印它的左子树，然后再打印它的右子树，最后打印这个节点本身。</li>
-</ul>
-<p><img data-src="https://static001.geekbang.org/resource/image/ab/16/ab103822e75b5b15c615b68560cb2416.jpg"></p>
-<p><strong>实际上，二叉树的前、中、后序遍历就是一个递归的过程。</strong>比如，前序遍历，其实就是先打印根节点，然后再递归地打印左子树，最后递归地打印右子树。</p>
-<p>写递归代码的关键，就是看能不能写出递推公式，而写递推公式的关键就是，如果要解决问题 A，就假设子问题 B、C 已经解决，然后再来看如何利用 B、C 来解决 A。</p>
-<pre><code>前序遍历的递推公式：
-preOrder(r) = print r-&gt;preOrder(r-&gt;left)-&gt;preOrder(r-&gt;right)
-
-中序遍历的递推公式：
-inOrder(r) = inOrder(r-&gt;left)-&gt;print r-&gt;inOrder(r-&gt;right)
-
-后序遍历的递推公式：
-postOrder(r) = postOrder(r-&gt;left)-&gt;postOrder(r-&gt;right)-&gt;print r
-</code></pre>
-<p>有了递推公式，代码写起来就简单多了。</p>
-<pre><code>void preOrder(Node* root) &#123;
-  if (root == null) return;
-  print root // 此处为伪代码，表示打印root节点
-  preOrder(root-&gt;left);
-  preOrder(root-&gt;right);
-&#125;
-
-void inOrder(Node* root) &#123;
-  if (root == null) return;
-  inOrder(root-&gt;left);
-  print root // 此处为伪代码，表示打印root节点
-  inOrder(root-&gt;right);
-&#125;
-
-void postOrder(Node* root) &#123;
-  if (root == null) return;
-  postOrder(root-&gt;left);
-  postOrder(root-&gt;right);
-  print root // 此处为伪代码，表示打印root节点
-&#125;
-</code></pre>
-<p>二叉树的前、中、后序遍历的递归实现是不是很简单？你知道二叉树遍历的时间复杂度是多少吗？</p>
-<p>从前面画的前、中、后序遍历的顺序图可以看出来，每个节点最多会被访问两次，所以遍历操作的时间复杂度，跟节点的个数 n 成正比，也就是说二叉树遍历的时间复杂度是 <code>O(n)</code>。</p>
-<h1 id="二叉查找树（Binary-Search-Tree）"><a href="#二叉查找树（Binary-Search-Tree）" class="headerlink" title="二叉查找树（Binary Search Tree）"></a>二叉查找树（Binary Search Tree）</h1><p>二叉查找树是二叉树中最常用的一种类型，也叫二叉搜索树。顾名思义，二叉查找树是为了实现快速查找而生的。不过它不仅仅支持快速查找一个数据，还支持快速插入、删除一个数据。它是怎么做到这些的呢？</p>
-<p>这些都依赖于二叉查找树的特殊结构。<strong>二叉查找树要求，在树中的任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。</strong> </p>
-<p><img data-src="https://static001.geekbang.org/resource/image/f3/ae/f3bb11b6d4a18f95aa19e11f22b99bae.jpg"></p>
-<h2 id="二叉查找树的查找"><a href="#二叉查找树的查找" class="headerlink" title="二叉查找树的查找"></a>二叉查找树的查找</h2><p>如何在二叉查找树中查找一个节点？先取根节点，如果它等于要查找的数据，那就返回。如果要查找的数据比根节点的值小，那就在左子树中递归查找；如果要查找的数据比根节点的值大，那就在右子树中递归查找。</p>
-<p>这里我把查找的代码实现了一下，贴在下面了，结合代码，理解起来会更加容易。</p>
-<pre><code class="java">public class BinarySearchTree &#123;
-    private Node tree;
-
-    public Node find(int data) &#123;
-        Node p = tree;
-        while (p != null) &#123;
-            if (data &lt; p.data) p = p.left;
-            else if (data &gt; p.data) p = p.right;
-            else return p;
-        &#125;
-        return null;
-    &#125;
-
-    public static class Node &#123;
-        private int data;
-        private Node left;
-        private Node right;
-
-        public Node(int data) &#123;
-            this.data = data;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<h2 id="二叉查找树的插入"><a href="#二叉查找树的插入" class="headerlink" title="二叉查找树的插入"></a>二叉查找树的插入</h2><p>二叉查找树的插入过程有点类似查找操作。</p>
-<p>新插入的数据一般都是在叶子节点上，所以只需要从根节点开始依次比较要插入的数据和节点的大小关系。如果要插入的数据比节点的数据大，并且节点的右子树为空，就将新数据直接插到右子节点的位置；如果不为空，就再递归遍历右子树，查找插入位置。</p>
-<p>同理，如果要插入的数据比节点数值小，并且节点的左子树为空，就将新数据插入到左子节点的位置；如果不为空，就再递归遍历左子树，查找插入位置。</p>
-<pre><code class="java">public void insert(int data) &#123;
-    if (tree == null) &#123;
-        tree = new Node(data);
-        return;
-    &#125;
-
-    Node p = tree;
-    while (p != null) &#123;
-        if (data &gt; p.data) &#123;
-            if (p.right == null) &#123;
-                p.right = new Node(data);
-                return;
-            &#125;
-            p = p.right;
-        &#125; else &#123; // data &lt; p.data
-            if (p.left == null) &#123;
-                p.left = new Node(data);
-                return;
-            &#125;
-            p = p.left;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<h2 id="二叉查找树的删除"><a href="#二叉查找树的删除" class="headerlink" title="二叉查找树的删除"></a>二叉查找树的删除</h2><p>二叉查找树的查找、插入操作都比较简单易懂，但是它的删除操作就比较复杂了 。针对要删除节点的子节点个数的不同，需要分三种情况来处理。</p>
-<p>第一种情况：如果要删除的节点没有子节点，只需要直接将父节点中，指向要删除节点的指针置为 null。比如图中的删除节点 55。</p>
-<p>第二种情况：如果要删除的节点只有一个子节点（只有左子节点或者右子节点），只需要更新父节点中，指向要删除节点的指针，让它指向要删除节点的子节点就可以了。比如图中的删除节点 13。</p>
-<p>第三种情况：如果要删除的节点有两个子节点，这就比较复杂了。需要找到这个节点的右子树中的最小节点，把它替换到要删除的节点上。然后再删除掉这个最小节点，因为最小节点肯定没有左子节点（如果有左子结点，那就不是最小节点了），所以可以应用上面两条规则来删除这个最小节点。比如图中的删除节点 18。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/29/2c/299c615bc2e00dc32225f4d9e3490e2c.jpg"></p>
-<pre><code class="java">public void delete(int data) &#123;
-    Node p = tree; // p指向要删除的节点，初始化指向根节点
-    Node pp = null; // pp记录的是p的父节点
-    while (p != null &amp;&amp; p.data != data) &#123;
-        pp = p;
-        if (data &gt; p.data) p = p.right;
-        else p = p.left;
-    &#125;
-
-    if (p == null) return;// 没有找到
-
-    // 要删除的节点有两个子节点
-    if (p.left != null &amp;&amp; p.right != null) &#123; // 查找右子树中最小节点
-        Node minP = p.right;
-        Node minPP = p; // minPP表示minP的父节点
-        while (minP.left != null) &#123;
-            minPP = minP;
-            minP = minP.left;
-        &#125;
-        p.data = minP.data; // 将minP的数据替换到p中
-        p = minP; // 下面就变成了删除minP了
-        pp = minPP;
-    &#125;
-
-    // 删除节点是叶子节点或者仅有一个子节点
-    Node child; // p的子节点
-    if (p.left != null) child = p.left;
-    else if (p.right != null) child = p.right;
-    else child = null;
-
-    if (pp == null) tree = child; // 删除的是根节点
-    else if (pp.left == p) pp.left = child;
-    else pp.right = child;
-&#125;
-</code></pre>
-<p>实际上，关于二叉查找树的删除操作，还有个非常简单、取巧的方法，就是单纯将要删除的节点标记为“已删除”，但是并不真正从树中将这个节点去掉。这样原本删除的节点还需要存储在内存中，比较浪费内存空间，但是删除操作就变得简单了很多。而且这种处理方法也并没有增加插入、查找操作代码实现的难度。</p>
-<h2 id="二叉查找树的其他操作"><a href="#二叉查找树的其他操作" class="headerlink" title="二叉查找树的其他操作"></a>二叉查找树的其他操作</h2><p>除了插入、删除、查找操作之外，<strong>二叉查找树中还可以支持快速地查找最大节点和最小节点、前驱节点和后继节点。</strong></p>
-<p>我会将相应的代码放到 GitHub 上，你可以自己先实现一下，然后再去上面看。</p>
-<p>二叉查找树除了支持上面几个操作之外还有一个重要的特性，就是<strong>中序遍历二叉查找树，可以输出有序的数据序列，时间复杂度是 <code>O(n)</code>，非常高效。</strong>因此二叉查找树也叫作二叉排序树。</p>
-<h2 id="支持重复数据的二叉查找树"><a href="#支持重复数据的二叉查找树" class="headerlink" title="支持重复数据的二叉查找树"></a>支持重复数据的二叉查找树</h2><p>前面都默认树中节点存储的是数字。很多时候，在实际的软件开发中，在二叉查找树中存储的是一个包含很多字段的对象。利用对象的某个字段作为键值（key）来构建二叉查找树，把对象中的其他字段叫作卫星数据。</p>
-<p>前面讲二叉查找树的操作，针对的都是不存在键值相同的情况。那如果存储的两个对象键值相同，这种情况该怎么处理呢？</p>
-<p>这里有两种解决方法。第一种方法比较容易。二叉查找树中每一个节点不仅可以存储一个数据还可以存储一个数据结构，因此通过链表和支持动态扩容的数组等数据结构，把值相同的数据都存储在同一个节点上。第二种方法比较不好理解，不过更加优雅。每个节点仍然只存储一个数据。在查找插入位置的过程中，如果碰到一个节点的值，与要插入数据的值相同，就将这个要插入的数据放到这个节点的右子树，也就是说，把这个新插入的数据当作大于这个节点的值来处理。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/3f/5f/3f59a40e3d927f567022918d89590a5f.jpg"></p>
-<p>当要查找数据的时候，遇到值相同的节点并不停止查找操作，而是继续在右子树中查找，直到遇到叶子节点才停止。这样就可以把键值等于要查找值的所有节点都找出来。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/fb/ff/fb7b320efd59a05469d6d6fcf0c98eff.jpg"></p>
-<p>对于删除操作，也需要先查找到每个要删除的节点，然后再按前面讲的删除操作的方法，依次删除。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/25/17/254a4800703d31612c0af63870260517.jpg"></p>
-<h2 id="二叉查找树的时间复杂度"><a href="#二叉查找树的时间复杂度" class="headerlink" title="二叉查找树的时间复杂度"></a>二叉查找树的时间复杂度</h2><p>来分析一下二叉查找树的插入、删除、查找操作的时间复杂度。实际上，二叉查找树的形态各式各样。比如这个图中，对于同一组数据，构造了三种二叉查找树。它们的查找、插入、删除操作的执行效率都是不一样的。图中第一种二叉查找树，根节点的左右子树极度不平衡，已经退化成了链表，所以查找的时间复杂度就变成了 <code>O(n)</code>。</p>
-<p><img data-src="https://static001.geekbang.org/resource/image/e3/d9/e3d9b2977d350526d2156f01960383d9.jpg"></p>
-<p>刚刚其实分析了一种最糟糕的情况，现在来分析一个最理想的情况，二叉查找树是一棵完全二叉树（或满二叉树）。这个时候，插入、删除、查找的时间复杂度是多少呢？</p>
-<p>从前面的例子、图，以及还有代码来看，不管操作是插入、删除还是查找，时间复杂度其实都跟树的高度成正比，也就是 <code>O(height)</code>。既然这样，现在问题就转变成另外一个了，也就是，如何求一棵包含 n 个节点的完全二叉树的高度？</p>
-<p>树的高度就等于最大层数减一，为了方便计算，这里转换成层来表示。从图中可以看出，包含 n 个节点的完全二叉树中，第一层包含 1 个节点，第二层包含 2 个节点，第三层包含 4 个节点，依次类推，下面一层节点个数是上一层的 2 倍，第 K 层包含的节点个数就是 <code>2^(K-1)</code>。不过对于完全二叉树来说，最后一层的节点个数有点儿不遵守上面的规律了。它包含的节点个数在 1 个到 <code>2^(L-1)</code> 个之间（假设最大层数是 L）。如果把每一层的节点个数加起来就是总的节点个数 n。也就是说，如果节点的个数是 n，那么 n 满足这样一个关系：</p>
-<pre><code>n &gt;= 1+2+4+8+...+2^(L-2)+1
-n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
-</code></pre>
-<div class="se-81b700fd " data-slate-type="paragraph" data-slate-object="block" data-key="1175"><span data-slate-object="text" data-key="1176"><span data-slate-leaf="true" data-offset-key="1176:0" data-first-offset="true"><span data-slate-string="true">借助等比数列的求和公式，可以计算出，L 的范围是[log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1177" class="se-26e7ac08"><span data-slate-object="text" data-key="1178"><span data-slate-leaf="true" data-offset-key="1178:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1179"><span data-slate-leaf="true" data-offset-key="1179:0" data-first-offset="true"><span data-slate-string="true">(n+1), log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1180" class="se-26e7ac08"><span data-slate-object="text" data-key="1181"><span data-slate-leaf="true" data-offset-key="1181:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1182"><span data-slate-leaf="true" data-offset-key="1182:0" data-first-offset="true"><span data-slate-string="true">n +1]。完全二叉树的层数小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1183" class="se-26e7ac08"><span data-slate-object="text" data-key="1184"><span data-slate-leaf="true" data-offset-key="1184:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1185"><span data-slate-leaf="true" data-offset-key="1185:0" data-first-offset="true"><span data-slate-string="true">n +1，也就是说，完全二叉树的高度小于等于 log</span></span></span><span data-slate-type="sub" data-slate-object="inline" data-key="1186" class="se-26e7ac08"><span data-slate-object="text" data-key="1187"><span data-slate-leaf="true" data-offset-key="1187:0" data-first-offset="true"><span data-slate-string="true">2</span></span></span></span><span data-slate-object="text" data-key="1188"><span data-slate-leaf="true" data-offset-key="1188:0" data-first-offset="true"><span data-slate-string="true">n。</span></span></span></div>
-
-<p>显然极度不平衡的二叉查找树，它的查找性能肯定不能满足需求。需要构建一种不管怎么删除、插入数据，在任何时候都能保持任意节点左右子树都比较平衡的二叉查找树，这是一种特殊的二叉查找树，平衡二叉查找树。平衡二叉查找树的高度接近 <code>logn</code>，所以插入、删除、查找操作的时间复杂度也比较稳定，是 <code>O(logn)</code>。</p>
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>二叉树有哪几种存储方式？什么样的二叉树适合用数组来存储？</p>
-<blockquote>
-<p>二叉树既可以用链式存储，也可以用数组顺序存储。数组顺序存储的方式比较适合完全二叉树，其他类型的二叉树用数组存储会比较浪费存储空间。</p>
-</blockquote>
-<p>给定一组数据，比如 1，3，5，6，9，10。你来算算，可以构建出多少种不同的二叉树？</p>
-<blockquote>
-<p>如果是完全二叉树，老师说过可以放在数组里面，那么问题是否 可以简化为数组内的元素有多少种组合方式，这样的话，就是 n!，不知是否可以这样理解 ？ 👍</p>
-</blockquote>
-<p>前面讲了三种二叉树的遍历方式，前、中、后序。实际上，还有另外一种遍历方式，也就是按层遍历，你知道如何实现吗？</p>
-<blockquote>
-</blockquote>
-<p>二叉查找树最大的特点就是，支持动态数据集合的快速插入、删除、查找操作。之前说过，散列表也是支持这些操作的，并且散列表的这些操作比二叉查找树更高效，时间复杂度是 <code>O(1)</code>。既然有了这么高效的散列表，使用二叉树的地方是不是都可以替换成散列表呢？有没有哪些地方是散列表做不了，必须要用二叉树来做的呢？</p>
-<blockquote>
-</blockquote>
-<hr>
-<p>老师 你在计算便利二叉树时间复杂度的时候说，“从我前面画的前、中、后序遍历的顺序图，可以看出来，每个节点最多会被访问两次”， 我想知道都是哪两次呢？ 可否帮忙解惑，从图中没看出来</p>
-<blockquote>
-<p>作者回复: 第一次遍历到的时候算一次。递归返回的时候再一次。不过，这些说法都很笼统，你只要知道每个节点都被访问了一次，并且被访问的次数是常数次就可以了。</p>
-</blockquote>
-<p>应该讲讲非递归遍历啊，递归遍历太简单，<strong>后序非递归遍历</strong>才是难点</p>
-<blockquote>
-<p>作者回复: 专栏有自己的定位的 太难没啥用的 不怎么会讲的 自己研究吧</p>
-</blockquote>
-<p>一篇总结二叉树的4种遍历方式（含迭代和递归模板）。包括3种深度优先搜索（DFS）和1种广度优先搜索（BFS）。<br><a href="https://mp.weixin.qq.com/s/0b5OsnFLLg18Td4CuR51_Q">https://mp.weixin.qq.com/s/0b5OsnFLLg18Td4CuR51_Q</a></p>
-<p>补充下层次遍历的方案，建立一个队列，先入队根节点，出队根节点，如果根节点有左子节点，将左子节点加入，如果有右子节点将其加入队列，开始出队左子节点，如果左子节点有左子节点加入队列，如果左子节点有右子节点，右子入队，依次操作直到队列为空。</p>
 ]]></content>
       <categories>
         <category>数据结构与算法</category>
@@ -19561,6 +19320,246 @@ public class ThymeleafProperties &#123;
       </tags>
   </entry>
   <entry>
+    <title>JSP &amp; EL表达式</title>
+    <url>/2020/09/25/%5BJava%5D-JSP&amp;EL/</url>
+    <content><![CDATA[<p><a href="https://imgchr.com/i/ByLY5j"><img data-src="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg"></a></p>
+<span id="more"></span>
+
+<h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h2 id="JSP规范介绍"><a href="#JSP规范介绍" class="headerlink" title="JSP规范介绍"></a>JSP规范介绍</h2><ul>
+<li>来自于JavaEE规范中一种</li>
+<li>JSP规范制定了如何开发JSP文件代替响应对象将处理结果写入到响应体的开发流程</li>
+<li>JSP规范制定Http服务器应该如何调用管理JSP文件</li>
+<li>JSP文件在执行时，自动将文件所有内容写入到响应体，从而不用书写<code>respone.getWriter().print();</code></li>
+</ul>
+<p><strong>优势：</strong></p>
+<ul>
+<li>JSP文件在互谅网通信过程，是响应对象代替品</li>
+<li>降低将处理结果写入到响应体的开发工作量降低处理结果维护难度</li>
+<li>在JSP文件开发时，可以直接将处理结果写入到JSP文件不需要手写<code>respone.getWriter().print();</code>命令，在Http服务器调用JSP文件时，根据JSP规范要求自动的将JSP文件书写的所有内容通过输出流写入到响应体</li>
+</ul>
+<h2 id="响应对象存在的弊端"><a href="#响应对象存在的弊端" class="headerlink" title="响应对象存在的弊端"></a>响应对象存在的弊端</h2><ul>
+<li>适合将数据量较少的处理结果写入到响应体</li>
+<li>如果处理数量过多，使用响应对象增加开发难度</li>
+</ul>
+<h2 id="JSP文件内置对象"><a href="#JSP文件内置对象" class="headerlink" title="JSP文件内置对象"></a>JSP文件内置对象</h2><h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>类型：HttpServletRequst</p>
+<p>作用：在JSP文件运行时，读取请求包信息与Servlet在请求转发过程中实现数据共享</p>
+<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>类型：HTTPSession</p>
+<p>作用：在JSP文件运行时，session可以指向当前用户私人储物柜，添加共享数据或者读取共享数据</p>
+<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><p>类型：ServletContext()</p>
+<p>作用：在JSP文件运行时，通过全局作用域对象实现数据共享</p>
+<h2 id="Servlet-与-JSP分工"><a href="#Servlet-与-JSP分工" class="headerlink" title="Servlet 与 JSP分工"></a>Servlet 与 JSP分工</h2><p><strong>Servlet：</strong>负责处理业务并得到处理结果 — 大厨师</p>
+<p><strong>JSP：</strong>不负责处理业务，主要任务将Servlet中处理结果写入到响应体 — 传菜员</p>
+<p><strong>Servlet</strong> 与 <strong>JSP</strong>之间的调用关系：Servlet工作完毕后，一般通过【请求转发】方式向Tomcat申请调用JSP</p>
+<h2 id="Servlet与JSP之间如何实现数据共享"><a href="#Servlet与JSP之间如何实现数据共享" class="headerlink" title="Servlet与JSP之间如何实现数据共享"></a>Servlet与JSP之间如何实现数据共享</h2><ol>
+<li><p>使用【请求作用域对象】实现数据共享</p>
+</li>
+<li><p>使用【全局作用对象】实现数据共享</p>
+</li>
+</ol>
+<p>Servlet将处理结果添加到【请求作用域对象(request)】</p>
+<p>JSP文件在运行时从【请求作用域对象(request)】得到处理结果</p>
+<p>代码示例：</p>
+<p>在Servlet接口实现类下(OneServlet.java)</p>
+<pre><code class="java">Person p1 = new Person(1,&quot;a&quot;);
+Person p2 = new Person(2,&quot;b&quot;);
+List&lt;Person&gt; personList = new ArrayList&lt;&gt;();
+personList.add(p1);
+personList.add(p2);
+// 将处理结果添加到请求作用域对象
+request.setAttribute(&quot;key&quot;,personList);
+// 通过请求转发方案，向Tomcat申请调用user_show.jsp，同时将request与response通过Tomcat交给user_show.jsp使用
+request.getRequestDispatcher(&quot;/user_show.jsp&quot;).forward(request,response);
+</code></pre>
+<p>在JSP文件中读取：</p>
+<pre><code class="jsp">&lt;%=
+    List&lt;Person&gt; personList = (List&lt;Person&gt;) application.getAttributee(&quot;key&quot;);
+%&gt;
+</code></pre>
+<h2 id="Http服务器调用JSP文件步骤-面试题"><a href="#Http服务器调用JSP文件步骤-面试题" class="headerlink" title="Http服务器调用JSP文件步骤(面试题)"></a>Http服务器调用JSP文件步骤(面试题)</h2><ol>
+<li><p>Http服务器将JSP文件内容【编辑】为一个Servlet接口实现类(.java)</p>
+</li>
+<li><p>Http服务器将Servlet接口实现类【编译】为class文件(.class)</p>
+</li>
+<li><p>Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象</p>
+</li>
+<li><p>Http服务器通过Servlet实例对象调用<code>jsp_service</code>方法，将JSP文件内容写入到响应体</p>
+</li>
+</ol>
+<p><strong>Http服务器【编辑】与【编译】JSP文件位置：</strong></p>
+<p><code>tomcat\[网站工作空间]\work\Catalina\localhost\[网站别名]\org\apache\jsp</code></p>
+<h1 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h1><h2 id="El工具包介绍"><a href="#El工具包介绍" class="headerlink" title="El工具包介绍"></a>El工具包介绍</h2><ul>
+<li>由Java技术开发的一个jar包</li>
+<li>作用降低JSP文件开发时Java命令开发强度</li>
+<li>Tomcat服务器本身自带了EL工具包(在Tomcat安装地址<code>/lib/el-api.jar</code>)</li>
+<li>JSP文件作用：代替响应对象将Servlet中<code>doGet/doPost</code>的执行结果写入到响应体</li>
+</ul>
+<h2 id="EL表达式与作用域对象别名"><a href="#EL表达式与作用域对象别名" class="headerlink" title="EL表达式与作用域对象别名"></a>EL表达式与作用域对象别名</h2><ol>
+<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据&#125;</code>  例子：<code>$&#123;applicationScope.key&#125;</code></p>
+</li>
+<li><p>命令作用：</p>
+<ul>
+<li>EL表达式是EL工具包提供一种特殊命令格式【表达式命令格式】</li>
+<li>EL表达式在JSP文件上使用，负责在JSP文件上从作用域对象读取指定的共享数据并输出到响应体</li>
+</ul>
+</li>
+<li><p>JSP文件可以使用的作用域对象</p>
+<ul>
+<li><p>全局作用域对象(application)：<code>ServletContext application = new ServletContext();</code></p>
+</li>
+<li><p>会话作用域对象(session)：<code>HttpSession session = new HttpSession();</code></p>
+</li>
+<li><p>请求作用域对象(request)：<code>HttpServletRequest request = new HttpServletRequest();</code></p>
+</li>
+<li><p>当前页作用域对象(pageContext)：<code>PageContext pageContext = new PageContext();</code></p>
+<p>这是JSP文件独有的作用域对象，Servlet中不存在。在【当前作用域对象】存放的共享数据仅能在当前JSP文件中使用，不能共享给其他Servlet或者其他JSP文件。在真实开发过程中，主要用于JSTL标签与JSP文件之间数据共享。<code>JSTL---&gt;数据---&gt; pageContex---&gt; JSP</code></p>
+</li>
+</ul>
+</li>
+<li><p>EL表达式提供作用域对象别名</p>
+<table>
+<thead>
+<tr>
+<th align="center">JSP</th>
+<th align="center">EL表达式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">application</td>
+<td align="center">${applicationScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">session</td>
+<td align="center">${sessionScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">request</td>
+<td align="center">${requestScope.共享数据名}</td>
+</tr>
+<tr>
+<td align="center">pageContex</td>
+<td align="center">${pageScope.共享数据}</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<h2 id="用EL表达式将引用对象属性写入到响应体"><a href="#用EL表达式将引用对象属性写入到响应体" class="headerlink" title="用EL表达式将引用对象属性写入到响应体"></a>用EL表达式将引用对象属性写入到响应体</h2><ol>
+<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据名.属性名&#125;</code></p>
+<p>例如：</p>
+<pre><code class="jsp">Student student = new Student(100,&quot;alex&quot;);
+　　request.setAttribute(&quot;key&quot;,student);
+　　&lt;body&gt;
+　　　　学号：$&#123;requestScope.key.studentNumber&#125; &lt;!--studentNumber来自于Student类属性,大小完全一致--&gt;
+　　　　姓名：$&#123;requestScope.key.studentName&#125;
+　　&lt;/body&gt;
+　　$&#123;&quot;A&quot; == requestScope.key.answer?&quot;cheched&quot;:&quot;&quot;&#125;
+</code></pre>
+</li>
+<li><p>命令作用：从作用域对象读取指定共享数据关联的引用对象的属性值，并自动将属性的结果写入到响应体</p>
+</li>
+<li><p>属性名：一定要与类中的属性名一致</p>
+</li>
+<li><p>EL表达式没有提供遍历集合方法，因此无法从作用域对象读取集合内容输出</p>
+</li>
+</ol>
+<h2 id="EL表达式简化版"><a href="#EL表达式简化版" class="headerlink" title="EL表达式简化版"></a>EL表达式简化版</h2><ol>
+<li><p>命令格式：<code>$&#123;共享数据名&#125;</code></p>
+</li>
+<li><p>命令作用：EL表达式允许开发人员开发时省略作用域对象别名</p>
+</li>
+<li><p>工作原理：</p>
+<p>EL表达式简化版由于没有指定作用域对象，所以在执行时采用【猜】算法，首先到<code>pageContext</code>定位共享数据，如果存在直接输出并结束执行，如果在<code>pageContext</code>没有定位成功，到<code>request</code>定位共享数据，如果存在直接输出并结束执行，由此类推，再到<code>session、application</code>。如果都没定位成功则返回null。</p>
+<p>总结：查找顺序(自上而下)<code>pageContext --&gt; request --&gt; session --&gt; application --&gt; null</code></p>
+</li>
+<li><p>存在隐患：</p>
+<p>容易降低程序执行的速度（南辕北辙），容易导致数据定位错误</p>
+</li>
+<li><p>应用场景：</p>
+<p>简化从<code>pageContext</code>读取共享数据并输出难度</p>
+</li>
+<li><p><strong>EL表达式简化版尽管存在很多隐患，但是在实际开发过程中，为了节省时间，一般都使用简化版，拒绝使用标准版</strong></p>
+</li>
+</ol>
+<h2 id="EL表达式-–-支持运算表达式"><a href="#EL表达式-–-支持运算表达式" class="headerlink" title="EL表达式 – 支持运算表达式"></a>EL表达式 – 支持运算表达式</h2><ol>
+<li><p>前提：在JSP文件有时需要将读取共享数据进行一番运算之后，将运算结果写入到响应体</p>
+<pre><code class="jsp">&lt;!--传统的Java命令--&gt;
+&lt;%
+　　String num1 = (String) request.getAttribute(&quot;key1&quot;);
+　　Integer num2 = (Integer) request.getAttribute(&quot;key2&quot;);
+　　int sum = Integer.valueOf(num1) + num2;
+%&gt;
+sum=&lt;%=sum%&gt;
+</code></pre>
+<p>El表达式简化版(支持运算)</p>
+<pre><code class="jsp">&lt;!--不用写读取语句直接就可以获取--&gt;
+sum=$&#123;key1+key2&#125;
+</code></pre>
+</li>
+<li><p>运算表达式（JSP只做简单输出，复杂判断一般交给Servlet）</p>
+<ul>
+<li><p>数学运算</p>
+</li>
+<li><p>关系运算：&gt; &lt; = &gt;= &lt;= !=</p>
+<p>部分代码示例：</p>
+<pre><code class="jsp">request.setAttribute(&quot;age&quot;,22);
+--------------------------------
+$&#123;age&gt;18?&quot;欢迎光临&quot;:&quot;谢绝入内&quot;&#125;
+</code></pre>
+</li>
+<li><p>逻辑运算： &amp;&amp; || !</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="EL表达式提供的内置对象"><a href="#EL表达式提供的内置对象" class="headerlink" title="EL表达式提供的内置对象"></a>EL表达式提供的内置对象</h2><ol>
+<li><p>命令格式：<code>$&#123;param.请求参数名&#125;</code></p>
+</li>
+<li><p>命令作用：通过请求对象读取当前请求包中请求参数内容，并将请求参数内容写入到响应体</p>
+</li>
+<li><p>代替命令：浏览器发送请求Http://localhost:8080/myWeb/index.jsp?userName=alex&amp;passWord=123时获取请求参数的值</p>
+<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
+&lt;%
+    String userName = request.getParameter(&quot;userName&quot;);
+    String passWord = request.getParameter(&quot;passWord&quot;);
+%&gt;
+用户名：&lt;%=userName%&gt;
+密  码：&lt;%=passWord%&gt;
+------------------------------------------------------
+&lt;!--EL表达式获取--&gt;
+用户名：$&#123;param.userName&#125;
+密  码：$&#123;param.passWord&#125;
+</code></pre>
+</li>
+<li><p>命令格式：<code>$&#123;paramValues.请求参数名[下标]&#125;</code></p>
+</li>
+<li><p>命令作用：如果浏览器发送的请求参数时，一个请求参数关联多个值，此时可以通过<code>paramValues</code>读取请求参数下指定位置的值，并写入到响应体</p>
+</li>
+<li><p>代替命令：浏览器发送请求<a href="http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3%EF%BC%8C%E6%AD%A4%E6%97%B6page%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%9C%A8%E3%80%90http%E8%AF%B7%E6%B1%82%E5%8C%85%E3%80%91%E4%BB%A5%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E5%AD%98%E5%9C%A8----%60page:%5B1,2,3%5D%60">http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3，此时page请求参数在【http请求包】以数组形式存在----`page:[1,2,3]`</a></p>
+<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
+&lt;%
+　　　　String[] array = request.getParameterValues(&quot;page&quot;);
+%&gt;
+第一个值：&lt;%=array[0]%&gt;
+第二个值：&lt;%=array[1]%&gt;
+第三个值：&lt;%=array[2]%&gt;
+-----------------------------------------
+&lt;!--EL表达式获取--&gt;
+第一个值：$&#123;paramValues.page[0]&#125;
+第二个值：$&#123;paramValues.page[1]&#125;
+第三个值：$&#123;paramValues.page[2]&#125;
+</code></pre>
+</li>
+</ol>
+<h2 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h2><p><code>javax.el.PropertyNotFoundException</code>：在对象中没有找到指定属性。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>JSP</tag>
+        <tag>EL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>初识SpringMVC</title>
     <url>/2020/09/25/%5BJava%5D-First-Eyes-SpringMVC/</url>
     <content><![CDATA[<p>-入门</p>
@@ -22497,246 +22496,6 @@ public class OneFilter implements Filter &#123;
       <tags>
         <tag>Java</tag>
         <tag>Servlet</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JSP &amp; EL表达式</title>
-    <url>/2020/09/25/%5BJava%5D-JSP&amp;EL/</url>
-    <content><![CDATA[<p><a href="https://imgchr.com/i/ByLY5j"><img data-src="https://s1.ax1x.com/2020/11/03/ByLY5j.jpg"></a></p>
-<span id="more"></span>
-
-<h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h2 id="JSP规范介绍"><a href="#JSP规范介绍" class="headerlink" title="JSP规范介绍"></a>JSP规范介绍</h2><ul>
-<li>来自于JavaEE规范中一种</li>
-<li>JSP规范制定了如何开发JSP文件代替响应对象将处理结果写入到响应体的开发流程</li>
-<li>JSP规范制定Http服务器应该如何调用管理JSP文件</li>
-<li>JSP文件在执行时，自动将文件所有内容写入到响应体，从而不用书写<code>respone.getWriter().print();</code></li>
-</ul>
-<p><strong>优势：</strong></p>
-<ul>
-<li>JSP文件在互谅网通信过程，是响应对象代替品</li>
-<li>降低将处理结果写入到响应体的开发工作量降低处理结果维护难度</li>
-<li>在JSP文件开发时，可以直接将处理结果写入到JSP文件不需要手写<code>respone.getWriter().print();</code>命令，在Http服务器调用JSP文件时，根据JSP规范要求自动的将JSP文件书写的所有内容通过输出流写入到响应体</li>
-</ul>
-<h2 id="响应对象存在的弊端"><a href="#响应对象存在的弊端" class="headerlink" title="响应对象存在的弊端"></a>响应对象存在的弊端</h2><ul>
-<li>适合将数据量较少的处理结果写入到响应体</li>
-<li>如果处理数量过多，使用响应对象增加开发难度</li>
-</ul>
-<h2 id="JSP文件内置对象"><a href="#JSP文件内置对象" class="headerlink" title="JSP文件内置对象"></a>JSP文件内置对象</h2><h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>类型：HttpServletRequst</p>
-<p>作用：在JSP文件运行时，读取请求包信息与Servlet在请求转发过程中实现数据共享</p>
-<h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>类型：HTTPSession</p>
-<p>作用：在JSP文件运行时，session可以指向当前用户私人储物柜，添加共享数据或者读取共享数据</p>
-<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><p>类型：ServletContext()</p>
-<p>作用：在JSP文件运行时，通过全局作用域对象实现数据共享</p>
-<h2 id="Servlet-与-JSP分工"><a href="#Servlet-与-JSP分工" class="headerlink" title="Servlet 与 JSP分工"></a>Servlet 与 JSP分工</h2><p><strong>Servlet：</strong>负责处理业务并得到处理结果 — 大厨师</p>
-<p><strong>JSP：</strong>不负责处理业务，主要任务将Servlet中处理结果写入到响应体 — 传菜员</p>
-<p><strong>Servlet</strong> 与 <strong>JSP</strong>之间的调用关系：Servlet工作完毕后，一般通过【请求转发】方式向Tomcat申请调用JSP</p>
-<h2 id="Servlet与JSP之间如何实现数据共享"><a href="#Servlet与JSP之间如何实现数据共享" class="headerlink" title="Servlet与JSP之间如何实现数据共享"></a>Servlet与JSP之间如何实现数据共享</h2><ol>
-<li><p>使用【请求作用域对象】实现数据共享</p>
-</li>
-<li><p>使用【全局作用对象】实现数据共享</p>
-</li>
-</ol>
-<p>Servlet将处理结果添加到【请求作用域对象(request)】</p>
-<p>JSP文件在运行时从【请求作用域对象(request)】得到处理结果</p>
-<p>代码示例：</p>
-<p>在Servlet接口实现类下(OneServlet.java)</p>
-<pre><code class="java">Person p1 = new Person(1,&quot;a&quot;);
-Person p2 = new Person(2,&quot;b&quot;);
-List&lt;Person&gt; personList = new ArrayList&lt;&gt;();
-personList.add(p1);
-personList.add(p2);
-// 将处理结果添加到请求作用域对象
-request.setAttribute(&quot;key&quot;,personList);
-// 通过请求转发方案，向Tomcat申请调用user_show.jsp，同时将request与response通过Tomcat交给user_show.jsp使用
-request.getRequestDispatcher(&quot;/user_show.jsp&quot;).forward(request,response);
-</code></pre>
-<p>在JSP文件中读取：</p>
-<pre><code class="jsp">&lt;%=
-    List&lt;Person&gt; personList = (List&lt;Person&gt;) application.getAttributee(&quot;key&quot;);
-%&gt;
-</code></pre>
-<h2 id="Http服务器调用JSP文件步骤-面试题"><a href="#Http服务器调用JSP文件步骤-面试题" class="headerlink" title="Http服务器调用JSP文件步骤(面试题)"></a>Http服务器调用JSP文件步骤(面试题)</h2><ol>
-<li><p>Http服务器将JSP文件内容【编辑】为一个Servlet接口实现类(.java)</p>
-</li>
-<li><p>Http服务器将Servlet接口实现类【编译】为class文件(.class)</p>
-</li>
-<li><p>Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象</p>
-</li>
-<li><p>Http服务器通过Servlet实例对象调用<code>jsp_service</code>方法，将JSP文件内容写入到响应体</p>
-</li>
-</ol>
-<p><strong>Http服务器【编辑】与【编译】JSP文件位置：</strong></p>
-<p><code>tomcat\[网站工作空间]\work\Catalina\localhost\[网站别名]\org\apache\jsp</code></p>
-<h1 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h1><h2 id="El工具包介绍"><a href="#El工具包介绍" class="headerlink" title="El工具包介绍"></a>El工具包介绍</h2><ul>
-<li>由Java技术开发的一个jar包</li>
-<li>作用降低JSP文件开发时Java命令开发强度</li>
-<li>Tomcat服务器本身自带了EL工具包(在Tomcat安装地址<code>/lib/el-api.jar</code>)</li>
-<li>JSP文件作用：代替响应对象将Servlet中<code>doGet/doPost</code>的执行结果写入到响应体</li>
-</ul>
-<h2 id="EL表达式与作用域对象别名"><a href="#EL表达式与作用域对象别名" class="headerlink" title="EL表达式与作用域对象别名"></a>EL表达式与作用域对象别名</h2><ol>
-<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据&#125;</code>  例子：<code>$&#123;applicationScope.key&#125;</code></p>
-</li>
-<li><p>命令作用：</p>
-<ul>
-<li>EL表达式是EL工具包提供一种特殊命令格式【表达式命令格式】</li>
-<li>EL表达式在JSP文件上使用，负责在JSP文件上从作用域对象读取指定的共享数据并输出到响应体</li>
-</ul>
-</li>
-<li><p>JSP文件可以使用的作用域对象</p>
-<ul>
-<li><p>全局作用域对象(application)：<code>ServletContext application = new ServletContext();</code></p>
-</li>
-<li><p>会话作用域对象(session)：<code>HttpSession session = new HttpSession();</code></p>
-</li>
-<li><p>请求作用域对象(request)：<code>HttpServletRequest request = new HttpServletRequest();</code></p>
-</li>
-<li><p>当前页作用域对象(pageContext)：<code>PageContext pageContext = new PageContext();</code></p>
-<p>这是JSP文件独有的作用域对象，Servlet中不存在。在【当前作用域对象】存放的共享数据仅能在当前JSP文件中使用，不能共享给其他Servlet或者其他JSP文件。在真实开发过程中，主要用于JSTL标签与JSP文件之间数据共享。<code>JSTL---&gt;数据---&gt; pageContex---&gt; JSP</code></p>
-</li>
-</ul>
-</li>
-<li><p>EL表达式提供作用域对象别名</p>
-<table>
-<thead>
-<tr>
-<th align="center">JSP</th>
-<th align="center">EL表达式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">application</td>
-<td align="center">${applicationScope.共享数据名}</td>
-</tr>
-<tr>
-<td align="center">session</td>
-<td align="center">${sessionScope.共享数据名}</td>
-</tr>
-<tr>
-<td align="center">request</td>
-<td align="center">${requestScope.共享数据名}</td>
-</tr>
-<tr>
-<td align="center">pageContex</td>
-<td align="center">${pageScope.共享数据}</td>
-</tr>
-</tbody></table>
-</li>
-</ol>
-<h2 id="用EL表达式将引用对象属性写入到响应体"><a href="#用EL表达式将引用对象属性写入到响应体" class="headerlink" title="用EL表达式将引用对象属性写入到响应体"></a>用EL表达式将引用对象属性写入到响应体</h2><ol>
-<li><p>命令格式：<code>$&#123;作用域对象别名.共享数据名.属性名&#125;</code></p>
-<p>例如：</p>
-<pre><code class="jsp">Student student = new Student(100,&quot;alex&quot;);
-　　request.setAttribute(&quot;key&quot;,student);
-　　&lt;body&gt;
-　　　　学号：$&#123;requestScope.key.studentNumber&#125; &lt;!--studentNumber来自于Student类属性,大小完全一致--&gt;
-　　　　姓名：$&#123;requestScope.key.studentName&#125;
-　　&lt;/body&gt;
-　　$&#123;&quot;A&quot; == requestScope.key.answer?&quot;cheched&quot;:&quot;&quot;&#125;
-</code></pre>
-</li>
-<li><p>命令作用：从作用域对象读取指定共享数据关联的引用对象的属性值，并自动将属性的结果写入到响应体</p>
-</li>
-<li><p>属性名：一定要与类中的属性名一致</p>
-</li>
-<li><p>EL表达式没有提供遍历集合方法，因此无法从作用域对象读取集合内容输出</p>
-</li>
-</ol>
-<h2 id="EL表达式简化版"><a href="#EL表达式简化版" class="headerlink" title="EL表达式简化版"></a>EL表达式简化版</h2><ol>
-<li><p>命令格式：<code>$&#123;共享数据名&#125;</code></p>
-</li>
-<li><p>命令作用：EL表达式允许开发人员开发时省略作用域对象别名</p>
-</li>
-<li><p>工作原理：</p>
-<p>EL表达式简化版由于没有指定作用域对象，所以在执行时采用【猜】算法，首先到<code>pageContext</code>定位共享数据，如果存在直接输出并结束执行，如果在<code>pageContext</code>没有定位成功，到<code>request</code>定位共享数据，如果存在直接输出并结束执行，由此类推，再到<code>session、application</code>。如果都没定位成功则返回null。</p>
-<p>总结：查找顺序(自上而下)<code>pageContext --&gt; request --&gt; session --&gt; application --&gt; null</code></p>
-</li>
-<li><p>存在隐患：</p>
-<p>容易降低程序执行的速度（南辕北辙），容易导致数据定位错误</p>
-</li>
-<li><p>应用场景：</p>
-<p>简化从<code>pageContext</code>读取共享数据并输出难度</p>
-</li>
-<li><p><strong>EL表达式简化版尽管存在很多隐患，但是在实际开发过程中，为了节省时间，一般都使用简化版，拒绝使用标准版</strong></p>
-</li>
-</ol>
-<h2 id="EL表达式-–-支持运算表达式"><a href="#EL表达式-–-支持运算表达式" class="headerlink" title="EL表达式 – 支持运算表达式"></a>EL表达式 – 支持运算表达式</h2><ol>
-<li><p>前提：在JSP文件有时需要将读取共享数据进行一番运算之后，将运算结果写入到响应体</p>
-<pre><code class="jsp">&lt;!--传统的Java命令--&gt;
-&lt;%
-　　String num1 = (String) request.getAttribute(&quot;key1&quot;);
-　　Integer num2 = (Integer) request.getAttribute(&quot;key2&quot;);
-　　int sum = Integer.valueOf(num1) + num2;
-%&gt;
-sum=&lt;%=sum%&gt;
-</code></pre>
-<p>El表达式简化版(支持运算)</p>
-<pre><code class="jsp">&lt;!--不用写读取语句直接就可以获取--&gt;
-sum=$&#123;key1+key2&#125;
-</code></pre>
-</li>
-<li><p>运算表达式（JSP只做简单输出，复杂判断一般交给Servlet）</p>
-<ul>
-<li><p>数学运算</p>
-</li>
-<li><p>关系运算：&gt; &lt; = &gt;= &lt;= !=</p>
-<p>部分代码示例：</p>
-<pre><code class="jsp">request.setAttribute(&quot;age&quot;,22);
---------------------------------
-$&#123;age&gt;18?&quot;欢迎光临&quot;:&quot;谢绝入内&quot;&#125;
-</code></pre>
-</li>
-<li><p>逻辑运算： &amp;&amp; || !</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="EL表达式提供的内置对象"><a href="#EL表达式提供的内置对象" class="headerlink" title="EL表达式提供的内置对象"></a>EL表达式提供的内置对象</h2><ol>
-<li><p>命令格式：<code>$&#123;param.请求参数名&#125;</code></p>
-</li>
-<li><p>命令作用：通过请求对象读取当前请求包中请求参数内容，并将请求参数内容写入到响应体</p>
-</li>
-<li><p>代替命令：浏览器发送请求Http://localhost:8080/myWeb/index.jsp?userName=alex&amp;passWord=123时获取请求参数的值</p>
-<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
-&lt;%
-    String userName = request.getParameter(&quot;userName&quot;);
-    String passWord = request.getParameter(&quot;passWord&quot;);
-%&gt;
-用户名：&lt;%=userName%&gt;
-密  码：&lt;%=passWord%&gt;
-------------------------------------------------------
-&lt;!--EL表达式获取--&gt;
-用户名：$&#123;param.userName&#125;
-密  码：$&#123;param.passWord&#125;
-</code></pre>
-</li>
-<li><p>命令格式：<code>$&#123;paramValues.请求参数名[下标]&#125;</code></p>
-</li>
-<li><p>命令作用：如果浏览器发送的请求参数时，一个请求参数关联多个值，此时可以通过<code>paramValues</code>读取请求参数下指定位置的值，并写入到响应体</p>
-</li>
-<li><p>代替命令：浏览器发送请求<a href="http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3%EF%BC%8C%E6%AD%A4%E6%97%B6page%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%9C%A8%E3%80%90http%E8%AF%B7%E6%B1%82%E5%8C%85%E3%80%91%E4%BB%A5%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E5%AD%98%E5%9C%A8----%60page:%5B1,2,3%5D%60">http://localhost:8080/myWeb/index.jsp?page=1&amp;page=2&amp;page=3，此时page请求参数在【http请求包】以数组形式存在----`page:[1,2,3]`</a></p>
-<pre><code class="jsp">&lt;!--JSP命令获取--&gt;
-&lt;%
-　　　　String[] array = request.getParameterValues(&quot;page&quot;);
-%&gt;
-第一个值：&lt;%=array[0]%&gt;
-第二个值：&lt;%=array[1]%&gt;
-第三个值：&lt;%=array[2]%&gt;
------------------------------------------
-&lt;!--EL表达式获取--&gt;
-第一个值：$&#123;paramValues.page[0]&#125;
-第二个值：$&#123;paramValues.page[1]&#125;
-第三个值：$&#123;paramValues.page[2]&#125;
-</code></pre>
-</li>
-</ol>
-<h2 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h2><p><code>javax.el.PropertyNotFoundException</code>：在对象中没有找到指定属性。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>JSP</tag>
-        <tag>EL</tag>
       </tags>
   </entry>
   <entry>
@@ -33975,323 +33734,6 @@ public class BufferedWriter extends Writer &#123;
       </tags>
   </entry>
   <entry>
-    <title>Java IO之 DataOutputSream详解</title>
-    <url>/2020/07/22/Java-IO-DataOutputStream/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="DataOutputSream-简介"><a href="#DataOutputSream-简介" class="headerlink" title="DataOutputSream 简介"></a>DataOutputSream 简介</h1><p><code>DataOutputStream</code>是数据输出流。它继承于<code>FilterOutputStream</code>。</p>
-<p><code>DataOutputStream</code>是用来装饰其它输出流，将<code>DataOutputStream</code>和<code>DataInputStream</code>输入流配合使用，允许应用程序以与机器无关方式从底层输入流中读写基本 Java数据类型。</p>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.lang.SecurityException;
-
-
-public class DataInputStreamTest &#123;
-
-    private static final int LEN = 5;
-
-    public static void main(String[] args) &#123;
-        // 测试DataOutputStream，将数据写入到输出流中。
-        testDataOutputStream() ;
-        // 测试DataInputStream，从上面的输出流结果中读取数据。
-        testDataInputStream() ;
-    &#125;
-
-    /**
-     * DataOutputStream的API测试函数
-     */
-    private static void testDataOutputStream() &#123;
-
-        try &#123;
-            File file = new File(&quot;file.txt&quot;);
-            DataOutputStream out =
-                  new DataOutputStream(
-                      new FileOutputStream(file));
-
-            out.writeBoolean(true);
-            out.writeByte((byte)0x41);
-            out.writeChar((char)0x4243);
-            out.writeShort((short)0x4445);
-            out.writeInt(0x12345678);
-            out.writeLong(0x0FEDCBA987654321L);
-
-            out.writeUTF(&quot;abcdefghijklmnopqrstuvwxyz严12&quot;);
-
-            out.close();
-       &#125; catch (FileNotFoundException e) &#123;
-           e.printStackTrace();
-       &#125; catch (SecurityException e) &#123;
-           e.printStackTrace();
-       &#125; catch (IOException e) &#123;
-           e.printStackTrace();
-       &#125;
-    &#125;
-    
-    /**
-     * DataInputStream的API测试函数
-     */
-    private static void testDataInputStream() &#123;
-
-        try &#123;
-            File file = new File(&quot;file.txt&quot;);
-            DataInputStream in =
-                  new DataInputStream(
-                      new FileInputStream(file));
-
-            System.out.printf(&quot;byteToHexString(0x8F):0x%s\n&quot;, byteToHexString((byte)0x8F));
-            System.out.printf(&quot;charToHexString(0x8FCF):0x%s\n&quot;, charToHexString((char)0x8FCF));
-
-            System.out.printf(&quot;readBoolean():%s\n&quot;, in.readBoolean());
-            System.out.printf(&quot;readByte():0x%s\n&quot;, byteToHexString(in.readByte()));
-            System.out.printf(&quot;readChar():0x%s\n&quot;, charToHexString(in.readChar()));
-            System.out.printf(&quot;readShort():0x%s\n&quot;, shortToHexString(in.readShort()));
-            System.out.printf(&quot;readInt():0x%s\n&quot;, Integer.toHexString(in.readInt()));
-            System.out.printf(&quot;readLong():0x%s\n&quot;, Long.toHexString(in.readLong()));
-            System.out.printf(&quot;readUTF():%s\n&quot;, in.readUTF());
-
-            in.close();
-       &#125; catch (FileNotFoundException e) &#123;
-           e.printStackTrace();
-       &#125; catch (SecurityException e) &#123;
-           e.printStackTrace();
-       &#125; catch (IOException e) &#123;
-           e.printStackTrace();
-       &#125;
-    &#125;
-
-    // 打印byte对应的16进制的字符串
-    private static String byteToHexString(byte val) &#123;
-        return Integer.toHexString(val &amp; 0xff);
-    &#125;
-
-    // 打印char对应的16进制的字符串
-    private static String charToHexString(char val) &#123;
-        return Integer.toHexString(val);
-    &#125;
-
-    // 打印short对应的16进制的字符串
-    private static String shortToHexString(short val) &#123;
-        return Integer.toHexString(val &amp; 0xffff);
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>byteToHexString(0x8F):0x8f
-charToHexString(0x8FCF):0x8fcf
-readBoolean():true
-readByte():0x41
-readChar():0x4243
-readShort():0x4445
-readInt():0x12345678
-readLong():0xfedcba987654321
-readUTF():abcdefghijklmnopqrstuvwxyz严12
-</code></pre>
-<h1 id="DataOutputStream-源码"><a href="#DataOutputStream-源码" class="headerlink" title="DataOutputStream 源码"></a>DataOutputStream 源码</h1><pre><code class="java">public class DataOutputStream extends FilterOutputStream implements DataOutput &#123;
-    
-    protected int written;
-
-    
-    private byte[] bytearr = null;
-
-   
-    public DataOutputStream(OutputStream out) &#123;
-        super(out);
-    &#125;
-
-  
-    private void incCount(int value) &#123;
-        int temp = written + value;
-        if (temp &lt; 0) &#123;
-            temp = Integer.MAX_VALUE;
-        &#125;
-        written = temp;
-    &#125;
-
-
-    public synchronized void write(int b) throws IOException &#123;
-        out.write(b);
-        incCount(1);
-    &#125;
-
-
-    public synchronized void write(byte b[], int off, int len)
-        throws IOException
-    &#123;
-        out.write(b, off, len);
-        incCount(len);
-    &#125;
-
-    public void flush() throws IOException &#123;
-        out.flush();
-    &#125;
-
-    public final void writeBoolean(boolean v) throws IOException &#123;
-        out.write(v ? 1 : 0);
-        incCount(1);
-    &#125;
-
-
-    public final void writeByte(int v) throws IOException &#123;
-        out.write(v);
-        incCount(1);
-    &#125;
-
-
-    public final void writeShort(int v) throws IOException &#123;
-        out.write((v &gt;&gt;&gt; 8) &amp; 0xFF);
-        out.write((v &gt;&gt;&gt; 0) &amp; 0xFF);
-        incCount(2);
-    &#125;
-
- 
-    public final void writeChar(int v) throws IOException &#123;
-        out.write((v &gt;&gt;&gt; 8) &amp; 0xFF);
-        out.write((v &gt;&gt;&gt; 0) &amp; 0xFF);
-        incCount(2);
-    &#125;
-
-
-    public final void writeInt(int v) throws IOException &#123;
-        out.write((v &gt;&gt;&gt; 24) &amp; 0xFF);
-        out.write((v &gt;&gt;&gt; 16) &amp; 0xFF);
-        out.write((v &gt;&gt;&gt;  8) &amp; 0xFF);
-        out.write((v &gt;&gt;&gt;  0) &amp; 0xFF);
-        incCount(4);
-    &#125;
-
-    private byte writeBuffer[] = new byte[8];
-
-  
-    public final void writeLong(long v) throws IOException &#123;
-        writeBuffer[0] = (byte)(v &gt;&gt;&gt; 56);
-        writeBuffer[1] = (byte)(v &gt;&gt;&gt; 48);
-        writeBuffer[2] = (byte)(v &gt;&gt;&gt; 40);
-        writeBuffer[3] = (byte)(v &gt;&gt;&gt; 32);
-        writeBuffer[4] = (byte)(v &gt;&gt;&gt; 24);
-        writeBuffer[5] = (byte)(v &gt;&gt;&gt; 16);
-        writeBuffer[6] = (byte)(v &gt;&gt;&gt;  8);
-        writeBuffer[7] = (byte)(v &gt;&gt;&gt;  0);
-        out.write(writeBuffer, 0, 8);
-        incCount(8);
-    &#125;
-
-
-    public final void writeFloat(float v) throws IOException &#123;
-        writeInt(Float.floatToIntBits(v));
-    &#125;
-
-  
-    public final void writeDouble(double v) throws IOException &#123;
-        writeLong(Double.doubleToLongBits(v));
-    &#125;
-
- 
-    public final void writeBytes(String s) throws IOException &#123;
-        int len = s.length();
-        for (int i = 0 ; i &lt; len ; i++) &#123;
-            out.write((byte)s.charAt(i));
-        &#125;
-        incCount(len);
-    &#125;
-
-  
-    public final void writeChars(String s) throws IOException &#123;
-        int len = s.length();
-        for (int i = 0 ; i &lt; len ; i++) &#123;
-            int v = s.charAt(i);
-            out.write((v &gt;&gt;&gt; 8) &amp; 0xFF);
-            out.write((v &gt;&gt;&gt; 0) &amp; 0xFF);
-        &#125;
-        incCount(len * 2);
-    &#125;
-
-  
-    public final void writeUTF(String str) throws IOException &#123;
-        writeUTF(str, this);
-    &#125;
-
-   
-    static int writeUTF(String str, DataOutput out) throws IOException &#123;
-        int strlen = str.length();
-        int utflen = 0;
-        int c, count = 0;
-
-        for (int i = 0; i &lt; strlen; i++) &#123;
-            c = str.charAt(i);
-            if ((c &gt;= 0x0001) &amp;&amp; (c &lt;= 0x007F)) &#123;
-                utflen++;
-            &#125; else if (c &gt; 0x07FF) &#123;
-                utflen += 3;
-            &#125; else &#123;
-                utflen += 2;
-            &#125;
-        &#125;
-
-        if (utflen &gt; 65535)
-            throw new UTFDataFormatException(
-                &quot;encoded string too long: &quot; + utflen + &quot; bytes&quot;);
-
-        byte[] bytearr = null;
-        if (out instanceof DataOutputStream) &#123;
-            DataOutputStream dos = (DataOutputStream)out;
-            if(dos.bytearr == null || (dos.bytearr.length &lt; (utflen+2)))
-                dos.bytearr = new byte[(utflen*2) + 2];
-            bytearr = dos.bytearr;
-        &#125; else &#123;
-            bytearr = new byte[utflen+2];
-        &#125;
-
-        bytearr[count++] = (byte) ((utflen &gt;&gt;&gt; 8) &amp; 0xFF);
-        bytearr[count++] = (byte) ((utflen &gt;&gt;&gt; 0) &amp; 0xFF);
-
-        int i=0;
-        for (i=0; i&lt;strlen; i++) &#123;
-           c = str.charAt(i);
-           if (!((c &gt;= 0x0001) &amp;&amp; (c &lt;= 0x007F))) break;
-           bytearr[count++] = (byte) c;
-        &#125;
-
-        for (;i &lt; strlen; i++)&#123;
-            c = str.charAt(i);
-            if ((c &gt;= 0x0001) &amp;&amp; (c &lt;= 0x007F)) &#123;
-                bytearr[count++] = (byte) c;
-
-            &#125; else if (c &gt; 0x07FF) &#123;
-                bytearr[count++] = (byte) (0xE0 | ((c &gt;&gt; 12) &amp; 0x0F));
-                bytearr[count++] = (byte) (0x80 | ((c &gt;&gt;  6) &amp; 0x3F));
-                bytearr[count++] = (byte) (0x80 | ((c &gt;&gt;  0) &amp; 0x3F));
-            &#125; else &#123;
-                bytearr[count++] = (byte) (0xC0 | ((c &gt;&gt;  6) &amp; 0x1F));
-                bytearr[count++] = (byte) (0x80 | ((c &gt;&gt;  0) &amp; 0x3F));
-            &#125;
-        &#125;
-        out.write(bytearr, 0, utflen+2);
-        return utflen + 2;
-    &#125;
-
-
-    public final int size() &#123;
-        return written;
-    &#125;
-&#125;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java IO之 DataInputStream详解</title>
     <url>/2020/07/22/Java-IO-DataInputStream/</url>
     <content><![CDATA[<p>-</p>
@@ -35186,6 +34628,323 @@ chararr[chararr_count++]=(char)(((c &amp; 0x1F) &lt;&lt; 6) | (char2 &amp; 0x3F)
 <p>(b.1) 由于这种情况对应的UTF-8数据是“2字节”的，因此，执行count+2；直接跳过2个字节。<br>(b.2) 由于chararr的元素是字符类型，而一个字符正好占2个字节；因为正好将(((c &amp; 0x1F) &lt;&lt; 6) | (char2 &amp; 0x3F)); 的结果转换成char，然后保存在chararr数组中。</p>
 <p><strong>第6步</strong>，将字符数组转换成String字符串，并返回。代码如下：</p>
 <pre><code>return new String(chararr, 0, chararr_count);
+</code></pre>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO之 DataOutputSream详解</title>
+    <url>/2020/07/22/Java-IO-DataOutputStream/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="DataOutputSream-简介"><a href="#DataOutputSream-简介" class="headerlink" title="DataOutputSream 简介"></a>DataOutputSream 简介</h1><p><code>DataOutputStream</code>是数据输出流。它继承于<code>FilterOutputStream</code>。</p>
+<p><code>DataOutputStream</code>是用来装饰其它输出流，将<code>DataOutputStream</code>和<code>DataInputStream</code>输入流配合使用，允许应用程序以与机器无关方式从底层输入流中读写基本 Java数据类型。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.lang.SecurityException;
+
+
+public class DataInputStreamTest &#123;
+
+    private static final int LEN = 5;
+
+    public static void main(String[] args) &#123;
+        // 测试DataOutputStream，将数据写入到输出流中。
+        testDataOutputStream() ;
+        // 测试DataInputStream，从上面的输出流结果中读取数据。
+        testDataInputStream() ;
+    &#125;
+
+    /**
+     * DataOutputStream的API测试函数
+     */
+    private static void testDataOutputStream() &#123;
+
+        try &#123;
+            File file = new File(&quot;file.txt&quot;);
+            DataOutputStream out =
+                  new DataOutputStream(
+                      new FileOutputStream(file));
+
+            out.writeBoolean(true);
+            out.writeByte((byte)0x41);
+            out.writeChar((char)0x4243);
+            out.writeShort((short)0x4445);
+            out.writeInt(0x12345678);
+            out.writeLong(0x0FEDCBA987654321L);
+
+            out.writeUTF(&quot;abcdefghijklmnopqrstuvwxyz严12&quot;);
+
+            out.close();
+       &#125; catch (FileNotFoundException e) &#123;
+           e.printStackTrace();
+       &#125; catch (SecurityException e) &#123;
+           e.printStackTrace();
+       &#125; catch (IOException e) &#123;
+           e.printStackTrace();
+       &#125;
+    &#125;
+    
+    /**
+     * DataInputStream的API测试函数
+     */
+    private static void testDataInputStream() &#123;
+
+        try &#123;
+            File file = new File(&quot;file.txt&quot;);
+            DataInputStream in =
+                  new DataInputStream(
+                      new FileInputStream(file));
+
+            System.out.printf(&quot;byteToHexString(0x8F):0x%s\n&quot;, byteToHexString((byte)0x8F));
+            System.out.printf(&quot;charToHexString(0x8FCF):0x%s\n&quot;, charToHexString((char)0x8FCF));
+
+            System.out.printf(&quot;readBoolean():%s\n&quot;, in.readBoolean());
+            System.out.printf(&quot;readByte():0x%s\n&quot;, byteToHexString(in.readByte()));
+            System.out.printf(&quot;readChar():0x%s\n&quot;, charToHexString(in.readChar()));
+            System.out.printf(&quot;readShort():0x%s\n&quot;, shortToHexString(in.readShort()));
+            System.out.printf(&quot;readInt():0x%s\n&quot;, Integer.toHexString(in.readInt()));
+            System.out.printf(&quot;readLong():0x%s\n&quot;, Long.toHexString(in.readLong()));
+            System.out.printf(&quot;readUTF():%s\n&quot;, in.readUTF());
+
+            in.close();
+       &#125; catch (FileNotFoundException e) &#123;
+           e.printStackTrace();
+       &#125; catch (SecurityException e) &#123;
+           e.printStackTrace();
+       &#125; catch (IOException e) &#123;
+           e.printStackTrace();
+       &#125;
+    &#125;
+
+    // 打印byte对应的16进制的字符串
+    private static String byteToHexString(byte val) &#123;
+        return Integer.toHexString(val &amp; 0xff);
+    &#125;
+
+    // 打印char对应的16进制的字符串
+    private static String charToHexString(char val) &#123;
+        return Integer.toHexString(val);
+    &#125;
+
+    // 打印short对应的16进制的字符串
+    private static String shortToHexString(short val) &#123;
+        return Integer.toHexString(val &amp; 0xffff);
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>byteToHexString(0x8F):0x8f
+charToHexString(0x8FCF):0x8fcf
+readBoolean():true
+readByte():0x41
+readChar():0x4243
+readShort():0x4445
+readInt():0x12345678
+readLong():0xfedcba987654321
+readUTF():abcdefghijklmnopqrstuvwxyz严12
+</code></pre>
+<h1 id="DataOutputStream-源码"><a href="#DataOutputStream-源码" class="headerlink" title="DataOutputStream 源码"></a>DataOutputStream 源码</h1><pre><code class="java">public class DataOutputStream extends FilterOutputStream implements DataOutput &#123;
+    
+    protected int written;
+
+    
+    private byte[] bytearr = null;
+
+   
+    public DataOutputStream(OutputStream out) &#123;
+        super(out);
+    &#125;
+
+  
+    private void incCount(int value) &#123;
+        int temp = written + value;
+        if (temp &lt; 0) &#123;
+            temp = Integer.MAX_VALUE;
+        &#125;
+        written = temp;
+    &#125;
+
+
+    public synchronized void write(int b) throws IOException &#123;
+        out.write(b);
+        incCount(1);
+    &#125;
+
+
+    public synchronized void write(byte b[], int off, int len)
+        throws IOException
+    &#123;
+        out.write(b, off, len);
+        incCount(len);
+    &#125;
+
+    public void flush() throws IOException &#123;
+        out.flush();
+    &#125;
+
+    public final void writeBoolean(boolean v) throws IOException &#123;
+        out.write(v ? 1 : 0);
+        incCount(1);
+    &#125;
+
+
+    public final void writeByte(int v) throws IOException &#123;
+        out.write(v);
+        incCount(1);
+    &#125;
+
+
+    public final void writeShort(int v) throws IOException &#123;
+        out.write((v &gt;&gt;&gt; 8) &amp; 0xFF);
+        out.write((v &gt;&gt;&gt; 0) &amp; 0xFF);
+        incCount(2);
+    &#125;
+
+ 
+    public final void writeChar(int v) throws IOException &#123;
+        out.write((v &gt;&gt;&gt; 8) &amp; 0xFF);
+        out.write((v &gt;&gt;&gt; 0) &amp; 0xFF);
+        incCount(2);
+    &#125;
+
+
+    public final void writeInt(int v) throws IOException &#123;
+        out.write((v &gt;&gt;&gt; 24) &amp; 0xFF);
+        out.write((v &gt;&gt;&gt; 16) &amp; 0xFF);
+        out.write((v &gt;&gt;&gt;  8) &amp; 0xFF);
+        out.write((v &gt;&gt;&gt;  0) &amp; 0xFF);
+        incCount(4);
+    &#125;
+
+    private byte writeBuffer[] = new byte[8];
+
+  
+    public final void writeLong(long v) throws IOException &#123;
+        writeBuffer[0] = (byte)(v &gt;&gt;&gt; 56);
+        writeBuffer[1] = (byte)(v &gt;&gt;&gt; 48);
+        writeBuffer[2] = (byte)(v &gt;&gt;&gt; 40);
+        writeBuffer[3] = (byte)(v &gt;&gt;&gt; 32);
+        writeBuffer[4] = (byte)(v &gt;&gt;&gt; 24);
+        writeBuffer[5] = (byte)(v &gt;&gt;&gt; 16);
+        writeBuffer[6] = (byte)(v &gt;&gt;&gt;  8);
+        writeBuffer[7] = (byte)(v &gt;&gt;&gt;  0);
+        out.write(writeBuffer, 0, 8);
+        incCount(8);
+    &#125;
+
+
+    public final void writeFloat(float v) throws IOException &#123;
+        writeInt(Float.floatToIntBits(v));
+    &#125;
+
+  
+    public final void writeDouble(double v) throws IOException &#123;
+        writeLong(Double.doubleToLongBits(v));
+    &#125;
+
+ 
+    public final void writeBytes(String s) throws IOException &#123;
+        int len = s.length();
+        for (int i = 0 ; i &lt; len ; i++) &#123;
+            out.write((byte)s.charAt(i));
+        &#125;
+        incCount(len);
+    &#125;
+
+  
+    public final void writeChars(String s) throws IOException &#123;
+        int len = s.length();
+        for (int i = 0 ; i &lt; len ; i++) &#123;
+            int v = s.charAt(i);
+            out.write((v &gt;&gt;&gt; 8) &amp; 0xFF);
+            out.write((v &gt;&gt;&gt; 0) &amp; 0xFF);
+        &#125;
+        incCount(len * 2);
+    &#125;
+
+  
+    public final void writeUTF(String str) throws IOException &#123;
+        writeUTF(str, this);
+    &#125;
+
+   
+    static int writeUTF(String str, DataOutput out) throws IOException &#123;
+        int strlen = str.length();
+        int utflen = 0;
+        int c, count = 0;
+
+        for (int i = 0; i &lt; strlen; i++) &#123;
+            c = str.charAt(i);
+            if ((c &gt;= 0x0001) &amp;&amp; (c &lt;= 0x007F)) &#123;
+                utflen++;
+            &#125; else if (c &gt; 0x07FF) &#123;
+                utflen += 3;
+            &#125; else &#123;
+                utflen += 2;
+            &#125;
+        &#125;
+
+        if (utflen &gt; 65535)
+            throw new UTFDataFormatException(
+                &quot;encoded string too long: &quot; + utflen + &quot; bytes&quot;);
+
+        byte[] bytearr = null;
+        if (out instanceof DataOutputStream) &#123;
+            DataOutputStream dos = (DataOutputStream)out;
+            if(dos.bytearr == null || (dos.bytearr.length &lt; (utflen+2)))
+                dos.bytearr = new byte[(utflen*2) + 2];
+            bytearr = dos.bytearr;
+        &#125; else &#123;
+            bytearr = new byte[utflen+2];
+        &#125;
+
+        bytearr[count++] = (byte) ((utflen &gt;&gt;&gt; 8) &amp; 0xFF);
+        bytearr[count++] = (byte) ((utflen &gt;&gt;&gt; 0) &amp; 0xFF);
+
+        int i=0;
+        for (i=0; i&lt;strlen; i++) &#123;
+           c = str.charAt(i);
+           if (!((c &gt;= 0x0001) &amp;&amp; (c &lt;= 0x007F))) break;
+           bytearr[count++] = (byte) c;
+        &#125;
+
+        for (;i &lt; strlen; i++)&#123;
+            c = str.charAt(i);
+            if ((c &gt;= 0x0001) &amp;&amp; (c &lt;= 0x007F)) &#123;
+                bytearr[count++] = (byte) c;
+
+            &#125; else if (c &gt; 0x07FF) &#123;
+                bytearr[count++] = (byte) (0xE0 | ((c &gt;&gt; 12) &amp; 0x0F));
+                bytearr[count++] = (byte) (0x80 | ((c &gt;&gt;  6) &amp; 0x3F));
+                bytearr[count++] = (byte) (0x80 | ((c &gt;&gt;  0) &amp; 0x3F));
+            &#125; else &#123;
+                bytearr[count++] = (byte) (0xC0 | ((c &gt;&gt;  6) &amp; 0x1F));
+                bytearr[count++] = (byte) (0x80 | ((c &gt;&gt;  0) &amp; 0x3F));
+            &#125;
+        &#125;
+        out.write(bytearr, 0, utflen+2);
+        return utflen + 2;
+    &#125;
+
+
+    public final int size() &#123;
+        return written;
+    &#125;
+&#125;
 </code></pre>
 ]]></content>
       <categories>
@@ -36633,6 +36392,169 @@ public class BufferedOutputStream extends FilterOutputStream &#123;
       </tags>
   </entry>
   <entry>
+    <title>Java IO之 FileInputStream/FileOutputStream详解</title>
+    <url>/2020/07/20/Java-IO-FileInputStream-FileOutputStream/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="FileInputStream-和-FileOutputStream-简介"><a href="#FileInputStream-和-FileOutputStream-简介" class="headerlink" title="FileInputStream 和 FileOutputStream 简介"></a>FileInputStream 和 FileOutputStream 简介</h1><p><code>FileInputStream</code>是文件输入流，它继承于<code>InputStream</code>。<br>通常，使用<code>FileInputStream</code>从某个文件中获得输入字节。</p>
+<p><code>FileOutputStream</code>是文件输出流，它继承于<code>OutputStream</code>。<br>通常，使用<code>FileOutputStream</code>将数据写入<code>File</code>或 <code>FileDescriptor</code>的输出流。</p>
+<p>FileInputStream 函数接口</p>
+<pre><code class="java">FileInputStream(File file)         // 构造函数1：创建File对象对应的文件输入流
+FileInputStream(FileDescriptor fd) // 构造函数2：创建文件描述符对应的文件输入流
+FileInputStream(String path)       // 构造函数3：创建文件(路径为path)对应的文件输入流
+    
+// 常用方法
+int      available()             // 返回剩余的可读取的字节数或者skip的字节数
+void     close()                 // 关闭文件输入流
+FileChannel      getChannel()    // 返回FileChannel
+final FileDescriptor     getFD() // 返回文件描述符
+int                  read()      // 返回文件输入流的下一个字节
+// 读取文件输入流的数据并存在到buffer，从byteOffset开始存储，存储长度是byteCount。
+int      read(byte[] buffer, int byteOffset, int byteCount) 
+long     skip(long byteCount)    // 跳过byteCount个字节
+</code></pre>
+<p>FileOutputStream 函数接口</p>
+<pre><code class="java">// 构造函数1：创建File对象对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
+FileOutputStream(File file)     
+// 构造函数2：创建File对象对应的文件输入流；指定追加模式。
+FileOutputStream(File file, boolean append)   
+// 构造函数3：创建文件描述符对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
+FileOutputStream(FileDescriptor fd)
+// 构造函数4：创建文件(路径为path)对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
+FileOutputStream(String path) 
+// 构造函数5：创建文件(路径为path)对应的文件输入流；指定追加模式。
+FileOutputStream(String path, boolean append) 
+
+// 常用方法
+void                    close()      // 关闭输出流
+FileChannel             getChannel() // 返回FileChannel
+final FileDescriptor    getFD()      // 返回文件描述符
+// 将buffer写入到文件输出流中，从buffer的byteOffset开始写，写入长度是byteCount。
+void                    write(byte[] buffer, int byteOffset, int byteCount) 
+void                    write(int oneByte)  // 写入字节oneByte到文件输出流中
+</code></pre>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.PrintStream;
+import java.io.IOException;
+
+
+public class FileStreamTest &#123;
+
+    private static final String FileName = &quot;file.txt&quot;;
+
+    public static void main(String[] args) &#123;
+        testWrite();
+        testRead();
+    &#125;
+
+    /**
+     * FileOutputStream 演示函数
+     *
+     * 运行结果：
+     * 在源码所在目录生成文件file.txt，文件内容是abcdefghijklmnopqrstuvwxyz0123456789
+     *
+     * 加入，我们将 FileOutputStream fileOut2 = new FileOutputStream(file, true);
+     *       修改为 FileOutputStream fileOut2 = new FileOutputStream(file, false);
+     * 然后再执行程序，file.txt的内容变成0123456789。
+     * 原因是：
+     * 1 FileOutputStream fileOut2 = new FileOutputStream(file, true);
+     *      它是以追加模式将内容写入文件的。即写入的内容，追加到原始的内容之后。
+     * 2 FileOutputStream fileOut2 = new FileOutputStream(file, false);
+     *      它是以新建模式将内容写入文件的。即删除文件原始的内容之后，再重新写入。
+     */
+    private static void testWrite() &#123;
+        try &#123;
+            // 创建文件file.txt对应File对象
+            File file = new File(FileName);
+            // 创建文件file.txt对应的FileOutputStream对象，默认是关闭追加模式
+            FileOutputStream fileOut1 = new FileOutputStream(file);
+            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
+            PrintStream out1 = new PrintStream(fileOut1);
+            // 向文件中写入26个字母
+            out1.print(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
+            out1.close();
+
+            // 创建文件file.txt对应的FileOutputStream对象，打开追加模式
+            FileOutputStream fileOut2 = new FileOutputStream(file, true);
+            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
+            PrintStream out2 = new PrintStream(fileOut2);
+            // 向文件中写入0123456789+换行符
+            out2.println(&quot;0123456789&quot;);
+            out2.close();
+
+        &#125; catch(IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+ 
+    // FileInputStream 演示程序
+    private static void testRead() &#123;
+        try &#123;
+            // 方法1：新建FileInputStream对象
+            // 新建文件file.txt对应File对象
+            File file = new File(FileName);
+            FileInputStream in1 = new FileInputStream(file);
+
+            // 方法2：新建FileInputStream对象
+            FileInputStream in2 = new FileInputStream(FileName);
+
+            // 方法3：新建FileInputStream对象
+            // 获取文件file.txt对应的文件描述符
+            FileDescriptor fdin = in2.getFD();
+            // 根据文件描述符创建FileInputStream对象
+            FileInputStream in3 = new FileInputStream(fdin);
+
+            // 测试read()，从中读取一个字节
+            char c1 = (char)in1.read();
+            System.out.println(&quot;c1=&quot;+c1);
+
+            // 测试skip(long byteCount)，跳过4个字节
+            in1.skip(25);
+
+            // 测试read(byte[] buffer, int byteOffset, int byteCount)
+            byte[] buf = new byte[10];
+            in1.read(buf, 0, buf.length);
+            System.out.println(&quot;buf=&quot;+(new String(buf)));
+
+
+            // 创建FileInputStream对象对应的BufferedInputStream
+            BufferedInputStream bufIn = new BufferedInputStream(in3);
+            // 读取一个字节
+            char c2 = (char)bufIn.read();
+            System.out.println(&quot;c2=&quot;+c2);
+
+            in1.close();
+            in2.close();
+            in3.close();
+        &#125; catch(IOException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行结果：</p>
+<pre><code>c1=a
+buf=0123456789
+c2=a
+</code></pre>
+<p>结果说明：</p>
+<p>运行程序，会在源码所在位置新生成一个文件<code>file.txt</code>。它的内容是<code>abcdefghijklmnopqrstuvwxyz0123456789</code>。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java IO之 FilterInputStream详解</title>
     <url>/2020/07/20/Java-IO-FilterInputStream/</url>
     <content><![CDATA[<p>-</p>
@@ -37082,169 +37004,6 @@ public class ByteArrayInputStream extends InputStream &#123;
       </tags>
   </entry>
   <entry>
-    <title>Java IO之 FileInputStream/FileOutputStream详解</title>
-    <url>/2020/07/20/Java-IO-FileInputStream-FileOutputStream/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="FileInputStream-和-FileOutputStream-简介"><a href="#FileInputStream-和-FileOutputStream-简介" class="headerlink" title="FileInputStream 和 FileOutputStream 简介"></a>FileInputStream 和 FileOutputStream 简介</h1><p><code>FileInputStream</code>是文件输入流，它继承于<code>InputStream</code>。<br>通常，使用<code>FileInputStream</code>从某个文件中获得输入字节。</p>
-<p><code>FileOutputStream</code>是文件输出流，它继承于<code>OutputStream</code>。<br>通常，使用<code>FileOutputStream</code>将数据写入<code>File</code>或 <code>FileDescriptor</code>的输出流。</p>
-<p>FileInputStream 函数接口</p>
-<pre><code class="java">FileInputStream(File file)         // 构造函数1：创建File对象对应的文件输入流
-FileInputStream(FileDescriptor fd) // 构造函数2：创建文件描述符对应的文件输入流
-FileInputStream(String path)       // 构造函数3：创建文件(路径为path)对应的文件输入流
-    
-// 常用方法
-int      available()             // 返回剩余的可读取的字节数或者skip的字节数
-void     close()                 // 关闭文件输入流
-FileChannel      getChannel()    // 返回FileChannel
-final FileDescriptor     getFD() // 返回文件描述符
-int                  read()      // 返回文件输入流的下一个字节
-// 读取文件输入流的数据并存在到buffer，从byteOffset开始存储，存储长度是byteCount。
-int      read(byte[] buffer, int byteOffset, int byteCount) 
-long     skip(long byteCount)    // 跳过byteCount个字节
-</code></pre>
-<p>FileOutputStream 函数接口</p>
-<pre><code class="java">// 构造函数1：创建File对象对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(File file)     
-// 构造函数2：创建File对象对应的文件输入流；指定追加模式。
-FileOutputStream(File file, boolean append)   
-// 构造函数3：创建文件描述符对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(FileDescriptor fd)
-// 构造函数4：创建文件(路径为path)对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(String path) 
-// 构造函数5：创建文件(路径为path)对应的文件输入流；指定追加模式。
-FileOutputStream(String path, boolean append) 
-
-// 常用方法
-void                    close()      // 关闭输出流
-FileChannel             getChannel() // 返回FileChannel
-final FileDescriptor    getFD()      // 返回文件描述符
-// 将buffer写入到文件输出流中，从buffer的byteOffset开始写，写入长度是byteCount。
-void                    write(byte[] buffer, int byteOffset, int byteCount) 
-void                    write(int oneByte)  // 写入字节oneByte到文件输出流中
-</code></pre>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
-
-
-public class FileStreamTest &#123;
-
-    private static final String FileName = &quot;file.txt&quot;;
-
-    public static void main(String[] args) &#123;
-        testWrite();
-        testRead();
-    &#125;
-
-    /**
-     * FileOutputStream 演示函数
-     *
-     * 运行结果：
-     * 在源码所在目录生成文件file.txt，文件内容是abcdefghijklmnopqrstuvwxyz0123456789
-     *
-     * 加入，我们将 FileOutputStream fileOut2 = new FileOutputStream(file, true);
-     *       修改为 FileOutputStream fileOut2 = new FileOutputStream(file, false);
-     * 然后再执行程序，file.txt的内容变成0123456789。
-     * 原因是：
-     * 1 FileOutputStream fileOut2 = new FileOutputStream(file, true);
-     *      它是以追加模式将内容写入文件的。即写入的内容，追加到原始的内容之后。
-     * 2 FileOutputStream fileOut2 = new FileOutputStream(file, false);
-     *      它是以新建模式将内容写入文件的。即删除文件原始的内容之后，再重新写入。
-     */
-    private static void testWrite() &#123;
-        try &#123;
-            // 创建文件file.txt对应File对象
-            File file = new File(FileName);
-            // 创建文件file.txt对应的FileOutputStream对象，默认是关闭追加模式
-            FileOutputStream fileOut1 = new FileOutputStream(file);
-            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
-            PrintStream out1 = new PrintStream(fileOut1);
-            // 向文件中写入26个字母
-            out1.print(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
-            out1.close();
-
-            // 创建文件file.txt对应的FileOutputStream对象，打开追加模式
-            FileOutputStream fileOut2 = new FileOutputStream(file, true);
-            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
-            PrintStream out2 = new PrintStream(fileOut2);
-            // 向文件中写入0123456789+换行符
-            out2.println(&quot;0123456789&quot;);
-            out2.close();
-
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-
- 
-    // FileInputStream 演示程序
-    private static void testRead() &#123;
-        try &#123;
-            // 方法1：新建FileInputStream对象
-            // 新建文件file.txt对应File对象
-            File file = new File(FileName);
-            FileInputStream in1 = new FileInputStream(file);
-
-            // 方法2：新建FileInputStream对象
-            FileInputStream in2 = new FileInputStream(FileName);
-
-            // 方法3：新建FileInputStream对象
-            // 获取文件file.txt对应的文件描述符
-            FileDescriptor fdin = in2.getFD();
-            // 根据文件描述符创建FileInputStream对象
-            FileInputStream in3 = new FileInputStream(fdin);
-
-            // 测试read()，从中读取一个字节
-            char c1 = (char)in1.read();
-            System.out.println(&quot;c1=&quot;+c1);
-
-            // 测试skip(long byteCount)，跳过4个字节
-            in1.skip(25);
-
-            // 测试read(byte[] buffer, int byteOffset, int byteCount)
-            byte[] buf = new byte[10];
-            in1.read(buf, 0, buf.length);
-            System.out.println(&quot;buf=&quot;+(new String(buf)));
-
-
-            // 创建FileInputStream对象对应的BufferedInputStream
-            BufferedInputStream bufIn = new BufferedInputStream(in3);
-            // 读取一个字节
-            char c2 = (char)bufIn.read();
-            System.out.println(&quot;c2=&quot;+c2);
-
-            in1.close();
-            in2.close();
-            in3.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>运行结果：</p>
-<pre><code>c1=a
-buf=0123456789
-c2=a
-</code></pre>
-<p>结果说明：</p>
-<p>运行程序，会在源码所在位置新生成一个文件<code>file.txt</code>。它的内容是<code>abcdefghijklmnopqrstuvwxyz0123456789</code>。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java IO之 FileDescriptor详解</title>
     <url>/2020/07/20/Java-IO-FileDescriptor/</url>
     <content><![CDATA[<p>-</p>
@@ -37391,105 +37150,6 @@ in2.read():a
 fdin(java.io.FileDescriptor@675b7986) is true
 Hi FileDescriptor
 </code></pre>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java-IO</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java IO之 总体架构</title>
-    <url>/2020/07/19/Java-IO/</url>
-    <content><![CDATA[<p>-</p>
-<span id="more"></span>
-
-<h1 id="Java-IO-简介"><a href="#Java-IO-简介" class="headerlink" title="Java IO 简介"></a>Java IO 简介</h1><p><code>Java IO</code>设计的初衷就是为了实现文件、控制台、网络设备这些IO设备的通信。例如：对于一个文件，可以打开文件，然后进行读取和写入。</p>
-<p>在JDK 1.0中，Java提供的类都是以字节(byte)为单位，例如：<code>FileInputStream</code>和<code>FileOutputStream</code>。而到了JDK 1.1，为了与国际化接轨，在<code>Java io</code>中添加了许多以字符(Unicode)为单位进行操作的类。</p>
-<p>在<code>Java IO</code>的称呼中，经常会提到输入流、输出流等等概念。所谓<code>流</code>，就是一种抽象的数据的总称，它的本质是能够进行传输。</p>
-<ul>
-<li>按照流的数据流向，可以将其分为：输入流和输出流。</li>
-<li>按照流中处理数据的单位，可以将其区分为：字节流和字符流。在Java中，字节占1个<code>Byte</code>，即8位；而字符是占2个<code>Byte</code>，即16位。而且，需要注意的是：<strong>Java的字节是有符号类型，而字符是无符号类型。</strong></li>
-</ul>
-<h1 id="Java-IO-框架"><a href="#Java-IO-框架" class="headerlink" title="Java IO 框架"></a>Java IO 框架</h1><h2 id="以字节为单位的输入流的框架图"><a href="#以字节为单位的输入流的框架图" class="headerlink" title="以字节为单位的输入流的框架图"></a>以字节为单位的输入流的框架图</h2><p>下面是以字节为单位的输入流的框架图。</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mRC6.jpg"></p>
-<p>从中我们可以看出：</p>
-<ul>
-<li><p><code>InputStream</code>是以字节为单位的输入流的超类。<code>InputStream</code>提供了<code>read()</code>方法从输入流中读取字节数据。</p>
-</li>
-<li><p><code>ByteArrayInputStream</code>是字节数组输入流。它包含一个内部缓冲区，该缓冲区包含从流中读取的字节；通俗点说，它的内部缓冲区就是一个字节数组，而<code>ByteArrayInputStream</code>本质就是通过字节数组来实现的。</p>
-</li>
-<li><p><code>PipedInputStream</code>是管道输入流，它和<code>PipedOutPutStram</code>一起使用，能实现多线程的管道通信。</p>
-</li>
-<li><p><code>FilterInputStream</code>是过滤输入流。它是<code>DataInputStream</code>和<code>BufferedInputStream</code>的超类。</p>
-</li>
-<li><p><code>DataInputStream</code>是数据输入流。它是用来装饰其它输入流，它允许应用程序以与机器无关方式从底层输入流中读取基本 Java数据类型。</p>
-</li>
-<li><p><code>BufferedInputStream</code>是缓冲输入流。它的作用是为另一个输入流添加缓冲功能。</p>
-</li>
-<li><p><code>File</code>是文件和目录路径名的抽象表示形式。关于File，注意以下两点：</p>
-<p><code>File</code>不仅仅只是表示文件，它也可以表示是目录。</p>
-<p><code>File</code>虽然在<code>IO</code>定义，但是它的超类是<code>Object</code>，而不是<code>InputStream</code>。</p>
-</li>
-<li><p><code>FileDescriptor</code>是文件描述符。它可以被用来表示开放文件、开放套接字等。</p>
-</li>
-<li><p><code>FileInputStream</code>是文件输入流。它通常用于对文件进行读取操作。</p>
-</li>
-<li><p><code>ObjectInputStream</code>是对象输入流。它和<code>ObjectOutputStream</code>一起用来提供对基本数据或对象的持久存储。</p>
-</li>
-</ul>
-<h2 id="以字节为单位的输出流的框架图"><a href="#以字节为单位的输出流的框架图" class="headerlink" title="以字节为单位的输出流的框架图"></a>以字节为单位的输出流的框架图</h2><p>下面是以字节为单位的输出流的框架图。</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mcU1.jpg"></p>
-<p>从中我们可以看出：</p>
-<ul>
-<li><code>OutputStream</code>是以字节为单位的输出流的超类。<code>OutputStream</code>提供了<code>write()</code>接口从输入流中读取字节数据。</li>
-<li><code>ByteArrayOutputStream</code>是字节数组输出流。写入<code>ByteArrayOutputStream</code>的数据被写入一个<code>byte</code>数组。缓冲区会随着数据不断写入而自动增长。可使用<code>toByteArray()</code>和<code>toString()</code>获取数据。</li>
-<li><code>PipedOutputStream</code>是管道输出流，它和<code>PipedInputStream</code>一起使用，能实现多线程的通信管道。</li>
-<li><code>FilterOutputStream</code>是过滤输出流。它是<code>DataOutputStream</code>，<code>BufferedOutputStream</code>和<code>PrintStream</code>的超类。</li>
-<li><code>DataOutputStream</code>是数据输出流，它是用来装饰其它输出流，它允许应用程序以与机器无关方式向底层写入基本Java数据类型。</li>
-<li><code>BufferedOutputStream</code>是缓冲输出流，它的作用是为另一个输出流添加缓冲功能。</li>
-<li><code>PrintStream</code>是打印输出流。它是用来装饰其它输出流，能为其它输出流添加功能，使它们能够方便地打印各种数据值表示形式。</li>
-<li><code>FileOutputStream</code>是文件输出流，它通常用于向文件进行写入操纵。</li>
-<li><code>ObjectOutputStream</code>是对象输出流，它和<code>ObjectInputStream</code>一起，用来提供对基本数据或对象的持久存储。</li>
-</ul>
-<h2 id="以字节为单位的输入流和输出流关联的框架图"><a href="#以字节为单位的输入流和输出流关联的框架图" class="headerlink" title="以字节为单位的输入流和输出流关联的框架图"></a>以字节为单位的输入流和输出流关联的框架图</h2><p>输入流和输出流都有对应的关系，下面是将以字节为单位的输入流和输出流关联起来的图片</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mrDJ.jpg"></p>
-<h2 id="以字符为单位的输入流的框架图"><a href="#以字符为单位的输入流的框架图" class="headerlink" title="以字符为单位的输入流的框架图"></a>以字符为单位的输入流的框架图</h2><p>下面是以字符为单位的输入流的框架图</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mwgU.jpg"></p>
-<p>从中可以看到：</p>
-<ul>
-<li><code>Reader</code>是以字符为单位的输入流的超类，它提供了<code>read()</code>接口来获取字符数据。</li>
-<li><code>CharArrayReader</code>是字符数组输入流，它用于读取字符数组，它继承于<code>Readrt</code>。操作的数据是以字符为单位。</li>
-<li><code>PipedReader</code>是字符类型的管道输入流。它和<code>PipedWriter</code>一起可以进行多线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedReader</code>配套使用。</li>
-<li><code>FilterReader</code>是字符类型的过滤输入流。</li>
-<li><code>BufferedReader</code>是字符缓冲输入流。它的作用是为另一个输入流添加缓冲功能。</li>
-<li><code>InputStreamReader</code>是字节转字符的输入流。它是字节流通向字符流的桥梁。它使用指定的<code>charset</code>读取字节并将其解码为字符。</li>
-<li><code>FileReader</code>是字符类型的文件输入流。它通常用于对文件进行读取操作。</li>
-</ul>
-<h2 id="以字符为单位的输出流的框架图"><a href="#以字符为单位的输出流的框架图" class="headerlink" title="以字符为单位的输出流的框架图"></a>以字符为单位的输出流的框架图</h2><p>下面是以字符为单位的输出流的框架图</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mYEn.jpg"></p>
-<ul>
-<li><code>Writer</code>是以字符为单位的输出流的超类。它提供了<code>write()</code>接口往其中写入数据</li>
-<li><code>CharArrayWriter</code>是字符数组输出流。它用于读取字符数组，它继承于<code>Writer</code>。操作的数据是以字符为单位！</li>
-<li><code>PipedWriter</code>是字符类型的管道输出流。它和<code>PipedReader</code>一起是可以通过管道进行线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedWriter</code>配套使用。</li>
-<li><code>FilterWriter</code>是字符类型的过滤输出流。</li>
-<li><code>BufferedWriter</code>是字符缓冲输出流。它的作用是为另一个输出流添加缓冲功能。</li>
-<li><code>OutputStreamWriter</code>是字节转字符的输出流。它是字节流通向字符流的桥梁：它使用指定的 <code>charset</code>将字节转换为字符并写入。</li>
-<li><code>FileWriter</code>是字符类型的文件输出流。它通常用于对文件进行读取操作。</li>
-<li><code>PrintWriter</code>是字符类型的打印输出流。它是用来装饰其它输出流，能为其他输出流添加了功能，使它们能够方便地打印各种数据值表示形式。</li>
-</ul>
-<h2 id="以字符为单位的输入流和输出流关联的框架图"><a href="#以字符为单位的输入流和输出流关联的框架图" class="headerlink" title="以字符为单位的输入流和输出流关联的框架图"></a>以字符为单位的输入流和输出流关联的框架图</h2><p>下面是将以字符为单位的输入流和输出流关联起来的图片。</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6ezA1.jpg"></p>
-<h2 id="字节转换为字符流的框架图"><a href="#字节转换为字符流的框架图" class="headerlink" title="字节转换为字符流的框架图"></a>字节转换为字符流的框架图</h2><p>在Java中，字节流能转换为字符流，下面是它们的转换关系图。</p>
-<p><img data-src="https://s1.ax1x.com/2020/07/17/U6eXnJ.jpg"></p>
-<p>从中我们可以看出：</p>
-<ul>
-<li><code>FileReader</code>继承于<code>InputStreamReader</code>，而<code>InputStreamReader</code>依赖于<code>InputStream</code>。具体表现在<code>InputStreamReader</code>的构造函数是以<code>InputStream</code>为参数。我们传入<code>InputStream</code>，在<code>InputStreamReader</code>内部通过转码，将字节转换成字符。</li>
-<li><code>FileWriter</code>继承于<code>OutputStreamWriter</code>，而<code>OutputStreamWriter</code>依赖于<code>OutputStream</code>。具体表现在<code>OutputStreamWriter</code>的构造函数是以<code>OutputStream</code>为参数。我们传入<code>OutputStream</code>，在<code>OutputStreamWriter</code>内部通过转码，将字节转换成字符。</li>
-</ul>
-<h2 id="字节和字符的输入流对应关系"><a href="#字节和字符的输入流对应关系" class="headerlink" title="字节和字符的输入流对应关系"></a>字节和字符的输入流对应关系</h2><p><img data-src="https://s1.ax1x.com/2020/07/17/U6eRXQ.jpg"></p>
-<h2 id="字节和字符的输出流对应关系"><a href="#字节和字符的输出流对应关系" class="headerlink" title="字节和字符的输出流对应关系"></a>字节和字符的输出流对应关系</h2><p><img data-src="https://s1.ax1x.com/2020/07/17/U6e9yQ.jpg"></p>
 ]]></content>
       <categories>
         <category>Java</category>
@@ -40734,6 +40394,105 @@ public class File
     &#125;
 &#125;
 </code></pre>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java-IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java IO之 总体架构</title>
+    <url>/2020/07/19/Java-IO/</url>
+    <content><![CDATA[<p>-</p>
+<span id="more"></span>
+
+<h1 id="Java-IO-简介"><a href="#Java-IO-简介" class="headerlink" title="Java IO 简介"></a>Java IO 简介</h1><p><code>Java IO</code>设计的初衷就是为了实现文件、控制台、网络设备这些IO设备的通信。例如：对于一个文件，可以打开文件，然后进行读取和写入。</p>
+<p>在JDK 1.0中，Java提供的类都是以字节(byte)为单位，例如：<code>FileInputStream</code>和<code>FileOutputStream</code>。而到了JDK 1.1，为了与国际化接轨，在<code>Java io</code>中添加了许多以字符(Unicode)为单位进行操作的类。</p>
+<p>在<code>Java IO</code>的称呼中，经常会提到输入流、输出流等等概念。所谓<code>流</code>，就是一种抽象的数据的总称，它的本质是能够进行传输。</p>
+<ul>
+<li>按照流的数据流向，可以将其分为：输入流和输出流。</li>
+<li>按照流中处理数据的单位，可以将其区分为：字节流和字符流。在Java中，字节占1个<code>Byte</code>，即8位；而字符是占2个<code>Byte</code>，即16位。而且，需要注意的是：<strong>Java的字节是有符号类型，而字符是无符号类型。</strong></li>
+</ul>
+<h1 id="Java-IO-框架"><a href="#Java-IO-框架" class="headerlink" title="Java IO 框架"></a>Java IO 框架</h1><h2 id="以字节为单位的输入流的框架图"><a href="#以字节为单位的输入流的框架图" class="headerlink" title="以字节为单位的输入流的框架图"></a>以字节为单位的输入流的框架图</h2><p>下面是以字节为单位的输入流的框架图。</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mRC6.jpg"></p>
+<p>从中我们可以看出：</p>
+<ul>
+<li><p><code>InputStream</code>是以字节为单位的输入流的超类。<code>InputStream</code>提供了<code>read()</code>方法从输入流中读取字节数据。</p>
+</li>
+<li><p><code>ByteArrayInputStream</code>是字节数组输入流。它包含一个内部缓冲区，该缓冲区包含从流中读取的字节；通俗点说，它的内部缓冲区就是一个字节数组，而<code>ByteArrayInputStream</code>本质就是通过字节数组来实现的。</p>
+</li>
+<li><p><code>PipedInputStream</code>是管道输入流，它和<code>PipedOutPutStram</code>一起使用，能实现多线程的管道通信。</p>
+</li>
+<li><p><code>FilterInputStream</code>是过滤输入流。它是<code>DataInputStream</code>和<code>BufferedInputStream</code>的超类。</p>
+</li>
+<li><p><code>DataInputStream</code>是数据输入流。它是用来装饰其它输入流，它允许应用程序以与机器无关方式从底层输入流中读取基本 Java数据类型。</p>
+</li>
+<li><p><code>BufferedInputStream</code>是缓冲输入流。它的作用是为另一个输入流添加缓冲功能。</p>
+</li>
+<li><p><code>File</code>是文件和目录路径名的抽象表示形式。关于File，注意以下两点：</p>
+<p><code>File</code>不仅仅只是表示文件，它也可以表示是目录。</p>
+<p><code>File</code>虽然在<code>IO</code>定义，但是它的超类是<code>Object</code>，而不是<code>InputStream</code>。</p>
+</li>
+<li><p><code>FileDescriptor</code>是文件描述符。它可以被用来表示开放文件、开放套接字等。</p>
+</li>
+<li><p><code>FileInputStream</code>是文件输入流。它通常用于对文件进行读取操作。</p>
+</li>
+<li><p><code>ObjectInputStream</code>是对象输入流。它和<code>ObjectOutputStream</code>一起用来提供对基本数据或对象的持久存储。</p>
+</li>
+</ul>
+<h2 id="以字节为单位的输出流的框架图"><a href="#以字节为单位的输出流的框架图" class="headerlink" title="以字节为单位的输出流的框架图"></a>以字节为单位的输出流的框架图</h2><p>下面是以字节为单位的输出流的框架图。</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mcU1.jpg"></p>
+<p>从中我们可以看出：</p>
+<ul>
+<li><code>OutputStream</code>是以字节为单位的输出流的超类。<code>OutputStream</code>提供了<code>write()</code>接口从输入流中读取字节数据。</li>
+<li><code>ByteArrayOutputStream</code>是字节数组输出流。写入<code>ByteArrayOutputStream</code>的数据被写入一个<code>byte</code>数组。缓冲区会随着数据不断写入而自动增长。可使用<code>toByteArray()</code>和<code>toString()</code>获取数据。</li>
+<li><code>PipedOutputStream</code>是管道输出流，它和<code>PipedInputStream</code>一起使用，能实现多线程的通信管道。</li>
+<li><code>FilterOutputStream</code>是过滤输出流。它是<code>DataOutputStream</code>，<code>BufferedOutputStream</code>和<code>PrintStream</code>的超类。</li>
+<li><code>DataOutputStream</code>是数据输出流，它是用来装饰其它输出流，它允许应用程序以与机器无关方式向底层写入基本Java数据类型。</li>
+<li><code>BufferedOutputStream</code>是缓冲输出流，它的作用是为另一个输出流添加缓冲功能。</li>
+<li><code>PrintStream</code>是打印输出流。它是用来装饰其它输出流，能为其它输出流添加功能，使它们能够方便地打印各种数据值表示形式。</li>
+<li><code>FileOutputStream</code>是文件输出流，它通常用于向文件进行写入操纵。</li>
+<li><code>ObjectOutputStream</code>是对象输出流，它和<code>ObjectInputStream</code>一起，用来提供对基本数据或对象的持久存储。</li>
+</ul>
+<h2 id="以字节为单位的输入流和输出流关联的框架图"><a href="#以字节为单位的输入流和输出流关联的框架图" class="headerlink" title="以字节为单位的输入流和输出流关联的框架图"></a>以字节为单位的输入流和输出流关联的框架图</h2><p>输入流和输出流都有对应的关系，下面是将以字节为单位的输入流和输出流关联起来的图片</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mrDJ.jpg"></p>
+<h2 id="以字符为单位的输入流的框架图"><a href="#以字符为单位的输入流的框架图" class="headerlink" title="以字符为单位的输入流的框架图"></a>以字符为单位的输入流的框架图</h2><p>下面是以字符为单位的输入流的框架图</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mwgU.jpg"></p>
+<p>从中可以看到：</p>
+<ul>
+<li><code>Reader</code>是以字符为单位的输入流的超类，它提供了<code>read()</code>接口来获取字符数据。</li>
+<li><code>CharArrayReader</code>是字符数组输入流，它用于读取字符数组，它继承于<code>Readrt</code>。操作的数据是以字符为单位。</li>
+<li><code>PipedReader</code>是字符类型的管道输入流。它和<code>PipedWriter</code>一起可以进行多线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedReader</code>配套使用。</li>
+<li><code>FilterReader</code>是字符类型的过滤输入流。</li>
+<li><code>BufferedReader</code>是字符缓冲输入流。它的作用是为另一个输入流添加缓冲功能。</li>
+<li><code>InputStreamReader</code>是字节转字符的输入流。它是字节流通向字符流的桥梁。它使用指定的<code>charset</code>读取字节并将其解码为字符。</li>
+<li><code>FileReader</code>是字符类型的文件输入流。它通常用于对文件进行读取操作。</li>
+</ul>
+<h2 id="以字符为单位的输出流的框架图"><a href="#以字符为单位的输出流的框架图" class="headerlink" title="以字符为单位的输出流的框架图"></a>以字符为单位的输出流的框架图</h2><p>下面是以字符为单位的输出流的框架图</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6mYEn.jpg"></p>
+<ul>
+<li><code>Writer</code>是以字符为单位的输出流的超类。它提供了<code>write()</code>接口往其中写入数据</li>
+<li><code>CharArrayWriter</code>是字符数组输出流。它用于读取字符数组，它继承于<code>Writer</code>。操作的数据是以字符为单位！</li>
+<li><code>PipedWriter</code>是字符类型的管道输出流。它和<code>PipedReader</code>一起是可以通过管道进行线程间的通讯。在使用管道通信时，必须将<code>PipedWriter</code>和<code>PipedWriter</code>配套使用。</li>
+<li><code>FilterWriter</code>是字符类型的过滤输出流。</li>
+<li><code>BufferedWriter</code>是字符缓冲输出流。它的作用是为另一个输出流添加缓冲功能。</li>
+<li><code>OutputStreamWriter</code>是字节转字符的输出流。它是字节流通向字符流的桥梁：它使用指定的 <code>charset</code>将字节转换为字符并写入。</li>
+<li><code>FileWriter</code>是字符类型的文件输出流。它通常用于对文件进行读取操作。</li>
+<li><code>PrintWriter</code>是字符类型的打印输出流。它是用来装饰其它输出流，能为其他输出流添加了功能，使它们能够方便地打印各种数据值表示形式。</li>
+</ul>
+<h2 id="以字符为单位的输入流和输出流关联的框架图"><a href="#以字符为单位的输入流和输出流关联的框架图" class="headerlink" title="以字符为单位的输入流和输出流关联的框架图"></a>以字符为单位的输入流和输出流关联的框架图</h2><p>下面是将以字符为单位的输入流和输出流关联起来的图片。</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6ezA1.jpg"></p>
+<h2 id="字节转换为字符流的框架图"><a href="#字节转换为字符流的框架图" class="headerlink" title="字节转换为字符流的框架图"></a>字节转换为字符流的框架图</h2><p>在Java中，字节流能转换为字符流，下面是它们的转换关系图。</p>
+<p><img data-src="https://s1.ax1x.com/2020/07/17/U6eXnJ.jpg"></p>
+<p>从中我们可以看出：</p>
+<ul>
+<li><code>FileReader</code>继承于<code>InputStreamReader</code>，而<code>InputStreamReader</code>依赖于<code>InputStream</code>。具体表现在<code>InputStreamReader</code>的构造函数是以<code>InputStream</code>为参数。我们传入<code>InputStream</code>，在<code>InputStreamReader</code>内部通过转码，将字节转换成字符。</li>
+<li><code>FileWriter</code>继承于<code>OutputStreamWriter</code>，而<code>OutputStreamWriter</code>依赖于<code>OutputStream</code>。具体表现在<code>OutputStreamWriter</code>的构造函数是以<code>OutputStream</code>为参数。我们传入<code>OutputStream</code>，在<code>OutputStreamWriter</code>内部通过转码，将字节转换成字符。</li>
+</ul>
+<h2 id="字节和字符的输入流对应关系"><a href="#字节和字符的输入流对应关系" class="headerlink" title="字节和字符的输入流对应关系"></a>字节和字符的输入流对应关系</h2><p><img data-src="https://s1.ax1x.com/2020/07/17/U6eRXQ.jpg"></p>
+<h2 id="字节和字符的输出流对应关系"><a href="#字节和字符的输出流对应关系" class="headerlink" title="字节和字符的输出流对应关系"></a>字节和字符的输出流对应关系</h2><p><img data-src="https://s1.ax1x.com/2020/07/17/U6e9yQ.jpg"></p>
 ]]></content>
       <categories>
         <category>Java</category>
