@@ -400,7 +400,7 @@ n <= 1+2+4+8+...+2^(L-2)+2^(L-1)
 
 - 将关注节点 a 的父节点 b、叔叔节点 d 的颜色都设置成黑色；
 - 将关注节点 a 的祖父节点 c 的颜色设置成红色；
-- 关注节点变成 a 的祖父节点 c；
+- 关注节点变成 a 的祖父节点 c；（如果节点c不是根节点，就转到case2或3；如果c是根节点，则将c转成黑色调整结束。 [动画演示能更好理解](https://rbtree.phpisfuture.com/)）
 - 跳到 CASE  2 或者 CASE  3。
 
 ![](https://static001.geekbang.org/resource/image/60/40/603cf91f54b5db21bd02c6c5678ecf40.jpg)
