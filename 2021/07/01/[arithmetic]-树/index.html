@@ -44,8 +44,12 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/dd/9b/dd9f5a4525f5029a8339c89ad1c8159b.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/90/9a/903ee0dcb62bce2f5b47819541f9069a.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/7e/ed/7e6ecc308fe44120f30de809822215ed.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/0e/1e/0e37e597737012593a93105ebbf4591e.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/60/40/603cf91f54b5db21bd02c6c5678ecf40.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/44/ad/4480a314f9d83c343b8adbb28b6782ad.jpg">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/04/12/04650d9470b1e67899f5b8b7b8e33212.jpg">
 <meta property="article:published_time" content="2021-07-01T14:55:07.000Z">
-<meta property="article:modified_time" content="2021-07-02T06:18:31.914Z">
+<meta property="article:modified_time" content="2021-07-03T14:21:09.392Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -273,7 +277,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-02 06:18:31" itemprop="dateModified" datetime="2021-07-02T06:18:31+00:00">2021-07-02</time>
+                <time title="修改时间：2021-07-03 14:21:09" itemprop="dateModified" datetime="2021-07-03T14:21:09+00:00">2021-07-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -312,14 +316,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>12k</span>
+              <span>14k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -566,6 +570,45 @@ n &lt;= 1+2+4+8+...+2^(L-2)+2^(L-1)
 <p>完全二叉树的高度近似 <code>log₂n</code>，这里的四叉“黑树”的高度要低于完全二叉树，所以去掉红色节点的 “黑树” 的高度也不会超过 <code>log₂n</code>。</p>
 <p><strong>现在知道只包含黑色节点的“黑树”的高度，那现在把红色节点加回去，高度会变成多少呢？</strong></p>
 <p>从上面画的红黑树的例子和定义看，在红黑树中，红色节点不能相邻，也就是说，有一个红色节点就要至少有一个黑色节点，将它跟其他红色节点隔开。红黑树中包含最多黑色节点的路径不会超过 <code>log₂n</code>，所以加入红色节点之后，最长路径不会超过 <code>2log₂n</code>，也就是说，红黑树的高度近似 <code>2log₂n</code>。所以，红黑树的高度只比高度平衡的 AVL 树的高度（ <code>log₂n</code>）仅仅大了一倍，在性能上下降得并不多。这样推导出来的结果不够精确，<strong>实际上红黑树的性能更好。</strong></p>
+<h2 id="实现红黑树的基本思想"><a href="#实现红黑树的基本思想" class="headerlink" title="实现红黑树的基本思想"></a>实现红黑树的基本思想</h2><p>不知道你有没有玩过魔方？其实魔方的复原解法是有固定算法的：遇到哪几面是什么样子，对应就怎么转几下。你只要跟着这个复原步骤，就肯定能将魔方复原。</p>
+<p>实际上，红黑树的平衡过程跟魔方复原非常神似，大致过程就是：遇到什么样的节点排布就对应怎么去调整。只要按照这些固定的调整规则来操作，就能将一个非平衡的红黑树调整成平衡的。</p>
+<p>还记得红黑树的定义吗？一棵合格的红黑树需要满足这样几个要求：</p>
+<ul>
+<li>根节点是黑色的；</li>
+<li>每个叶子节点都是黑色的空节点（NIL），也就是说，叶子节点不存储数据；</li>
+<li>任何相邻的节点都不能同时为红色，也就是说，红色节点是被黑色节点隔开的；</li>
+<li>每个节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点。 </li>
+</ul>
+<p>在插入、删除节点的过程中，第三、第四点要求可能会被破坏，而 “平衡调整”，实际上就是要把被破坏的第三、第四点恢复过来。</p>
+<p>红黑树有两个非常重要的操作，左旋（rotate left）、右旋（rotate right）。左旋全称其实是叫围绕某个节点的左旋，那右旋的全称就叫围绕某个节点的右旋。下面的平衡调整中，会一直用到这两个操作，下面画了个示意图帮助理解这两个操作，图中的 a，b，r 表示子树，可以为空。</p>
+<p><img data-src="https://static001.geekbang.org/resource/image/0e/1e/0e37e597737012593a93105ebbf4591e.jpg"></p>
+<p>红黑树的插入、删除操作可能会破坏红黑树的定义，具体来说就是会破坏红黑树的平衡。现在就来看下，红黑树在插入、删除数据之后，如何调整平衡，继续当一棵合格的红黑树的。</p>
+<h2 id="插入操作的平衡调整"><a href="#插入操作的平衡调整" class="headerlink" title="插入操作的平衡调整"></a>插入操作的平衡调整</h2><p>首先来看看插入操作。</p>
+<p>红黑树规定，插入的节点必须是红色的。而且二叉查找树中新插入的节点都是放在叶子节点上。所以关于插入操作的平衡调整，有这样两种特殊情况，但是也都非常好处理。如果插入节点的父节点是黑色的，那什么都不用做，它仍然满足红黑树的定义。如果插入的节点是根节点，那直接把它变成黑色就可以了。除此之外，其他情况都会违背红黑树的定义，于是就需要进行调整，调整的过程包含两种基础的操作：左右旋转和改变颜色。</p>
+<p>红黑树的平衡调整过程是一个迭代的过程。正在处理的节点叫做关注节点。关注节点会随着不停地迭代处理，而不断发生变化。最开始的关注节点就是新插入的节点。新节点插入之后，如果红黑树的平衡被打破，那一般会有下面三种情况。只需要根据每种情况的特点，不停地调整，就可以让红黑树继续符合定义，也就是继续保持平衡。</p>
+<p>下面依次来看每种情况的调整过程。为了简化描述，下面把父节点的兄弟节点叫做叔叔节点，父节点的父节点叫做祖父节点。</p>
+<p><strong>CASE 1：如果关注节点是 a，它的叔叔节点 d 是红色，就依次执行下面的操作：</strong></p>
+<ul>
+<li>将关注节点 a 的父节点 b、叔叔节点 d 的颜色都设置成黑色；</li>
+<li>将关注节点 a 的祖父节点 c 的颜色设置成红色；</li>
+<li>关注节点变成 a 的祖父节点 c；</li>
+<li>跳到 CASE  2 或者 CASE  3。</li>
+</ul>
+<p><img data-src="https://static001.geekbang.org/resource/image/60/40/603cf91f54b5db21bd02c6c5678ecf40.jpg"></p>
+<p><strong>CASE 2：如果关注节点是 a，它的叔叔节点 d 是黑色，关注节点 a 是其父节点 b 的右子节点，就依次执行下面的操作：</strong></p>
+<ul>
+<li>关注节点变成节点 a 的父节点 b；</li>
+<li>围绕新的关注节点b 左旋；</li>
+<li>跳到 CASE  3。</li>
+</ul>
+<p><img data-src="https://static001.geekbang.org/resource/image/44/ad/4480a314f9d83c343b8adbb28b6782ad.jpg"></p>
+<p><strong>CASE 3：如果关注节点是 a，它的叔叔节点 d 是黑色，关注节点 a 是其父节点 b 的左子节点，就依次执行下面的操作：</strong></p>
+<ul>
+<li>围绕关注节点 a 的祖父节点 c 右旋；</li>
+<li>将关注节点 a 的父节点 b、兄弟节点 c 的颜色互换。</li>
+<li>调整结束。</li>
+</ul>
+<p><img data-src="https://static001.geekbang.org/resource/image/04/12/04650d9470b1e67899f5b8b7b8e33212.jpg" alt="img"></p>
 <pre><code>
 </code></pre>
 <h1 id="递归树"><a href="#递归树" class="headerlink" title="递归树"></a>递归树</h1><h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>二叉树有哪几种存储方式？什么样的二叉树适合用数组来存储？</p>
@@ -746,7 +789,7 @@ public int maxDepth(TreeNode root) &#123;
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%EF%BC%88Tree%EF%BC%89"><span class="nav-text">树（Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%88Binary-Tree%EF%BC%89"><span class="nav-text">二叉树（Binary Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-text">二叉树的遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88Binary-Search-Tree%EF%BC%89"><span class="nav-text">二叉查找树（Binary Search Tree）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-text">二叉查找树的查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5"><span class="nav-text">二叉查找树的插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4"><span class="nav-text">二叉查找树的删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-text">二叉查找树的其他操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">支持重复数据的二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">二叉查找树的时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%88Read-Black-Tree%EF%BC%89"><span class="nav-text">红黑树（Read Black Tree）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">什么是平衡二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%80%E6%A3%B5-%E2%80%9C%E7%BA%A2%E9%BB%91%E6%A0%91%E2%80%9D"><span class="nav-text">如何定义一棵 “红黑树”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BA%A2%E9%BB%91%E6%A0%91%E6%98%AF-%E2%80%9C%E8%BF%91%E4%BC%BC%E5%B9%B3%E8%A1%A1%E2%80%9D"><span class="nav-text">为什么说红黑树是 “近似平衡”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%A0%91"><span class="nav-text">递归树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%EF%BC%88Tree%EF%BC%89"><span class="nav-text">树（Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%EF%BC%88Binary-Tree%EF%BC%89"><span class="nav-text">二叉树（Binary Tree）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-text">二叉树的遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88Binary-Search-Tree%EF%BC%89"><span class="nav-text">二叉查找树（Binary Search Tree）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-text">二叉查找树的查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5"><span class="nav-text">二叉查找树的插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%88%A0%E9%99%A4"><span class="nav-text">二叉查找树的删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-text">二叉查找树的其他操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">支持重复数据的二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">二叉查找树的时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%88Read-Black-Tree%EF%BC%89"><span class="nav-text">红黑树（Read Black Tree）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-text">什么是平衡二叉查找树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%80%E6%A3%B5-%E2%80%9C%E7%BA%A2%E9%BB%91%E6%A0%91%E2%80%9D"><span class="nav-text">如何定义一棵 “红黑树”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BA%A2%E9%BB%91%E6%A0%91%E6%98%AF-%E2%80%9C%E8%BF%91%E4%BC%BC%E5%B9%B3%E8%A1%A1%E2%80%9D"><span class="nav-text">为什么说红黑树是 “近似平衡”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="nav-text">实现红黑树的基本思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C%E7%9A%84%E5%B9%B3%E8%A1%A1%E8%B0%83%E6%95%B4"><span class="nav-text">插入操作的平衡调整</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%A0%91"><span class="nav-text">递归树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -863,7 +906,7 @@ public int maxDepth(TreeNode root) &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:13</span>
+    <span title="站点阅读时长">24:14</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 
