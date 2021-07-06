@@ -52,7 +52,7 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/df/0c/df0cdbb73bd19a2d69a52c54d8b9fc0c.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/89/91/898d94fc32e0a795fd65897293b98791.jpg">
 <meta property="article:published_time" content="2021-06-10T16:22:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -280,7 +280,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -401,25 +401,25 @@
 <p>实际上，刚讲的冒泡过程还可以优化。当某次冒泡操作已经没有数据交换时，说明已经达到完全有序，不用再继续执行后续的冒泡操作。这里还有另外一个例子，这里面给 6 个元素排序，只需要 4 次冒泡操作就可以了。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/a9/e6/a9783a3b13c11a5e064c5306c261e8e6.jpg"></p>
 <p>冒泡排序算法的原理比较容易理解，下面是具体的代码，可以结合着代码来看前面讲的原理。</p>
-<pre><code class="java">// 冒泡排序，a表示数组，n表示数组大小
-public void bubbleSort(int[] a, int n) &#123;
-    if (n &lt;= 1) return;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 冒泡排序，a表示数组，n表示数组大小</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">bubbleSort</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
     
-    for (int i = 0; i &lt; n; ++i) &#123;
-        // 提前退出冒泡循环的标志位
-        boolean flag = false;
-        for (int j=0; j &lt; n-i- 1; ++j) &#123;
-            if (a[j] &gt; a[j+1]) &#123; // 交换
-                int tmp = a[j];
-                a[j] = a[j+1];
-                a[j+1] = tmp;
-                flag = true;  // 表示有数据交换
-            &#125;
-        &#125;
-        if (!flag) break;  // 没有数据交换，提前退出
-    &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 提前退出冒泡循环的标志位</span>
+        <span class="token keyword">boolean</span> flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token operator">-</span>i<span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 交换</span>
+                <span class="token keyword">int</span> tmp <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
+                flag <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  <span class="token comment">// 表示有数据交换</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>flag<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>  <span class="token comment">// 没有数据交换，提前退出</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>现在，结合前面分析排序算法的三个方面，有三个问题。</p>
 <p><strong>第一，冒泡排序是原地排序算法吗？</strong></p>
 <p>冒泡的过程只涉及相邻数据的交换操作，只需要常量级的临时空间，所以它的空间复杂度为 <code>O(1)</code>，是一个原地排序算法。</p>
@@ -431,8 +431,8 @@ public void bubbleSort(int[] a, int n) &#123;
 <p>平均情况下的时间复杂是多少呢？前面讲过，平均时间复杂度就是加权平均期望时间复杂度，分析的时候要结合概率论的知识。</p>
 <p>对于包含 n 个数据的数组，这 n 个数据就有 <code>n!</code> 种排列方式。不同的排列方式，冒泡排序执行的时间肯定是不同的。比如前面举的那两个例子，其中一个要进行 6 次冒泡，而另一个只需要 4 次。如果用概率论方法定量分析平均时间复杂度，涉及的数学推理和计算就会很复杂。这里还有一种思路，通过 “有序度” 和 “逆序度” 这两个概念来进行分析。</p>
 <p><strong>有序度</strong>是数组中具有有序关系的元素对的个数。有序元素对用数学表达式表示就是这样：</p>
-<pre><code>有序元素对：a[i] &lt;= a[j], 如果i &lt; j。
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">有序元素对：a[i] &lt;&#x3D; a[j], 如果i &lt; j。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><img data-src="https://static001.geekbang.org/resource/image/a1/20/a1ef4cc1999d6bd0af08d8417ee55220.jpg"></p>
 <p>同理，对于一个倒序排列的数组，比如 6，5，4，3，2，1，有序度是 0；对于一个完全有序的数组，比如 1，2，3，4，5，6，有序度就是 <code>n*(n-1)/2</code>，也就是 15。我们把这种完全有序的数组的有序度叫作<strong>满有序度</strong>。</p>
 <p><strong>逆序度</strong>的定义正好跟有序度相反（默认从小到大为有序）。</p>
@@ -455,51 +455,51 @@ public void bubbleSort(int[] a, int n) &#123;
 <p>对于不同的查找插入点方法（从头到尾、从尾到头），元素的比较次数是有区别的。但对于一个给定的初始序列，移动操作的次数总是固定的，就等于逆序度。</p>
 <p>为什么说移动次数就等于逆序度呢？拿刚才的例子画了一个图表，你一看就明白了。满有序度是 <code>n*(n-1)/2=15</code>，初始序列的有序度是 5，所以逆序度是 10。插入排序中，数据移动的个数总和也等于 10=3+3+4。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/fd/01/fd6582d5e5927173ee35d7cc74d9c401.jpg"></p>
-<pre><code class="java">// 插入排序，a表示数组，n表示数组大小
-public void insertionSort(int[] a, int n) &#123;
-    if (n &lt;= 1) return;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 插入排序，a表示数组，n表示数组大小</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insertionSort</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
 
-    for (int i = 1; i &lt; n; ++i) &#123;
-        int value = a[i];
-        int j = i - 1;
-        // 查找插入的位置
-        for (; j &gt;= 0; --j) &#123;
-              if (a[j] &gt; value) &#123;
-                a[j+1] = a[j];  // 数据移动
-              &#125; else &#123;
-                break;
-              &#125;
-        &#125;
-        a[j+1] = value; // 插入数据
-      &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> value <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token comment">// 查找插入的位置</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> j <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      		<span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        		a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// 数据移动</span>
+      		<span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        		<span class="token keyword">break</span><span class="token punctuation">;</span>
+      		<span class="token punctuation">&#125;</span>
+    	<span class="token punctuation">&#125;</span>
+    	a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span> <span class="token comment">// 插入数据</span>
+  	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><img data-src="https://pic3.zhimg.com/v2-91b76e8e4dab9b0cad9a017d7dd431e2_b.webp"></p>
-<pre><code class="java">public static void insertionSort(int[] array) &#123;
-    if (array == null || array.length &lt;= 1) &#123;
-        return;
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">insertionSort</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>array <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> array<span class="token punctuation">.</span>length <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
 
-    int length = array.length;
+	<span class="token keyword">int</span> length <span class="token operator">=</span> array<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
 
-    // 要插入的数
-    int insertNum;
+	<span class="token comment">// 要插入的数</span>
+	<span class="token keyword">int</span> insertNum<span class="token punctuation">;</span>
 
-    for (int i = 1; i &lt; length; i++) &#123;
-        insertNum = array[i];
-        // 已经排序好的元素个数
-        int j = i - 1;
-        while (j &gt;= 0 &amp;&amp; array[j] &gt; insertNum) &#123;
-            // 从后到前循环，将大于insertNum的数向后移动一格
-            array[j + 1] = array[j];
-            j--;
-        &#125;
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		insertNum <span class="token operator">=</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token comment">// 已经排序好的元素个数</span>
+		<span class="token keyword">int</span> j <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">while</span> <span class="token punctuation">(</span>j <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> array<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> insertNum<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			<span class="token comment">// 从后到前循环，将大于insertNum的数向后移动一格</span>
+			array<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+			j<span class="token operator">--</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
 
-        // 将需要插入的数放在要插入的位置
-        array[j + 1] = insertNum;
-    &#125;
-&#125;
-</code></pre>
+		<span class="token comment">// 将需要插入的数放在要插入的位置</span>
+		array<span class="token punctuation">[</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> insertNum<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>第一，插入排序是原地排序算法吗？</strong></p>
 <p>从实现过程可以很明显地看出，插入排序算法的运行并不需要额外的存储空间，所以空间复杂度是 <code>O(1)</code>，也就是说，这是一个原地排序算法。</p>
 <p><strong>第二，插入排序是稳定的排序算法吗？</strong></p>
@@ -509,23 +509,23 @@ public void insertionSort(int[] a, int n) &#123;
 <p>还记得在数组中插入一个数据的平均时间复杂度是多少吗？没错，是 <code>O(n)</code>。所以，对于插入排序来说，每次插入操作都相当于在数组中插入一个数据，循环执行 n 次插入操作，所以平均时间复杂度为 <code>O(n²)</code>。</p>
 <h2 id="选择排序（Selection-Sort）"><a href="#选择排序（Selection-Sort）" class="headerlink" title="选择排序（Selection Sort）"></a>选择排序（Selection Sort）</h2><p>选择排序算法的实现思路有点类似插入排序，也分已排序区间和未排序区间。但是选择排序每次会从未排序区间中找到最小的元素，将其放到已排序区间的末尾。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/32/1d/32371475a0b08f0db9861d102474181d.jpg"></p>
-<pre><code class="java">public void selectionSort(int[] a, int n) &#123;
-    if (n &lt;= 1) return;
-    for(int i=0; i&lt;n-1; i++)&#123;
-        int j = i+1;
-        int min = i;
-        // 从未排序区选择最小的
-        for(; j&lt;n; j++)&#123;
-            if(a[j] &lt; a[min])&#123;
-                min = j;
-            &#125;
-        &#125;
-        int temp = a[i];
-        a[i] = a[min];
-        a[min] = temp;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">selectionSort</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> min <span class="token operator">=</span> i<span class="token punctuation">;</span>
+        <span class="token comment">// 从未排序区选择最小的</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token punctuation">;</span> j<span class="token operator">&lt;</span>n<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> a<span class="token punctuation">[</span>min<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                min <span class="token operator">=</span> j<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">int</span> temp <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>min<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        a<span class="token punctuation">[</span>min<span class="token punctuation">]</span> <span class="token operator">=</span> temp<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>照例，也有三个问题需要思考，不过前面两种排序算法我已经分析得很详细了，这里就直接公布答案了。首先，选择排序空间复杂度为 <code>O(1)</code>，是一种原地排序算法。选择排序的最好情况时间复杂度、最坏情况和平均情况时间复杂度都为 <code>O(n²)</code>。你可以自己来分析看看。</p>
 <p>那选择排序是稳定的排序算法吗？这个问题我着重来说一下。答案是否定的，选择排序是一种不稳定的排序算法。从前面的那张图中可以看出来，选择排序每次都要找剩余未排序元素中的最小值，并和前面的元素交换位置，这样破坏了稳定性。</p>
 <p>比如 5，8，5，2，9 这样一组数据，使用选择排序算法来排序的话，第一次找到最小元素 2，与第一个 5 交换位置，那第一个 5 和中间的 5 顺序就变了，所以就不稳定了。正是因此，相对于冒泡排序和插入排序，选择排序就稍微逊色了。</p>
@@ -536,63 +536,63 @@ public void insertionSort(int[] a, int n) &#123;
 <p>归并排序使用的就是分治思想。分治，顾名思义，就是分而治之，将一个大问题分解成小的子问题来解决。小的子问题解决了，大问题也就解决了。</p>
 <p>从刚才的描述，你有没有感觉到，分治思想和前面的递归思想很像。其实分治算法一般都是用递归来实现的。分治是一种解决问题的处理思想，递归是一种编程技巧，这两者并不冲突。</p>
 <p>递归代码的编写技巧你还记得吗？写递归代码的技巧就是：分析得出递推公式，然后找到终止条件，最后将递推公式翻译成递归代码。所以，要想写出归并排序的代码，先写出归并排序的递推公式。</p>
-<pre><code>递推公式：
-merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+1…r))
+<pre class="line-numbers language-none"><code class="language-none">递推公式：
+merge_sort(p…r) &#x3D; merge(merge_sort(p…q), merge_sort(q+1…r))
 
 终止条件：
-p &gt;= r 不用再继续分解
-</code></pre>
+p &gt;&#x3D; r 不用再继续分解<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>来解释一下这个递推公式：<code>merge_sort(p…r)</code> 表示给下标从 p 到 r 之间的数组排序。将这个排序问题转化为了两个子问题，<code>merge_sort(p…q)</code> 和 <code>merge_sort(q+1…r)</code>，其中下标 q 等于 p 和 r 的中间位置，也就是 <code>(p+r)/2</code>。当下标从 p 到 q 和从 q+1 到 r 这两个子数组都排好序之后，我们再将两个有序的子数组合并在一起，这样下标从 p 到 r 之间的数据就也排好序了。有了递推公式，转化成代码就简单多了。</p>
-<pre><code>// 归并排序算法, A是数组，n表示数组大小
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 归并排序算法, A是数组，n表示数组大小
 merge_sort(A, n) &#123;
   merge_sort_c(A, 0, n-1)
 &#125;
 
-// 递归调用函数
+&#x2F;&#x2F; 递归调用函数
 merge_sort_c(A, p, r) &#123;
-  // 递归终止条件
-  if p &gt;= r  then return
+  &#x2F;&#x2F; 递归终止条件
+  if p &gt;&#x3D; r  then return
 
-  // 取p到r之间的中间位置q
-  q = (p+r) / 2
-  // 分治递归
+  &#x2F;&#x2F; 取p到r之间的中间位置q
+  q &#x3D; (p+r) &#x2F; 2
+  &#x2F;&#x2F; 分治递归
   merge_sort_c(A, p, q)
   merge_sort_c(A, q+1, r)
-  // 将A[p...q]和A[q+1...r]合并为A[p...r]
+  &#x2F;&#x2F; 将A[p...q]和A[q+1...r]合并为A[p...r]
   merge(A[p...r], A[p...q], A[q+1...r])
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>merge(A[p...r], A[p...q], A[q+1...r])</code> 这个函数的作用就是，将已经有序的 <code>A[p...q]</code>和 <code>A[q+1....r]</code>合并成一个有序的数组，并且放入 <code>A[p....r]</code>。那这个过程具体该如何做呢？如图所示，申请一个临时数组 <code>tmp</code>，大小与 <code>A[p...r]</code>相同。用两个游标 i 和 j，分别指向 <code>A[p...q]</code>和 <code>A[q+1...r]</code>的第一个元素。比较这两个元素 <code>A[i]</code>和 <code>A[j]</code>，如果 <code>A[i]&lt;=A[j]</code>，我们就把 <code>A[i]</code>放入到临时数组 <code>tmp</code>，并且 i 后移一位，否则将 <code>A[j]</code>放入到数组 <code>tmp</code>，j 后移一位。</p>
 <p>继续上述比较过程，直到其中一个子数组中的所有数据都放入临时数组中，再把另一个数组中的数据依次加入到临时数组的末尾，这个时候，临时数组中存储的就是两个子数组合并之后的结果了。最后再把临时数组 tmp 中的数据拷贝到原数组 <code>A[p...r]</code>中。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/95/2f/95897ade4f7ad5d10af057b1d144a22f.jpg"></p>
 <p>把 <code>merge()</code> 函数写成伪代码，就是下面这样：</p>
-<pre><code>
+<pre class="line-numbers language-none"><code class="language-none">
 merge(A[p...r], A[p...q], A[q+1...r]) &#123;
-  var i := p，j := q+1，k := 0 // 初始化变量i, j, k
-  var tmp := new array[0...r-p] // 申请一个大小跟A[p...r]一样的临时数组
-  while i&lt;=q AND j&lt;=r do &#123;
-    if A[i] &lt;= A[j] &#123;
-      tmp[k++] = A[i++] // i++等于i:=i+1
+  var i :&#x3D; p，j :&#x3D; q+1，k :&#x3D; 0 &#x2F;&#x2F; 初始化变量i, j, k
+  var tmp :&#x3D; new array[0...r-p] &#x2F;&#x2F; 申请一个大小跟A[p...r]一样的临时数组
+  while i&lt;&#x3D;q AND j&lt;&#x3D;r do &#123;
+    if A[i] &lt;&#x3D; A[j] &#123;
+      tmp[k++] &#x3D; A[i++] &#x2F;&#x2F; i++等于i:&#x3D;i+1
     &#125; else &#123;
-      tmp[k++] = A[j++]
+      tmp[k++] &#x3D; A[j++]
     &#125;
   &#125;
   
-  // 判断哪个子数组中有剩余的数据
-  var start := i，end := q
-  if j&lt;=r then start := j, end:=r
+  &#x2F;&#x2F; 判断哪个子数组中有剩余的数据
+  var start :&#x3D; i，end :&#x3D; q
+  if j&lt;&#x3D;r then start :&#x3D; j, end:&#x3D;r
   
-  // 将剩余的数据拷贝到临时数组tmp
-  while start &lt;= end do &#123;
-    tmp[k++] = A[start++]
+  &#x2F;&#x2F; 将剩余的数据拷贝到临时数组tmp
+  while start &lt;&#x3D; end do &#123;
+    tmp[k++] &#x3D; A[start++]
   &#125;
   
-  // 将tmp中的数组拷贝回A[p...r]
-  for i:=0 to r-p do &#123;
-    A[p+i] = tmp[i]
+  &#x2F;&#x2F; 将tmp中的数组拷贝回A[p...r]
+  for i:&#x3D;0 to r-p do &#123;
+    A[p+i] &#x3D; tmp[i]
   &#125;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>还记得前面讲过的利用哨兵简化编程的处理技巧吗？<code>merge()</code> 合并函数如果借助哨兵，代码就会简洁很多，这个问题留给你思考。</p>
 <blockquote>
 </blockquote>
@@ -603,23 +603,23 @@ merge(A[p...r], A[p...q], A[q+1...r]) &#123;
 <p>归并排序涉及递归，时间复杂度的分析稍微有点复杂。正好借此机会来学习一下如何分析递归代码的时间复杂度。</p>
 <p>之前讲过，递归的适用场景是，一个问题 a 可以分解为多个子问题 b、c，那求解问题 a 就可以分解为求解问题 b、c。问题 b、c 解决之后，再把 b、c 的结果合并成 a 的结果。</p>
 <p>如果定义求解问题 a 的时间是 T(a)，求解问题 b、c 的时间分别是 T(b) 和 T( c)，那就可以得到这样的递推关系式：</p>
-<pre><code>T(a) = T(b) + T(c) + K
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">T(a) &#x3D; T(b) + T(c) + K<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>其中 K 等于将两个子问题 b、c 的结果合并成问题 a 的结果所消耗的时间。</p>
 <p>从刚刚的分析，可以得到一个重要的结论：<strong>不仅递归求解的问题可以写成递推公式，递归代码的时间复杂度也可以写成递推公式。</strong></p>
 <p>套用这个公式，来分析一下归并排序的时间复杂度。假设对 n 个元素进行归并排序需要的时间是 <code>T(n)</code>，那分解成两个子数组排序的时间都是 <code>T(n/2)</code>。<code>merge()</code> 函数合并两个有序子数组的时间复杂度是 <code>O(n)</code>。所以，套用前面的公式，归并排序的时间复杂度的计算公式就是：</p>
-<pre><code>T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
-T(n) = 2*T(n/2) + n； n&gt;1
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">T(1) &#x3D; C；   n&#x3D;1时，只需要常量级的执行时间，所以表示为C。
+T(n) &#x3D; 2*T(n&#x2F;2) + n； n&gt;1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>通过这个公式，如何来求解 <code>T(n)</code> 呢？还不够直观？再进一步分解一下计算过程。</p>
-<pre><code>T(n) = 2*T(n/2) + n
-     = 2*(2*T(n/4) + n/2) + n = 4*T(n/4) + 2*n
-     = 4*(2*T(n/8) + n/4) + 2*n = 8*T(n/8) + 3*n
-     = 8*(2*T(n/16) + n/8) + 3*n = 16*T(n/16) + 4*n
+<pre class="line-numbers language-none"><code class="language-none">T(n) &#x3D; 2*T(n&#x2F;2) + n
+     &#x3D; 2*(2*T(n&#x2F;4) + n&#x2F;2) + n &#x3D; 4*T(n&#x2F;4) + 2*n
+     &#x3D; 4*(2*T(n&#x2F;8) + n&#x2F;4) + 2*n &#x3D; 8*T(n&#x2F;8) + 3*n
+     &#x3D; 8*(2*T(n&#x2F;16) + n&#x2F;8) + 3*n &#x3D; 16*T(n&#x2F;16) + 4*n
      ......
-     = 2^k * T(n/2^k) + k * n
-     ......
-</code></pre>
+     &#x3D; 2^k * T(n&#x2F;2^k) + k * n
+     ......<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>通过这样一步一步分解推导，可以得到 <code>T(n) = 2^kT(n/2^k)+kn</code>。当 <code>T(n/2^k)=T(1)</code> 时，也就是 <code>n/2^k=1</code>，我们得到 <code>k=log2n</code> 。我们将 k 值代入上面的公式，得到 <code>T(n)=Cn+nlog2n</code> 。如果用大 O 标记法来表示的话，<code>T(n)</code> 就等于 <code>O(nlogn)</code>。所以归并排序的时间复杂度是 <code>O(nlogn)</code>。</p>
 <p>从原理分析和伪代码可以看出，归并排序的执行效率与要排序的原始数组的有序程度无关，所以其时间复杂度是非常稳定的，不管是最好情况、最坏情况，还是平均情况，时间复杂度都是 <code>O(nlogn)</code>。</p>
 <p><strong>第三，归并排序的空间复杂度是多少？</strong></p>
@@ -632,45 +632,45 @@ T(n) = 2*T(n/2) + n； n&gt;1
 <p>经过这一步骤之后，数组 p 到 r 之间的数据就被分成了三个部分，前面 p 到 q-1 之间都是小于 pivot 的，中间是 pivot，后面的 q+1 到 r 之间是大于 pivot 的。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/4d/81/4d892c3a2e08a17f16097d07ea088a81.jpg"></p>
 <p>根据分治、递归的处理思想，可以用递归排序下标从 p 到 q-1 之间的数据和下标从 q+1 到 r 之间的数据，直到区间缩小为 1，就说明所有的数据都有序了。用递推公式来表示上面的过程就是这样：</p>
-<pre><code>递推公式：
-quick_sort(p…r) = quick_sort(p…q-1) + quick_sort(q+1… r)
+<pre class="line-numbers language-none"><code class="language-none">递推公式：
+quick_sort(p…r) &#x3D; quick_sort(p…q-1) + quick_sort(q+1… r)
 
 终止条件：
-p &gt;= r
-</code></pre>
+p &gt;&#x3D; r<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>用伪代码来实现：</p>
-<pre><code>// 快速排序，A是数组，n表示数组的大小
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 快速排序，A是数组，n表示数组的大小
 quick_sort(A, n) &#123;
   quick_sort_c(A, 0, n-1)
 &#125;
 
-// 快速排序递归函数，p，r为下标
+&#x2F;&#x2F; 快速排序递归函数，p，r为下标
 quick_sort_c(A, p, r) &#123;
-  if p &gt;= r then return
+  if p &gt;&#x3D; r then return
   
-  q = partition(A, p, r) // 获取分区点
+  q &#x3D; partition(A, p, r) &#x2F;&#x2F; 获取分区点
   quick_sort_c(A, p, q-1)
   quick_sort_c(A, q+1, r)
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>归并排序中有一个 <code>merge()</code> 合并函数，一个 <code>partition()</code> 分区函数。<code>partition()</code> 分区函数实际就是随机选择一个元素作为 pivot（一般情况下，可以选择 p 到 r 区间的最后一个元素），然后对 <code>A[p...r]</code>分区，函数返回 pivot 的下标。</p>
 <p>如果不考虑空间消耗的话，<code>partition()</code> 分区函数可以写得非常简单。申请两个临时数组 X 和 Y，遍历 <code>A[p...r]</code>，将小于 pivot 的元素都拷贝到临时数组 X，将大于 pivot 的元素都拷贝到临时数组 Y，最后再将数组 X 和数组 Y 中数据顺序拷贝到 <code>A[p....r]</code>。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/66/dc/6643bc3cef766f5b3e4526c332c60adc.jpg"></p>
 <p>但是，如果按照这种思路实现的话，<code>partition()</code> 函数就需要很多额外的内存空间，所以快排就不是原地排序算法了。如果希望快排是原地排序算法，那它的空间复杂度得是 <code>O(1)</code>，那 <code>partition()</code> 分区函数就不能占用太多额外的内存空间，就需要在 <code>A[p...r]</code>的原地完成分区操作。</p>
 <p>原地分区函数的实现思路非常巧妙，下面是伪代码</p>
-<pre><code>partition(A, p, r) &#123;
-// :=表示“定义为”，用来定义一个新出现的符号。
-  pivot := A[r]
-  i := p
-  for j := p to r-1 do &#123;
+<pre class="line-numbers language-none"><code class="language-none">partition(A, p, r) &#123;
+&#x2F;&#x2F; :&#x3D;表示“定义为”，用来定义一个新出现的符号。
+  pivot :&#x3D; A[r]
+  i :&#x3D; p
+  for j :&#x3D; p to r-1 do &#123;
     if A[j] &lt; pivot &#123;
       swap A[i] with A[j]
-      i := i+1
+      i :&#x3D; i+1
     &#125;
   &#125;
   swap A[i] with A[r]
-  return i
-</code></pre>
+  return i<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这里的处理有点类似选择排序。通过游标 <code>i</code> 把 <code>A[p...r-1]</code>分成两部分。<code>A[p...i-1]</code>的元素都是小于 pivot 的，暂且叫它“已处理区间”，<code>A[i...r-1]</code>是“未处理区间”。每次都从未处理的区间 <code>A[i...r-1]</code>中取一个元素 <code>A[j]</code>，与 pivot 对比，如果小于 pivot，则将其加入到已处理区间的尾部，也就是 <code>A[i]</code>的位置。</p>
 <p>数组的插入操作还记得吗？在数组某个位置插入元素，需要搬移数据，非常耗时。当时讲了一种处理技巧，就是交换，在 O(1) 的时间复杂度内完成插入操作。这里也需要借助这个思想，只需要将 <code>A[i]</code>与 <code>A[j]</code>交换，就可以在 <code>O(1)</code> 时间复杂度内将 <code>A[j]</code>放到下标为 i 的位置。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/08/e7/086002d67995e4769473b3f50dd96de7.jpg"></p>
@@ -680,17 +680,17 @@ quick_sort_c(A, p, r) &#123;
 <p>可以发现，归并排序的处理过程是由下到上的，先处理子问题，然后再合并。而快排正好相反，它的处理过程是由上到下的，先分区，然后再处理子问题。归并排序虽然是稳定的、时间复杂度为 <code>O(nlogn)</code> 的排序算法，但是它是非原地排序算法。前面讲过，归并之所以是非原地排序算法，主要原因是合并函数无法在原地执行。快速排序通过设计巧妙的原地分区函数，可以实现原地排序，解决了归并排序占用太多内存的问题。</p>
 <p><strong>快速排序的性能分析</strong></p>
 <p>现在，来分析一下快速排序的性能。前面在讲解快排的实现原理时，已经分析了稳定性和空间复杂度。快排是一种原地、不稳定的排序算法。来看快排的时间复杂度。快排也是用递归来实现的。对于递归代码的时间复杂度，前面总结的公式在这里也还是适用的。如果每次分区操作，都能正好把数组分成大小接近相等的两个小区间，那快排的时间复杂度递推求解公式跟归并是相同的。所以，快排的时间复杂度也是 <code>O(nlogn)</code>。</p>
-<pre><code>T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
-T(n) = 2*T(n/2) + n； n&gt;1
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">T(1) &#x3D; C；   n&#x3D;1时，只需要常量级的执行时间，所以表示为C。
+T(n) &#x3D; 2*T(n&#x2F;2) + n； n&gt;1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>但是公式成立的前提是每次分区操作，选择的 pivot 都很合适，正好能将大区间对等地一分为二。但实际上这种情况是很难实现的。</p>
 <p>举一个比较极端的例子。如果数组中的数据原来已经是有序的了，比如 1，3，5，6，8。如果每次选择最后一个元素作为 pivot，那每次分区得到的两个区间都是不均等的。我们需要进行大约 n 次分区操作，才能完成快排的整个过程。每次分区平均要扫描大约 <code>n/2</code> 个元素，这种情况下，快排的时间复杂度就从 <code>O(nlogn)</code> 退化成了 <code>O(n²)</code>。</p>
 <p>前面讲的是两个极端情况下的时间复杂度，一个是分区极其均衡，一个是分区极其不均衡。它们分别对应快排的最好情况时间复杂度和最坏情况时间复杂度。那快排的平均情况时间复杂度是多少呢？</p>
 <p>假设每次分区操作都将区间分成大小为 9:1 的两个小区间。继续套用递归时间复杂度的递推公式，就会变成这样：</p>
-<pre><code>T(1) = C；   n=1时，只需要常量级的执行时间，所以表示为C。
+<pre class="line-numbers language-none"><code class="language-none">T(1) &#x3D; C；   n&#x3D;1时，只需要常量级的执行时间，所以表示为C。
 
-T(n) = T(n/10) + T(9*n/10) + n； n&gt;1
-</code></pre>
+T(n) &#x3D; T(n&#x2F;10) + T(9*n&#x2F;10) + n； n&gt;1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>这个公式的递推求解的过程非常复杂，虽然可以求解，但不推荐用这种方法。实际上，递归的时间复杂度的求解方法除了递推公式之外，还有递归树，这里暂时不说。</p>
 <p>这里直接给出结论：<code>T(n)</code> 在大部分情况下的时间复杂度都可以做到 <code>O(nlogn)</code>，只有在极端情况下，才会退化到 <code>O(n²)</code>。而且也有很多方法将这个概率降到很低，后面会说明如何去做。</p>
 <h1 id="桶、计数、基数"><a href="#桶、计数、基数" class="headerlink" title="桶、计数、基数"></a>桶、计数、基数</h1><p>这是三种时间复杂度是 <code>O(n)</code> 的排序算法：桶排序、计数排序、基数排序。因为这些排序算法的时间复杂度是线性的，所以这类排序算法被称作<strong>线性排序</strong>（Linear sort）。之所以能做到线性的时间复杂度，主要原因是，这三个算法是非基于比较的排序算法，都不涉及元素之间的比较操作。</p>
@@ -724,49 +724,49 @@ T(n) = T(n/10) + T(9*n/10) + n； n&gt;1
 <p>以此类推，当我们扫描到第 2 个分数为 3 的考生的时候，就会把它放入数组 R 中的第 6 个元素的位置（也就是下标为 5 的位置）。当我们扫描完整个数组 A 后，数组 R 内的数据就是按照分数从小到大有序排列的了。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/1d/84/1d730cb17249f8e92ef5cab53ae65784.jpg"></p>
 <p>代码如下：</p>
-<pre><code class="java">
-// 计数排序，a是数组，n是数组大小。假设数组中存储的都是非负整数。
-public void countingSort(int[] a, int n) &#123;
-    if (n &lt;= 1) return;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">
+<span class="token comment">// 计数排序，a是数组，n是数组大小。假设数组中存储的都是非负整数。</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">countingSort</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
     
-    // 查找数组中数据的范围
-    int max = a[0];
-    for (int i = 1; i &lt; n; ++i) &#123;
-        if (max &lt; a[i]) &#123;
-            max = a[i];
-        &#125;
-    &#125;
+    <span class="token comment">// 查找数组中数据的范围</span>
+    <span class="token keyword">int</span> max <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>max <span class="token operator">&lt;</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            max <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    int[] c = new int[max + 1]; // 申请一个计数数组c，下标大小[0,max]
-    for (int i = 0; i &lt;= max; ++i) &#123;
-        c[i] = 0;
-    &#125;
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>max <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 申请一个计数数组c，下标大小[0,max]</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> max<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        c<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-      // 计算每个元素的个数，放入c中
-      for (int i = 0; i &lt; n; ++i) &#123;
-        c[a[i]]++;
-      &#125;
+  	<span class="token comment">// 计算每个元素的个数，放入c中</span>
+  	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  	  c<span class="token punctuation">[</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token operator">++</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
 
-      // 依次累加
-      for (int i = 1; i &lt;= max; ++i) &#123;
-        c[i] = c[i-1] + c[i];
-      &#125;
-    
-      // 临时数组r，存储排序之后的结果
-      int[] r = new int[n];
-      // 计算排序的关键步骤，有点难理解
-      for (int i = n - 1; i &gt;= 0; --i) &#123;
-        int index = c[a[i]]-1;
-        r[index] = a[i];
-        c[a[i]]--;
-      &#125;
-    
-      // 将结果拷贝给a数组
-      for (int i = 0; i &lt; n; ++i) &#123;
-        a[i] = r[i];
-      &#125;
-&#125;
-</code></pre>
+  	<span class="token comment">// 依次累加</span>
+  	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> max<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  	  c<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> c<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
+	
+  	<span class="token comment">// 临时数组r，存储排序之后的结果</span>
+  	<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  	<span class="token comment">// 计算排序的关键步骤，有点难理解</span>
+  	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  	  <span class="token keyword">int</span> index <span class="token operator">=</span> c<span class="token punctuation">[</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+  	  r<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  	  c<span class="token punctuation">[</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token operator">--</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
+	
+  	<span class="token comment">// 将结果拷贝给a数组</span>
+  	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  	  a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> r<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这种利用另外一个数组来计数的实现方式是不是很巧妙呢？这也是为什么这种排序算法叫计数排序的原因。不过千万不要死记硬背上面的排序过程，重要的是理解和会用。</p>
 <p>总结一下：<strong>计数排序只能用在数据范围不大的场景中，如果数据范围 k 比要排序的数据 n 大很多，就不适合用计数排序了。而且，计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下，转化为非负整数。</strong></p>
 <blockquote>
@@ -792,21 +792,21 @@ public void countingSort(int[] a, int n) &#123;
 <h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>回到开篇的问题：冒泡排序和插入排序的时间复杂度都是 <code>O(n²)</code>，都是原地排序算法，为什么插入排序要比冒泡排序更受欢迎呢？</p>
 <blockquote>
 <p>前面分析冒泡排序和插入排序的时候讲到，冒泡排序不管怎么优化，元素交换的次数是一个固定值，是原始数据的逆序度。插入排序是同样的，不管怎么优化，元素移动的次数也等于原始数据的逆序度。但是，从代码实现上来看，冒泡排序的数据交换要比插入排序的数据移动要复杂，冒泡排序需要 3 个赋值操作，而插入排序只需要 1 个。我们来看这段操作：</p>
-<pre><code class="java">// 冒泡排序中数据的交换操作：
-if (a[j] &gt; a[j+1]) &#123; // 交换
-    int tmp = a[j];
-       a[j] = a[j+1];
-       a[j+1] = tmp;
-       flag = true;
-&#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 冒泡排序中数据的交换操作：</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 交换</span>
+	<span class="token keyword">int</span> tmp <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+   	a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+   	a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
+   	flag <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-// 插入排序中数据的移动操作：
-if (a[j] &gt; value) &#123;
-    a[j+1] = a[j];  // 数据移动
-&#125; else &#123;
-    break;
-&#125;
-</code></pre>
+<span class="token comment">// 插入排序中数据的移动操作：</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    a<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// 数据移动</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">break</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>把执行一个赋值语句的时间粗略地计为单位时间（unit_time），然后分别用冒泡排序和插入排序对同一个逆序度是 K 的数组进行排序。用冒泡排序，需要 K 次交换操作，每次需要 3 个赋值语句，所以交换操作总耗时就是 3*K 单位时间。而插入排序中数据移动操作只需要 K 个单位时间。</p>
 <p>这个只是非常理论的分析，为了实验，针对上面的冒泡排序和插入排序的 Java 代码，写一个性能对比测试程序，随机生成 10000 个数组，每个数组中包含 200 个数据，然后在机器上分别用冒泡和插入排序算法来排序，冒泡排序算法大约 700ms 才能执行完成，而插入排序只需要 100ms 左右就能搞定！所以，虽然冒泡排序和插入排序在时间复杂度上是一样的，都是 <code>O(n²)</code>，但是如果我们希望把性能优化做到极致，那肯定首选插入排序。插入排序的算法思路也有很大的优化空间，这里只是讲了最基础的一种。如果对插入排序的优化感兴趣，可以自行学习一下[希尔排序](<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序_百度百科 (baidu.com)</a>)。</p>
 </blockquote>
@@ -872,50 +872,54 @@ if (a[j] &gt; value) &#123;
 <li>适用场景: 是在桶排序和计数排序基础上进行的，保证每位数据范围不大，并且位数也不是很多。</li>
 </ol>
 </blockquote>
-<pre><code>private static void quickSort(int[] a, int head, int tail) &#123;
+<pre class="line-numbers language-none"><code class="language-none">private static void quickSort(int[] a, int head, int tail) &#123;
 
-        int low = head;
-        int high = tail;
-        int pivot = a[low];
+        int low &#x3D; head;
+        int high &#x3D; tail;
+        int pivot &#x3D; a[low];
         if (low &lt; high) &#123;
 
             while (low&lt;high) &#123;
-                while (low &lt; high &amp;&amp; pivot &lt;= a[high]) high--;
-                a[low] = a[high];
-                while (low &lt; high &amp;&amp; pivot &gt;= a[low]) low++;
-                a[high]=a[low];
+                while (low &lt; high &amp;&amp; pivot &lt;&#x3D; a[high]) high--;
+                a[low] &#x3D; a[high];
+                while (low &lt; high &amp;&amp; pivot &gt;&#x3D; a[low]) low++;
+                a[high]&#x3D;a[low];
             &#125;
-            a[low] = pivot;
+            a[low] &#x3D; pivot;
 
             if(low&gt;head+1) quickSort(a,head,low-1);
             if(high&lt;tail-1) quickSort(a,high+1,tail);
         &#125;
 
-    &#125;
-</code></pre>
+    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>快排</p>
-<pre><code class="java">private static void quickSortC(int[] a, int p, int r) &#123;
-    if (p &gt;= r) &#123;
-        return;
-    &#125;
-    int q = partition(a, p, r);
-    quickSortC(a, p, q - 1);
-    quickSortC(a, q + 1, r);
-&#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">quickSortC</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> p<span class="token punctuation">,</span> <span class="token keyword">int</span> r<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>p <span class="token operator">>=</span> r<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">int</span> q <span class="token operator">=</span> <span class="token function">partition</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> p<span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">quickSortC</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">quickSortC</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> q <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
     
-public static int partition(int[] a, int start, int end) &#123;
-    int pivot = a[end];
-    int i = start;
-    for (int j = start; j &lt; end; j++) &#123;
-        if (a[j] &lt; pivot) &#123;
-            swap(a, i, j);
-            i = i + 1;
-        &#125;
-    &#125;
-    swap(a, i, end);
-    return i;
-&#125;
-</code></pre>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">partition</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> pivot <span class="token operator">=</span> a<span class="token punctuation">[</span>end<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> start<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> start<span class="token punctuation">;</span> j <span class="token operator">&lt;</span> end<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">&lt;</span> pivot<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">swap</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            i <span class="token operator">=</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">swap</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> i<span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> i<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/KU-AUGOnLeRtE_hivl2uSA">计数排序</a></p>
 
     </div>
@@ -1124,7 +1128,7 @@ public static int partition(int[] a, int start, int end) &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

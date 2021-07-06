@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://cdn.yangbingdong.com/uploadImg.png">
 <meta property="og:image" content="https://cdn.yangbingdong.com/img/build-hexo/copyUrl.png">
 <meta property="article:published_time" content="2020-02-07T14:36:40.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.219Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.728Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="node.js">
@@ -261,7 +261,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,7 +300,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.5k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -335,28 +335,23 @@
 <h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><blockquote>
 <p>Node.js的安装方式有很多种，Windows用户可以直接<a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js官方网站</a>下载，下载完成之后直接安装就好。<br>接下来就可以查看是否成功安装</p>
 </blockquote>
-<pre><code>node -v
-npm -v
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">node -v
+npm -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>由于npm在国内下载速度缓慢，可以将npm更换为淘宝镜像：</p>
-<pre><code>npm config set registry https://registry.npm.taobao.org/
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">npm config set registry https:&#x2F;&#x2F;registry.npm.taobao.org&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h1 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h1><p>Git安装可以直接到<a target="_blank" rel="noopener" href="https://git-scm.com/download/win">Git官网</a> 下载安装即可<br>启动Git Bash执行<code>git --version</code>查看是否安装成功</p>
 <p>#使用Hexo建立一个博客<br>Hexo是一个快速、简洁且高效的博客框架. Hexo 使用 Markdown（或其他渲染引擎）解析文章, 在几秒内即可生成静态网页.</p>
 <ul>
-<li>接下来的操作所有操作系统都一样，在Git bash中运行<br>新建一个Blog文件夹，即使之后博客出现问题直接删除文件夹重建即可<pre><code>mkdir Blog
-</code></pre>
-进入刚刚新建的Blog文件夹中，使用Hexo建立博客<pre><code>cd Blog
-hexo init
-</code></pre>
+<li>接下来的操作所有操作系统都一样，在Git bash中运行<br>新建一个Blog文件夹，即使之后博客出现问题直接删除文件夹重建即可<pre class="line-numbers language-none"><code class="language-none">mkdir Blog<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+进入刚刚新建的Blog文件夹中，使用Hexo建立博客<pre class="line-numbers language-none"><code class="language-none">cd Blog
+hexo init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 等待完成…</li>
 </ul>
-<h1 id="启动博客"><a href="#启动博客" class="headerlink" title="启动博客"></a>启动博客</h1><pre><code>hexo s
-</code></pre>
+<h1 id="启动博客"><a href="#启动博客" class="headerlink" title="启动博客"></a>启动博客</h1><pre class="line-numbers language-none"><code class="language-none">hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这个时候会有如下提示在命令行中</p>
-<pre><code>INFO  Start processing
-INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">INFO  Start processing
+INFO  Hexo is running at http:&#x2F;&#x2F;localhost:4000 . Press Ctrl+C to stop.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>那么我们的博客基石就算搭建完成，可以在浏览器中使用<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a>访问。</p>
 <h1 id="hexo的基本命令"><a href="#hexo的基本命令" class="headerlink" title="hexo的基本命令"></a>hexo的基本命令</h1><p>在博客的使用过程中，有一些基本的hexo命令需要我们掌握</p>
 <blockquote>
@@ -370,38 +365,33 @@ INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
 <li>tags: [Hexo,diary]  # 文章标签</li>
 </ul>
 <p>要想写出好看的博客，你还需要掌握markdown格式的输入原则</p>
-<pre><code> &lt;!--more--&gt;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">&lt;!--more--&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <blockquote>
 <p>more标签以下的内容要点击“阅读全文”才能看见</p>
 </blockquote>
 <h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><h3 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h3><p>在博客根目录的 <code>source</code> 文件夹下新建一个 <code>img</code> 文件夹专门存放图片, 在博文中引用的图片路径为 <code>/img/图片名.后缀</code></p>
-<pre><code>![](图片路径)
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">![](图片路径)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h3><p>对于那些想要更有规律地提供图片和其他资源以及想要将他们的资源分布在各个文章上的人来说, Hexo也提供了更组织化的方式来管理资源, 将<strong>站点配置文件</strong>中的 <code>post_asset_folder</code> 选项设为 <code>true</code> 来打开文章资源文件夹</p>
-<pre><code>post_asset_folder: true
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">post_asset_folder: true<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>然后再博文中通过相对路径引用</p>
-<pre><code>&#123;% asset_img 图片文件名 %&#125;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">&#123;% asset_img 图片文件名 %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h3 id="方式三"><a href="#方式三" class="headerlink" title="方式三"></a>方式三</h3><p>使用*<a target="_blank" rel="noopener" href="http://www.qiniu.com/">七牛云储存</a>*, 因为Github项目容量有限, 而且Github的主机在国外, 访问速度较慢, 把图片放在国内的图床上是个更好的选择, 免费用户实名审核之后, 新建空间, 专门用来放置博客上引用的资源, 进入空间后点击「内容管理」, 再点击「上传」<br><img data-src="https://cdn.yangbingdong.com/uploadImg.png"></p>
 <p>上传完成之后点击关闭回到管理页面, 选中刚上传的图片, 最右边的操作点击复制链接即可<br><img data-src="https://cdn.yangbingdong.com/img/build-hexo/copyUrl.png"><br>然后在博文中通过地址引用</p>
-<pre><code>![](图片地址如: https://cdn.yangbingdong.com/img/build-hexo/copyUrl.png)
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">![](图片地址如: https:&#x2F;&#x2F;cdn.yangbingdong.com&#x2F;img&#x2F;build-hexo&#x2F;copyUrl.png)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
 <h1 id="部署到Github"><a href="#部署到Github" class="headerlink" title="部署到Github"></a>部署到Github</h1><p>在此之前, 先安装<strong>Git部署插件</strong></p>
-<pre><code>npm install hexo-deployer-git --save
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">npm install hexo-deployer-git --save<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>打<strong>开站点配置文件</strong>, 拉到底部, 修改部署配置:</p>
-<pre><code># Deployment
-## Docs: https://hexo.io/docs/deployment.html
+<pre class="line-numbers language-none"><code class="language-none"># Deployment
+## Docs: https:&#x2F;&#x2F;hexo.io&#x2F;docs&#x2F;deployment.html
 deploy:
   type: git
-  repo: https://github.com/yourName/yourName1.git #此处yourName1表示你的仓库名必须与你的名称一样
-  branch: master
-</code></pre>
+  repo: https:&#x2F;&#x2F;github.com&#x2F;yourName&#x2F;yourName1.git #此处yourName1表示你的仓库名必须与你的名称一样
+  branch: master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>保存后终端执行</p>
-<pre><code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>稍等片刻, 可能会由于环境、网络等原因, 部署的时间会有偏差, 有的人快有的慢<br>部署完成后可在浏览器输入 <code>yourName.github.io</code> 就可以浏览到一个属于自己的博客了 ～</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后用拙劣的语言总结一下博主搭建Hexo博客的体会, 六个字: 简洁但不简单.<br>再六个字, 正如NexT官方说的: 精于心, 简于形<br>= =貌似这个博客也不怎么简洁, 有点花俏, 装X嫌疑<br>人生在于折腾…</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
@@ -617,7 +607,7 @@ deploy:
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

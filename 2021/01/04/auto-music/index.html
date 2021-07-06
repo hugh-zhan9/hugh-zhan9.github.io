@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200409100541773.png#pic_center">
 <meta property="article:published_time" content="2021-01-04T12:09:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.219Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.728Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,14 +297,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.2k</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -331,12 +331,12 @@
 <p>示例：</p>
 <p>打开我们主题文件：<code>themes\next\layout\_macro\sidebar.swig</code>找到<code>sidebar-inner</code>，将网易云插件代码代码粘贴到此<code>&lt;div&gt;</code>标签后即可。</p>
 <p>演示：</p>
-<pre><code class="javascript">&lt;aside class=&quot;sidebar&quot;&gt;
- &lt;div class=&quot;sidebar-inner&quot;&gt; //从下面开始复制，粘贴到这里
-  &lt;!--网易云插件--&gt;
-  &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=330 height=86 
-      src=&quot;//music.163.com/outchain/player?type=2&amp;id=463352828&amp;auto=0&amp;height=66&quot;&gt;&lt;/iframe&gt;
-</code></pre>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>aside <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar"</span><span class="token operator">></span>
+ <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar-inner"</span><span class="token operator">></span> <span class="token comment">//从下面开始复制，粘贴到这里</span>
+  <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>网易云插件<span class="token operator">--</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>iframe frameborder<span class="token operator">=</span><span class="token string">"no"</span> border<span class="token operator">=</span><span class="token string">"0"</span> marginwidth<span class="token operator">=</span><span class="token string">"0"</span> marginheight<span class="token operator">=</span><span class="token string">"0"</span> width<span class="token operator">=</span><span class="token number">330</span> height<span class="token operator">=</span><span class="token number">86</span> 
+      src<span class="token operator">=</span><span class="token string">"//music.163.com/outchain/player?type=2&amp;id=463352828&amp;auto=0&amp;height=66"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>iframe<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>在博客文件夹打开<code>GitBash</code>执行<code>hexo clean</code>、<code>hexo g</code>、<code>hexo s</code>，即可看到效果。</p>
 <h1 id="使用Aplayer-MetingJS插件"><a href="#使用Aplayer-MetingJS插件" class="headerlink" title="使用Aplayer + MetingJS插件"></a>使用Aplayer + MetingJS插件</h1><p>特点：</p>
 <ul>
@@ -354,30 +354,30 @@
 <blockquote>
 <p>经测试：此方式，有时会失效，留作研究。【不推荐】 【要求<code>MetingJS</code>版本：@2.0.1】</p>
 </blockquote>
-<pre><code class="javascript">&lt;aside class=&quot;sidebar&quot;&gt;
-    &lt;div class=&quot;sidebar-inner&quot;&gt;   //从下面开始复制，粘贴到这里
-    &lt;!-- require APlayer --&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css&quot;&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js&quot;&gt;&lt;/script&gt;
-    &lt;!-- require MetingJS--&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js&quot;&gt;&lt;/script&gt; 
-    &lt;!--网易云--&gt;   
-    &lt;meting-js
-      server=&quot;netease&quot;
-      id=&quot;4916164702&quot;
-      type=&quot;playlist&quot; 
-      mini=&quot;false&quot;
-      fixed=&quot;false&quot;
-      list-folded=&quot;true&quot;
-      autoplay=&quot;false&quot;
-      volume=&quot;0.4&quot;
-      theme=&quot;#FADFA3&quot;
-      order=&quot;random&quot;
-      loop=&quot;all&quot;
-      preload=&quot;auto&quot;
-      mutex=&quot;true&quot;&gt;
-    &lt;/meting-js&gt;
-</code></pre>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>aside <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar-inner"</span><span class="token operator">></span>   <span class="token comment">//从下面开始复制，粘贴到这里</span>
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> require APlayer <span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>link rel<span class="token operator">=</span><span class="token string">"stylesheet"</span> href<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> require MetingJS<span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span> 
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>网易云<span class="token operator">--</span><span class="token operator">></span>   
+    <span class="token operator">&lt;</span>meting<span class="token operator">-</span>js
+      server<span class="token operator">=</span><span class="token string">"netease"</span>
+      id<span class="token operator">=</span><span class="token string">"4916164702"</span>
+	  type<span class="token operator">=</span><span class="token string">"playlist"</span> 
+	  mini<span class="token operator">=</span><span class="token string">"false"</span>
+      fixed<span class="token operator">=</span><span class="token string">"false"</span>
+      list<span class="token operator">-</span>folded<span class="token operator">=</span><span class="token string">"true"</span>
+      autoplay<span class="token operator">=</span><span class="token string">"false"</span>
+      volume<span class="token operator">=</span><span class="token string">"0.4"</span>
+      theme<span class="token operator">=</span><span class="token string">"#FADFA3"</span>
+      order<span class="token operator">=</span><span class="token string">"random"</span>
+	  loop<span class="token operator">=</span><span class="token string">"all"</span>
+      preload<span class="token operator">=</span><span class="token string">"auto"</span>
+      mutex<span class="token operator">=</span><span class="token string">"true"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>meting<span class="token operator">-</span>js<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>属性</strong></p>
 <table>
 <thead>
@@ -478,38 +478,38 @@
 </blockquote>
 <p><strong>添加QQ音乐歌单</strong></p>
 <p>将<code>meting-js</code>换成下面即可。 <code>auto</code>后为歌单网址。</p>
-<pre><code class="javascript">&lt;meting-js
-   auto=&quot;https://y.qq.com/n/yqq/playlist/1790504159.html#stat=y_new.playlist.pic_click&quot;&gt;
-&lt;/meting-js&gt;
-</code></pre>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>meting<span class="token operator">-</span>js
+   auto<span class="token operator">=</span><span class="token string">"https://y.qq.com/n/yqq/playlist/1790504159.html#stat=y_new.playlist.pic_click"</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>meting<span class="token operator">-</span>js<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>复杂方式</strong></p>
 <p>在<code>data-</code>后添加属性及属性值即可实现相同功能</p>
 <blockquote>
 <p>【要求<code>MetingJS</code>版本：@1.2】</p>
 </blockquote>
-<pre><code class="javascript">&lt;aside class=&quot;sidebar&quot;&gt;
-    &lt;div class=&quot;sidebar-inner&quot;&gt;   //从下面开始复制，粘贴到这里
-&lt;!-- require APlayer --&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css&quot;&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js&quot;&gt;&lt;/script&gt;
-    &lt;!-- require MetingJS--&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/meting@1.2/dist/Meting.min.js&quot;&gt;&lt;/script&gt; 
-    &lt;!--网易云--&gt;   
-    &lt;div class=&quot;aplayer&quot; 
-      data-id=&quot;4916164702&quot; 
-      data-server=&quot;netease&quot; 
-      data-type=&quot;playlist&quot; 
-      data-fixed=&quot;false&quot; 
-      data-autoplay=&quot;false&quot; 
-      data-list-folded=&quot;true&quot;
-      data-mutex=&quot;true&quot;
-      data-order=&quot;random&quot; 
-      data-loop=&quot;all&quot;
-      data-volume=&quot;0.4&quot; 
-      data-theme=&quot;#FADFA3&quot; 
-      date-preload=&quot;auto&quot; &gt; 
-    &lt;/div&gt;
-</code></pre>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>aside <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar-inner"</span><span class="token operator">></span>   <span class="token comment">//从下面开始复制，粘贴到这里</span>
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> require APlayer <span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>link rel<span class="token operator">=</span><span class="token string">"stylesheet"</span> href<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> require MetingJS<span class="token operator">--</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/meting@1.2/dist/Meting.min.js"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span> 
+	<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>网易云<span class="token operator">--</span><span class="token operator">></span>   
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"aplayer"</span> 
+      data<span class="token operator">-</span>id<span class="token operator">=</span><span class="token string">"4916164702"</span> 
+      data<span class="token operator">-</span>server<span class="token operator">=</span><span class="token string">"netease"</span> 
+      data<span class="token operator">-</span>type<span class="token operator">=</span><span class="token string">"playlist"</span> 
+      data<span class="token operator">-</span>fixed<span class="token operator">=</span><span class="token string">"false"</span> 
+      data<span class="token operator">-</span>autoplay<span class="token operator">=</span><span class="token string">"false"</span> 
+      data<span class="token operator">-</span>list<span class="token operator">-</span>folded<span class="token operator">=</span><span class="token string">"true"</span>
+      data<span class="token operator">-</span>mutex<span class="token operator">=</span><span class="token string">"true"</span>
+      data<span class="token operator">-</span>order<span class="token operator">=</span><span class="token string">"random"</span> 
+      data<span class="token operator">-</span>loop<span class="token operator">=</span><span class="token string">"all"</span>
+      data<span class="token operator">-</span>volume<span class="token operator">=</span><span class="token string">"0.4"</span> 
+      data<span class="token operator">-</span>theme<span class="token operator">=</span><span class="token string">"#FADFA3"</span> 
+      date<span class="token operator">-</span>preload<span class="token operator">=</span><span class="token string">"auto"</span> <span class="token operator">></span> 
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <blockquote>
 <p>其他属性请参照文末链接：<code>APlayer</code></p>
 </blockquote>
@@ -528,19 +528,19 @@
 <li>打开<code>themes\next\layout</code>文件夹找到<code>_layout.swig</code></li>
 <li>在<code>&lt;\head&gt;</code>标签前添加下面代码，并保存。</li>
 </ul>
-<pre><code class="javascript">&lt;head&gt;   //粘贴到这里
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>head<span class="token operator">></span>   <span class="token comment">//粘贴到这里</span>
     
-  &lt;!--pjax：防止跳转页面音乐暂停--&gt;
-  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js&quot;&gt;&lt;/script&gt; 
-&lt;/head&gt; 
-</code></pre>
+  <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>pjax：防止跳转页面音乐暂停<span class="token operator">--</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span> 
+<span class="token operator">&lt;</span><span class="token operator">/</span>head<span class="token operator">></span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ul>
 <li>在主题的配置文件中找到<code>pajx</code>，将它设置为<code>true</code>，并保存。</li>
 </ul>
-<pre><code># Easily enable fast Ajax navigation on your website.
-# Dependencies: https://github.com/theme-next/theme-next-pjax
-pjax: true
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none"># Easily enable fast Ajax navigation on your website.
+# Dependencies: https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;theme-next-pjax
+pjax: true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>在博客文件夹打开<code>GitBash</code>执行<code>hexo clean</code>、<code>hexo g</code>、<code>hexo s</code>，跳转页面时即可看到效果。</p>
 <hr>
 <h1 id="参考文章-【鸣谢】"><a href="#参考文章-【鸣谢】" class="headerlink" title="参考文章 【鸣谢】"></a>参考文章 【鸣谢】</h1><blockquote>
@@ -761,7 +761,7 @@ pjax: true
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

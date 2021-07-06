@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-20T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.203Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,7 +295,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -320,60 +320,62 @@
 <h1 id="FileInputStream-和-FileOutputStream-简介"><a href="#FileInputStream-和-FileOutputStream-简介" class="headerlink" title="FileInputStream 和 FileOutputStream 简介"></a>FileInputStream 和 FileOutputStream 简介</h1><p><code>FileInputStream</code>是文件输入流，它继承于<code>InputStream</code>。<br>通常，使用<code>FileInputStream</code>从某个文件中获得输入字节。</p>
 <p><code>FileOutputStream</code>是文件输出流，它继承于<code>OutputStream</code>。<br>通常，使用<code>FileOutputStream</code>将数据写入<code>File</code>或 <code>FileDescriptor</code>的输出流。</p>
 <p>FileInputStream 函数接口</p>
-<pre><code class="java">FileInputStream(File file)         // 构造函数1：创建File对象对应的文件输入流
-FileInputStream(FileDescriptor fd) // 构造函数2：创建文件描述符对应的文件输入流
-FileInputStream(String path)       // 构造函数3：创建文件(路径为path)对应的文件输入流
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">)</span>         <span class="token comment">// 构造函数1：创建File对象对应的文件输入流</span>
+<span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token class-name">FileDescriptor</span> fd<span class="token punctuation">)</span> <span class="token comment">// 构造函数2：创建文件描述符对应的文件输入流</span>
+<span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> path<span class="token punctuation">)</span>       <span class="token comment">// 构造函数3：创建文件(路径为path)对应的文件输入流</span>
     
-// 常用方法
-int      available()             // 返回剩余的可读取的字节数或者skip的字节数
-void     close()                 // 关闭文件输入流
-FileChannel      getChannel()    // 返回FileChannel
-final FileDescriptor     getFD() // 返回文件描述符
-int                  read()      // 返回文件输入流的下一个字节
-// 读取文件输入流的数据并存在到buffer，从byteOffset开始存储，存储长度是byteCount。
-int      read(byte[] buffer, int byteOffset, int byteCount) 
-long     skip(long byteCount)    // 跳过byteCount个字节
-</code></pre>
+<span class="token comment">// 常用方法</span>
+<span class="token keyword">int</span>      <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span>             <span class="token comment">// 返回剩余的可读取的字节数或者skip的字节数</span>
+<span class="token keyword">void</span>     <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                 <span class="token comment">// 关闭文件输入流</span>
+<span class="token class-name">FileChannel</span>      <span class="token function">getChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token comment">// 返回FileChannel</span>
+<span class="token keyword">final</span> <span class="token class-name">FileDescriptor</span>     <span class="token function">getFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 返回文件描述符</span>
+<span class="token keyword">int</span>      			<span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>      <span class="token comment">// 返回文件输入流的下一个字节</span>
+<span class="token comment">// 读取文件输入流的数据并存在到buffer，从byteOffset开始存储，存储长度是byteCount。</span>
+<span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> byteOffset<span class="token punctuation">,</span> <span class="token keyword">int</span> byteCount<span class="token punctuation">)</span> 
+<span class="token keyword">long</span>     <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">long</span> byteCount<span class="token punctuation">)</span>    <span class="token comment">// 跳过byteCount个字节</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>FileOutputStream 函数接口</p>
-<pre><code class="java">// 构造函数1：创建File对象对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(File file)     
-// 构造函数2：创建File对象对应的文件输入流；指定追加模式。
-FileOutputStream(File file, boolean append)   
-// 构造函数3：创建文件描述符对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(FileDescriptor fd)
-// 构造函数4：创建文件(路径为path)对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。
-FileOutputStream(String path) 
-// 构造函数5：创建文件(路径为path)对应的文件输入流；指定追加模式。
-FileOutputStream(String path, boolean append) 
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 构造函数1：创建File对象对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。</span>
+<span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">)</span>     
+<span class="token comment">// 构造函数2：创建File对象对应的文件输入流；指定追加模式。</span>
+<span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">,</span> <span class="token keyword">boolean</span> append<span class="token punctuation">)</span>   
+<span class="token comment">// 构造函数3：创建文件描述符对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。</span>
+<span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">FileDescriptor</span> fd<span class="token punctuation">)</span>
+<span class="token comment">// 构造函数4：创建文件(路径为path)对应的文件输入流；默认追加模式是false，即写到输出的流内容不是以追加的方式添加到文件中。</span>
+<span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> path<span class="token punctuation">)</span> 
+<span class="token comment">// 构造函数5：创建文件(路径为path)对应的文件输入流；指定追加模式。</span>
+<span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> path<span class="token punctuation">,</span> <span class="token keyword">boolean</span> append<span class="token punctuation">)</span> 
 
-// 常用方法
-void                    close()      // 关闭输出流
-FileChannel             getChannel() // 返回FileChannel
-final FileDescriptor    getFD()      // 返回文件描述符
-// 将buffer写入到文件输出流中，从buffer的byteOffset开始写，写入长度是byteCount。
-void                    write(byte[] buffer, int byteOffset, int byteCount) 
-void                    write(int oneByte)  // 写入字节oneByte到文件输出流中
-</code></pre>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
+<span class="token comment">// 常用方法</span>
+<span class="token keyword">void</span>                    <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>      <span class="token comment">// 关闭输出流</span>
+<span class="token class-name">FileChannel</span>             <span class="token function">getChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// 返回FileChannel</span>
+<span class="token keyword">final</span> <span class="token class-name">FileDescriptor</span>    <span class="token function">getFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span>      <span class="token comment">// 返回文件描述符</span>
+<span class="token comment">// 将buffer写入到文件输出流中，从buffer的byteOffset开始写，写入长度是byteCount。</span>
+<span class="token keyword">void</span>                    <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> byteOffset<span class="token punctuation">,</span> <span class="token keyword">int</span> byteCount<span class="token punctuation">)</span> 
+<span class="token keyword">void</span>                    <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">int</span> oneByte<span class="token punctuation">)</span>  <span class="token comment">// 写入字节oneByte到文件输出流中</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
-public class FileStreamTest &#123;
 
-    private static final String FileName = &quot;file.txt&quot;;
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">File</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileDescriptor</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">BufferedInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">BufferedOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PrintStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
 
-    public static void main(String[] args) &#123;
-        testWrite();
-        testRead();
-    &#125;
 
-    /**
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileStreamTest</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token class-name">FileName</span> <span class="token operator">=</span> <span class="token string">"file.txt"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">testWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">testRead</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">/**
      * FileOutputStream 演示函数
      *
      * 运行结果：
@@ -387,83 +389,83 @@ public class FileStreamTest &#123;
      *      它是以追加模式将内容写入文件的。即写入的内容，追加到原始的内容之后。
      * 2 FileOutputStream fileOut2 = new FileOutputStream(file, false);
      *      它是以新建模式将内容写入文件的。即删除文件原始的内容之后，再重新写入。
-     */
-    private static void testWrite() &#123;
-        try &#123;
-            // 创建文件file.txt对应File对象
-            File file = new File(FileName);
-            // 创建文件file.txt对应的FileOutputStream对象，默认是关闭追加模式
-            FileOutputStream fileOut1 = new FileOutputStream(file);
-            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
-            PrintStream out1 = new PrintStream(fileOut1);
-            // 向文件中写入26个字母
-            out1.print(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
-            out1.close();
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 创建文件file.txt对应File对象</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 创建文件file.txt对应的FileOutputStream对象，默认是关闭追加模式</span>
+            <span class="token class-name">FileOutputStream</span> fileOut1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利</span>
+            <span class="token class-name">PrintStream</span> out1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span>fileOut1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 向文件中写入26个字母</span>
+            out1<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"abcdefghijklmnopqrstuvwxyz"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out1<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 创建文件file.txt对应的FileOutputStream对象，打开追加模式
-            FileOutputStream fileOut2 = new FileOutputStream(file, true);
-            // 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利
-            PrintStream out2 = new PrintStream(fileOut2);
-            // 向文件中写入0123456789+换行符
-            out2.println(&quot;0123456789&quot;);
-            out2.close();
+            <span class="token comment">// 创建文件file.txt对应的FileOutputStream对象，打开追加模式</span>
+            <span class="token class-name">FileOutputStream</span> fileOut2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 创建FileOutputStream对应的PrintStream，方便操作。PrintStream的写入接口更便利</span>
+            <span class="token class-name">PrintStream</span> out2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span>fileOut2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 向文件中写入0123456789+换行符</span>
+            out2<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"0123456789"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out2<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
  
-    // FileInputStream 演示程序
-    private static void testRead() &#123;
-        try &#123;
-            // 方法1：新建FileInputStream对象
-            // 新建文件file.txt对应File对象
-            File file = new File(FileName);
-            FileInputStream in1 = new FileInputStream(file);
+    <span class="token comment">// FileInputStream 演示程序</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testRead</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 方法1：新建FileInputStream对象</span>
+            <span class="token comment">// 新建文件file.txt对应File对象</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">FileInputStream</span> in1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 方法2：新建FileInputStream对象
-            FileInputStream in2 = new FileInputStream(FileName);
+            <span class="token comment">// 方法2：新建FileInputStream对象</span>
+            <span class="token class-name">FileInputStream</span> in2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 方法3：新建FileInputStream对象
-            // 获取文件file.txt对应的文件描述符
-            FileDescriptor fdin = in2.getFD();
-            // 根据文件描述符创建FileInputStream对象
-            FileInputStream in3 = new FileInputStream(fdin);
+            <span class="token comment">// 方法3：新建FileInputStream对象</span>
+            <span class="token comment">// 获取文件file.txt对应的文件描述符</span>
+            <span class="token class-name">FileDescriptor</span> fdin <span class="token operator">=</span> in2<span class="token punctuation">.</span><span class="token function">getFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 根据文件描述符创建FileInputStream对象</span>
+            <span class="token class-name">FileInputStream</span> in3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>fdin<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 测试read()，从中读取一个字节
-            char c1 = (char)in1.read();
-            System.out.println(&quot;c1=&quot;+c1);
+            <span class="token comment">// 测试read()，从中读取一个字节</span>
+            <span class="token keyword">char</span> c1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span>in1<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"c1="</span><span class="token operator">+</span>c1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 测试skip(long byteCount)，跳过4个字节
-            in1.skip(25);
+            <span class="token comment">// 测试skip(long byteCount)，跳过4个字节</span>
+            in1<span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 测试read(byte[] buffer, int byteOffset, int byteCount)
-            byte[] buf = new byte[10];
-            in1.read(buf, 0, buf.length);
-            System.out.println(&quot;buf=&quot;+(new String(buf)));
+            <span class="token comment">// 测试read(byte[] buffer, int byteOffset, int byteCount)</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            in1<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> buf<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"buf="</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 
-            // 创建FileInputStream对象对应的BufferedInputStream
-            BufferedInputStream bufIn = new BufferedInputStream(in3);
-            // 读取一个字节
-            char c2 = (char)bufIn.read();
-            System.out.println(&quot;c2=&quot;+c2);
+            <span class="token comment">// 创建FileInputStream对象对应的BufferedInputStream</span>
+            <span class="token class-name">BufferedInputStream</span> bufIn <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedInputStream</span><span class="token punctuation">(</span>in3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 读取一个字节</span>
+            <span class="token keyword">char</span> c2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span>bufIn<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"c2="</span><span class="token operator">+</span>c2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            in1.close();
-            in2.close();
-            in3.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+            in1<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            in2<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            in3<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>c1=a
-buf=0123456789
-c2=a
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">c1&#x3D;a
+buf&#x3D;0123456789
+c2&#x3D;a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：</p>
 <p>运行程序，会在源码所在位置新生成一个文件<code>file.txt</code>。它的内容是<code>abcdefghijklmnopqrstuvwxyz0123456789</code>。</p>
 
@@ -490,12 +492,12 @@ c2=a
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/20/Java-IO-FileDescriptor/" rel="prev" title="Java IO之 FileDescriptor详解">
-      <i class="fa fa-chevron-left"></i> Java IO之 FileDescriptor详解
+    <a href="/2020/07/20/Java-IO-FilterOutputStream/" rel="prev" title="Java IO之 FilterOutputStream详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 FilterOutputStream详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/20/Java-IO-FilterOutputStream/" rel="next" title="Java IO之 FilterOutputStream详解">
-      Java IO之 FilterOutputStream详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/20/Java-IO-BufferedOutputStream/" rel="next" title="Java IO之 BufferedOutputStream详解">
+      Java IO之 BufferedOutputStream详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -673,7 +675,7 @@ c2=a
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

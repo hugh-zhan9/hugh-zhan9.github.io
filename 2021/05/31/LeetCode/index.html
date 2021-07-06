@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://pic1.zhimg.com/50/v2-3461589c1227f699fa351c80dcf8ce87_hd.jpg?source=1940ef5c">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-3461589c1227f699fa351c80dcf8ce87_720w.jpg?source=1940ef5c">
 <meta property="article:published_time" content="2021-05-31T20:10:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.207Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.716Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="LeetCode">
 <meta name="twitter:card" content="summary">
@@ -267,7 +267,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -340,8 +340,12 @@
 </li>
 </ol>
 <p>这居然是easy题</p>
-<pre><code class="java">
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+
+
 <p>双指针解法</p>
 <p>二分法查找</p>
 <p>分治法</p>
@@ -354,19 +358,19 @@
 <p>对撞数组适用于<strong>有序数组</strong>，也就是说当你遇到题目给定有序数组时，应该第一时间想到用对撞指针解题。</p>
 </blockquote>
 <p>伪代码大致如下：</p>
-<pre><code class="js">function fn (list) &#123;
-  var left = 0;
-  var right = list.length - 1;
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">fn</span> <span class="token punctuation">(</span><span class="token parameter">list</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> left <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> right <span class="token operator">=</span> list<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-  //遍历数组
-  while (left &lt;= right) &#123;
-    left++;
-    // 一些条件判断 和处理
-    ... ...
-    right--;
-  &#125;
-&#125;
-</code></pre>
+  <span class="token comment">//遍历数组</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>left <span class="token operator">&lt;=</span> right<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    left<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token comment">// 一些条件判断 和处理</span>
+    <span class="token operator">...</span> <span class="token operator">...</span>
+    right<span class="token operator">--</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>举个LeetCode上的例子：</p>
 <p>以**LeetCode 881<a href="https://link.zhihu.com/?target=https://leetcode-cn.com/problems/boats-to-save-people/">救生艇</a>**问题为例</p>
 <p>由于本题只要求计算出<code>最小船数</code>，所以原数组是否被改变，和元素索引位置都不考虑在内，所以可以先对于给定数组进行排序，再从数组两侧向中间遍历。所以解题思路如下：</p>
@@ -376,74 +380,74 @@
 <li>每次都用一个”最重的“和一个”最轻的“进行配对，如果二人重量小于<code>Limit</code>，则此时的”最轻的“上船，即（<code>left++</code>）。不管”最轻的“是否上船，”最重的“都要上船，即（<code>right--</code>）并且所需船数量加一，即（<code>num++</code>）</li>
 </ol>
 <p>代码如下：</p>
-<pre><code class="js">var numRescueBoats = function(people, limit) &#123;
-  people.sort((a, b) =&gt; (a - b));
-  var num = 0
-  let left = 0
-  let right = people.length - 1
-  while (left &lt;= right) &#123;
-    if ((people[left] + people[right]) &lt;= limit) &#123;
-      left++
-    &#125;
-    right--
-    num++
-  &#125;
-  return num
-&#125;;
-</code></pre>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">numRescueBoats</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">people<span class="token punctuation">,</span> limit</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  people<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span>a <span class="token operator">-</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> num <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">let</span> left <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">let</span> right <span class="token operator">=</span> people<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>left <span class="token operator">&lt;=</span> right<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>people<span class="token punctuation">[</span>left<span class="token punctuation">]</span> <span class="token operator">+</span> people<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> limit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      left<span class="token operator">++</span>
+    <span class="token punctuation">&#125;</span>
+    right<span class="token operator">--</span>
+    num<span class="token operator">++</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> num
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <hr>
 <h3 id="快慢指针"><a href="#快慢指针" class="headerlink" title="快慢指针"></a>快慢指针</h3><p><strong>快慢指针</strong>也是双指针，但是两个指针从同一侧开始遍历数组，将这两个指针分别定义为<code>快指针（fast）</code>和<code>慢指针（slow）</code>，两个指针以不同的策略移动，直到两个指针的值相等（或其他特殊条件）为止，如<code>fast</code>每次增长两个，<code>slow</code>每次增长一个。</p>
 <p>以<a href="https://link.zhihu.com/?target=https://leetcode-cn.com/problems/linked-list-cycle/">LeetCode 141.环形链表</a>为例,，判断给定链表中是否存在环，可以定义快慢两个指针，快指针每次增长一个，而慢指针每次增长两个，最后两个指针指向节点的值相等，则说明有环。就好像一个环形跑道上有一快一慢两个运动员赛跑，如果时间足够长，跑地快的运动员一定会赶上慢的运动员。</p>
 <p>解题代码如下：</p>
-<pre><code class="js">/**
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">/**
  * Definition for singly-linked list.
  * function ListNode(val) &#123;
  *     this.val = val;
  *     this.next = null;
  * &#125;
- */
+ */</span>
 
-/**
+<span class="token comment">/**
  * @param &#123;ListNode&#125; head
  * @return &#123;boolean&#125;
- */
-var hasCycle = function(head) &#123;
-  if (head === null || head.next === null) &#123;
-    return false
-  &#125;
+ */</span>
+<span class="token keyword">var</span> <span class="token function-variable function">hasCycle</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">head</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">===</span> <span class="token keyword">null</span> <span class="token operator">||</span> head<span class="token punctuation">.</span>next <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span>
+  <span class="token punctuation">&#125;</span>
 
-  let slow = head
-  let fast = head.next
+  <span class="token keyword">let</span> slow <span class="token operator">=</span> head
+  <span class="token keyword">let</span> fast <span class="token operator">=</span> head<span class="token punctuation">.</span>next
 
-  while (slow !== fast) &#123;
-    if (fast === null || fast.next === null) &#123;
-      return false
-    &#125;
-    slow = slow.next
-    fast = fast.next.next
-  &#125;
-  return true
-&#125;;
-</code></pre>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>slow <span class="token operator">!==</span> fast<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fast <span class="token operator">===</span> <span class="token keyword">null</span> <span class="token operator">||</span> fast<span class="token punctuation">.</span>next <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span>
+    <span class="token punctuation">&#125;</span>
+    slow <span class="token operator">=</span> slow<span class="token punctuation">.</span>next
+    fast <span class="token operator">=</span> fast<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> <span class="token boolean">true</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>再比如<a href="https://link.zhihu.com/?target=https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/">LeetCode 26 删除排序数组中的重复项</a>，这里还是定义快慢两个指针。快指针每次增长一个，慢指针只有当快慢指针上的值不同时，才增长一个（由于是有序数组，快慢指针值不等说明找到了新值）。</p>
 <p>真实代码：</p>
-<pre><code class="java">class Solution &#123;
-    public int removeDuplicates(int[] nums) &#123;
-        int fast = 1;
-        int slow = 0;
-        while(fast&lt;nums.length)&#123;
-            if(nums[slow] == nums[fast])&#123;
-                fast++;
-            &#125;else&#123;
-                slow++;
-                nums[slow] = nums[fast];
-                fast++; 
-            &#125;
-        &#125;
-        return slow+1;   
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">removeDuplicates</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> fast <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> slow <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>fast<span class="token operator">&lt;</span>nums<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>slow<span class="token punctuation">]</span> <span class="token operator">==</span> nums<span class="token punctuation">[</span>fast<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                fast<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+                slow<span class="token operator">++</span><span class="token punctuation">;</span>
+                nums<span class="token punctuation">[</span>slow<span class="token punctuation">]</span> <span class="token operator">=</span> nums<span class="token punctuation">[</span>fast<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                fast<span class="token operator">++</span><span class="token punctuation">;</span> 
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> slow<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>   
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="滑动窗口法"><a href="#滑动窗口法" class="headerlink" title="滑动窗口法"></a>滑动窗口法</h3><p>两个指针，一前一后组成滑动窗口，并计算滑动窗口中的元素的问题。</p>
 <p>这类问题一般包括</p>
 <p>1、字符串匹配问题</p>
@@ -703,70 +707,70 @@ var hasCycle = function(head) &#123;
 <p>每一个题目都经过至少一遍这样的迭代。这样几遍下来，我对于每个题目都有了更加深刻的理解，大部分的题目我都有自信能够写出最优解甚至代码都是最优化的（至少比论坛回复里面的最高票答案还要精简）。</p>
 <p>举个例子，<a href="https://link.zhihu.com/?target=https://leetcode.com/problems/two-sum/">Two Sum</a>问题。</p>
 <p>我最早的解法是暴力搜索。当时的代码(C++)是这样的：</p>
-<pre><code class="cpp">class Solution &#123;
-public:
-  vector&lt;int&gt; twoSum(vector&lt;int&gt; &amp;numbers, int target) &#123;
-    // Start typing your C/C++ solution below
-    // DO NOT write int main() function
-    vector&lt;int&gt; index(2, 0);
-    if (numbers.empty() || numbers.size() == 1)
-      return index;
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+  vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">twoSum</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token operator">&amp;</span>numbers<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// Start typing your C/C++ solution below</span>
+    <span class="token comment">// DO NOT write int main() function</span>
+    vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>numbers<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> numbers<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+      <span class="token keyword">return</span> index<span class="token punctuation">;</span>
     
-    for (int i = 0; i &lt; numbers.size()-1; ++i) &#123;
-      // j should start from i+1
-      for (int j = i+1; j &lt; numbers.size(); ++j) &#123;
-        if (numbers[i] + numbers[j] == target) &#123;
-          index.clear();
-          index.push_back(i+1);
-          index.push_back(j+1);
-          break;
-        &#125;
-      &#125;
-    &#125;
-    return index;
-  &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> numbers<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// j should start from i+1</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> numbers<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>numbers<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> numbers<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          index<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          index<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          index<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> index<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这个解法不仅复杂度高，而且代码冗长繁琐。</p>
 <p>后来看了网上高票答案的解法，知道了用hashmap来做，于是写出了优化的代码(Java)：</p>
-<pre><code class="java">public int[] twoSum(int[] nums, int target) &#123;
-    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(); 
-    int[] result = &#123;-1, -1&#125;;  
-    for (int i = 0; i &lt; nums.length; ++i) &#123; 
-        if (map.containsKey(target - nums[i])) &#123;   
-            result[0] = map.get(target - nums[i]); 
-            result[1] = i; 
-            break; 
-        &#125;  
-        map.put(nums[i], i); 
-    &#125;  
-    return result; 
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">twoSum</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> result <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>  
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>target <span class="token operator">-</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>   
+            result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> map<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>target <span class="token operator">-</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+            result<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> i<span class="token punctuation">;</span> 
+            <span class="token keyword">break</span><span class="token punctuation">;</span> 
+        <span class="token punctuation">&#125;</span>  
+        map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">&#125;</span>  
+    <span class="token keyword">return</span> result<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>再后来，对代码进行了一些细节的简化：</p>
-<pre><code class="java">public class Solution &#123;
-    public int[] twoSum(int[] nums, int target) &#123;
-        Map&lt;Integer, Integer&gt; map = new HashMap();
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">twoSum</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> target<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        for (int i = 0; i &lt; nums.length; ++i) &#123;
-            if (map.containsKey(target- nums[i])) &#123;
-                return new int[]&#123;map.get(target- nums[i]), i&#125;;
-            &#125;
-            map.put(nums[i], i);
-        &#125;
-        return int[]&#123;-1, -1&#125;;
-    &#125;
-&#125;
-</code></pre>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>target<span class="token operator">-</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span>map<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>target<span class="token operator">-</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>至此，代码几乎达到最精简状态。（中间有略去几次迭代）总之，<strong>不断地学习别人的代码，改进自己的代码，不断地锤炼自己的代码，直至算法最优化，代码最简洁</strong>！潜移默化中，不仅对题目解法有了更深刻的理解（什么是最优解），而且也知道如何用最简洁的代码实现这个最优解。</p>
 <p>再举个<strong>极端的例子</strong>吧，179. Largest Number，这个题目我最后精简成的代码如下：</p>
-<pre><code class="java">public String largestNumber(int[] nums) &#123; 
-    return Arrays.stream(nums) 
-    .mapToObj(String::valueOf) 
-    .sorted((s1, s2) -&gt; (s2 + s1).compareTo(s1 + s2)) 
-    .reduce((s1, s2) -&gt; s1.equals(&quot;0&quot;) ? s2 : s1 + s2).get(); 
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">largestNumber</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    <span class="token keyword">return</span> <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span> 
+    <span class="token punctuation">.</span><span class="token function">mapToObj</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token operator">::</span><span class="token function">valueOf</span><span class="token punctuation">)</span> 
+    <span class="token punctuation">.</span><span class="token function">sorted</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span> s2<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">(</span>s2 <span class="token operator">+</span> s1<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span>s1 <span class="token operator">+</span> s2<span class="token punctuation">)</span><span class="token punctuation">)</span> 
+    <span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span> s2<span class="token punctuation">)</span> <span class="token operator">-></span> s1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"0"</span><span class="token punctuation">)</span> <span class="token operator">?</span> s2 <span class="token operator">:</span> s1 <span class="token operator">+</span> s2<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>我本人不是算法高手，算是勤能补拙类型。这样长期坚持下来，慢慢地感觉自己编程能力提升了很多。不仅面试的时候得心应手，而且在工作中提交code review的时候，往往有自信说自己的代码是简单，干净与优雅的。</p>
 <hr>
 <blockquote>
@@ -984,7 +988,7 @@ public:
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

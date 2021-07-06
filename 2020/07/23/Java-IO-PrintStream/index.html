@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-23T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.203Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,7 +295,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>13k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -320,71 +320,71 @@
 <h1 id="PrintStream-简介"><a href="#PrintStream-简介" class="headerlink" title="PrintStream 简介"></a>PrintStream 简介</h1><p><code>PrintStream</code>是打印输出流，继承于<code>FilterOutputStream</code>。</p>
 <p><code>PrintStream</code>是用来装饰其他输出流的。它能为其他输出流添加功能，使其能够方便地打印出各种数据值表示形式。与<code>PrintStream</code>不同的是：<code>PrintStream</code>永远不会抛出<code>IOException</code>。它产生的<code>IOException</code>会被自身的函数所捕获并设置错误标记，用户可以通过<code>checkError()</code>返回错误标记，从而查看<code>PrintStream</code>内部是否产生了<code>IOException</code>。另外，<code>PrintStream</code>提供了自动刷新和字符集设置功能。</p>
 <p>PrintStream 函数列表</p>
-<pre><code class="java">// 构造方法
-PrintStream(OutputStream out)
-PrintStream(OutputStream out, boolean autoFlash)
-PrintStream(OutputStream out, boolean autoFlash, string encoding)
-PrintStream(String fileName)
-    // 创建fileName对应的FileOutputStream，然后将该FileOutputStream作为PrintStream的输出流，采用csn字符集。
-PrintStream(String fileName, String csn)
-PrintStream(File file)
-PrintStream(File file, String csn)
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 构造方法</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">OutputStream</span> out<span class="token punctuation">)</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">OutputStream</span> out<span class="token punctuation">,</span> <span class="token keyword">boolean</span> autoFlash<span class="token punctuation">)</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">OutputStream</span> out<span class="token punctuation">,</span> <span class="token keyword">boolean</span> autoFlash<span class="token punctuation">,</span> string encoding<span class="token punctuation">)</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> fileName<span class="token punctuation">)</span>
+	<span class="token comment">// 创建fileName对应的FileOutputStream，然后将该FileOutputStream作为PrintStream的输出流，采用csn字符集。</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> fileName<span class="token punctuation">,</span> <span class="token class-name">String</span> csn<span class="token punctuation">)</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">)</span>
+<span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">,</span> <span class="token class-name">String</span> csn<span class="token punctuation">)</span>
 
-// 常用方法
-void flush()
-void close()
-void checkError()
-void setError()
-void clearError()
-void write(int b)
-void write(byte buf[], int off, int len)
-void print(boolean b)
-void print(char c)
-void print(int i)
-void print(long l)
-void print(float f)
-void print(double d)
-void print(char s[])
-void print(String s)
-void print(Object obj)
-void println()
-void print(boolean x)
-void print(char x)
-void print(int x)
-void print(long x)
-void print(float x)
-void print(double x)
-void print(char x)
-void print(String x)
-void print(Object x)
-    // 将数据args根据默认Locale值按照format格式化，并写入到PrintStream输出流中
-PrintStream printf(String format, Object...args)
-    // 将数据args根据Locale值(区域属性)按照format格式化，并写入到PrintStream输出流中
-PrintStream printf(Locale l, String format, Object...args)
-    // 根据默认的Locale值(区域属性)来格式化数据
-PrintStream format(Locale l, String format, Object...args)
-    // 根据Locale值(区域属性)来格式化数据
-PrintStream format(String format, Object...args)
-    // 将字符序列追加到PrintStream输出流中
-PrintStream append(CharSequence csq)
-    // 将字符序列从start(包括)到end(不包括)的全部字符追加到PrintStream输出流中
-PrintStream append(CharSequence csq, int start, int end)
-    // 将字符c追加到PrintStream输出流中
-PrintStream append(char c)
-</code></pre>
+<span class="token comment">// 常用方法</span>
+<span class="token keyword">void</span> <span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">checkError</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">setError</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">clearError</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">int</span> b<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">byte</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> b<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">long</span> l<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">float</span> f<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">double</span> d<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">char</span> s<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token class-name">Object</span> obj<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">char</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">long</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">float</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">double</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">char</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token class-name">String</span> x<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token class-name">Object</span> x<span class="token punctuation">)</span>
+    <span class="token comment">// 将数据args根据默认Locale值按照format格式化，并写入到PrintStream输出流中</span>
+<span class="token class-name">PrintStream</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>args<span class="token punctuation">)</span>
+    <span class="token comment">// 将数据args根据Locale值(区域属性)按照format格式化，并写入到PrintStream输出流中</span>
+<span class="token class-name">PrintStream</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token class-name">Locale</span> l<span class="token punctuation">,</span> <span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>args<span class="token punctuation">)</span>
+    <span class="token comment">// 根据默认的Locale值(区域属性)来格式化数据</span>
+<span class="token class-name">PrintStream</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">Locale</span> l<span class="token punctuation">,</span> <span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>args<span class="token punctuation">)</span>
+    <span class="token comment">// 根据Locale值(区域属性)来格式化数据</span>
+<span class="token class-name">PrintStream</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>args<span class="token punctuation">)</span>
+    <span class="token comment">// 将字符序列追加到PrintStream输出流中</span>
+<span class="token class-name">PrintStream</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">CharSequence</span> csq<span class="token punctuation">)</span>
+    <span class="token comment">// 将字符序列从start(包括)到end(不包括)的全部字符追加到PrintStream输出流中</span>
+<span class="token class-name">PrintStream</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">CharSequence</span> csq<span class="token punctuation">,</span> <span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">)</span>
+    <span class="token comment">// 将字符c追加到PrintStream输出流中</span>
+<span class="token class-name">PrintStream</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <blockquote>
 <p>注意：</p>
 <p><code>print())</code>和<code>println()</code>都是将其中参数转换成字符串之后，再写入到输入流。</p>
 </blockquote>
 <p>例如：</p>
-<pre><code class="java">print(0x61);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">print</span><span class="token punctuation">(</span><span class="token number">0x61</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>等价于</p>
-<pre><code class="java">write(String.valueOf(0x61));
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">0x61</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面语句是将字符串<code>97</code>写入到输出流。<code>0x61</code>对应十进制数是<code>97</code>。</p>
-<pre><code class="java">write(0x61)
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token function">write</span><span class="token punctuation">(</span><span class="token number">0x61</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面语句是将字符<code>a</code>写入到输出流。因为<code>0x61</code>对应的ASCII码的字母<code>a</code>。</p>
 <h1 id="PrintStream-和-DataOutputStream-异同点"><a href="#PrintStream-和-DataOutputStream-异同点" class="headerlink" title="PrintStream 和 DataOutputStream 异同点"></a>PrintStream 和 DataOutputStream 异同点</h1><h2 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h2><p>都是继承于<code>FileOutputStream</code>，用于包装其它输出流。</p>
 <h2 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h2><ol>
@@ -406,582 +406,583 @@ PrintStream append(char c)
 <p><code>PrintStream</code>在通过<code>writr()</code>向输出流中写入数据时，若产生<code>IOException</code>，则会在<code>write()</code>中进行捕获处理；并设置<code>trouble</code>标记(用于表示产生了异常)为<code>true</code>。用户可以通过<code>checkError()</code>返回<code>trouble</code>值，从而检查输出流中是否产生了异常。</p>
 </li>
 </ol>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.PrintStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PrintStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">File</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
 
 
-public class PrintStreamTest &#123;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PrintStreamTest</span> <span class="token punctuation">&#123;</span>
 
-    public static void main(String[] args) &#123;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-        // 下面3个函数的作用都是一样：都是将字母abcde写入到文件file.txt中。
-        // 任选一个执行即可！
-        testPrintStreamConstrutor1() ;
-        //testPrintStreamConstrutor2() ;
-        //testPrintStreamConstrutor3() ;
+        <span class="token comment">// 下面3个函数的作用都是一样：都是将字母abcde写入到文件file.txt中。</span>
+        <span class="token comment">// 任选一个执行即可！</span>
+        <span class="token function">testPrintStreamConstrutor1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+        <span class="token comment">//testPrintStreamConstrutor2() ;</span>
+        <span class="token comment">//testPrintStreamConstrutor3() ;</span>
 
-        // 测试write(), print(), println(), printf()等接口。
-        testPrintStreamAPIS() ;
-    &#125;
+        <span class="token comment">// 测试write(), print(), println(), printf()等接口。</span>
+        <span class="token function">testPrintStreamAPIS</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * PrintStream(OutputStream out) 的测试函数
      * 函数的作用，就是将字母abcde写入到文件file.txt中
-     */
-    private static void testPrintStreamConstrutor1() &#123;
-        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;; // abced
-        try &#123;
-            File file = new File(&quot;file.txt&quot;);
-            PrintStream out = new PrintStream(new FileOutputStream(file));
-            out.write(arr);
-            out.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testPrintStreamConstrutor1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x62</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x64</span><span class="token punctuation">,</span> <span class="token number">0x65</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token comment">// abced</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"file.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">PrintStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * PrintStream(File file) 的测试函数
      * 函数的作用，就是将字母abcde写入到文件file.txt中
-     */
-    private static void testPrintStreamConstrutor2() &#123;
-        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;;
-        try &#123;
-            File file = new File(&quot;file.txt&quot;);
-            PrintStream out = new PrintStream(file);
-            out.write(arr);
-            out.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testPrintStreamConstrutor2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x62</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x64</span><span class="token punctuation">,</span> <span class="token number">0x65</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"file.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">PrintStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * PrintStream(String fileName) 的测试函数
      * 函数的作用，就是将字母abcde写入到文件file.txt”中
-     */
-    private static void testPrintStreamConstrutor3() &#123;
-        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;;
-        try &#123;
-            PrintStream out = new PrintStream(&quot;file.txt&quot;);
-            out.write(arr);
-            out.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testPrintStreamConstrutor3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x62</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x64</span><span class="token punctuation">,</span> <span class="token number">0x65</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">PrintStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token string">"file.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 测试write(), print(), println(), printf()等接口。
-     */
-    private static void testPrintStreamAPIS() &#123;
-        final byte[] arr=&#123;0x61, 0x62, 0x63, 0x64, 0x65 &#125;; // abced
-        try &#123;
-            PrintStream out = new PrintStream(&quot;other.txt&quot;);
-            out.println(&quot;hello PrintStream&quot;);
-            out.write(0x41);  // A
-            // out.print(0x41); 等价于 out.write(String.valueOf(0x41));
-            out.print(0x41);
-            out.append(&#39;B&#39;);
-            // 将&quot;CDE is 5&quot; + 回车  写入到输出流中
-            String str = &quot;CDE&quot;;
-            int num = 5;
-            out.printf(&quot;%s is %d\n&quot;, str, num);
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testPrintStreamAPIS</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x62</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x64</span><span class="token punctuation">,</span> <span class="token number">0x65</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token comment">// abced</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">PrintStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token string">"other.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello PrintStream"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token number">0x41</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// A</span>
+            <span class="token comment">// out.print(0x41); 等价于 out.write(String.valueOf(0x41));</span>
+            out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token number">0x41</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 将"CDE is 5" + 回车  写入到输出流中</span>
+            <span class="token class-name">String</span> str <span class="token operator">=</span> <span class="token string">"CDE"</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> num <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s is %d\n"</span><span class="token punctuation">,</span> str<span class="token punctuation">,</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            out.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+            out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行上面的代码，会在源码所在目录生成两个文件<code>file.txt</code>和<code>other.txt</code>。</p>
 <p><code>file.txt</code>的内容如下：</p>
-<pre><code>abcde
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">abcde<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><code>other.txt</code>的内容如下：</p>
-<pre><code>hello PrintStream
-A65BCDE is 5
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">hello PrintStream
+A65BCDE is 5<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h1 id="System-out-println-详解"><a href="#System-out-println-详解" class="headerlink" title="System.out.println 详解"></a>System.out.println 详解</h1><p>我们初学的第一个程序就是输出一个<code>Hello World</code>。那么它是如何实现的呢？</p>
 <p>先看看<code>System.java</code>中<code>out</code>的定义，源码如下：</p>
-<pre><code class="java">public final class System &#123;
-    ...
-    public final static PrintStream out = null;
-    ...
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">System</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> <span class="token class-name">PrintStream</span> out <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>从中可以看到：<code>out</code>是<code>System</code>的静态变量，所以可以通过<code>System.out</code>来进行调用，而<code>System.out</code>返回类型为<code>PrintStrem</code>类型。</p>
 <p>那么可以定义如下代码：</p>
-<pre><code class="java">PrintStream ps = System.out;
-ps.println(&quot;Hello World&quot;);
-// 等价于
-System.out.println(&quot;Hello World&quot;);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">PrintStream</span> ps <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">;</span>
+ps<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello World"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 等价于</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Hello World"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>所以实际上<code>System.out.println()</code>是调用了<code>PrintStream</code>对象的<code>println</code>方法进行输出。</p>
-<h1 id="PrintStream-源码"><a href="#PrintStream-源码" class="headerlink" title="PrintStream 源码"></a>PrintStream 源码</h1><pre><code class="java">import java.util.Formatter;
-import java.util.Locale;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.UnsupportedCharsetException;
+<h1 id="PrintStream-源码"><a href="#PrintStream-源码" class="headerlink" title="PrintStream 源码"></a>PrintStream 源码</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Formatter</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Locale</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>charset<span class="token punctuation">.</span></span><span class="token class-name">Charset</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>charset<span class="token punctuation">.</span></span><span class="token class-name">IllegalCharsetNameException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>nio<span class="token punctuation">.</span>charset<span class="token punctuation">.</span></span><span class="token class-name">UnsupportedCharsetException</span><span class="token punctuation">;</span>
 
 
-public class PrintStream extends FilterOutputStream
-    implements Appendable, Closeable
-&#123;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PrintStream</span> <span class="token keyword">extends</span> <span class="token class-name">FilterOutputStream</span>
+    <span class="token keyword">implements</span> <span class="token class-name">Appendable</span><span class="token punctuation">,</span> <span class="token class-name">Closeable</span>
+<span class="token punctuation">&#123;</span>
 
-    private final boolean autoFlush;
-    private boolean trouble = false;
-    private Formatter formatter;
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> autoFlush<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> trouble <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Formatter</span> formatter<span class="token punctuation">;</span>
 
    
-    private BufferedWriter textOut;
-    private OutputStreamWriter charOut;
+    <span class="token keyword">private</span> <span class="token class-name">BufferedWriter</span> textOut<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">OutputStreamWriter</span> charOut<span class="token punctuation">;</span>
 
  
-    private static &lt;T&gt; T requireNonNull(T obj, String message) &#123;
-        if (obj == null)
-            throw new NullPointerException(message);
-        return obj;
-    &#125;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token class-name">T</span> <span class="token function">requireNonNull</span><span class="token punctuation">(</span><span class="token class-name">T</span> obj<span class="token punctuation">,</span> <span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>obj <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NullPointerException</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> obj<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    private static Charset toCharset(String csn)
-        throws UnsupportedEncodingException
-    &#123;
-        requireNonNull(csn, &quot;charsetName&quot;);
-        try &#123;
-            return Charset.forName(csn);
-        &#125; catch (IllegalCharsetNameException|UnsupportedCharsetException unused) &#123;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">Charset</span> <span class="token function">toCharset</span><span class="token punctuation">(</span><span class="token class-name">String</span> csn<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name">UnsupportedEncodingException</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token function">requireNonNull</span><span class="token punctuation">(</span>csn<span class="token punctuation">,</span> <span class="token string">"charsetName"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token class-name">Charset</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span>csn<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IllegalCharsetNameException</span><span class="token operator">|</span><span class="token class-name">UnsupportedCharsetException</span> unused<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
             
-            throw new UnsupportedEncodingException(csn);
-        &#125;
-    &#125;
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">UnsupportedEncodingException</span><span class="token punctuation">(</span>csn<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    private PrintStream(boolean autoFlush, OutputStream out) &#123;
-        super(out);
-        this.autoFlush = autoFlush;
-        this.charOut = new OutputStreamWriter(this);
-        this.textOut = new BufferedWriter(charOut);
-    &#125;
+    <span class="token keyword">private</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> autoFlush<span class="token punctuation">,</span> <span class="token class-name">OutputStream</span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>autoFlush <span class="token operator">=</span> autoFlush<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>charOut <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OutputStreamWriter</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>textOut <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedWriter</span><span class="token punctuation">(</span>charOut<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    private PrintStream(boolean autoFlush, OutputStream out, Charset charset) &#123;
-        super(out);
-        this.autoFlush = autoFlush;
-        this.charOut = new OutputStreamWriter(this, charset);
-        this.textOut = new BufferedWriter(charOut);
-    &#125;
-
-    
-    private PrintStream(boolean autoFlush, Charset charset, OutputStream out)
-        throws UnsupportedEncodingException
-    &#123;
-        this(autoFlush, out, charset);
-    &#125;
+    <span class="token keyword">private</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> autoFlush<span class="token punctuation">,</span> <span class="token class-name">OutputStream</span> out<span class="token punctuation">,</span> <span class="token class-name">Charset</span> charset<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>autoFlush <span class="token operator">=</span> autoFlush<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>charOut <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OutputStreamWriter</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> charset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>textOut <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedWriter</span><span class="token punctuation">(</span>charOut<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public PrintStream(OutputStream out) &#123;
-        this(out, false);
-    &#125;
+    <span class="token keyword">private</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> autoFlush<span class="token punctuation">,</span> <span class="token class-name">Charset</span> charset<span class="token punctuation">,</span> <span class="token class-name">OutputStream</span> out<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name">UnsupportedEncodingException</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>autoFlush<span class="token punctuation">,</span> out<span class="token punctuation">,</span> charset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">OutputStream</span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
    
-    public PrintStream(OutputStream out, boolean autoFlush) &#123;
-        this(autoFlush, requireNonNull(out, &quot;Null output stream&quot;));
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">OutputStream</span> out<span class="token punctuation">,</span> <span class="token keyword">boolean</span> autoFlush<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>autoFlush<span class="token punctuation">,</span> <span class="token function">requireNonNull</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> <span class="token string">"Null output stream"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
    
-    public PrintStream(OutputStream out, boolean autoFlush, String encoding)
-        throws UnsupportedEncodingException
-    &#123;
-        this(autoFlush,
-             requireNonNull(out, &quot;Null output stream&quot;),
-             toCharset(encoding));
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">OutputStream</span> out<span class="token punctuation">,</span> <span class="token keyword">boolean</span> autoFlush<span class="token punctuation">,</span> <span class="token class-name">String</span> encoding<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name">UnsupportedEncodingException</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>autoFlush<span class="token punctuation">,</span>
+             <span class="token function">requireNonNull</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> <span class="token string">"Null output stream"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+             <span class="token function">toCharset</span><span class="token punctuation">(</span>encoding<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public PrintStream(String fileName) throws FileNotFoundException &#123;
-        this(false, new FileOutputStream(fileName));
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> fileName<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">FileNotFoundException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>fileName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public PrintStream(String fileName, String csn)
-        throws FileNotFoundException, UnsupportedEncodingException
-    &#123;
-        this(false, toCharset(csn), new FileOutputStream(fileName));
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">String</span> fileName<span class="token punctuation">,</span> <span class="token class-name">String</span> csn<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name">FileNotFoundException</span><span class="token punctuation">,</span> <span class="token class-name">UnsupportedEncodingException</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token function">toCharset</span><span class="token punctuation">(</span>csn<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>fileName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public PrintStream(File file) throws FileNotFoundException &#123;
-        this(false, new FileOutputStream(file));
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">FileNotFoundException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
  
-    public PrintStream(File file, String csn)
-        throws FileNotFoundException, UnsupportedEncodingException
-    &#123;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">,</span> <span class="token class-name">String</span> csn<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name">FileNotFoundException</span><span class="token punctuation">,</span> <span class="token class-name">UnsupportedEncodingException</span>
+    <span class="token punctuation">&#123;</span>
         
-        this(false, toCharset(csn), new FileOutputStream(file));
-    &#125;
+        <span class="token keyword">this</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token function">toCharset</span><span class="token punctuation">(</span>csn<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    private void ensureOpen() throws IOException &#123;
-        if (out == null)
-            throw new IOException(&quot;Stream closed&quot;);
-    &#125;
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>out <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Stream closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
  
     
-    public void flush() &#123;
-        synchronized (this) &#123;
-            try &#123;
-                ensureOpen();
-                out.flush();
-            &#125;
-            catch (IOException x) &#123;
-                trouble = true;
-            &#125;
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                out<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    private boolean closing = false; 
-
-    
-    public void close() &#123;
-        synchronized (this) &#123;
-            if (! closing) &#123;
-                closing = true;
-                try &#123;
-                    textOut.close();
-                    out.close();
-                &#125;
-                catch (IOException x) &#123;
-                    trouble = true;
-                &#125;
-                textOut = null;
-                charOut = null;
-                out = null;
-            &#125;
-        &#125;
-    &#125;
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> closing <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> 
 
     
-    public boolean checkError() &#123;
-        if (out != null)
-            flush();
-        if (out instanceof java.io.PrintStream) &#123;
-            PrintStream ps = (PrintStream) out;
-            return ps.checkError();
-        &#125;
-        return trouble;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span> closing<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                closing <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    textOut<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                textOut <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                charOut <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                out <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    protected void setError() &#123;
-        trouble = true;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">checkError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>out <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>out <span class="token keyword">instanceof</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>PrintStream</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">PrintStream</span> ps <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">PrintStream</span><span class="token punctuation">)</span> out<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> ps<span class="token punctuation">.</span><span class="token function">checkError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> trouble<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">setError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
    
-    protected void clearError() &#123;
-        trouble = false;
-    &#125;
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">clearError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        trouble <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void write(int b) &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                out.write(b);
-                if ((b == &#39;\n&#39;) &amp;&amp; autoFlush)
-                    out.flush();
-            &#125;
-        &#125;
-        catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125;
-        catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>b <span class="token operator">==</span> <span class="token string">'\n'</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> autoFlush<span class="token punctuation">)</span>
+                    out<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void write(byte buf[], int off, int len) &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                out.write(buf, off, len);
-                if (autoFlush)
-                    out.flush();
-            &#125;
-        &#125;
-        catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125;
-        catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">byte</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> off<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>autoFlush<span class="token punctuation">)</span>
+                    out<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
 
-    private void write(char buf[]) &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                textOut.write(buf);
-                textOut.flushBuffer();
-                charOut.flushBuffer();
-                if (autoFlush) &#123;
-                    for (int i = 0; i &lt; buf.length; i++)
-                        if (buf[i] == &#39;\n&#39;)
-                            out.flush();
-                &#125;
-            &#125;
-        &#125;
-        catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125;
-        catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-    &#125;
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">char</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                textOut<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                textOut<span class="token punctuation">.</span><span class="token function">flushBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                charOut<span class="token punctuation">.</span><span class="token function">flushBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>autoFlush<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> buf<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>buf<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
+                            out<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    private void write(String s) &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                textOut.write(s);
-                textOut.flushBuffer();
-                charOut.flushBuffer();
-                if (autoFlush &amp;&amp; (s.indexOf(&#39;\n&#39;) &gt;= 0))
-                    out.flush();
-            &#125;
-        &#125;
-        catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125;
-        catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-    &#125;
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                textOut<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                textOut<span class="token punctuation">.</span><span class="token function">flushBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                charOut<span class="token punctuation">.</span><span class="token function">flushBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>autoFlush <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>s<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    out<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    private void newLine() &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                textOut.newLine();
-                textOut.flushBuffer();
-                charOut.flushBuffer();
-                if (autoFlush)
-                    out.flush();
-            &#125;
-        &#125;
-        catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125;
-        catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-    &#125;
-
-    
-    public void print(boolean b) &#123;
-        write(b ? &quot;true&quot; : &quot;false&quot;);
-    &#125;
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                textOut<span class="token punctuation">.</span><span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                textOut<span class="token punctuation">.</span><span class="token function">flushBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                charOut<span class="token punctuation">.</span><span class="token function">flushBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>autoFlush<span class="token punctuation">)</span>
+                    out<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(char c) &#123;
-        write(String.valueOf(c));
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span>b <span class="token operator">?</span> <span class="token string">"true"</span> <span class="token operator">:</span> <span class="token string">"false"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(int i) &#123;
-        write(String.valueOf(i));
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(long l) &#123;
-        write(String.valueOf(l));
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(float f) &#123;
-        write(String.valueOf(f));
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">long</span> l<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(double d) &#123;
-        write(String.valueOf(d));
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">float</span> f<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(char s[]) &#123;
-        write(s);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">double</span> d<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void print(String s) &#123;
-        if (s == null) &#123;
-            s = &quot;null&quot;;
-        &#125;
-        write(s);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">char</span> s<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>s <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            s <span class="token operator">=</span> <span class="token string">"null"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
    
-    public void print(Object obj) &#123;
-        write(String.valueOf(obj));
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token class-name">Object</span> obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
     
-    public void println() &#123;
-        newLine();
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
    
-    public void println(boolean x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
   
-    public void println(char x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">char</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public void println(int x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public void println(long x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">long</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
   
-    public void println(float x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">float</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public void println(double x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">double</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public void println(char x[]) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">char</span> x<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public void println(String x) &#123;
-        synchronized (this) &#123;
-            print(x);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">String</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public void println(Object x) &#123;
-        String s = String.valueOf(x);
-        synchronized (this) &#123;
-            print(s);
-            newLine();
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Object</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">newLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
 
-    public PrintStream printf(String format, Object ... args) &#123;
-        return format(format, args);
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">format</span><span class="token punctuation">(</span>format<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public PrintStream printf(Locale l, String format, Object ... args) &#123;
-        return format(l, format, args);
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token class-name">Locale</span> l<span class="token punctuation">,</span> <span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">format</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> format<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public PrintStream format(String format, Object ... args) &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                if ((formatter == null)
-                    || (formatter.locale() != Locale.getDefault()))
-                    formatter = new Formatter((Appendable) this);
-                formatter.format(Locale.getDefault(), format, args);
-            &#125;
-        &#125; catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125; catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-        return this;
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>formatter <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+                    <span class="token operator">||</span> <span class="token punctuation">(</span>formatter<span class="token punctuation">.</span><span class="token function">locale</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token class-name">Locale</span><span class="token punctuation">.</span><span class="token function">getDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Formatter</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">Appendable</span><span class="token punctuation">)</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                formatter<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">Locale</span><span class="token punctuation">.</span><span class="token function">getDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> format<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public PrintStream format(Locale l, String format, Object ... args) &#123;
-        try &#123;
-            synchronized (this) &#123;
-                ensureOpen();
-                if ((formatter == null)
-                    || (formatter.locale() != l))
-                    formatter = new Formatter(this, l);
-                formatter.format(l, format, args);
-            &#125;
-        &#125; catch (InterruptedIOException x) &#123;
-            Thread.currentThread().interrupt();
-        &#125; catch (IOException x) &#123;
-            trouble = true;
-        &#125;
-        return this;
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token class-name">Locale</span> l<span class="token punctuation">,</span> <span class="token class-name">String</span> format<span class="token punctuation">,</span> <span class="token class-name">Object</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">ensureOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>formatter <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+                    <span class="token operator">||</span> <span class="token punctuation">(</span>formatter<span class="token punctuation">.</span><span class="token function">locale</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> l<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    formatter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Formatter</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> l<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                formatter<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> format<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedIOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            trouble <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public PrintStream append(CharSequence csq) &#123;
-        if (csq == null)
-            print(&quot;null&quot;);
-        else
-            print(csq.toString());
-        return this;
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">CharSequence</span> csq<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>csq <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>csq<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public PrintStream append(CharSequence csq, int start, int end) &#123;
-        CharSequence cs = (csq == null ? &quot;null&quot; : csq);
-        write(cs.subSequence(start, end).toString());
-        return this;
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">CharSequence</span> csq<span class="token punctuation">,</span> <span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> end<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">CharSequence</span> cs <span class="token operator">=</span> <span class="token punctuation">(</span>csq <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token string">"null"</span> <span class="token operator">:</span> csq<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">write</span><span class="token punctuation">(</span>cs<span class="token punctuation">.</span><span class="token function">subSequence</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public PrintStream append(char c) &#123;
-        print(c);
-        return this;
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">PrintStream</span> <span class="token function">append</span><span class="token punctuation">(</span><span class="token keyword">char</span> c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">print</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;
-</code></pre>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -1189,7 +1190,7 @@ public class PrintStream extends FilterOutputStream
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

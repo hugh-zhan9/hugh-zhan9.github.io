@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/fe/8c/fe313ed327bcf234c73ba738d975b18c.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/b5/11/b5e07bb34d532d46d127f4fcc4b78f11.jpg">
 <meta property="article:published_time" content="2021-06-29T20:41:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -264,7 +264,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -337,14 +337,14 @@
 <p>其中，参赛选手的编号叫做<strong>键</strong>（key）或者关键字用来标识一个选手。参赛编号转化为数组下标的映射方法就叫作<strong>散列函数</strong>（或 “Hash 函数”、”哈希函数”），而散列函数计算得到的值就叫作<strong>散列值</strong>（或”Hash 值”、”哈希值”）。</p>
 <p><strong>散列表用的就是数组支持按照下标随机访问的时候，时间复杂度是 <code>O(1)</code> 的特性。通过散列函数把元素的键值映射为下标，然后将数据存储在数组中对应下标的位置。当按照键值查询元素时，用同样的散列函数，将键值转化数组下标，从对应的数组下标的位置取数据。</strong></p>
 <h1 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h1><p>从上面的例子我们可以看到，散列函数在散列表中起着非常关键的作用。顾名思义，散列函数是一个函数，可以把它定义成 <code>hash(key)</code>，其中 key 表示元素的键值，<code>hash(key)</code> 的值表示经过散列函数计算得到的散列值。那第一个例子中，编号就是数组下标，所以 <code>hash(key)</code> 就等于 key。改造后的例子，用伪代码将它写成函数就是下面这样：</p>
-<pre><code>int hash(String key) &#123;
-    // 获取后两位字符
-    string lastTwoChars = key.substr(length-2, length);
-    // 将后两位字符转换为整数
-    int hashValue = convert lastTwoChas to int-type;
-    return hashValue;
-&#125;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">int hash(String key) &#123;
+	&#x2F;&#x2F; 获取后两位字符
+	string lastTwoChars &#x3D; key.substr(length-2, length);
+	&#x2F;&#x2F; 将后两位字符转换为整数
+	int hashValue &#x3D; convert lastTwoChas to int-type;
+	return hashValue;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>刚刚举的学校运动会的例子，散列函数比较简单，也比较容易想到。但是，如果参赛选手的编号是随机生成的 6 位数字，又或者用的是 a 到 z 之间的字符串，该如何构造散列函数呢？</p>
 <p>这里总结了三点散列函数设计的基本要求：</p>
 <ul>
@@ -369,8 +369,8 @@
 <p>所谓二次探测，跟线性探测很像，线性探测每次探测的步长是 1，那它探测的下标序列就是 <code>hash(key)+0，hash(key)+1，hash(key)+2……</code> 而二次探测探测的步长就变成了原来的“二次方”，也就是说，它探测的下标序列就是 <code>hash(key)+0，hash(key)+12，hash(key)+22……</code></p>
 <p>所谓双重散列，不是简单的使用一个散列函数。而是使用一组散列函数 <code>hash1(key)，hash2(key)，hash3(key)……</code>，先用第一个散列函数，如果计算得到的存储位置已经被占用，再用第二个散列函数，依次类推，直到找到空闲的存储位置。</p>
 <p>不管采用哪种探测方法，当散列表中空闲位置不多的时候，散列冲突的概率就会大大提高。为了尽可能保证散列表的操作效率，一般情况下，会尽可能保证散列表中有一定比例的空闲槽位。用<strong>装载因子</strong>（load factor）来表示空位的多少。装载因子的计算公式是：</p>
-<pre><code>散列表的装载因子 = 填入表中的元素个数 / 散列表的长度
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">散列表的装载因子 &#x3D; 填入表中的元素个数 &#x2F; 散列表的长度<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降。</p>
 <h2 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h2><p>链表法是一种更加常用的散列冲突解决办法，相比开放寻址法，它要简单很多。在散列表中，每个”桶（bucket）”或者 “槽（slot）” 会对应一条链表，所有散列值相同的元素都放到相同槽位对应的链表中。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/a4/7f/a4b77d593e4cb76acb2b0689294ec17f.jpg"></p>
@@ -386,9 +386,9 @@
 <p>实际工作中，还需要综合考虑各种因素。这些因素有关键字的长度、特点、分布、还有散列表的大小等。散列函数各式各样，举几个常用的、简单的散列函数的设计方法。</p>
 <p>第一个例子还是学生运动会的例子，通过分析参赛编号的特征，把编号中的后两位作为散列值。还可以用类似的散列函数处理手机号码，因为手机号码前几位重复的可能性很大，但是后面几位就比较随机，可以取手机号的后四位作为散列值。这种散列函数的设计方法，叫做“数据分析法”。</p>
 <p>第二个例子就是如何实现 Word 拼写检查功能的例子。这里面的散列函数，就可以这样设计：将单词中每个字母的 ASCll 码值 “进位” 相加，然后再跟散列表的大小求余、取模，作为散列值。比如，英文单词 nice 转化出来的散列值就是下面这样：</p>
-<pre><code>
-hash(&quot;nice&quot;)=((&quot;n&quot; - &quot;a&quot;) * 26*26*26 + (&quot;i&quot; - &quot;a&quot;)*26*26 + (&quot;c&quot; - &quot;a&quot;)*26+ (&quot;e&quot;-&quot;a&quot;)) / 78978
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">
+hash(&quot;nice&quot;)&#x3D;((&quot;n&quot; - &quot;a&quot;) * 26*26*26 + (&quot;i&quot; - &quot;a&quot;)*26*26 + (&quot;c&quot; - &quot;a&quot;)*26+ (&quot;e&quot;-&quot;a&quot;)) &#x2F; 78978<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>实际上，散列函数的设计方法还有很多，比如直接寻址法、平方取中法、折叠法、随机数法等，这些你只要了解就行了，不需要全都掌握。</p>
 <h1 id="装载因子过大了怎么办？"><a href="#装载因子过大了怎么办？" class="headerlink" title="装载因子过大了怎么办？"></a>装载因子过大了怎么办？</h1><p>装载因子越大，说明散列表中的元素越多，空闲位置越少，散列冲突的概率就越大。不仅插入数据的过程要多次寻址或者拉很长的链，查找的过程也会因此变得很慢。</p>
 <p>对于没有频繁插入和删除的静态数据集合来说，很容易根据数据的特点、分布等，设计出完美的、极少冲突的散列函数，因为毕竟之前数据都是已知的。对于动态散列表来说，数据集合是频繁变动的，无法预估将要加入的数据个数，所以也无法事先申请一个足够大的散列表。随着数据慢慢加入，装载因子就会慢慢变大。当装载因子大到一定程度之后，散列冲突就会变得不可接受。这个时候该如何处理呢？</p>
@@ -424,25 +424,23 @@ hash(&quot;nice&quot;)=((&quot;n&quot; - &quot;a&quot;) * 26*26*26 + (&quot;i&qu
 </li>
 <li><p><strong>散列函数</strong></p>
 <p>散列函数的设计并不复杂，追求的是简单高效、分布均匀。</p>
-<pre><code class="java">int hash(Object key) &#123;
-    int h = key.hashCode()；
-    return (h ^ (h &gt;&gt;&gt; 16)) &amp; (capicity -1); //capicity表示散列表的大小
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">hash</span><span class="token punctuation">(</span><span class="token class-name">Object</span> key<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> h <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>；
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>h <span class="token operator">^</span> <span class="token punctuation">(</span>h <span class="token operator">>>></span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>capicity <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//capicity表示散列表的大小</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>其中，<code>hashCode()</code> 返回的是 Java 对象的 hash code。比如 String 类型的对象的 <code>hashCode()</code> 就是下面这样：</p>
-<pre><code class="java">public int hashCode() &#123;
-    int var1 = this.hash;
-    if(var1 == 0 &amp;&amp; this.value.length &gt; 0) &#123;
-        char[] var2 = this.value;
-        for(int var3 = 0; var3 &lt; this.value.length; ++var3) &#123;
-            var1 = 31 * var1 + var2[var3];
-        &#125;
-        this.hash = var1;
-    &#125;
-    return var1;
-&#125;
-</code></pre>
-</li>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> var1 <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>hash<span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>var1 <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> var2 <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> var3 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> var3 <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>var3<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            var1 <span class="token operator">=</span> <span class="token number">31</span> <span class="token operator">*</span> var1 <span class="token operator">+</span> var2<span class="token punctuation">[</span>var3<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>hash <span class="token operator">=</span> var1<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> var1<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ol>
 <h1 id="LRU-缓存淘汰算法"><a href="#LRU-缓存淘汰算法" class="headerlink" title="LRU 缓存淘汰算法"></a>LRU 缓存淘汰算法</h1><p>在链表那一节中，提到借助散列表可以把 LRU 缓存淘汰算法的时间复杂度降低为 <code>O(1)</code>。那现在就来看看它是如何做到的。</p>
 <p>首先回顾一下当时是如何通过链表实现 LRU 缓存淘汰算法的。需要维护一个按照访问时间从大到小有序排列的链表结构。因为缓存大小有限，当缓存空间不够，需要淘汰一个数据的时候，就直接将链表头部的结点删除。当要缓存某个数据的时候，先在链表中查找这个数据。如果没有找到，则直接将数据放到链表的尾部；如果找到了就把它移动到链表的尾部。</p>
@@ -473,32 +471,32 @@ hash(&quot;nice&quot;)=((&quot;n&quot; - &quot;a&quot;) * 26*26*26 + (&quot;i&qu
 <p>如果仅仅按照分值将成员对象组织成跳表的结构，那按照键值来删除、查询成员对象就会很慢，解决方法与 LRU 缓存淘汰算法的解决方法类似。可以再按照键值构建一个散列表，这样按照 key 来删除、查找一个成员对象的时间复杂度就变成了 <code>O(1)</code>。同时，借助跳表结构，其他操作也非常高效。实际上，Redis 有序集合的操作还有另外一类，也就是查找成员对象的排名（Rank）或者根据排名区间查找成员对象。这个功能单纯用刚刚讲的这种组合结构就无法高效实现了。</p>
 <h1 id="Java-LinkedHashMap"><a href="#Java-LinkedHashMap" class="headerlink" title="Java LinkedHashMap"></a>Java LinkedHashMap</h1><p>HashMap 底层是通过散列表这种数据结构实现的。而 LinkedHashMap 前面比 HashMap 多了一个 “Linked”，这里的 “Linked” 是不是说，LinkedHashMap 是一个通过链表法解决散列冲突的散列表呢？</p>
 <p>实际上，LinkedHashMap 并没有这么简单，其中的 “Linked” 也并不仅仅代表它是通过链表法解决散列冲突的。先来看一段代码。你觉得这段代码会以什么样的顺序打印 3，1，5，2 这几个 key 呢？原因又是什么呢？</p>
-<pre><code class="java">HashMap&lt;Integer, Integer&gt; m = new LinkedHashMap&lt;&gt;();
-m.put(3, 11);
-m.put(1, 12);
-m.put(5, 23);
-m.put(2, 22);
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> m <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-for (Map.Entry e : m.entrySet()) &#123;
-    System.out.println(e.getKey());
-&#125;
-</code></pre>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Map<span class="token punctuation">.</span>Entry</span> e <span class="token operator">:</span> m<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上面的代码会按照数据插入的顺序依次来打印，也就是说，打印的顺序就是 3，1，5，2。你有没有觉得奇怪？散列表中数据是经过散列函数打乱之后无规律存储的，这里是如何实现按照数据的插入顺序来遍历打印的呢？</p>
 <p>LinkedHashMap 也是通过散列表和链表组合在一起实现的。实际上它不仅支持按照插入顺序遍历数据，还支持按照访问顺序来遍历数据。你可以看下面这段代码：</p>
-<pre><code class="java">// 10是初始大小，0.75是装载因子，true是表示按照访问时间排序
-HashMap&lt;Integer, Integer&gt; m = new LinkedHashMap&lt;&gt;(10, 0.75f, true);
-m.put(3, 11);
-m.put(1, 12);
-m.put(5, 23);
-m.put(2, 22);
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 10是初始大小，0.75是装载因子，true是表示按照访问时间排序</span>
+<span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> m <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0.75f</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-m.put(3, 26);
-m.get(5);
+m<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-for (Map.Entry e : m.entrySet()) &#123;
-    System.out.println(e.getKey());
-&#125;
-</code></pre>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Map<span class="token punctuation">.</span>Entry</span> e <span class="token operator">:</span> m<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这段代码打印的结果是 1，2，3，5。</p>
 <p>来具体分析一下，为什么这段代码会按照这样顺序来打印。每次调用 <code>put()</code> 函数往 LinkedHashMap 中添加数据的时候，都会将数据添加到链表的尾部，所以在前四个操作完成之后，链表中的数据是下面这样：</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/17/98/17ac41d9dac454e454dcb289100bf198.jpg"></p>
@@ -547,20 +545,20 @@ for (Map.Entry e : m.entrySet()) &#123;
 <p>1）ID 在散列表中所以可以 <code>O(1)</code> 查找到这个猎头；<br>2）积分以跳表存储，跳表支持区间查询；<br>3）这点根据目前学习的知识暂时无法实现，老师文中也提到了。</p>
 </blockquote>
 <hr>
-<pre><code>int hash(Object key) &#123;
-    int h = key.hashCode()；
-    return (h ^ (h &gt;&gt;&gt; 16)) &amp; (capitity -1); //capicity 表示散列表的大小
+<pre class="line-numbers language-none"><code class="language-none">int hash(Object key) &#123;
+    int h &#x3D; key.hashCode()；
+    return (h ^ (h &gt;&gt;&gt; 16)) &amp; (capitity -1); &#x2F;&#x2F;capicity 表示散列表的大小
 &#125;
 
 先补充下老师使用的这段代码的一些问题：在JDK HashMap源码中，是分两步走的：
 1. hash值的计算，源码如下：
 static final int hash(Object key) &#123;
         int hash;
-        return key == null ? 0 : (hash = key.hashCode()) ^ hash &gt;&gt;&gt; 16;
+        return key &#x3D;&#x3D; null ? 0 : (hash &#x3D; key.hashCode()) ^ hash &gt;&gt;&gt; 16;
  &#125;
 
 2. 在插入或查找的时候，计算Key被映射到桶的位置：
-int index = hash(key) &amp; (capacity - 1)
+int index &#x3D; hash(key) &amp; (capacity - 1)
 
 ----------------------------
 JDK HashMap中hash函数的设计，确实很巧妙：
@@ -569,13 +567,17 @@ hashcode本身是个32位整型值，获取对象的hashcode以后，先进行�
 
 最后，用hash表当前的容量减去一，再和刚刚计算出来的整型值做位与运算。进行位与运算，很好理解，是为了计算出数组中的位置。但这里有个问题：
 为什么要用容量减去一？
-因为 A % B = A &amp; (B - 1)，所以，(h ^ (h &gt;&gt;&gt; 16)) &amp; (capitity -1) = (h ^ (h &gt;&gt;&gt; 16)) % capitity，可以看出这里本质上是使用了「除留余数法」
+因为 A % B &#x3D; A &amp; (B - 1)，所以，(h ^ (h &gt;&gt;&gt; 16)) &amp; (capitity -1) &#x3D; (h ^ (h &gt;&gt;&gt; 16)) % capitity，可以看出这里本质上是使用了「除留余数法」
 
 综上，可以看出，hashcode的随机性，加上移位异或算法，得到一个非常随机的hash值，再通过「除留余数法」，得到index，整体的设计过程与老师所说的“散列函数”设计原则非常吻合！
 
 ---------
-有分析不准确的地方，请指正！
-</code></pre>
+有分析不准确的地方，请指正！<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
 <blockquote>
 <p>补充一下文中的一个错误之处。<br>当hashMap中节点少于6时，会由红黑树转变成链表，当hashMap中节点数为6时，链表的平均查找6/2=3。<br>当hashMap中节点多于8个时，会由链表转化成红黑树，红黑树的平均查找为log(8)=3。如果继续使用链表，平均查找长度为8/2=4，这才有转换为树的必要。<br>还有一个问题就是6和8的选择？6和8之间有一个7可以有效防止链表和红黑树频繁转换。<br>假设一下如果设计成hashMap中数据超过8，由链表转换成红黑树。hashMap中数据少于8，有红黑树转换成链表。若一个hashMap不停的插入，删除。hashMap中的个数不停的在8左右徘徊，就会频繁发生链表转红黑树，红黑树转链表，效率会非常低。<br>王铮老师的专栏写的非常好，感谢！</p>
 </blockquote>
@@ -793,7 +795,7 @@ hashcode本身是个32位整型值，获取对象的hashcode以后，先进行�
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

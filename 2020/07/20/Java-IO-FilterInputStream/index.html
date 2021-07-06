@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-20T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.203Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -320,13 +320,13 @@
 <h1 id="FilterInputStream-简介"><a href="#FilterInputStream-简介" class="headerlink" title="FilterInputStream 简介"></a>FilterInputStream 简介</h1><p><code>FilterInputStream</code>的作用是用来封装其它的输入流，并为它们提供额外的功能。它的常用的子类有<code>BufferedInputStream</code>和<code>DataInputStream</code>。</p>
 <p><code>BufferedInputStream</code>的作用是为输入流提供缓冲功能，以及<code>mark()</code>和<code>reset()</code>功能”。</p>
 <p><code>DataInputStream</code>是用来装饰其它输入流，它允许应用程序以与机器无关方式从底层输入流中读取基本 Java 数据类型。应用程序可以使用<code>DataOutputStream</code>(数据输出流)写入由<code>DataInputStream</code>(数据输入流)读取的数据。</p>
-<h1 id="FilterInputStream-源码"><a href="#FilterInputStream-源码" class="headerlink" title="FilterInputStream 源码"></a>FilterInputStream 源码</h1><pre><code class="Java">package java.io;
+<h1 id="FilterInputStream-源码"><a href="#FilterInputStream-源码" class="headerlink" title="FilterInputStream 源码"></a>FilterInputStream 源码</h1><pre class="line-numbers language-Java" data-language="Java"><code class="language-Java">package java.io;
 
 public class FilterInputStream extends InputStream &#123;
     protected volatile InputStream in;
 
     protected FilterInputStream(InputStream in) &#123;
-        this.in = in;
+        this.in &#x3D; in;
     &#125;
 
     public int read() throws IOException &#123;
@@ -364,9 +364,7 @@ public class FilterInputStream extends InputStream &#123;
     public boolean markSupported() &#123;
         return in.markSupported();
     &#125;
-&#125;
-</code></pre>
-
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
     </div>
 
     
@@ -390,12 +388,12 @@ public class FilterInputStream extends InputStream &#123;
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/20/Java-IO-FilterOutputStream/" rel="prev" title="Java IO之 FilterOutputStream详解">
-      <i class="fa fa-chevron-left"></i> Java IO之 FilterOutputStream详解
+    <a href="/2020/07/19/Java-IO/" rel="prev" title="Java IO之 总体架构">
+      <i class="fa fa-chevron-left"></i> Java IO之 总体架构
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/20/Java-IO-BufferedOutputStream/" rel="next" title="Java IO之 BufferedOutputStream详解">
-      Java IO之 BufferedOutputStream详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/20/Java-IO-ByteArrayInputStream/" rel="next" title="Java IO之 ByteArrayInputStream详解">
+      Java IO之 ByteArrayInputStream详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -573,7 +571,7 @@ public class FilterInputStream extends InputStream &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

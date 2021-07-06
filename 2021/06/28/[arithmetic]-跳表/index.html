@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/d0/0c/d03bef9a64a0368e6a0d23ace8bd450c.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/a8/a7/a861445d0b53fc842f38919365b004a7.jpg">
 <meta property="article:published_time" content="2021-06-28T21:41:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.728Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -262,7 +262,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,7 +301,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>13k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -348,8 +348,8 @@
 <p><img data-src="https://static001.geekbang.org/resource/image/d0/0c/d03bef9a64a0368e6a0d23ace8bd450c.jpg"></p>
 <p>通过上面的分析，得到 m=3，所以在跳表中查询任意数据的时间复杂度就是 <code>O(logn)</code>。这个查找的时间复杂度跟二分查找是一样的。换句话说，其实是基于单链表实现了二分查找。不过天下没有免费的午餐，这种查询效率的提升，前提是建立了很多级索引，也就是空间换时间的设计思路。</p>
 <h1 id="跳表的空间消耗"><a href="#跳表的空间消耗" class="headerlink" title="跳表的空间消耗"></a>跳表的空间消耗</h1><p>比起单纯的单链表，跳表需要存储多级索引，肯定要消耗更多的存储空间。那到底需要消耗多少额外的存储空间呢？来分析一下跳表的空间复杂度。假设原始链表大小为 n，那第一级索引大约有 n/2 个结点，第二级索引大约有 n/4 个结点，以此类推，每上升一级就减少一半，直到剩下 2 个结点。如果我们把每层索引的结点数写出来，就是一个等比数列。</p>
-<pre><code>n/2, n/4, n/8 ... 2
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">n&#x2F;2, n&#x2F;4, n&#x2F;8 ... 2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>这几级索引的结点总和就是 n/2+n/4+n/8…+8+4+2=n-2。所以跳表的空间复杂度是 <code>O(n)</code>。也就是说，如果将包含 n 个结点的单链表构造成跳表，需要额外再用接近 n 个结点的存储空间。那有没有办法降低索引占用的内存空间呢？</p>
 <p>前面都是每两个结点抽一个结点到上级索引，如果每三个结点或五个结点，抽一个结点到上级索引，是不是就不用那么多索引结点了呢？通过等比数列求和公式，总的索引结点大约就是 n/3+n/9+n/27+…+9+3+1=n/2。尽管空间复杂度还是 <code>O(n)</code>，但比上面的每两个结点抽一个结点的索引构建方法，要减少了一半的索引结点存储空间。</p>
 <p>实际上在软件开发中，不必太在意索引占用的额外空间。在讲数据结构和算法时，习惯性地把要处理的数据看成整数，但是在实际的软件开发中，原始链表中存储的有可能是很大的对象，而索引结点只需要存储关键值和几个指针，并不需要存储对象，所以当对象比索引结点大很多时，那索引占用的额外空间就可以忽略了。</p>
@@ -376,439 +376,443 @@
 <p>时间复杂度仍然是：<code>log(n)</code>，以几个节点提取影响的只是前面的系数 m</p>
 </blockquote>
 <p>跳表的实现：</p>
-<pre><code class="java">/**
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
  * 跳表的一种实现方法。
  * 跳表中存储的是正整数，并且存储的是不重复的。
  *
  * Author：ZHENG
- */
-public class SkipList &#123;
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SkipList</span> <span class="token punctuation">&#123;</span>
 
-    private static final float SKIPLIST_P = 0.5f;
-    private static final int MAX_LEVEL = 16;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">float</span> SKIPLIST_P <span class="token operator">=</span> <span class="token number">0.5f</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MAX_LEVEL <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">;</span>
 
-    private int levelCount = 1;
+    <span class="token keyword">private</span> <span class="token keyword">int</span> levelCount <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-    private Node head = new Node();  // 带头链表
+    <span class="token keyword">private</span> <span class="token class-name">Node</span> head <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 带头链表</span>
 
-    public Node find(int value) &#123;
-        Node p = head;
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-        &#125;
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            return p.forwards[0];
-        &#125; else &#123;
-            return null;
-        &#125;
-    &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void insert(int value) &#123;
-        int level = randomLevel();
-        Node newNode = new Node();
-        newNode.data = value;
-        newNode.maxLevel = level;
-        Node update[] = new Node[level];
-        for (int i = 0; i &lt; level; ++i) &#123;
-            update[i] = head;
-        &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token function">randomLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>data <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>maxLevel <span class="token operator">=</span> level<span class="token punctuation">;</span>
+        <span class="token class-name">Node</span> update<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>level<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> level<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // record every level largest value which smaller than insert value in update[]
-        Node p = head;
-        for (int i = level - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            update[i] = p;// use update save node in search path
-        &#125;
+        <span class="token comment">// record every level largest value which smaller than insert value in update[]</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> level <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">;</span><span class="token comment">// use update save node in search path</span>
+        <span class="token punctuation">&#125;</span>
 
-        // in search path node next node become new node forwords(next)
-        for (int i = 0; i &lt; level; ++i) &#123;
-            newNode.forwards[i] = update[i].forwards[i];
-            update[i].forwards[i] = newNode;
-        &#125;
+        <span class="token comment">// in search path node next node become new node forwords(next)</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> level<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            newNode<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // update node hight
-        if (levelCount &lt; level) levelCount = level;
-    &#125;
+        <span class="token comment">// update node hight</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>levelCount <span class="token operator">&lt;</span> level<span class="token punctuation">)</span> levelCount <span class="token operator">=</span> level<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void delete(int value) &#123;
-        Node[] update = new Node[levelCount];
-        Node p = head;
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            update[i] = p;
-        &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delete</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span><span class="token punctuation">[</span><span class="token punctuation">]</span> update <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>levelCount<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-                if (update[i].forwards[i] != null &amp;&amp; update[i].forwards[i].data == value) &#123;
-                    update[i].forwards[i] = update[i].forwards[i].forwards[i];
-                &#125;
-            &#125;
-        &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        while (levelCount&gt;1&amp;&amp;head.forwards[levelCount]==null)&#123;
-            levelCount--;
-        &#125;
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>levelCount<span class="token operator">></span><span class="token number">1</span><span class="token operator">&amp;&amp;</span>head<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>levelCount<span class="token punctuation">]</span><span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            levelCount<span class="token operator">--</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-    &#125;
+    <span class="token punctuation">&#125;</span>
 
-    // 理论来讲，一级索引中元素个数应该占原始数据的 50%，二级索引中元素个数占 25%，三级索引12.5% ，一直到最顶层。
-    // 因为这里每一层的晋升概率是 50%。对于每一个新插入的节点，都需要调用 randomLevel 生成一个合理的层数。
-    // 该 randomLevel 方法会随机生成 1~MAX_LEVEL 之间的数，且 ：
-    //        50%的概率返回 1
-    //        25%的概率返回 2
-    //      12.5%的概率返回 3 ...
-    private int randomLevel() &#123;
-        int level = 1;
+    <span class="token comment">// 理论来讲，一级索引中元素个数应该占原始数据的 50%，二级索引中元素个数占 25%，三级索引12.5% ，一直到最顶层。</span>
+    <span class="token comment">// 因为这里每一层的晋升概率是 50%。对于每一个新插入的节点，都需要调用 randomLevel 生成一个合理的层数。</span>
+    <span class="token comment">// 该 randomLevel 方法会随机生成 1~MAX_LEVEL 之间的数，且 ：</span>
+    <span class="token comment">//        50%的概率返回 1</span>
+    <span class="token comment">//        25%的概率返回 2</span>
+    <span class="token comment">//      12.5%的概率返回 3 ...</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">randomLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-        while (Math.random() &lt; SKIPLIST_P &amp;&amp; level &lt; MAX_LEVEL)
-            level += 1;
-        return level;
-    &#125;
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> SKIPLIST_P <span class="token operator">&amp;&amp;</span> level <span class="token operator">&lt;</span> MAX_LEVEL<span class="token punctuation">)</span>
+            level <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> level<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void printAll() &#123;
-        Node p = head;
-        while (p.forwards[0] != null) &#123;
-            System.out.print(p.forwards[0] + &quot; &quot;);
-            p = p.forwards[0];
-        &#125;
-        System.out.println();
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">printAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public class Node &#123;
-        private int data = -1;
-        private Node forwards[] = new Node[MAX_LEVEL];
-        private int maxLevel = 0;
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> data <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token class-name">Node</span> forwards<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>MAX_LEVEL<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> maxLevel <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-        @Override
-        public String toString() &#123;
-            StringBuilder builder = new StringBuilder();
-            builder.append(&quot;&#123; data: &quot;);
-            builder.append(data);
-            builder.append(&quot;; levels: &quot;);
-            builder.append(maxLevel);
-            builder.append(&quot; &#125;&quot;);
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">StringBuilder</span> builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"&#123; data: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"; levels: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>maxLevel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">" &#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            return builder.toString();
-        &#125;
-    &#125;
+            <span class="token keyword">return</span> builder<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
-&#125;
-</code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>王老师的Java实现版本，有几个关键点理解到了，基本上就明白是怎么实现的了：<br>1.每次插入数据的时候随机产生的level:决定了新节点的层数；<br>2.数组update的作用：用以存储新节点所有层数上，各自的前一个节点的信息；<br>3.节点内的forwards数组：用以存储该节点所有层的下一个节点的信息；<br>4.当所有节点的最大层级变量 <code>maxlevel=1</code> 的时候，跳表退化成一个普通链表</p>
-<pre><code class="java">package com.study.skiplist;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>study<span class="token punctuation">.</span>skiplist</span><span class="token punctuation">;</span>
 
-import java.util.Random;
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Random</span><span class="token punctuation">;</span>
 
-/**
+<span class="token comment">/**
  * 1，跳表的一种实现方法，用于练习。跳表中存储的是正整数，并且存储的是不重复的。
  * 2，本类是参考作者zheng ，自己学习，优化了添加方法
  * 3，看完这个，我觉得再看ConcurrentSkipListMap 源码，会有很大收获
  * Author：ldb
- */
-public class SkipList2 &#123;
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SkipList2</span> <span class="token punctuation">&#123;</span>
 
-    private static final int MAX_LEVEL = 16;
-    private int levelCount = 1;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MAX_LEVEL <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> levelCount <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * 带头链表
-     */
-    private Node head = new Node(MAX_LEVEL);
-    private Random r = new Random();
+     */</span>
+    <span class="token keyword">private</span> <span class="token class-name">Node</span> head <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>MAX_LEVEL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Random</span> r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    public Node find(int value) &#123;
-        Node p = head;
-        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                // 找到前一节点
-                p = p.forwards[i];
-            &#125;
-        &#125;
+    <span class="token keyword">public</span> <span class="token class-name">Node</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token comment">// 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 找到前一节点</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            return p.forwards[0];
-        &#125; else &#123;
-            return null;
-        &#125;
-    &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 优化了作者zheng的插入方法
      *
      * @param value 值
-     */
-    public void insert(int value) &#123;
-        int level = head.forwards[0] == null ? 1 : randomLevel();
-        // 每次只增加一层，如果条件满足
-        if (level &gt; levelCount) &#123;
-            level = ++levelCount;
-        &#125;
-        Node newNode = new Node(level);
-        newNode.data = value;
-        Node update[] = new Node[level];
-        for (int i = 0; i &lt; level; ++i) &#123;
-            update[i] = head;
-        &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> level <span class="token operator">=</span> head<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token function">randomLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 每次只增加一层，如果条件满足</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>level <span class="token operator">></span> levelCount<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            level <span class="token operator">=</span> <span class="token operator">++</span>levelCount<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>level<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>data <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        <span class="token class-name">Node</span> update<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>level<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> level<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        Node p = head;
-        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                // 找到前一节点
-                p = p.forwards[i];
-            &#125;
-            // levelCount 会 &gt; level，所以加上判断
-            if (level &gt; i) &#123;
-                update[i] = p;
-            &#125;
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token comment">// 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 找到前一节点</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token comment">// levelCount 会 > level，所以加上判断</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>level <span class="token operator">></span> i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
 
-        &#125;
-        for (int i = 0; i &lt; level; ++i) &#123;
-            newNode.forwards[i] = update[i].forwards[i];
-            update[i].forwards[i] = newNode;
-        &#125;
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> level<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            newNode<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-    &#125;
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 优化了作者zheng的插入方法2
      *
      * @param value 值
-     */
-    public void insert2(int value) &#123;
-        int level = head.forwards[0] == null ? 1 : randomLevel();
-        // 每次只增加一层，如果条件满足
-        if (level &gt; levelCount) &#123;
-            level = ++levelCount;
-        &#125;
-        Node newNode = new Node(level);
-        newNode.data = value;
-        Node p = head;
-        // 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                // 找到前一节点
-                p = p.forwards[i];
-            &#125;
-            // levelCount 会 &gt; level，所以加上判断
-            if (level &gt; i) &#123;
-                if (p.forwards[i] == null) &#123;
-                    p.forwards[i] = newNode;
-                &#125; else &#123;
-                    Node next = p.forwards[i];
-                    p.forwards[i] = newNode;
-                    newNode.forwards[i] = next;
-                &#125;
-            &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insert2</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> level <span class="token operator">=</span> head<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token function">randomLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 每次只增加一层，如果条件满足</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>level <span class="token operator">></span> levelCount<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            level <span class="token operator">=</span> <span class="token operator">++</span>levelCount<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>level<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>data <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token comment">// 从最大层开始查找，找到前一节点，通过--i，移动到下层再开始查找</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 找到前一节点</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token comment">// levelCount 会 > level，所以加上判断</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>level <span class="token operator">></span> i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">Node</span> next <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                    p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+                    newNode<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> next<span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
 
-        &#125;
+        <span class="token punctuation">&#125;</span>
 
-    &#125;
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 作者zheng的插入方法，未优化前，优化后参见上面insert()
      *
      * @param value
      * @param level 0 表示随机层数，不为0，表示指定层数，指定层数
      *              可以让每次打印结果不变动，这里是为了便于学习理解
-     */
-    public void insert(int value, int level) &#123;
-        // 随机一个层数
-        if (level == 0) &#123;
-            level = randomLevel();
-        &#125;
-        // 创建新节点
-        Node newNode = new Node(level);
-        newNode.data = value;
-        // 表示从最大层到低层，都要有节点数据
-        newNode.maxLevel = level;
-        // 记录要更新的层数，表示新节点要更新到哪几层
-        Node update[] = new Node[level];
-        for (int i = 0; i &lt; level; ++i) &#123;
-            update[i] = head;
-        &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">,</span> <span class="token keyword">int</span> level<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 随机一个层数</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>level <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            level <span class="token operator">=</span> <span class="token function">randomLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 创建新节点</span>
+        <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>level<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        newNode<span class="token punctuation">.</span>data <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        <span class="token comment">// 表示从最大层到低层，都要有节点数据</span>
+        newNode<span class="token punctuation">.</span>maxLevel <span class="token operator">=</span> level<span class="token punctuation">;</span>
+        <span class="token comment">// 记录要更新的层数，表示新节点要更新到哪几层</span>
+        <span class="token class-name">Node</span> update<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>level<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> level<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        /**
+        <span class="token comment">/**
          *
          * 1，说明：层是从下到上的，这里最下层编号是0，最上层编号是15
          * 2，这里没有从已有数据最大层（编号最大）开始找，（而是随机层的最大层）导致有些问题。
          *    如果数据量为1亿，随机level=1 ，那么插入时间复杂度为O（n）
-         */
-        Node p = head;
-        for (int i = level - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            // 这里update[i]表示当前层节点的前一节点，因为要找到前一节点，才好插入数据
-            update[i] = p;
-        &#125;
+         */</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> level <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token comment">// 这里update[i]表示当前层节点的前一节点，因为要找到前一节点，才好插入数据</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // 将每一层节点和后面节点关联
-        for (int i = 0; i &lt; level; ++i) &#123;
-            // 记录当前层节点后面节点指针
-            newNode.forwards[i] = update[i].forwards[i];
-            // 前一个节点的指针，指向当前节点
-            update[i].forwards[i] = newNode;
-        &#125;
+        <span class="token comment">// 将每一层节点和后面节点关联</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> level<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 记录当前层节点后面节点指针</span>
+            newNode<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token comment">// 前一个节点的指针，指向当前节点</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // 更新层高
-        if (levelCount &lt; level) levelCount = level;
-    &#125;
+        <span class="token comment">// 更新层高</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>levelCount <span class="token operator">&lt;</span> level<span class="token punctuation">)</span> levelCount <span class="token operator">=</span> level<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void delete(int value) &#123;
-        Node[] update = new Node[levelCount];
-        Node p = head;
-        for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-            while (p.forwards[i] != null &amp;&amp; p.forwards[i].data &lt; value) &#123;
-                p = p.forwards[i];
-            &#125;
-            update[i] = p;
-        &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delete</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span><span class="token punctuation">[</span><span class="token punctuation">]</span> update <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>levelCount<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">&lt;</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            update<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        if (p.forwards[0] != null &amp;&amp; p.forwards[0].data == value) &#123;
-            for (int i = levelCount - 1; i &gt;= 0; --i) &#123;
-                if (update[i].forwards[i] != null &amp;&amp; update[i].forwards[i].data == value) &#123;
-                    update[i].forwards[i] = update[i].forwards[i].forwards[i];
-                &#125;
-            &#125;
-        &#125;
-    &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> levelCount <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">==</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> update<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 随机 level 次，如果是奇数层数 +1，防止伪随机
      *
      * @return
-     */
-    private int randomLevel() &#123;
-        int level = 1;
-        for (int i = 1; i &lt; MAX_LEVEL; ++i) &#123;
-            if (r.nextInt() % 2 == 1) &#123;
-                level++;
-            &#125;
-        &#125;
-        return level;
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">randomLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> level <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> MAX_LEVEL<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>r<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                level<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> level<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 打印每个节点数据和最大层数
-     */
-    public void printAll() &#123;
-        Node p = head;
-        while (p.forwards[0] != null) &#123;
-            System.out.print(p.forwards[0] + &quot; &quot;);
-            p = p.forwards[0];
-        &#125;
-        System.out.println();
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">printAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 打印所有数据
-     */
-    public void printAll_beautiful() &#123;
-        Node p = head;
-        Node[] c = p.forwards;
-        Node[] d = c;
-        int maxLevel = c.length;
-        for (int i = maxLevel - 1; i &gt;= 0; i--) &#123;
-            do &#123;
-                System.out.print((d[i] != null ? d[i].data : null) + &quot;:&quot; + i + &quot;-------&quot;);
-            &#125; while (d[i] != null &amp;&amp; (d = d[i].forwards)[i] != null);
-            System.out.println();
-            d = c;
-        &#125;
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">printAll_beautiful</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token class-name">Node</span><span class="token punctuation">[</span><span class="token punctuation">]</span> c <span class="token operator">=</span> p<span class="token punctuation">.</span>forwards<span class="token punctuation">;</span>
+        <span class="token class-name">Node</span><span class="token punctuation">[</span><span class="token punctuation">]</span> d <span class="token operator">=</span> c<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> maxLevel <span class="token operator">=</span> c<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> maxLevel <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">?</span> d<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">"-------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>d <span class="token operator">=</span> d<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>forwards<span class="token punctuation">)</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            d <span class="token operator">=</span> c<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 跳表的节点，每个节点记录了当前节点数据和所在层数数据
-     */
-    public class Node &#123;
-        private int data = -1;
-        /**
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> data <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token comment">/**
          * 表示当前节点位置的下一个节点所有层的数据，从上层切换到下层，就是数组下标-1，
          * forwards[3]表示当前节点在第三层的下一个节点。
-         */
-        private Node forwards[];
+         */</span>
+        <span class="token keyword">private</span> <span class="token class-name">Node</span> forwards<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-        /**
+        <span class="token comment">/**
          * 这个值其实可以不用，看优化insert()
-         */
-        private int maxLevel = 0;
+         */</span>
+        <span class="token keyword">private</span> <span class="token keyword">int</span> maxLevel <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-        public Node(int level) &#123;
-            forwards = new Node[level];
-        &#125;
+        <span class="token keyword">public</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            forwards <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">[</span>level<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        @Override
-        public String toString() &#123;
-            StringBuilder builder = new StringBuilder();
-            builder.append(&quot;&#123; data: &quot;);
-            builder.append(data);
-            builder.append(&quot;; levels: &quot;);
-            builder.append(maxLevel);
-            builder.append(&quot; &#125;&quot;);
-            return builder.toString();
-        &#125;
-    &#125;
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">StringBuilder</span> builder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"&#123; data: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"; levels: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>maxLevel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            builder<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">" &#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> builder<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public static void main(String[] args) &#123;
-        SkipList2 list = new SkipList2();
-        list.insert(1, 3);
-        list.insert(2, 3);
-        list.insert(3, 2);
-        list.insert(4, 4);
-        list.insert(5, 10);
-        list.insert(6, 4);
-        list.insert(8, 5);
-        list.insert(7, 4);
-        list.printAll_beautiful();
-        list.printAll();
-        /**
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SkipList2</span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SkipList2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">printAll_beautiful</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">printAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">/**
          * 结果如下：
-         *                                         null:15-------
-         *                                         null:14-------
-         *                                         null:13-------
-         *                                         null:12-------
-         *                                         null:11-------
-         *                                         null:10-------
-         *                                            5:9-------
-         *                                            5:8-------
-         *                                            5:7-------
-         *                                            5:6-------
-         *                                            5:5-------
-         *                                            5:4-------                     8:4-------
-         *                                  4:3-------5:3-------6:3-------7:3-------8:3-------
-         * 1:2-------2:2-------             4:2-------5:2-------6:2-------7:2-------8:2-------
+         * 									    null:15-------
+         * 									    null:14-------
+         * 									    null:13-------
+         * 									    null:12-------
+         * 									    null:11-------
+         * 									    null:10-------
+         * 										   5:9-------
+         * 										   5:8-------
+         * 										   5:7-------
+         * 										   5:6-------
+         * 										   5:5-------
+         * 										   5:4-------					 8:4-------
+         * 							     4:3-------5:3-------6:3-------7:3-------8:3-------
+         * 1:2-------2:2-------		     4:2-------5:2-------6:2-------7:2-------8:2-------
          * 1:1-------2:1-------3:1-------4:1-------5:1-------6:1-------7:1-------8:1-------
          * 1:0-------2:0-------3:0-------4:0-------5:0-------6:0-------7:0-------8:0-------
          * &#123; data: 1; levels: 3 &#125; &#123; data: 2; levels: 3 &#125; &#123; data: 3; levels: 2 &#125; &#123; data: 4; levels: 4 &#125;
          * &#123; data: 5; levels: 10 &#125; &#123; data: 6; levels: 4 &#125; &#123; data: 7; levels: 4 &#125; &#123; data: 8; levels: 5 &#125;
-         */
-        // 优化后insert()
+         */</span>
+        <span class="token comment">// 优化后insert()</span>
 
-        SkipList2 list2 = new SkipList2();
-        list2.insert2(1);
-        list2.insert2(2);
-        list2.insert2(6);
-        list2.insert2(7);
-        list2.insert2(8);
-        list2.insert2(3);
-        list2.insert2(4);
-        list2.insert2(5);
-        System.out.println();
-        list2.printAll_beautiful();
-    &#125;
+        <span class="token class-name">SkipList2</span> list2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SkipList2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">insert2</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list2<span class="token punctuation">.</span><span class="token function">printAll_beautiful</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-&#125;
-</code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1353762">Redis源码学习之跳表</a></p>
 
     </div>
@@ -1017,7 +1021,7 @@ public class SkipList2 &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

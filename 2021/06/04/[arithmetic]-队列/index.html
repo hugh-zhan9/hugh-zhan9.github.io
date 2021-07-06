@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/5e/eb/5ef3326181907dea0964f612890185eb.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/9f/67/9f539cc0f1edc20e7fa6559193898067.jpg">
 <meta property="article:published_time" content="2021-06-04T20:10:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.219Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.728Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -266,7 +266,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -338,40 +338,40 @@
 <p>队列的概念很好理解，基本操作也很容易掌握。作为一种非常基础的数据结构，队列的应用也非常广泛，特别是一些具有某些额外特性的队列，比如循环队列、阻塞队列、并发队列。它们在很多偏底层系统、框架、中间件的开发中，起着关键性的作用。比如高性能队列 Disruptor、Linux 环形缓存，都用到了循环并发队列；Java concurrent 并发包利用 ArrayBlockingQueue 来实现公平锁等。</p>
 <h2 id="顺序队列和链式队列"><a href="#顺序队列和链式队列" class="headerlink" title="顺序队列和链式队列"></a>顺序队列和链式队列</h2><p>我们知道了，队列跟栈一样，也是一种抽象的数据结构。它具有先进先出的特性，支持在队尾插入元素，在队头删除元素，那究竟该如何实现一个队列呢？</p>
 <p>跟栈一样，队列可以用数组来实现，也可以用链表来实现。用数组实现的栈叫作<strong>顺序栈</strong>，用链表实现的栈叫作<strong>链式栈</strong>。同样，用数组实现的队列叫作<strong>顺序队列</strong>，用链表实现的队列叫作<strong>链式队列</strong>。下面是用 Java 基于数组的实现方法。</p>
-<pre><code class="java">// 用数组实现的队列
-public class ArrayQueue &#123;
-    // 数组：items，数组大小：n
-    private String[] items;
-    private int n = 0;
-    // head表示队头下标，tail表示队尾下标
-    private int head = 0;
-    private int tail = 0;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 用数组实现的队列</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ArrayQueue</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 数组：items，数组大小：n</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> items<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// head表示队头下标，tail表示队尾下标</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> head <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> tail <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-    // 申请一个大小为capacity的数组
-    public ArrayQueue(int capacity) &#123;
-        items = new String[capacity];
-        n = capacity;
-    &#125;
+    <span class="token comment">// 申请一个大小为capacity的数组</span>
+    <span class="token keyword">public</span> <span class="token class-name">ArrayQueue</span><span class="token punctuation">(</span><span class="token keyword">int</span> capacity<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        items <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span>capacity<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        n <span class="token operator">=</span> capacity<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 入队
-    public boolean enqueue(String item) &#123;
-        // 如果tail == n 表示队列已经满了
-        if (tail == n) return false;
-        items[tail] = item;
-        ++tail;
-        return true;
-    &#125;
+    <span class="token comment">// 入队</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token class-name">String</span> item<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 如果tail == n 表示队列已经满了</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>tail <span class="token operator">==</span> n<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        items<span class="token punctuation">[</span>tail<span class="token punctuation">]</span> <span class="token operator">=</span> item<span class="token punctuation">;</span>
+        <span class="token operator">++</span>tail<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 出队
-    public String dequeue() &#123;
-        // 如果head == tail 表示队列为空
-        if (head == tail) return null;
-        String ret = items[head];
-        ++head;
-        return ret;
-    &#125;
-&#125;
-</code></pre>
+    <span class="token comment">// 出队</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 如果head == tail 表示队列为空</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">==</span> tail<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> ret <span class="token operator">=</span> items<span class="token punctuation">[</span>head<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token operator">++</span>head<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>稍微解释一下实现思路：对于栈来说，只需要一个栈顶指针就可以了。但是队列需要两个指针：一个是 head 指针，指向队头；一个是 tail 指针，指向队尾。你可以结合下面这张图来理解。当 a、b、c、d 依次入队之后，队列中的 head 指针指向下标为 0 的位置，tail 指针指向下标为 4 的位置。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/5c/cb/5c0ec42eb797e8a7d48c9dbe89dc93cb.jpg"></p>
 <p>当我们调用两次出队操作之后，队列中 head 指针指向下标为 2 的位置，tail 指针仍然指向下标为 4 的位置。</p>
@@ -379,26 +379,26 @@ public class ArrayQueue &#123;
 <p>随着不停地进行入队、出队操作，head 和 tail 都会持续往后移动。当 tail 移动到最右边，即使数组中还有空闲空间，也无法继续往队列中添加数据了。这个问题该如何解决呢？</p>
 <p>你是否还记得，在数组那一节也遇到过类似的问题，就是数组的删除操作会导致数组中的数据不连续。你还记得我们当时是怎么解决的吗？对，用数据搬移！但是，每次进行出队操作都相当于删除数组下标为 0 的数据，要搬移整个队列中的数据，这样出队操作的时间复杂度就会从原来的 O(1) 变为 O(n)。能不能优化一下呢？</p>
 <p>实际上，在出队时可以不用搬移数据。如果没有空闲空间了，只需要在入队时，再集中触发一次数据的搬移操作。借助这个思想，出队函数 <code>dequeue()</code> 保持不变，改造一下入队函数 <code>enqueue()</code> 的实现，就可以轻松解决刚才的问题了。下面是具体的代码：</p>
-<pre><code class="java"> // 入队操作，将item放入队尾
-public boolean enqueue(String item) &#123;
-    // tail == n表示队列末尾没有空间了
-    if (tail == n) &#123;
-        // tail ==n &amp;&amp; head==0，表示整个队列都占满了
-        if (head == 0) return false;
-        // 数据搬移
-        for (int i = head; i &lt; tail; ++i) &#123;
-            items[i-head] = items[i];    // 数据搬移时head就是偏移量，这就容易理解了
-        &#125;
-        // 搬移完之后重新更新head和tail
-        tail -= head;
-        head = 0;
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"> <span class="token comment">// 入队操作，将item放入队尾</span>
+<span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token class-name">String</span> item<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// tail == n表示队列末尾没有空间了</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>tail <span class="token operator">==</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// tail ==n &amp;&amp; head==0，表示整个队列都占满了</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token comment">// 数据搬移</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> head<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> tail<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            items<span class="token punctuation">[</span>i<span class="token operator">-</span>head<span class="token punctuation">]</span> <span class="token operator">=</span> items<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>	<span class="token comment">// 数据搬移时head就是偏移量，这就容易理解了</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 搬移完之后重新更新head和tail</span>
+        tail <span class="token operator">-=</span> head<span class="token punctuation">;</span>
+        head <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    items[tail] = item;
-    ++tail;
-    return true;
-&#125;
-</code></pre>
+    items<span class="token punctuation">[</span>tail<span class="token punctuation">]</span> <span class="token operator">=</span> item<span class="token punctuation">;</span>
+    <span class="token operator">++</span>tail<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>从代码中可以看到，当队列的 tail 指针移动到数组的最右边后，如果有新的数据入队，我们可以将 head 到 tail 之间的数据，整体搬移到数组中 0 到 <code>tail-head</code> 的位置。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/09/c7/094ba7722eeec46ead58b40c097353c7.jpg"></p>
 <p>这种实现思路中，出队操作的时间复杂度仍然是 <code>O(1)</code>，但入队操作的时间复杂度还是 <code>O(1)</code> 吗？你可以试着分析一下。</p>
@@ -408,60 +408,60 @@ public boolean enqueue(String item) &#123;
 <p>再来看下基于链表的队列实现方法。</p>
 <p>基于链表的实现，同样需要两个指针：head 指针和 tail 指针。它们分别指向链表的第一个结点和最后一个结点。如下图所示，入队时，<code>tail-&gt;next = new_node</code>，<code>tail = tail-&gt;next</code>；出队时，<code>head = head-&gt;next</code>。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/c9/93/c916fe2212f8f543ddf539296444d393.jpg"></p>
-<pre><code class="java">// 基于链表实现的队列
-public class QueueBasedOnLinkedList &#123;
-    // 队列的队首和队尾
-    private Node head = null;
-    private Node tail = null;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 基于链表实现的队列</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">QueueBasedOnLinkedList</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 队列的队首和队尾</span>
+    <span class="token keyword">private</span> <span class="token class-name">Node</span> head <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Node</span> tail <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
 
-    // 入队
-    public void enqueue(String value) &#123;
-        if (tail == null) &#123;
-            Node newNode = new Node(value, null);
-            head = newNode;
-            tail = newNode;
-        &#125; else &#123;
-            tail.next = new Node(value, null);
-            tail = tail.next;
-        &#125;
-    &#125;
+    <span class="token comment">// 入队</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token class-name">String</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>tail <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Node</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            head <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+            tail <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            tail<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            tail <span class="token operator">=</span> tail<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 出队
-    public String dequeue() &#123;
-        if (head == null) return null;
+    <span class="token comment">// 出队</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
 
-        String value = head.data;
-        head = head.next;
-        if (head == null) &#123;
-            tail = null;
-        &#125;
-        return value;
-    &#125;
+        <span class="token class-name">String</span> value <span class="token operator">=</span> head<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+        head <span class="token operator">=</span> head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            tail <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void printAll() &#123;
-        Node p = head;
-        while (p != null) &#123;
-            System.out.print(p.data + &quot; &quot;);
-            p = p.next;
-        &#125;
-        System.out.println();
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">printAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Node</span> p <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>p <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>data <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            p <span class="token operator">=</span> p<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    private static class Node &#123;
-        private String data;
-        private Node next;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token class-name">String</span> data<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> <span class="token class-name">Node</span> next<span class="token punctuation">;</span>
 
-        public Node(String data, Node next) &#123;
-            this.data = data;
-            this.next = next;
-        &#125;
+        <span class="token keyword">public</span> <span class="token class-name">Node</span><span class="token punctuation">(</span><span class="token class-name">String</span> data<span class="token punctuation">,</span> <span class="token class-name">Node</span> next<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> data<span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>next <span class="token operator">=</span> next<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        public String getData() &#123;
-            return data;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+        <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> data<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="循环队列"><a href="#循环队列" class="headerlink" title="循环队列"></a>循环队列</h2><p>我们刚才用数组来实现队列的时候，在 <code>tail==n</code> 时，会有数据搬移操作，这样入队操作性能就会受到影响。那有没有办法能够避免数据搬移呢？来看看循环队列的解决思路。</p>
 <p>循环队列，顾名思义，它长得像一个环。原本数组是有头有尾的，是一条直线。把首尾相连，扳成了一个环。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/58/90/58ba37bb4102b87d66dffe7148b0f990.jpg"></p>
@@ -476,39 +476,39 @@ public class QueueBasedOnLinkedList &#123;
 <p>解释：（参考评论中的解释） 在一般情况下，我们可以看出来，当队列满时，<code>tail+1=head</code>。但是，有个特殊情况，当<code>tail = n-1</code>，而<code>head = 0</code>时，这时候，<code>tail+1 = n</code>，而<code>head = 0</code>，所以使用 <code>(tail+1) % n</code> 的值，通过对n取余，才能得到head的真实值。而且，tail+1最大的情况就是 n ，不会大于 n，这样，tail+1 除了最大情况，不然怎么余 n 都是 <code>tail+1</code> 本身，也就是 head。所以，正确的队满判断公式就是：<code>(tail + 1) % n = head</code>。</p>
 </blockquote>
 <p>你有没有发现，当队列满时，图中的 tail 指向的位置实际上是没有存储数据的。所以，循环队列会浪费一个数组的存储空间。</p>
-<pre><code class="java">public class CircularQueue &#123;
-    // 数组：items，数组大小：n
-    private String[] items;
-      private int n = 0;
-      // head表示队头下标，tail表示队尾下标
-      private int head = 0;
-      private int tail = 0;
-    
-      // 申请一个大小为capacity的数组
-      public CircularQueue(int capacity) &#123;
-        items = new String[capacity];
-        n = capacity;
-      &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CircularQueue</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 数组：items，数组大小：n</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> items<span class="token punctuation">;</span>
+  	<span class="token keyword">private</span> <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  	<span class="token comment">// head表示队头下标，tail表示队尾下标</span>
+  	<span class="token keyword">private</span> <span class="token keyword">int</span> head <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  	<span class="token keyword">private</span> <span class="token keyword">int</span> tail <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	
+  	<span class="token comment">// 申请一个大小为capacity的数组</span>
+  	<span class="token keyword">public</span> <span class="token class-name">CircularQueue</span><span class="token punctuation">(</span><span class="token keyword">int</span> capacity<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  	  items <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span>capacity<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  	  n <span class="token operator">=</span> capacity<span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
 
-      // 入队
-      public boolean enqueue(String item) &#123;
-        // 队列满了
-        if ((tail + 1) % n == head) return false;
-        items[tail] = item;
-        tail = (tail + 1) % n;
-        return true;
-      &#125;
-    
-      // 出队
-      public String dequeue() &#123;
-        // 如果head == tail 表示队列为空
-        if (head == tail) return null;
-        String ret = items[head];
-        head = (head + 1) % n;
-        return ret;
-      &#125;
-&#125;
-</code></pre>
+  	<span class="token comment">// 入队</span>
+  	<span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token class-name">String</span> item<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 队列满了</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>tail <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> n <span class="token operator">==</span> head<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        items<span class="token punctuation">[</span>tail<span class="token punctuation">]</span> <span class="token operator">=</span> item<span class="token punctuation">;</span>
+        tail <span class="token operator">=</span> <span class="token punctuation">(</span>tail <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> n<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
+	
+  	<span class="token comment">// 出队</span>
+  	<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 如果head == tail 表示队列为空</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">==</span> tail<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> ret <span class="token operator">=</span> items<span class="token punctuation">[</span>head<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        head <span class="token operator">=</span> <span class="token punctuation">(</span>head <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> n<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+  	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="阻塞队列和并发队列"><a href="#阻塞队列和并发队列" class="headerlink" title="阻塞队列和并发队列"></a>阻塞队列和并发队列</h2><p>队列这种数据结构很基础，平时的业务开发不大可能从零实现一个队列，甚至都不会直接用到。而一些具有特殊特性的队列应用却比较广泛，比如阻塞队列和并发队列。</p>
 <h3 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h3><p>阻塞队列实际其实就是在队列基础上增加了阻塞操作。简单来说，就是在队列为空的时候，从队头取数据会被阻塞。因为此时还没有数据可取，直到队列中有了数据才能返回；如果队列已经满了，那么插入数据的操作就会被阻塞，直到队列中有空闲位置后再插入数据，然后再返回。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/5e/eb/5ef3326181907dea0964f612890185eb.jpg"></p>
@@ -536,136 +536,136 @@ public class QueueBasedOnLinkedList &#123;
 </blockquote>
 <hr>
 <p>循环队列</p>
-<pre><code class="java">public class MyCircularQueue &#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyCircularQueue</span> <span class="token punctuation">&#123;</span>
 
-    private int head;
-    private int tail;
-    private int[] data;
-    private int len;
-    private int count;
+    <span class="token keyword">private</span> <span class="token keyword">int</span> head<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> tail<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> len<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>
 
-    public MyCircularQueue(int k) &#123;
-        head = 0;
-        tail = 0;
-        len = k;
-        count = 0;
-        data = new int[k];
+    <span class="token keyword">public</span> <span class="token class-name">MyCircularQueue</span><span class="token punctuation">(</span><span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        head <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        tail <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        len <span class="token operator">=</span> k<span class="token punctuation">;</span>
+        count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        data <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-    &#125;
+    <span class="token punctuation">&#125;</span>
     
-    public boolean enQueue(int value) &#123;
-        if(isFull()) return false;
-        else&#123;
-                data[tail] = value;
-                tail=(tail+1)%len;
-                count++;
-                return true;
-        &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">enQueue</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isFull</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+                data<span class="token punctuation">[</span>tail<span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span>
+                tail<span class="token operator">=</span><span class="token punctuation">(</span>tail<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>len<span class="token punctuation">;</span>
+                count<span class="token operator">++</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
         
-    &#125;
+    <span class="token punctuation">&#125;</span>
     
-    public boolean deQueue() &#123;
-        if(isEmpty()) return false;
-        else&#123;
-            head=(head+1)%len;
-            count--;
-            return true;
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">deQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+            head<span class="token operator">=</span><span class="token punctuation">(</span>head<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>len<span class="token punctuation">;</span>
+            count<span class="token operator">--</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
-    public int Front() &#123;
-        if(isEmpty()) return -1;
-        else&#123;
-            return data[head];
-        &#125;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token class-name">Front</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> data<span class="token punctuation">[</span>head<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
-    public int Rear() &#123;
-        if(isEmpty()) return -1;
-        else return data[(tail+len-1)%len];
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token class-name">Rear</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span> <span class="token keyword">return</span> data<span class="token punctuation">[</span><span class="token punctuation">(</span>tail<span class="token operator">+</span>len<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span>len<span class="token punctuation">]</span><span class="token punctuation">;</span>
         
-    &#125;
+    <span class="token punctuation">&#125;</span>
     
-    public boolean isEmpty() &#123;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-        if( count==0)
-            return true;
-        else
-            return false;
+        <span class="token keyword">if</span><span class="token punctuation">(</span> count<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
               
 
-    &#125;
+    <span class="token punctuation">&#125;</span>
     
-    public boolean isFull() &#123;
-        if(count == len)
-            return true;
-        else
-            return false;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isFull</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>count <span class="token operator">==</span> len<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
 
-    &#125;
-&#125;
-</code></pre>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>Java 循环队列</p>
-<pre><code class="java">public class CirculateQueue &#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CirculateQueue</span> <span class="token punctuation">&#123;</span>
 
-    static String[] arr = new String[8];
-    static int tail = 0;
-    static int head = 0;
-    static int size = 0;//标记
+    <span class="token keyword">static</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> tail <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> head <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//标记</span>
 
-    public static void main(String[] args) &#123;
-        for (int i = 0; i &lt; 10; i++) &#123;
-            enqueue1(i + &quot;&quot;);
-        &#125;
-        System.out.println(Arrays.toString(arr));
-        dequeue1();
-        enqueue1(11 + &quot;&quot;);
-        enqueue1(12 + &quot;&quot;);
-        dequeue1();
-        dequeue1();
-        enqueue(13 + &quot;&quot;);
-        System.out.println(Arrays.toString(arr));
-        System.out.println(&quot;head:&quot; + head);
-        System.out.println(&quot;tail:&quot; + tail);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">enqueue1</span><span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">dequeue1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">enqueue1</span><span class="token punctuation">(</span><span class="token number">11</span> <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">enqueue1</span><span class="token punctuation">(</span><span class="token number">12</span> <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">dequeue1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">dequeue1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token number">13</span> <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"head:"</span> <span class="token operator">+</span> head<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"tail:"</span> <span class="token operator">+</span> tail<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    static void enqueue1(String val) &#123;
-        if (size == arr.length) &#123;//队满
-            return;
-        &#125;
-        if (tail == arr.length &amp;&amp; size &lt; arr.length) &#123;
-            tail = 0;
-        &#125;
-        arr[tail] = val;
-        size++;
-        tail = (tail + 1) % arr.length; //保持环形
-    &#125;
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">enqueue1</span><span class="token punctuation">(</span><span class="token class-name">String</span> val<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">==</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//队满</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>tail <span class="token operator">==</span> arr<span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> size <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            tail <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        arr<span class="token punctuation">[</span>tail<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+        size<span class="token operator">++</span><span class="token punctuation">;</span>
+        tail <span class="token operator">=</span> <span class="token punctuation">(</span>tail <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token comment">//保持环形</span>
+    <span class="token punctuation">&#125;</span>
 
-    static void dequeue1() &#123;
-        if (size == 0) &#123;//队空
-            return;
-        &#125;
-        size--;
-        head = (head + 1) % arr.length; //保持环形
-    &#125;
-//----------------------☆☆☆----------------------
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">dequeue1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//队空</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        size<span class="token operator">--</span><span class="token punctuation">;</span>
+        head <span class="token operator">=</span> <span class="token punctuation">(</span>head <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token comment">//保持环形</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token comment">//----------------------☆☆☆----------------------</span>
 
-    static void enqueue(String val) &#123;
-        if ((tail + 1) % arr.length == head) &#123;//队满
-            return;
-        &#125;
-        arr[tail] = val;
-        tail = (tail + 1) % arr.length; //保持环形
-    &#125;
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token class-name">String</span> val<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>tail <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> arr<span class="token punctuation">.</span>length <span class="token operator">==</span> head<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//队满</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        arr<span class="token punctuation">[</span>tail<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+        tail <span class="token operator">=</span> <span class="token punctuation">(</span>tail <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token comment">//保持环形</span>
+    <span class="token punctuation">&#125;</span>
 
-    static void dequeue() &#123;
-        if (head == tail) &#123;//队空
-            return;
-        &#125;
-        size--;
-        head = (head + 1) % arr.length; //保持环形
-    &#125;
-    /*☆☆☆上面是按评论中的方法：使用一个标记字段，入队时加1，出队时减1，判断队空队满只需要比较标记字段和总容量即可，这样不用浪费一个数组的存储空间。
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">dequeue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head <span class="token operator">==</span> tail<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//队空</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        size<span class="token operator">--</span><span class="token punctuation">;</span>
+        head <span class="token operator">=</span> <span class="token punctuation">(</span>head <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token comment">//保持环形</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">/*☆☆☆上面是按评论中的方法：使用一个标记字段，入队时加1，出队时减1，判断队空队满只需要比较标记字段和总容量即可，这样不用浪费一个数组的存储空间。
     * 运行结果：
         [0, 1, 2, 3, 4, 5, 6, 7]
         [11, 13, 2, 3, 4, 5, 6, 7]
@@ -677,9 +677,9 @@ public class QueueBasedOnLinkedList &#123;
         [13, 1, 2, 3, 4, 5, 6, 11]
         head:3
         tail:1
-    * */
-&#125;
-</code></pre>
+    * */</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -887,7 +887,7 @@ public class QueueBasedOnLinkedList &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="泛型是一种“代码模板”，可以用一套代码套用各种类型。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-27T21:10:29.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -318,56 +318,56 @@
 <span id="more"></span>
 
 <h1 id="什么是泛型"><a href="#什么是泛型" class="headerlink" title="什么是泛型"></a>什么是泛型</h1><p>观察 Java 标准库提供的<code>ArrayList</code>，它可以看作“可变长度”的数组，实际上<code>ArrayList</code>内部就是一个<code>Object[]</code>数组，配合存储一个当前分配的长度，就可以充当一个可“变数组”。</p>
-<pre><code class="java">public class ArrayList&#123;
-    private Object[] array;
-    private int size;
-    public void add(Object e) &#123;...&#125;
-    public void remove(int index) &#123;...&#125;
-    public Object get(int index) &#123;...&#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ArrayList</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">private</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">;</span>
+	<span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Object</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+	<span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>如果用上述<code>ArrayList</code>存储<code>String</code>类型，会有如下几个缺点：</p>
 <ul>
 <li>需要强制转型</li>
 <li>不方便，易出错</li>
 </ul>
 <p>例如：代码需要这么写：</p>
-<pre><code class="java">ArrayList list = new ArrayList();
-list.add(&quot;Hello&quot;);
-// 获取到Object, 必须强制转型为String
-String first = (String) list.get(0);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">ArrayList</span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 获取到Object, 必须强制转型为String</span>
+<span class="token class-name">String</span> first <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>很容易出现<code>ClassCastException</code>，因为容易“误转型”：</p>
-<pre><code class="java">list.add(new Integer(123));
-// Error: ClassCastException
-String second = (String) list.get(1);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Error: ClassCastException</span>
+<span class="token class-name">String</span> second <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>要解决上述问题，看可以为<code>String</code>单独编写一种<code>ArrayList</code>:</p>
-<pre><code class="java">public class StringArrayList &#123;
-    private String[] array;
-    private int size;
-    public void add(String e) &#123;...&#125;
-    public void remove(int index) &#123;...&#125;
-    public String get(int index) &#123;...&#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StringArrayList</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">String</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这样一来，存入的必须是<code>String</code>，取出的也一定是<code>String</code>，不需要强制转型，因为编译器会强制检查放入的类型：</p>
-<pre><code class="java">StringArrayList list = new StringArrayList();
-list.add(&quot;Hello&quot;);
-String first = list.get(0);
-// 编译错误: 不允许放入非String类型:
-list.add(new Integer(123));
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">StringArrayList</span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> first <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 编译错误: 不允许放入非String类型:</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>问题暂时解决。</p>
 <p>然而，新的问题是，如果要存储<code>Integer</code>，还需要为<code>Integer</code>单独编写一种<code>ArrayList</code>：</p>
-<pre><code class="java">public class IntegerArrayList &#123;
-    private Integer[] array;
-    private int size;
-    public void add(Integer e) &#123;...&#125;
-    public void remove(int index) &#123;...&#125;
-    public Integer get(int index) &#123;...&#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IntegerArrayList</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>实际上，还需要为其他所有<code>class</code>单独编写一种<code>ArrayList</code>：</p>
 <ul>
 <li>LongArrayList</li>
@@ -377,429 +377,428 @@ list.add(new Integer(123));
 </ul>
 <p>这是不可能的，JDK的<code>class</code>就有上千个，而且它还不知道其他人编写的<code>class</code>。</p>
 <p>为了解决新的问题，必须把<code>ArrayList</code>变成一种模板：<code>ArrayList&lt;T&gt;</code></p>
-<pre><code class="java">public class ArrayList&lt;T&gt; &#123;
-    private T[] array;
-    private int size;
-    public void add(T e) &#123;...&#125;
-    public void remove(int index) &#123;...&#125;
-    public T get(int index) &#123;...&#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">T</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>T</code>可以是任何<code>class</code>。这样一来，就可以实现：编写一次模板，创建任意类型的<code>ArrayList</code></p>
-<pre><code class="java">// 创建可以存储String的ArrayList:
-ArrayList&lt;String&gt; strList = new ArrayList&lt;String&gt;();
-// 创建可以存储Float的ArrayList:
-ArrayList&lt;Float&gt; floatList = new ArrayList&lt;Float&gt;();
-// 创建可以存储Person的ArrayList:
-ArrayList&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 创建可以存储String的ArrayList:</span>
+<span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> strList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 创建可以存储Float的ArrayList:</span>
+<span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Float</span><span class="token punctuation">></span></span> floatList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Float</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 创建可以存储Person的ArrayList:</span>
+<span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> personList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>所以，泛型其实就是定义一种模板，例如<code>ArrayList&lt;T&gt;</code>，然后再代码中为用到的类创建对应的<code>ArrayList&lt;类型&gt;</code>：</p>
-<pre><code class="java">ArrayList&lt;String&gt; strList = new ArrayList&lt;String&gt;();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> strList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>由编译器针对类型作检查：</p>
-<pre><code>strList.add(&quot;hello&quot;); // OK
-String s = strList.get(0); // OK
-strList.add(new Integer(123)); // compile error!
-Integer n = strList.get(0); // compile error!
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">strList.add(&quot;hello&quot;); &#x2F;&#x2F; OK
+String s &#x3D; strList.get(0); &#x2F;&#x2F; OK
+strList.add(new Integer(123)); &#x2F;&#x2F; compile error!
+Integer n &#x3D; strList.get(0); &#x2F;&#x2F; compile error!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这样一来，既实现了编写一次，万能匹配，又通过编译器保证了类型安全：这就是泛型。</p>
 <h2 id="向上转型"><a href="#向上转型" class="headerlink" title="向上转型"></a>向上转型</h2><p>在 Java标准库中的<code>ArrayList&lt;T&gt;</code>实现了<code>List&lt;T&gt;</code>接口，它可以向上转型为<code>List&lt;T&gt;</code>:</p>
-<pre><code class="JAVA">public class ArrayList&lt;T&gt; implements List&lt;T&gt; &#123;
+<pre class="line-numbers language-JAVA" data-language="JAVA"><code class="language-JAVA">public class ArrayList&lt;T&gt; implements List&lt;T&gt; &#123;
     ...
 &#125;
 
-List&lt;String&gt; list = new ArrayList&lt;String&gt;();
-</code></pre>
+List&lt;String&gt; list &#x3D; new ArrayList&lt;String&gt;();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>即类型<code>ArrayList&lt;T&gt;</code>可以向上转型为<code>List&lt;T&gt;</code>。<FONT COLOR=RED>要<em>特别注意</em>：不能把<code>ArrayList&lt;Integer&gt;</code>向上转型为<code>ArrayList&lt;Number&gt;</code>或<code>List&lt;Number&gt;</code>。</FONT>假设<code>ArrayList&lt;Integer&gt;</code>可以向上转型为<code>ArrayList&lt;Number&gt;</code>，观察一下代码：</p>
-<pre><code class="JAVA">// 创建ArrayList&lt;Integer&gt;类型：
-ArrayList&lt;Integer&gt; integerList = new ArrayList&lt;Integer&gt;();
-// 添加一个Integer：
+<pre class="line-numbers language-JAVA" data-language="JAVA"><code class="language-JAVA">&#x2F;&#x2F; 创建ArrayList&lt;Integer&gt;类型：
+ArrayList&lt;Integer&gt; integerList &#x3D; new ArrayList&lt;Integer&gt;();
+&#x2F;&#x2F; 添加一个Integer：
 integerList.add(new Integer(123));
-// “向上转型”为ArrayList&lt;Number&gt;：
-ArrayList&lt;Number&gt; numberList = integerList;
-// 添加一个Float，因为Float也是Number：
+&#x2F;&#x2F; “向上转型”为ArrayList&lt;Number&gt;：
+ArrayList&lt;Number&gt; numberList &#x3D; integerList;
+&#x2F;&#x2F; 添加一个Float，因为Float也是Number：
 numberList.add(new Float(12.34));
-// 从ArrayList&lt;Integer&gt;获取索引为1的元素（即添加的Float）：
-Integer n = integerList.get(1); // ClassCastException!
-</code></pre>
+&#x2F;&#x2F; 从ArrayList&lt;Integer&gt;获取索引为1的元素（即添加的Float）：
+Integer n &#x3D; integerList.get(1); &#x2F;&#x2F; ClassCastException!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>我们把一个<code>ArrayList&lt;Integer&gt;</code>转型为<code>ArrayList&lt;Number&gt;</code>类型后，这个<code>ArrayList&lt;Number&gt;</code>就可以接受<code>Float</code>类型，因为<code>Float</code>是<code>Number</code>的子类。但是，<code>ArrayList&lt;Number&gt;</code>实际上和<code>ArrayList&lt;Integer&gt;</code>是同一个对象，也就是<code>ArrayList&lt;Integer&gt;</code>类型，它不可能接受<code>Float</code>类型， 所以在获取<code>Integer</code>的时候将产生<code>ClassCastException</code>。实际上，编译器为了避免这种错误，根本就不允许把<code>ArrayList&lt;Integer&gt;</code>转型为<code>ArrayList&lt;Number&gt;</code>。</p>
 <blockquote>
 <p><code>ArrayList&lt;Integer&gt;</code>和<code>ArrayList&lt;Number&gt;</code>两者完全没有继承关系。</p>
 </blockquote>
 <h1 id="使用泛型"><a href="#使用泛型" class="headerlink" title="使用泛型"></a>使用泛型</h1><p>使用<code>ArrayList</code>时，如果不定义泛型类型时，泛型类型实际上就是<code>Object</code>:</p>
-<pre><code class="java">// 编译器警告
-List list = new ArrayList();
-list.add(&quot;Hello&quot;);
-list.add(&quot;World&quot;);
-String first = (String) list.get(0);
-String second = (String) list.get(1);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 编译器警告</span>
+<span class="token class-name">List</span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"World"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> first <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> second <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>此时只能把<code>&lt;T&gt;</code>当作<code>Object</code>使用，没有发挥泛型的优势。当定义泛型类型<code>&lt;String&gt;</code>后，<code>List&lt;T&gt;</code>的泛型接口变为强类型<code>List&lt;String&gt;</code>:</p>
-<pre><code>// 无编译器警告
-List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 无编译器警告
+List&lt;String&gt; list &#x3D; new ArrayList&lt;String&gt;();
 list.add(&quot;Hello&quot;);
 list.add(&quot;World&quot;);
-// 无强制转型
-String first = list.get(0);
-String second = list.get(1);
-</code></pre>
+&#x2F;&#x2F; 无强制转型
+String first &#x3D; list.get(0);
+String second &#x3D; list.get(1);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>当我们定义泛型类型<code>&lt;Number&gt;</code>后，<code>List&lt;T&gt;</code>的泛型接口变为强类型<code>List&lt;Number&gt;</code>：</p>
-<pre><code class="java">List&lt;Number&gt; list = new ArrayList&lt;Number&gt;();
-list.add(new Integer(123));
-list.add(new Double(12.34));
-Number first = list.get(0);
-Number second = list.get(1);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Double</span><span class="token punctuation">(</span><span class="token number">12.34</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Number</span> first <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Number</span> second <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>编译器如果能自动推断出泛型类型，就可以省略后面的泛型类型。例如，对于下面的代码：</p>
-<pre><code class="java">List&lt;Number&gt; list = new ArrayList&lt;Number&gt;();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>编译器看到泛型类型<code>List&lt;Number&gt;</code>就可以自动推断出后面的<code>ArrayList&lt;T&gt;</code>的泛型类型必须是<code>ArrayList&lt;Number&gt;</code>，因此，可以把代码简写为：</p>
-<pre><code class="java">// 可以省略后面的Number，编译器可以自动推断泛型类型：
-List&lt;Number&gt; list = new ArrayList&lt;&gt;();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 可以省略后面的Number，编译器可以自动推断泛型类型：</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h2 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h2><p>除了<code>ArrayList&lt;T&gt;</code>使用了泛型，还可以在接口中使用泛型。例如：<code>Arrays.sort(Objectp[])</code>可以对任意数组进行排序，<strong>但待排序的元素必须实现<code>Comparable&lt;T&gt;</code>这个泛型接口</strong>：</p>
-<pre><code class="java">public interface Comparable&lt;T&gt; &#123;
-    /**
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Comparable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">/**
      * 返回-1: 当前实例比参数o小
      * 返回0: 当前实例与参数o相等
      * 返回1: 当前实例比参数o大
-     */
-    int compareTo(T o);
-&#125;
-</code></pre>
+     */</span>
+    <span class="token keyword">int</span> <span class="token function">compareTo</span><span class="token punctuation">(</span><span class="token class-name">T</span> o<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>可以直接对<code>String</code>数组进行排序：</p>
-<pre><code class="java">// sort
-import java.util.Arrays;
-public class Main&#123;
-    public static void main(String[] args) &#123;
-        String[] ss = new String[] &#123;&quot;Orange&quot;, &quot;Apple&quot;, &quot;Pear&quot;&#125;;
-        Arrays.sort(ss);
-        System.out.println(Arrays.toString(ss));
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// sort</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ss <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span><span class="token string">"Orange"</span><span class="token punctuation">,</span> <span class="token string">"Apple"</span><span class="token punctuation">,</span> <span class="token string">"Pear"</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+		<span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>ss<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>ss<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这是因为<code>String</code>本身已经实现了<code>Comparable&lt;String&gt;</code>接口。如果换成我们自定义的<code>Person</code>类型试试：</p>
-<pre><code class="java">// sort
-import java.util.Arrays;
-public class Main&#123;
-    public static void main(String[] args) &#123;
-        Person[] ps = new Person[] &#123;
-            new Person(&quot;Bob&quot;, 61),
-            new Person(&quot;Alice&quot;, 88),
-            new Person(&quot;Lily&quot;, 75)
-        &#125;;
-        Arrays.sort(ps);
-        System.out.println(Arrays.toString(ps));
-    &#125;
-&#125;
-class Person &#123;
-    String name;
-    int score;
-    Person(String name, int score) &#123;
-        this.name = name;
-        this.score = score;
-    &#125;
-    public String toString() &#123;
-        return this.name + &quot;,&quot; + this.score;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// sort</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token class-name">Person</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ps <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Bob"</span><span class="token punctuation">,</span> <span class="token number">61</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">88</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Lily"</span><span class="token punctuation">,</span> <span class="token number">75</span><span class="token punctuation">)</span>
+		<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+		<span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>ps<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>ps<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> score<span class="token punctuation">;</span>
+    <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token keyword">int</span> score<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>score <span class="token operator">=</span> score<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">+</span> <span class="token string">","</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>score<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上述程序直接允许将会得到<code>ClassCastException</code>，即无法将<code>Person</code>转型为<code>Comparable</code>。修改代码让<code>Person</code>实现<code>Comparable&lt;T&gt;</code>接口：</p>
-<pre><code class="java">// sort
-import java.util.Arrays;
-public class Main&#123;
-    public static void main(String[] args) &#123;
-        Person[] ps = new Person[] &#123;
-            new Person(&quot;Bob&quot;, 61),
-            new Person(&quot;Alice&quot;, 88),
-            new Person(&quot;Lily&quot;, 75)
-        &#125;;
-        Arrays.sort(ps);
-        System.out.println(Arrays.toString(ps));
-    &#125;
-&#125;
-class Person implements Comparable&lt;Person&gt; &#123;
-    String name;
-    int score;
-    Person(String name, int score) &#123;
-        this.name = name;
-        this.score = score;
-    &#125;
-    public String toString() &#123;
-        return this.name + &quot;,&quot; + this.score;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// sort</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token class-name">Person</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ps <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Bob"</span><span class="token punctuation">,</span> <span class="token number">61</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Alice"</span><span class="token punctuation">,</span> <span class="token number">88</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"Lily"</span><span class="token punctuation">,</span> <span class="token number">75</span><span class="token punctuation">)</span>
+		<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+		<span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>ps<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span>ps<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token keyword">implements</span> <span class="token class-name">Comparable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> score<span class="token punctuation">;</span>
+    <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token keyword">int</span> score<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>score <span class="token operator">=</span> score<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">+</span> <span class="token string">","</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>score<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行上述代码，可以正确实现按<code>name</code>进行排序。也可以修改比较逻辑，例如，按<code>score</code>从高到低排序。请自行修改测试。</p>
 <h1 id="编写泛型"><a href="#编写泛型" class="headerlink" title="编写泛型"></a>编写泛型</h1><p>编写泛型类比普通类要复杂。通常来说，泛型类一般用在集合类中。例如：<code>ArrayList&lt;T&gt;</code>，一般情况下很少需要编写泛型类。如果需要编写一个泛型类，可以按照以下步骤来实现。</p>
 <p>首先，按照某种类型，例如：<code>String</code>，来编写类。</p>
-<pre><code class="java">public class Pair&#123;
-    private String first;
-    private String last;
-    public Pair(String first, String last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public String getFirst() &#123;
-        return first;
-    &#125;
-    public String getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">private</span> <span class="token class-name">String</span> first<span class="token punctuation">;</span>
+	<span class="token keyword">private</span> <span class="token class-name">String</span> last<span class="token punctuation">;</span>
+	<span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">String</span> first<span class="token punctuation">,</span> <span class="token class-name">String</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> first<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> last<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后标记所有的特定类型，这里是<code>String</code>将其替换为<code>T</code>，并申明<code>&lt;T&gt;</code>:</p>
-<pre><code class="JAVA">public class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-JAVA" data-language="JAVA"><code class="language-JAVA">public class Pair&lt;T&gt; &#123;
+	private T first;
+	private T last;
+	public Pair(T first, T last) &#123;
+		this.first &#x3D; first;
+		this.last &#x3D; last;
+	&#125;
+	public T getFirst() &#123;
+		return first;
+	&#125;
+	public T getLast() &#123;
+		return last;
+	&#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h2><p><strong>编写泛型时要特别注意：泛型类型<T>不能用于静态方法</strong></p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;...&#125;
-    public T getLast() &#123;...&#125;
-    // 对静态方法使用&lt;T&gt;:
-    public static Pair&lt;T&gt; create(T first, T last)&#123;
-        return new Pair&lt;T&gt;(first, last);
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+	<span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+	<span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+	<span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+	<span class="token comment">// 对静态方法使用&lt;T>:</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>first<span class="token punctuation">,</span> last<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这样会直接导致编译错误，无法在静态方法<code>create()</code>的方法参数和返回类型上使用泛型<code>T</code>。虽然可以在<code>Static</code>修饰符后面加一个<code>&lt;T&gt;</code>，就是这样：<code>static &lt;T&gt;</code>。但实际上，这个<code>&lt;T&gt;</code>和<code>Pair&lt;T&gt;</code>类型的<code>&lt;T&gt;</code>已经没有任何关系了。</p>
 <p>对于静态方法，可以单独改写为“泛型”方法，只需要使用另一个类型即可。对于上面的<code>create()</code>静态方法，把它改写成另一种泛型类型，例如：<code>&lt;K&gt;</code>：</p>
-<pre><code class="JAVA">public class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;...&#125;
-    public T getLast() &#123;...&#125;
-    // 对静态方法使用&lt;T&gt;:
-    public static &lt;K&gt; Pair&lt;K&gt; create(K first, K last)&#123;
-        return new Pair&lt;K&gt;(first, last);
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-JAVA" data-language="JAVA"><code class="language-JAVA">public class Pair&lt;T&gt; &#123;
+	private T first;
+	private T last;
+	public Pair(T first, T last) &#123;
+		this.first &#x3D; first;
+		this.last &#x3D; last;
+	&#125;
+	public T getFirst() &#123;...&#125;
+	public T getLast() &#123;...&#125;
+	&#x2F;&#x2F; 对静态方法使用&lt;T&gt;:
+	public static &lt;K&gt; Pair&lt;K&gt; create(K first, K last)&#123;
+		return new Pair&lt;K&gt;(first, last);
+	&#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这样才能清楚地将静态方法的泛型类型和实例类型的泛型类型区分开。</p>
 <h2 id="多个泛型类型"><a href="#多个泛型类型" class="headerlink" title="多个泛型类型"></a>多个泛型类型</h2><p>泛型还可以定义多种类型。例如，我们希望<code>Pair</code>不总是存储两个类型一样的对象，就可以使用类型<code>&lt;T, K&gt;</code>：</p>
-<pre><code class="java">public class Pair&lt;T, K&gt; &#123;
-    private T first;
-    private K last;
-    public Pair(T first, K last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123; ... &#125;
-    public K getLast() &#123; ... &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token class-name">K</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">K</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">K</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">K</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>使用的时候，需要指出两种类型：</p>
-<pre><code class="java">Pair&lt;String, Integer&gt;p = new Pair&lt;&gt;(&quot;test&quot;,123);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span>p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">,</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>Java标准库的<code>Map&lt;K, V&gt;</code>就是使用两种泛型类型的例子。它对Key使用一种类型，对Value使用另一种类型。</p>
 <h1 id="擦拭法"><a href="#擦拭法" class="headerlink" title="擦拭法"></a>擦拭法</h1><p>泛型是一种类似”模板代码“的技术，不同语言的泛型实现方式不一定相同。Java 的泛型实现方式是擦拭法（Type Erasure）。所谓擦拭法是指，虚拟机对泛型其实一无所知，所有的工作都是编译器做的。例如，我们编写了一个泛型类<code>Pair&lt;T&gt;</code>，这是编译器看到的代码：</p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>而虚拟机根本不知道泛型。这是虚拟机执行的代码：</p>
-<pre><code class="java">public class Pair &#123;
-    private Object first;
-    private Object last;
-    public Pair(Object first, Object last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public Object getFirst() &#123;
-        return first;
-    &#125;
-    public Object getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Object</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Object</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">Object</span> first<span class="token punctuation">,</span> <span class="token class-name">Object</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>因此，Java 使用擦拭法实现泛型，导致了：</p>
 <ul>
 <li>编译器把类型<code>&lt;T&gt;</code>视为<code>Object</code>；</li>
 <li>编译器根据<code>&lt;T&gt;</code>实现安全的强制转型。</li>
 </ul>
 <p>使用泛型的时候，我们编写的代码也是编译器看到的代码：</p>
-<pre><code class="java">Pair&lt;String&gt; p = new Pair&lt;&gt;(&quot;Hello&quot;, &quot;world&quot;);
-String first = p.getFirst();
-String last = p.getLast();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> first <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> last <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>而虚拟机执行的代码并没有泛型：</p>
-<pre><code class="java">Pair p = new Pair(&quot;Hello&quot;, &quot;world&quot;);
-String first = (String) p.getFirst();
-String last = (String) p.getLast();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> first <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">String</span> last <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>所以，Java的泛型是由编译器在编译时实行的，编译器内部永远把所有类型<code>T</code>视为<code>Object</code>处理，但是，在需要转型的时候，编译器会根据<code>T</code>的类型自动为我们实行安全地强制转型。</p>
 <ul>
 <li><p>局限一：<code>&lt;T&gt;</code>不能是基本类型，例如<code>int</code>，因为实际类型是<code>Object</code>，<code>Object</code>类型无法持有基本类型：</p>
-<pre><code class="java">Pair&lt;int&gt; p = new Pair&lt;&gt;(1, 2); // compile error!
-</code></pre>
-</li>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// compile error!</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 <li><p>局限二：无法取得带泛型的<code>Class</code>。观察以下代码：</p>
-<pre><code class="java">public class Main &#123;
-    public static void main(String[] args) &#123;
-        Pair&lt;String&gt; p1 = new Pair&lt;&gt;(&quot;Hello&quot;, &quot;world&quot;);
-        Pair&lt;Integer&gt; p2 = new Pair&lt;&gt;(123, 456);
-        Class c1 = p1.getClass();
-        Class c2 = p2.getClass();
-        System.out.println(c1==c2); // true
-        System.out.println(c1==Pair.class); // true
-        System.out.println(c1); // class Pair
-    &#125;
-&#125;
-class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"Hello"</span><span class="token punctuation">,</span> <span class="token string">"world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">456</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Class</span> c1 <span class="token operator">=</span> p1<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Class</span> c2 <span class="token operator">=</span> p2<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c1<span class="token operator">==</span>c2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c1<span class="token operator">==</span><span class="token class-name">Pair</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// class Pair</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>因为<code>T</code>是<code>Object</code>，我们对<code>Pair&lt;String&gt;</code>和<code>Pair&lt;Integer&gt;</code>类型获取<code>Class</code>时，获取到的是同一个<code>Class</code>，也就是<code>Pair</code>类的<code>Class</code>。换句话说，所有泛型实例，无论<code>T</code>的类型是什么，<code>getClass()</code>返回同一个<code>Class</code>实例，因为编译后它们全部都是<code>Pair&lt;Object&gt;</code>。</p>
 </li>
 <li><p>局限三：无法判断带泛型的类型：</p>
-<pre><code class="JAVA">Pair&lt;Integer&gt; p = new Pair&lt;&gt;(123, 456);
-// Compile error:
+<pre class="line-numbers language-JAVA" data-language="JAVA"><code class="language-JAVA">Pair&lt;Integer&gt; p &#x3D; new Pair&lt;&gt;(123, 456);
+&#x2F;&#x2F; Compile error:
 if (p instanceof Pair&lt;String&gt;) &#123;
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>原因和前面一样，并不存在<code>Pair&lt;String&gt;.class</code>，而是只有唯一的<code>Pair.class</code>。</p>
 </li>
 <li><p>局限四：不能实例化<code>T</code>类型</p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair() &#123;
-        // Compile error:
-        first = new T();
-        last = new T();
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Compile error:</span>
+        first <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        last <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上述代码无法通过编译，因为构造方法的两行语句：</p>
-<pre><code class="java">first = new T();
-last = new T();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">first <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+last <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">T</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>擦拭后实际上变成了：</p>
-<pre><code class="java">first = new Object();
-last = new Object();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">first <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+last <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>这样一来，创建<code>new Pair&lt;String&gt;()</code>和创建<code>new Pair&lt;Integer&gt;()</code>就全部成了<code>Object</code>，显然编译器要阻止这种类型不对的代码。</p>
 <p>要实例化<code>T</code>类型，我们必须借助额外的<code>Class&lt;T&gt;</code>参数：</p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(Class&lt;T&gt; clazz) &#123;
-        first = clazz.newInstance();
-        last = clazz.newInstance();
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> clazz<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        first <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        last <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上述代码借助<code>Class&lt;T&gt;</code>参数并通过反射来实例化<code>T</code>类型，使用的时候，也必须传入<code>Class&lt;T&gt;</code>。例如：</p>
-<pre><code class="java">Pair&lt;String&gt; pair = new Pair&lt;&gt;(String.class);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> pair <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>因为传入了<code>Class&lt;String&gt;</code>的实例，所以我们借助<code>String.class</code>就可以实例化<code>String</code>类型。</p>
 </li>
 </ul>
 <h2 id="不恰当的覆写方法"><a href="#不恰当的覆写方法" class="headerlink" title="不恰当的覆写方法"></a>不恰当的覆写方法</h2><p>有些时候，一个看似正确定义的方法会无法通过编译。例如：</p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123;
-    public boolean equals(T t) &#123;
-        return this == t;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">equals</span><span class="token punctuation">(</span><span class="token class-name">T</span> t<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span> <span class="token operator">==</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这是因为，定义的<code>equals(T t)</code>方法实际上会被擦拭成<code>equals(Object t)</code>，而这个方法是继承自<code>Object</code>的，编译器会阻止一个实际上会变成覆写的泛型方法定义。换个方法名，避开与<code>Object.equals(Object)</code>的冲突就可以成功编译：</p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123;
-    public boolean same(T t) &#123;
-        return this == t;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">same</span><span class="token punctuation">(</span><span class="token class-name">T</span> t<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span> <span class="token operator">==</span> t<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="泛型继承"><a href="#泛型继承" class="headerlink" title="泛型继承"></a>泛型继承</h2><p>一个类可以继承自一个泛型类。例如：父类的类型是<code>Pair&lt;Integer&gt;</code>，子类的类型是<code>IntPair</code>，可以这么继承：</p>
-<pre><code>public class IntPair extends Pair&lt;Integer&gt; &#123;
-&#125;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">public class IntPair extends Pair&lt;Integer&gt; &#123;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>使用的时候，因为子类<code>IntPair</code>并没有泛型类型，所以，正常使用即可：</p>
-<pre><code>IntPair ip = new IntPair(1, 2);
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">IntPair ip &#x3D; new IntPair(1, 2);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>前面讲了，无法获取<code>Pair&lt;T&gt;</code>的<code>T</code>类型，即给定一个变量<code>Pair&lt;Integer&gt; p</code>，无法从<code>p</code>中获取到<code>Integer</code>类型。但是，在父类是泛型类型的情况下，编译器就必须把类型<code>T</code>（对<code>IntPair</code>来说，也就是<code>Integer</code>类型）保存到子类的<code>class</code>文件中，不然编译器就不知道<code>IntPair</code>只能存取<code>Integer</code>这种类型。</p>
 <p>在继承了泛型类型的情况下，子类可以获取父类的泛型类型。例如：<code>IntPair</code>可以获取到父类的泛型类型<code>Integer</code>。获取父类的泛型类型代码比较复杂：</p>
-<pre><code class="java">import java.lang.reflect.ParameterizedType;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">ParameterizedType</span><span class="token punctuation">;</span>
 
-public class TypeErasure&#123;
-    public static void main(String[] args) &#123;
-        Class&lt;Integer&gt; clazz = IntPair.class;
-        Type t = clazz.getGenericSuperclass();
-        if(t instanceof ParameterizedType) &#123;
-            ParameterizedType pt = (ParameterizedType) t;
-            Type[] types = pt.getActualTypeArguments(); // 可能有多个泛型类型
-            Type firstType = types[0]; // 取第一个泛型类型
-            Class&lt;?&gt; typeClass = (Class&lt;?&gt;) firstType;
-            System.out.println(typeClass); // Integer
-        &#125;
-    &#125;
-&#125;
-class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-class IntPair extends Pair&lt;Integer&gt;&#123;
-    public IntPair(Integer first, Integer last) &#123;
-        super(first, last);
-    &#125;
-&#125;
-</code></pre>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TypeErasure</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> clazz <span class="token operator">=</span> <span class="token class-name">IntPair</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+        <span class="token class-name">Type</span> t <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getGenericSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>t <span class="token keyword">instanceof</span> <span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">ParameterizedType</span> pt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">ParameterizedType</span><span class="token punctuation">)</span> t<span class="token punctuation">;</span>
+            <span class="token class-name">Type</span><span class="token punctuation">[</span><span class="token punctuation">]</span> types <span class="token operator">=</span> pt<span class="token punctuation">.</span><span class="token function">getActualTypeArguments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 可能有多个泛型类型</span>
+            <span class="token class-name">Type</span> firstType <span class="token operator">=</span> types<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 取第一个泛型类型</span>
+            <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> typeClass <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span><span class="token punctuation">)</span> firstType<span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>typeClass<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Integer</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">IntPair</span> <span class="token keyword">extends</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token class-name">IntPair</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> first<span class="token punctuation">,</span> <span class="token class-name">Integer</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>first<span class="token punctuation">,</span> last<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>因为Java引入了泛型，所以，只用<code>Class</code>来标识类型已经不够了。实际上，Java的类型系统结构如下：</p>
-<pre><code class="ascii">                      ┌────┐
+<pre class="line-numbers language-ascii" data-language="ascii"><code class="language-ascii">                      ┌────┐
                       │Type│
                       └────┘
                          ▲
@@ -808,156 +807,156 @@ class IntPair extends Pair&lt;Integer&gt;&#123;
    │            │                  │               │
 ┌─────┐┌─────────────────┐┌────────────────┐┌────────────┐
 │Class││ParameterizedType││GenericArrayType││WildcardType│
-└─────┘└─────────────────┘└────────────────┘└────────────┘
-</code></pre>
+└─────┘└─────────────────┘└────────────────┘└────────────┘<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="extends-通配符"><a href="#extends-通配符" class="headerlink" title="extends 通配符"></a>extends 通配符</h1><p>前面已经讲到了泛型的继承关系：<code>Pair&lt;Integer&gt;</code>不是<code>Pair&lt;Number&gt;</code>的子类。假设定义了<code>Pair&lt;T&gt;</code>：</p>
-<pre><code class="java">public class Pair&lt;T&gt; &#123; ... &#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>然后，又针对<code>Pair&lt;Number&gt;</code>类型写了一个静态方法，它接收的参数类型是<code>Pair&lt;Number&gt;</code>：</p>
-<pre><code class="java">public class PairHelper &#123;
-    static int add(Pair&lt;Number&gt; p) &#123;
-        Number first = p.getFirst();
-        Number last = p.getLast();
-        return first.intValue() + last.intValue();
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PairHelper</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Number</span> first <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Number</span> last <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> last<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上述代码是可以正常编译的。使用的时候传入：</p>
-<pre><code class="java">int sum = PairHelper.add(new Pair&lt;Number&gt;(1,2));
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token class-name">PairHelper</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <blockquote>
 <p>注意：传入的类型是<code>Pair&lt;Number&gt;</code>，实际参数类型是<code>(Integer, Integer)</code>。</p>
 </blockquote>
 <p>既然实际参数是<code>Integer</code>类型，试试传入<code>Pair&lt;Integer&gt;</code>：</p>
-<pre><code class="java">public class ExtendsTest &#123;
-    public static void main(String[] args) &#123;
-        Pair&lt;Integer&gt; p = new Pair&lt;&gt;(123,456);
-        int n = add(p);
-        System.out.println(n);
-    &#125;
-    static int add(Pair&lt;Number&gt; p) &#123;
-        Number first = p.getFirst();
-        Number last = p.getLast();
-        return first.intValue() + last.intValue();
-    &#125;
-&#125;
-class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExtendsTest</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span><span class="token number">456</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">add</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Number</span> first <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Number</span> last <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> last<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上述程序直接运行会得到一个编译错误：</p>
-<pre><code class="asccii">incompatible types: Pair&lt;Integer&gt; cannot be converted to Pair&lt;Number&gt;
-</code></pre>
+<pre class="line-numbers language-asccii" data-language="asccii"><code class="language-asccii">incompatible types: Pair&lt;Integer&gt; cannot be converted to Pair&lt;Number&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>原因很明显，因为<code>Pair&lt;Integer&gt;</code>不是<code>Pair&lt;Number&gt;</code>的子类，因此，<code>add(Pair&lt;Number&gt;)</code>不接受参数类型<code>Pair&lt;Integer&gt;</code>。但是从<code>add()</code>方法的代码可知，传入<code>Pair&lt;Integer&gt;</code>是完全符合内部代码的类型规范，因为语句：</p>
-<pre><code>Number first = p.getFirst();
-Number last = p.getLast();
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">Number first &#x3D; p.getFirst();
+Number last &#x3D; p.getLast();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>实际类型是<code>Integer</code>，引用类型是<code>Number</code>，没有问题。问题在于方法参数类型定死了只能传入<code>Pair&lt;Number&gt;</code>。有没有办法使得方法参数接受<code>Pair&lt;Integer&gt;</code>？办法是有的，这就是使用<code>Pair&lt;? extends Number&gt;</code>使得方法接收所有泛型类型为<code>Number</code>或<code>Number</code>子类的<code>Pair</code>类型。我们把代码改写如下：</p>
-<pre><code class="java">public class ExtendsTest &#123;
-    public static void main(String[] args) &#123;
-        Pair&lt;Integer&gt; p = new Pair&lt;&gt;(123,456);
-        int n = add(p);
-        System.out.println(n);
-    &#125;
-    static int add(Pair&lt;? extends Number&gt; p) &#123;
-        Number first = p.getFirst();
-        Number last = p.getLast();
-        return first.intValue() + last.intValue();
-    &#125;
-&#125;
-class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExtendsTest</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span><span class="token number">456</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">add</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token punctuation">></span></span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Number</span> first <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Number</span> last <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> last<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这样一来，给方法传入<code>Pair&lt;Integer&gt;</code>类型时，它符合参数<code>Pair&lt;? extends Number&gt;</code>类型。这种使用<code>&lt;? extends Number&gt;</code>的泛型定义称之为<strong>上界通配符</strong>（Upper Bounds Wildcards），即把泛型类型<code>T</code>的上界限定在<code>Number</code>了。除了可以传入<code>Pair&lt;Integer&gt;</code>类型，我们还可以传入<code>Pair&lt;Double&gt;</code>类型，<code>Pair&lt;BigDecimal&gt;</code>类型等等，因为<code>Double</code>和<code>BigDecimal</code>都是<code>Number</code>的子类。如果对<code>Pair&lt;? extends Number&gt;</code>类型调用<code>getFirst()</code>方法，实际的方法签名变成了：</p>
-<pre><code class="java">&lt;? extends Number&gt; getFirst();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token punctuation">></span></span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>即返回值是<code>Number</code>或<code>Number</code>的子类，因此，可以安全赋值给<code>Number</code>类型的变量：</p>
-<pre><code class="java">Number x = p.getFirst();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Number</span> x <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>然后，不可预测实际类型就是<code>Integer</code>，例如，下面的代码是无法通过编译的：</p>
-<pre><code class="java">Integer x = p.getFirst();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Integer</span> x <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>这是因为实际的返回类型可能是<code>Integer</code>，也可能是<code>Double</code>或者其他类型，编译器只能确定类型一定是<code>Number</code>的子类（包括<code>Number</code>类型本身），但具体类型无法确定。再来考察一下<code>Pair&lt;T&gt;</code>的<code>set</code>方法：</p>
-<pre><code class="java">public class ExtendsTest &#123;
-    public static void main(String[] args) &#123;
-        Pair&lt;Integer&gt; p = new Pair&lt;&gt;(123,456);
-        int n = add(p);
-        System.out.println(n);
-    &#125;
-    static int add(Pair&lt;? extends Number&gt; p) &#123;
-        Number first = p.getFirst();
-        Number last = p.getLast();
-        p.setFirst(new Integer(first.intValue() + 100));
-        p.setLast(new Integer(last.intValue() + 100);
-        return p.getFirst().intValue() + p.getFirst().intValue();
-    &#125;
-&#125;
-class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExtendsTest</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span><span class="token number">456</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">add</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token punctuation">></span></span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Number</span> first <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Number</span> last <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">setFirst</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span>first<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">setLast</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span>last<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>不出意外，我们会得到一个编译错误：</p>
-<pre><code class="java">incompatible types: Integer cannot be converted to CAP#1
-where CAP#1 is a fresh type-variable:
-    CAP#1 extends Number from capture of ? extends Number
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">incompatible types<span class="token operator">:</span> <span class="token class-name">Integer</span> cannot be converted <span class="token keyword">to</span> CAP#<span class="token number">1</span>
+where CAP#<span class="token number">1</span> is a fresh type<span class="token operator">-</span>variable<span class="token operator">:</span>
+    CAP#<span class="token number">1</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span> from capture of <span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>编译错误发生在<code>p.setFirst()</code>传入的参数是<code>Integer</code>类型。为什么已经定义了<code>Pair&lt;? extends Number&gt;</code>，<code>setFirst(? extends Number)</code>还是不能传入<code>Integer</code>？原因还在于擦拭法。如果传入的<code>p</code>是<code>Pair&lt;Double&gt;</code>，显然它满足参数定义<code>Pair&lt;? extends Number&gt;</code>，然而，<code>Pair&lt;Double&gt;</code>的<code>setFirst()</code>显然无法接受<code>Integer</code>类型。</p>
 <p><strong>这就是<code>&lt;? extends Number&gt;</code>通配符的一个重要限制：方法参数签名<code>setFirst(? extends Number)</code>无法传递任何<code>Number</code>类型给<code>setFirst(? extends Number)</code>。</strong>这里唯一的例外是可以给方法参数传入<code>null</code>：</p>
-<pre><code class="java">p.setFirst(null); // ok, 但是后面会抛出NullPointerException
-p.getFirst().intValue(); // NullPointerException
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">p<span class="token punctuation">.</span><span class="token function">setFirst</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ok, 但是后面会抛出NullPointerException</span>
+p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// NullPointerException</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h2 id="extends-通配符的作用"><a href="#extends-通配符的作用" class="headerlink" title="extends 通配符的作用"></a>extends 通配符的作用</h2><p>考察 Java标准库的<code>java.util.List&lt;T&gt;</code>接口，它实现的是一个类似“可变数组”的列表，主要功能包括：</p>
-<pre><code class="java">public interface List&lt;T&gt; &#123;
-    int size(); // 获取个数
-    T get(int index); // 根据索引获取指定元素
-    void add(T t); // 添加一个新元素
-    void remove(T t); // 删除一个已有元素
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> <span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 获取个数</span>
+    <span class="token class-name">T</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 根据索引获取指定元素</span>
+    <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">T</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 添加一个新元素</span>
+    <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token class-name">T</span> t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 删除一个已有元素</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>定义一个方法来处理列表的每个元素：</p>
-<pre><code class="java">int sumOfList(List&lt;? extends Integer&gt; list) &#123;
-    int sum = 0;
-    for (int i=0; i&lt;list.size(); i++) &#123;
-        Integer n = list.get(i);
-        sum = sum + n;
-    &#125;
-    return sum;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">sumOfList</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>list<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Integer</span> n <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        sum <span class="token operator">=</span> sum <span class="token operator">+</span> n<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>为什么定义的方法参数类型是<code>List&lt;? extends Integer&gt;</code>而不是<code>List&lt;Integer&gt;</code>？从方法内部代码看，传入<code>List&lt;? extends Integer&gt;</code>或者<code>List&lt;Integer&gt;</code>是完全一样的，但是，注意到<code>List&lt;? extends Integer&gt;</code>的限制：</p>
 <ul>
 <li>允许调用<code>get()</code>方法获取<code>Integer</code>的引用；</li>
@@ -965,82 +964,82 @@ p.getFirst().intValue(); // NullPointerException
 </ul>
 <p>因此，方法参数类型<code>List&lt;? extends Integer&gt;</code>表明了该方法内部只会读取<code>List</code>的元素，不会修改<code>List</code>的元素（因为无法调用<code>add(? extends Integer)</code>、<code>remove(? extends Integer)</code>这些方法。换句话说，这是一个对参数<code>List&lt;? extends Integer&gt;</code>进行只读的方法（恶意调用<code>set(null)</code>除外）。</p>
 <h2 id="使用-extends-限定-T-类型"><a href="#使用-extends-限定-T-类型" class="headerlink" title="使用 extends 限定 T 类型"></a>使用 extends 限定 T 类型</h2><p>在定义泛型类型<code>Pair&lt;T&gt;</code>的时候，也可以使用<code>extends</code>通配符来限定<code>T</code>的类型：</p>
-<pre><code class="java">public class Pair&lt;T extends Number&gt; &#123; ... &#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>现在，只能定义：</p>
-<pre><code class="java">Pair&lt;Number&gt; p1 = null;
-Pair&lt;Integer&gt; p2 = new Pair&lt;&gt;(1, 2);
-Pair&lt;Double&gt; p3 = null;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> p1 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Double</span><span class="token punctuation">></span></span> p3 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>因为<code>Number</code>、<code>Integer</code>和<code>Double</code>都符合<code>&lt;T extends Number&gt;</code>。非<code>Number</code>类型将无法通过编译：</p>
-<pre><code class="java">Pair&lt;String&gt; p1 = null; // compile error!
-Pair&lt;Object&gt; p2 = null; // compile error!
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> p1 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment">// compile error!</span>
+<span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> p2 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment">// compile error!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>因为<code>String</code>、<code>Object</code>都不符合<code>&lt;T extends Number&gt;</code>，因为它们不是<code>Number</code>类型或<code>Number</code>的子类。</p>
 <h1 id="super-通配符"><a href="#super-通配符" class="headerlink" title="super 通配符"></a>super 通配符</h1><p>下面这个<code>set</code>方法：</p>
-<pre><code class="java">void set(Pair&lt;Integer&gt; p, Integer first, Integer last) &#123;
-    p.setFirst(first);
-    p.setLast(last);
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">set</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p<span class="token punctuation">,</span> <span class="token class-name">Integer</span> first<span class="token punctuation">,</span> <span class="token class-name">Integer</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    p<span class="token punctuation">.</span><span class="token function">setFirst</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    p<span class="token punctuation">.</span><span class="token function">setLast</span><span class="token punctuation">(</span>last<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>传入<code>Pair&lt;Integer&gt;</code>是允许的，但是传入<code>Pair&lt;Number&gt;</code>是不允许的，和<code>extends</code>通配符相反。这次，如果希望接受<code>Pair&lt;Integer&gt;</code>类型，以及<code>Pair&lt;Number&gt;</code>、<code>Pair&lt;Object&gt;</code>，因为<code>Number</code>和 <code>Object</code>是<code>Integer</code>的父类，<code>SetFirst(Number)</code>和<code>setFirst(Object)</code>实际上允许接受<code>Integer</code>类型。需要使用<code>super</code>通配符来改写这个方法。</p>
-<pre><code class="java">void set(Pair&lt;? super Integer&gt; p, Integer first, Integer last)&#123;
-    p.setFirst(first);
-    p.setLast(last);
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">set</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> p<span class="token punctuation">,</span> <span class="token class-name">Integer</span> first<span class="token punctuation">,</span> <span class="token class-name">Integer</span> last<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    p<span class="token punctuation">.</span><span class="token function">setFirst</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    p<span class="token punctuation">.</span><span class="token function">setLast</span><span class="token punctuation">(</span>last<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意到<code>Pair&lt;? super Integer&gt;</code>表示，方法参数接受所有泛型类型为<code>Integer</code>或<code>Integer</code>父类的<code>Pair</code>类型。这样下面的代码就可以被正常编译：</p>
-<pre><code class="java">public class Main &#123;
-    public static void main(String[] args) &#123;
-        Pair&lt;Number&gt; p1 = new Pair&lt;&gt;(12.3,4.56);
-        Pair&lt;Integer&gt; p2 = new Pair&lt;&gt;(123, 456);
-        setSame(p1, 100);
-        setSame(p2, 200);
-        System.out.println(p1.getFirst() + &quot;,&quot; + p1.getLast());
-        System.out.println(p1.getFirst() + &quot;,&quot; + p2.getLast());
-    &#125;
-    static void setSame(Pair&lt;? super Integer&gt; p,Integer n) &#123;
-        p.setFirst(n);
-        p.setLast(n);
-    &#125;
-&#125;
-class Pair&lt;T&gt; &#123;
-    private T first;
-    private T last;
-    public Pair(T first, T last) &#123;
-        this.first = first;
-        this.last = last;
-    &#125;
-    public T getFirst() &#123;
-        return first;
-    &#125;
-    public T getLast() &#123;
-        return last;
-    &#125;
-    public void setFirst(T first) &#123;
-        this.first = first;
-    &#125;
-    public void setLast(T last) &#123;
-        this.last = last;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Main</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">12.3</span><span class="token punctuation">,</span><span class="token number">4.56</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">456</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setSame</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setSame</span><span class="token punctuation">(</span>p2<span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">","</span> <span class="token operator">+</span> p1<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">","</span> <span class="token operator">+</span> p2<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">setSame</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span> p<span class="token punctuation">,</span><span class="token class-name">Integer</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        p<span class="token punctuation">.</span><span class="token function">setFirst</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">setLast</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> first<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">T</span> last<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Pair</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">,</span> <span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token class-name">T</span> <span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setFirst</span><span class="token punctuation">(</span><span class="token class-name">T</span> first<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>first <span class="token operator">=</span> first<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setLast</span><span class="token punctuation">(</span><span class="token class-name">T</span> last<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>last <span class="token operator">=</span> last<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>考察<code>Pair&lt;? super Integer&gt;</code>的<code>setFirst()</code>方法，它的方法签名实际上是：</p>
-<pre><code class="java">void setFirst(? super Integer);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">setFirst</span><span class="token punctuation">(</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">Integer</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>因此，可以安全地传入<code>Integer</code>类型。再考察<code>Pair&lt;? super Integer&gt;</code>的<code>getFirst()</code>方法，它的方法签名实际上是：</p>
-<pre><code class="java">? super Integer getFirst();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">Integer</span> <span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>这里注意到：无法使用<code>Integer</code>类型来接收<code>getFirst()</code>的返回值，即下面的语句将无法通过编译：</p>
-<pre><code class="java">Integer x = p.getFirst();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Integer</span> x <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>因为如果传入的实际类型是<code>Pair&lt;Number&gt;</code>，编译器无法将<code>Number</code>类型转型为<code>Integer</code>。</p>
 <blockquote>
 <p>注意：虽然<code>Number</code>是一个抽象类，无法直接实例化它。但是，即便<code>Number</code>不是抽象类，这里仍然无法通过编译。此外，传入<code>Pair&lt;Object&gt;</code>类型时，编译器也无法将<code>Object</code>类型转型为<code>Integer</code>。</p>
 </blockquote>
 <p>唯一可以接收<code>getFirst()</code>方法返回值的是<code>Object</code>类型：</p>
-<pre><code class="java">Object obj = p.getFirst();
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Object</span> obj <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>因此，使用<code>&lt;? super Integer&gt;</code>通配符表示：</p>
 <ul>
 <li>允许调用<code>set(? super Integer)</code>方法传入<code>Integer</code>的引用；</li>
@@ -1053,16 +1052,16 @@ class Pair&lt;T&gt; &#123;
 <li><code>&lt;? super T&gt;</code>允许调用写方法<code>set(T)</code>传入<code>T</code>的引用，但不允许调用读方法<code>T get()</code>获取<code>T</code>的引用（获取<code>Object</code>除外）。</li>
 </ul>
 <p>一个是允许读不允许写，另一个是允许写不允许读。记住上面的结论，来看 Java标准库的<code>Collections</code>类定义的<code>copy()</code>方法：</p>
-<pre><code class="java">public class Collections &#123;
-    // 把src的每个元素复制到dest中:
-    public static &lt;T&gt; void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src) &#123;
-        for (int i=0; i&lt;src.size(); i++) &#123;
-            T t = src.get(i);
-            dest.add(t);
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 把src的每个元素复制到dest中:</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">T</span><span class="token punctuation">></span></span> dest<span class="token punctuation">,</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">T</span><span class="token punctuation">></span></span> src<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">T</span> t <span class="token operator">=</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            dest<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>它的作用是把一个<code>List</code>的每个元素依次添加到另一个<code>List</code>中。它的第一个参数是<code>List&lt;? super T&gt;</code>，表示目标<code>List</code>，第二个参数<code>List&lt;? extends T&gt;</code>，表示要复制的<code>List</code>。可以简单地用<code>for</code>循环实现复制。在<code>for</code>循环中，可以看到，对于类型<code>&lt;? extends T&gt;</code>的变量<code>src</code>，可以安全地获取类型<code>T</code>的引用，而对于类型<code>&lt;? super T&gt;</code>的变量<code>dest</code>，可以安全地传入<code>T</code>的引用。</p>
 <p>这个<code>copy()</code>方法的定义就完美地展示了<code>extends</code>和<code>super</code>的意图：</p>
 <ul>
@@ -1070,38 +1069,38 @@ class Pair&lt;T&gt; &#123;
 <li><code>copy()</code>方法内部也不会修改<code>src</code>，因为不能调用<code>src.add(T)</code>。</li>
 </ul>
 <p>这是由编译器检查来实现的。如果在方法代码中意外修改了<code>src</code>，或者意外读取了<code>dest</code>，就会导致一个编译错误。这个<code>copy()</code>方法的另一个好处是可以安全地把一个<code>List&lt;Integer&gt;</code>添加到<code>List&lt;Number&gt;</code>，但是无法反过来添加：</p>
-<pre><code class="java">// copy List&lt;Integer&gt; to List&lt;Number&gt; ok:
-List&lt;Number&gt; numList = ...;
-List&lt;Integer&gt; intList = ...;
-Collections.copy(numList, intList);
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// copy List&lt;Integer> to List&lt;Number> ok:</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Number</span><span class="token punctuation">></span></span> numList <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> intList <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+<span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>numList<span class="token punctuation">,</span> intList<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// ERROR: cannot copy List&lt;Number&gt; to List&lt;Integer&gt;:
-Collections.copy(intList, numList);
-</code></pre>
+<span class="token comment">// ERROR: cannot copy List&lt;Number> to List&lt;Integer>:</span>
+<span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>intList<span class="token punctuation">,</span> numList<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>而这些都是通过<code>super</code>和<code>extends</code>通配符，并由编译器强制检查来实现的。</p>
 <h2 id="无限通配符"><a href="#无限通配符" class="headerlink" title="无限通配符"></a>无限通配符</h2><p>实际上，Java的泛型还允许使用无限定通配符（Unbounded Wildcard Type），即只定义一个<code>?</code>：</p>
-<pre><code>void sample(Pair&lt;?&gt; p) &#123;
-&#125;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">void sample(Pair&lt;?&gt; p) &#123;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>因为<code>&lt;?&gt;</code>通配符既没有<code>extends</code>，也没有<code>super</code>，因此：</p>
 <ul>
 <li>不允许调用<code>set(T)</code>方法并传入引用（<code>null</code>除外）；</li>
 <li>不允许调用<code>T get()</code>方法并获取<code>T</code>引用（只能获取<code>Object</code>引用）。</li>
 </ul>
 <p>换句话说，既不能读，也不能写，那只能做一些<code>null</code>判断：</p>
-<pre><code class="java">static boolean isNull(Pair&lt;?&gt; p) &#123;
-    return p.getFirst() == null || p.getLast() == null;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isNull</span><span class="token punctuation">(</span><span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> p<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> p<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p><code>&lt;?&gt;</code>通配符有一个独特的特点，就是：<code>Pair&lt;?&gt;</code>是所有<code>Pair&lt;T&gt;</code>的超类：</p>
-<pre><code class="java">public class ExtendsTest &#123;
-    public static void main(String[] args) &#123;
-        Pair&lt;Integer&gt; p = new Pair&lt;&gt;(123, 456);
-        Pair&lt;?&gt; p2 = p; // 安全地向上转型
-        System.out.println(p2.getFirst() + &quot;, &quot; + p2.getLast());
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ExtendsTest</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">></span></span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">456</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Pair</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> p2 <span class="token operator">=</span> p<span class="token punctuation">;</span> <span class="token comment">// 安全地向上转型</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>p2<span class="token punctuation">.</span><span class="token function">getFirst</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> p2<span class="token punctuation">.</span><span class="token function">getLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="泛型和反射"><a href="#泛型和反射" class="headerlink" title="泛型和反射"></a>泛型和反射</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e618b81aadb4">https://www.jianshu.com/p/e618b81aadb4</a></p>
 
     </div>
@@ -1310,7 +1309,7 @@ Collections.copy(intList, numList);
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

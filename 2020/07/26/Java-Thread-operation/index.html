@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/05/UpZM6O.png">
 <meta property="article:published_time" content="2020-07-26T20:20:34.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.207Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.712Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-多线程">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -304,7 +304,7 @@
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>13 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -350,50 +350,50 @@
 </tr>
 </tbody></table>
 <h3 id="wait-和-notify"><a href="#wait-和-notify" class="headerlink" title="wait() 和 notify()"></a>wait() 和 notify()</h3><p>下面通过示例演示<code>wait()</code>和<code>notify()</code>配合使用的情形。</p>
-<pre><code class="java">class ThreadA extends Thread&#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">ThreadA</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">&#123;</span>
 
-    public ThreadA(String name) &#123;
-        super(name);
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void run() &#123;
-        synchronized (this) &#123;
-            System.out.println(Thread.currentThread().getName()+&quot; call notify()&quot;);
-            // 唤醒当前的wait线程
-            notify();
-        &#125;
-    &#125;
-&#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" call notify()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 唤醒当前的wait线程</span>
+            <span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-public class WaitTest &#123;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WaitTest</span> <span class="token punctuation">&#123;</span>
 
-    public static void main(String[] args) &#123;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-        ThreadA t1 = new ThreadA(&quot;t1&quot;);
+        <span class="token class-name">ThreadA</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        synchronized(t1) &#123;
-            try &#123;
-                System.out.println(Thread.currentThread().getName()+&quot; start t1&quot;);
-                t1.start();
+        <span class="token keyword">synchronized</span><span class="token punctuation">(</span>t1<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" start t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                // 主线程等待t1通过notify()唤醒。
-                System.out.println(Thread.currentThread().getName()+&quot; wait()&quot;);
-                t1.wait();
+                <span class="token comment">// 主线程等待t1通过notify()唤醒。</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" wait()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                t1<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                System.out.println(Thread.currentThread().getName()+&quot; continue&quot;);
-            &#125; catch (InterruptedException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" continue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code class="java">main start t1
-main wait()
-t1 call notify()
-main continue
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">main start t1
+main <span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+t1 call <span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+main <span class="token keyword">continue</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：<br>如下图，说明了主线程和线程<code>t1</code>的流程。</p>
 <ul>
 <li>图中主线程代表主线程main。线程<code>t1</code>代表<code>WaitTest</code>中启动的线程<code>t1</code>。 而锁代表<code>t1</code>这个对象的同步锁。</li>
@@ -412,47 +412,47 @@ main continue
 <p>注意：<strong>jdk的解释中，说<code>wait()</code>的作用是让当前线程等待，而当前线程是指正在cpu上运行的线程！</strong><br>这也意味着，虽然<code>t1.wait()</code>是通过线程<code>t1</code>调用的<code>wait()</code>方法，但是调用<code>t1.wait()</code>的地方是在主线程main中。而主线程必须是当前线程，也就是运行状态，才可以执行<code>t1.wait()</code>。所以，此时的当前线程是主线程main！因此，<code>t1.wait()</code>是让主线程等待，而不是线程<code>t1</code>！</p>
 <h3 id="wait-long-timeout-和-notify"><a href="#wait-long-timeout-和-notify" class="headerlink" title="wait(long timeout) 和 notify()"></a>wait(long timeout) 和 notify()</h3><p><code>wait(long timeout)</code>会让当前线程处于等待(阻塞)状态，直到其他线程调用此对象的<code>notify()</code>方法或<code>notifyAll()</code>方法，或者超过指定的时间量，当前线程被唤醒(进入就绪状态)。</p>
 <p>下面的示例就是演示<code>wait(long timeout)</code>在超时情况下，线程被唤醒的情况。</p>
-<pre><code class="java">class ThreadA extends Thread&#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">ThreadA</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">&#123;</span>
 
-    public ThreadA(String name) &#123;
-        super(name);
-    &#125;
+    <span class="token keyword">public</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void run() &#123;
-        System.out.println(Thread.currentThread().getName() + &quot; run &quot;);
-        while(true)&#123;&#125;
-    &#125;
-&#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" run "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-public class WaitTimeoutTest &#123;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WaitTimeoutTest</span> <span class="token punctuation">&#123;</span>
 
-    public static void main(String[] args) &#123;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-        ThreadA t1 = new ThreadA(&quot;t1&quot;);
+        <span class="token class-name">ThreadA</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        synchronized(t1) &#123;
-            try &#123;
-                System.out.println(Thread.currentThread().getName() + &quot; start t1&quot;);
-                t1.start();
+        <span class="token keyword">synchronized</span><span class="token punctuation">(</span>t1<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" start t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                // 主线程等待t1通过notify()唤醒 或 notifyAll()唤醒，或超过3000ms延时；然后才被唤醒。
-                System.out.println(Thread.currentThread().getName() + &quot; call wait &quot;);
-                t1.wait(3000);
+                <span class="token comment">// 主线程等待t1通过notify()唤醒 或 notifyAll()唤醒，或超过3000ms延时；然后才被唤醒。</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" call wait "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                t1<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                System.out.println(Thread.currentThread().getName() + &quot; continue&quot;);
-            &#125; catch (InterruptedException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" continue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code class="java">main start t1
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">main start t1
 main call wait 
-t1 run                  // 大约3秒之后...输出 main continue
-main continue
-</code></pre>
+t1 run                  <span class="token comment">// 大约3秒之后...输出 main continue</span>
+main <span class="token keyword">continue</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：</p>
 <ul>
 <li>主线程<code>main</code>执行<code>t1.start()</code>启动线程<code>t1</code>。</li>
@@ -461,64 +461,64 @@ main continue
 <li>超时3000ms之后，主线程<code>main</code>会进入到就绪状态，然后接着进入运行状态。</li>
 </ul>
 <h3 id="wait-和-notifyAll"><a href="#wait-和-notifyAll" class="headerlink" title="wait() 和 notifyAll()"></a>wait() 和 notifyAll()</h3><p>通过前面的示例，我们知道<code>notify()</code>可以唤醒在此对象监视器上等待的单个线程。下面，我们通过示例演示<code>notifyAll()</code>的用法；它的作用是唤醒在此对象监视器上等待的所有线程。</p>
-<pre><code class="java">public class NotifyAllTest &#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NotifyAllTest</span> <span class="token punctuation">&#123;</span>
 
-    private static Object obj = new Object();
-    public static void main(String[] args) &#123;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">Object</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-        ThreadA t1 = new ThreadA(&quot;t1&quot;);
-        ThreadA t2 = new ThreadA(&quot;t2&quot;);
-        ThreadA t3 = new ThreadA(&quot;t3&quot;);
-        t1.start();
-        t2.start();
-        t3.start();
+        <span class="token class-name">ThreadA</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">ThreadA</span> t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">ThreadA</span> t3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        t3<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        try &#123;
-            System.out.println(Thread.currentThread().getName()+&quot; sleep(3000)&quot;);
-            Thread.sleep(3000);
-        &#125; catch (InterruptedException e) &#123;
-            e.printStackTrace();
-        &#125;
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" sleep(3000)"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        synchronized(obj) &#123;
-            // 主线程等待唤醒。
-            System.out.println(Thread.currentThread().getName()+&quot; notifyAll()&quot;);
-            obj.notifyAll();
-        &#125;
-    &#125;
+        <span class="token keyword">synchronized</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 主线程等待唤醒。</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" notifyAll()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            obj<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    static class ThreadA extends Thread&#123;
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ThreadA</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">&#123;</span>
 
-        public ThreadA(String name)&#123;
-            super(name);
-        &#125;
+        <span class="token keyword">public</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        public void run() &#123;
-            synchronized (obj) &#123;
-                try &#123;
-                    System.out.println(Thread.currentThread().getName() + &quot; wait&quot;);
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" wait"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                    // 唤醒当前的wait线程
-                    obj.wait();
+                    <span class="token comment">// 唤醒当前的wait线程</span>
+                    obj<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                    System.out.println(Thread.currentThread().getName() + &quot; continue&quot;);
-                &#125; catch (InterruptedException e) &#123;
-                    e.printStackTrace();
-                &#125;
-            &#125;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" continue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>main sleep(3000)
+<pre class="line-numbers language-none"><code class="language-none">main sleep(3000)
 t1 wait
 t3 wait
 t2 wait
 main notifyAll()
 t2 continue
-t3 continue
-</code></pre>
+t3 continue<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：</p>
 <ul>
 <li>主线程中新建并启动了三个线程<code>t1</code>，<code>t2</code>和<code>t3</code>。</li>
@@ -538,37 +538,37 @@ t3 continue
 <li><code>wait()</code>是会线程释放它所持有对象的同步锁，而<code>yield()</code>方法不会释放锁。</li>
 </ol>
 <p>下面通过示例演示<code>yield()</code>是不会释放锁的。</p>
-<pre><code class="java">public class YieldLockTest&#123; 
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">YieldLockTest</span><span class="token punctuation">&#123;</span> 
 
-    private static Object obj = new Object();
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">Object</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    public static void main(String[] args)&#123; 
-        ThreadA t1 = new ThreadA(&quot;t1&quot;); 
-        ThreadA t2 = new ThreadA(&quot;t2&quot;); 
-        t1.start(); 
-        t2.start();
-    &#125; 
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+        <span class="token class-name">ThreadA</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token class-name">ThreadA</span> t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> 
 
-    static class ThreadA extends Thread&#123;
-        public ThreadA(String name)&#123; 
-            super(name); 
-        &#125; 
-        public void run()&#123; 
-            // 获取obj对象的同步锁
-            synchronized (obj) &#123;
-                for(int i=0; i &lt;10; i++)&#123; 
-                    System.out.printf(&quot;%s [%d]:%d\n&quot;, this.getName(), this.getPriority(), i); 
-                    // i整除4时，调用yield
-                    if (i%4 == 0)
-                        Thread.yield();
-                &#125;
-            &#125;
-        &#125; 
-    &#125; 
-&#125; 
-</code></pre>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ThreadA</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">public</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+            <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token punctuation">&#125;</span> 
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+            <span class="token comment">// 获取obj对象的同步锁</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s [%d]:%d\n"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getPriority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+                    <span class="token comment">// i整除4时，调用yield</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>i<span class="token operator">%</span><span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                        <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token keyword">yield</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> 
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>t1 [5]:0
+<pre class="line-numbers language-none"><code class="language-none">t1 [5]:0
 t1 [5]:1
 t1 [5]:2
 t1 [5]:3
@@ -587,86 +587,86 @@ t2 [5]:5
 t2 [5]:6
 t2 [5]:7
 t2 [5]:8
-t2 [5]:9
-</code></pre>
+t2 [5]:9<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：<br>主线程<code>main</code>中启动了两个线程<code>t1</code>和<code>t2</code>。<code>t1</code>和<code>t2</code>在<code>run()</code>会引用同一个对象的同步锁，即<code>synchronized(obj)</code>。在<code>t1</code>运行过程中，虽然它会调用<code>Thread.yield()</code>；但是，<code>t2</code>是不会获取<code>cpu</code>执行权的。因为，<code>t1</code>并没有释放<code>obj</code>所持有的同步锁！</p>
 <h2 id="休眠"><a href="#休眠" class="headerlink" title="休眠"></a>休眠</h2><p><code>sleep()</code>方法定义在<code>Thread.java</code>中。<code>sleep()</code>的作用是让当前线程休眠，即当前线程会从运行状态进入到休眠(阻塞)状态。<code>sleep()</code>会指定休眠时间，线程休眠的时间会大于/等于该休眠时间；在线程重新被唤醒时，它会由阻塞状态变成就绪状态，从而等待cpu的调度执行。</p>
 <h3 id="sleep-和-wait-比较"><a href="#sleep-和-wait-比较" class="headerlink" title="sleep() 和 wait() 比较"></a>sleep() 和 wait() 比较</h3><p>我们知道，<code>wait()</code>的作用是让当前线程由运行状态进入等待(阻塞)状态的同时，也会释放同步锁。而<code>sleep()</code>的作用是也是让当前线程由运行状态进入到休眠(阻塞)状态。但是，<code>wait()</code>会释放对象的同步锁，而<code>sleep()</code>则不会释放锁。</p>
 <p>下面通过示例演示<code>sleep()</code>是不会释放锁的。</p>
-<pre><code class="java">public class SleepLockTest&#123; 
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SleepLockTest</span><span class="token punctuation">&#123;</span> 
 
-    private static Object obj = new Object();
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">Object</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    public static void main(String[] args)&#123; 
-        ThreadA t1 = new ThreadA(&quot;t1&quot;); 
-        ThreadA t2 = new ThreadA(&quot;t2&quot;); 
-        t1.start(); 
-        t2.start();
-    &#125; 
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+        <span class="token class-name">ThreadA</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token class-name">ThreadA</span> t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token string">"t2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> 
 
-    static class ThreadA extends Thread&#123;
-        public ThreadA(String name)&#123; 
-            super(name); 
-        &#125; 
-        public void run()&#123; 
-            // 获取obj对象的同步锁
-            synchronized (obj) &#123;
-                try &#123;
-                    for(int i=0; i &lt;10; i++)&#123; 
-                        System.out.printf(&quot;%s: %d\n&quot;, this.getName(), i); 
-                        // i能被4整除时，休眠100毫秒
-                        if (i%4 == 0)
-                            Thread.sleep(100);
-                    &#125;
-                &#125; catch (InterruptedException e) &#123;
-                    e.printStackTrace();
-                &#125;
-            &#125;
-        &#125; 
-    &#125; 
-&#125; 
-</code></pre>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ThreadA</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">public</span> <span class="token class-name">ThreadA</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+            <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token punctuation">&#125;</span> 
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+            <span class="token comment">// 获取obj对象的同步锁</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+                        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: %d\n"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+                        <span class="token comment">// i能被4整除时，休眠100毫秒</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>i<span class="token operator">%</span><span class="token number">4</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> 
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code class="java">t1: 0
-t1: 1
-t1: 2
-t1: 3
-t1: 4
-t1: 5
-t1: 6
-t1: 7
-t1: 8
-t1: 9
-t2: 0
-t2: 1
-t2: 2
-t2: 3
-t2: 4
-t2: 5
-t2: 6
-t2: 7
-t2: 8
-t2: 9
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">t1<span class="token operator">:</span> <span class="token number">0</span>
+t1<span class="token operator">:</span> <span class="token number">1</span>
+t1<span class="token operator">:</span> <span class="token number">2</span>
+t1<span class="token operator">:</span> <span class="token number">3</span>
+t1<span class="token operator">:</span> <span class="token number">4</span>
+t1<span class="token operator">:</span> <span class="token number">5</span>
+t1<span class="token operator">:</span> <span class="token number">6</span>
+t1<span class="token operator">:</span> <span class="token number">7</span>
+t1<span class="token operator">:</span> <span class="token number">8</span>
+t1<span class="token operator">:</span> <span class="token number">9</span>
+t2<span class="token operator">:</span> <span class="token number">0</span>
+t2<span class="token operator">:</span> <span class="token number">1</span>
+t2<span class="token operator">:</span> <span class="token number">2</span>
+t2<span class="token operator">:</span> <span class="token number">3</span>
+t2<span class="token operator">:</span> <span class="token number">4</span>
+t2<span class="token operator">:</span> <span class="token number">5</span>
+t2<span class="token operator">:</span> <span class="token number">6</span>
+t2<span class="token operator">:</span> <span class="token number">7</span>
+t2<span class="token operator">:</span> <span class="token number">8</span>
+t2<span class="token operator">:</span> <span class="token number">9</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：<br>主线程<code>main</code>中启动了两个线程<code>t1</code>和<code>t2</code>。<code>t1</code>和<code>t2</code>在<code>run()</code>会引用同一个对象的同步锁，即<code>synchronized(obj)</code>。在<code>t1</code>运行过程中，虽然它会调用<code>Thread.sleep(100)</code>；但是，<code>t2</code>是不会获取cpu执行权的。因为，<code>t1</code>并没有释放<code>obj</code>所持有的同步锁！</p>
 <p>注意，若注释掉<code>synchronized (obj)</code>后再次执行该程序，<code>t1</code>和<code>t2</code>是可以相互切换的。</p>
 <h2 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h2><p><code>join()</code>定义在<code>Thread.java</code>中。作用是：让主线程等待子线程结束之后才能继续运行。这句话可能有点晦涩，我们还是通过例子去理解：</p>
-<pre><code class="java">// 主线程
-public class Father extends Thread &#123;
-    public void run() &#123;
-        Son s = new Son();
-        s.start();
-        s.join();
-        ...
-    &#125;
-&#125;
-// 子线程
-public class Son extends Thread &#123;
-    public void run() &#123;
-        ...
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 主线程</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Father</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Son</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Son</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 子线程</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Son</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明： </p>
 <p>上面的有两个类<code>Father</code>(主线程类)和<code>Son</code>(子线程类)。因为<code>Son</code>是在<code>Father</code>中创建并启动的，所以，<code>Father</code>是主线程类，<code>Son</code>是子线程类。 在<code>Father</code>主线程中，通过<code>new Son()</code>新建<code>子线程s</code>。接着通过<code>s.start()</code>启动<code>子线程s</code>，并且调用<code>s.join()</code>。在调用<code>s.join()</code>之后，<code>Father</code>主线程会一直等待，直到<code>子线程s</code>运行完毕；在<code>子线程s</code>运行完毕之后，<code>Father</code>主线程才能接着运行。 这也就是我们所说的<code>join()</code>的作用：是让主线程会等待子线程结束之后才能继续运行！</p>
 <h2 id="interrupt-和线程终止方式"><a href="#interrupt-和线程终止方式" class="headerlink" title="interrupt()和线程终止方式"></a>interrupt()和线程终止方式</h2><h3 id="Interrupt-说明"><a href="#Interrupt-说明" class="headerlink" title="Interrupt() 说明"></a>Interrupt() 说明</h3><p>在学习终止线程的方式之前，有必要先对<code>interrupt()</code>进行了解。关于<code>interrupt()</code>，Java的<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/8/docs/api/">JDK 文档描述</a></p>
@@ -687,127 +687,127 @@ public class Son extends Thread &#123;
 <p>如果不属于前面所说的情况，那么通过interrupt()中断线程时，它的中断标记会被设置为“true”。<br>中断一个“已终止的线程”不会产生任何操作。</p>
 </blockquote>
 <h3 id="终止线程的方式"><a href="#终止线程的方式" class="headerlink" title="终止线程的方式"></a>终止线程的方式</h3><h4 id="终止处于阻塞状态的线程"><a href="#终止处于阻塞状态的线程" class="headerlink" title="终止处于阻塞状态的线程"></a>终止处于阻塞状态的线程</h4><p>通常，我们通过中断方式终止处于阻塞状态的线程。<br>当线程由于被调用了<code>sleep()</code>,<code> wait()</code>,<code> join()</code>等方法而进入阻塞状态；若此时调用线程的<code>interrupt()</code>将线程的中断标记设为<code>true</code>。由于处于阻塞状态，中断标记会被清除，同时产生一个<code>InterruptedException</code>异常。将<code>InterruptedException</code>放在适当的为止就能终止线程，形式如下：</p>
-<pre><code class="java">@Override
-public void run&#123;
-    try &#123;
-        while (true) &#123;
-            // 执行任务...
-        &#125;
-    &#125;catch(InterruptedException ie) &#123;
-        // 由于产生InterruptedException异常，退出while(true)循环，线程终止！
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> run<span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 执行任务...</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> ie<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 由于产生InterruptedException异常，退出while(true)循环，线程终止！</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：在<code>while(true)</code>中不断的执行任务，当线程处于阻塞状态时，调用线程的<code>interrupt()</code>产生<code>InterruptedException</code>中断。中断的捕获在<code>while(true)</code>之外，这样就退出了<code>while(true)</code>循环！</p>
 <p>注意：对<code>InterruptedException</code>的捕获任务一般放在<code>while(true)</code>循环体的外面，这样，在产生异常时就退出了<code>while(true)</code>循环。否则，<code>InterruptedException在while(true)</code>循环体之内，就需要额外的添加退出处理。</p>
-<pre><code class="java">@Override
-public void run() &#123;
-    while(true)&#123;
-        try&#123;
-            //执行任务...
-        &#125;catch (InterruptedException ie) &#123;
-            // InterruptedException在while(true)循环体内。
-            // 当线程产生了InterruptedException异常时，while(true)仍能继续运行！需要手动退出
-            break;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span><span class="token punctuation">&#123;</span>
+            <span class="token comment">//执行任务...</span>
+        <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> ie<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// InterruptedException在while(true)循环体内。</span>
+            <span class="token comment">// 当线程产生了InterruptedException异常时，while(true)仍能继续运行！需要手动退出</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h4 id="终止处于运行状态的线程"><a href="#终止处于运行状态的线程" class="headerlink" title="终止处于运行状态的线程"></a>终止处于运行状态的线程</h4><p>通常，我们通过标记方式终止处于运行状态的线程。其中，包括中断标记和额外添加标记。</p>
 <ul>
 <li><p>通过中断标记终止线程</p>
-<pre><code class="java">@Override
-public void run() &#123;
-    while(!isInterrupted()) &#123;
-        //执行任务...
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//执行任务...</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：<code>isInterrupted()</code>是判断线程的中断标记是不是为<code>true</code>。当线程处于运行状态，并且我们需要终止它时；可以调用线程的<code>interrupt()</code>方法，使用线程的中断标记为<code>true</code>，即<code>isInterrupted()</code>会返回<code>true</code>。此时，就会退出<code>while</code>循环。<br>注意：<code>interrupt()</code>并不会终止处于运行状态的线程！它会将线程的中断标记设为<code>true</code>。</p>
 </li>
 <li><p>通过额外添加标记终止线程</p>
-<pre><code class="java">private volatile boolean flag = true;
-protected void stopTask() &#123;
-    flag = false;
-&#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">volatile</span> <span class="token keyword">boolean</span> flag <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">stopTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-@Override
-public void run() &#123;
-    while(flag) &#123;
-        //执行任务...
-    &#125;
-&#125;
-</code></pre>
+<span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//执行任务...</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：线程中有一个<code>flag</code>标记，它的默认值是<code>true</code>；并且我们提供<code>stopTask()</code>来设置<code>flag</code>标记。当我们需要终止该线程时，调用该线程的<code>stopTask()</code>方法就可以让线程退出<code>while</code>循环。<br>注意：将<code>flag</code>定义为<code>volatile</code>类型，是为了保证<code>flag</code>的可见性。即其它线程通过<code>stopTask()</code>修改了<code>flag</code>之后，本线程能看到修改后的<code>flag</code>的值。</p>
 </li>
 </ul>
 <p><strong>综合线程处于阻塞状态和运行状态的终止方式，比较通用的终止线程的形式如下：</strong></p>
-<pre><code class="java">@Override
-public void run() &#123;
-    try &#123;
-        // 1. isInterrupted()保证，只要中断标记为true就终止线程。
-        while (!isInterrupted()) &#123;
-            // 执行任务...
-        &#125;
-    &#125; catch (InterruptedException ie) &#123;  
-        // 2. InterruptedException异常保证，当InterruptedException异常产生时，线程被终止。
-    &#125;
-&#125;
-</code></pre>
-<h3 id="终止线程的示例"><a href="#终止线程的示例" class="headerlink" title="终止线程的示例"></a>终止线程的示例</h3><pre><code class="java">class MyThread extends Thread &#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 1. isInterrupted()保证，只要中断标记为true就终止线程。</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 执行任务...</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> ie<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
+        <span class="token comment">// 2. InterruptedException异常保证，当InterruptedException异常产生时，线程被终止。</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-    public MyThread(String name) &#123;
-        super(name);
-    &#125;
+<h3 id="终止线程的示例"><a href="#终止线程的示例" class="headerlink" title="终止线程的示例"></a>终止线程的示例</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">MyThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">&#123;</span>
 
-    @Override
-    public void run() &#123;
-        try &#123;  
-            int i=0;
-            while (!isInterrupted()) &#123;
-                Thread.sleep(100); // 休眠100ms
-                i++;
-                System.out.println(Thread.currentThread().getName()+&quot; (&quot;+this.getState()+&quot;) loop &quot; + i);  
-            &#125;
-        &#125; catch (InterruptedException e) &#123;  
-            System.out.println(Thread.currentThread().getName() +&quot; (&quot;+this.getState()+&quot;) catch InterruptedException.&quot;);  
-        &#125;
-    &#125;
-&#125;
+    <span class="token keyword">public</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-public class Demo1 &#123;
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>  
+            <span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isInterrupted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 休眠100ms</span>
+                i<span class="token operator">++</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">" ("</span><span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">") loop "</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token string">" ("</span><span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">") catch InterruptedException."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-    public static void main(String[] args) &#123;  
-        try &#123;  
-            Thread t1 = new MyThread(&quot;t1&quot;); 
-            System.out.println(t1.getName() +&quot; (&quot;+t1.getState()+&quot;) is new.&quot;);  
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo1</span> <span class="token punctuation">&#123;</span>
 
-            t1.start();            
-            System.out.println(t1.getName() +&quot; (&quot;+t1.getState()+&quot;) is started.&quot;);  
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>  
+            <span class="token class-name">Thread</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token string">"t1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t1<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token string">" ("</span><span class="token operator">+</span>t1<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">") is new."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
 
-            // 主线程休眠300ms，然后主线程给t1发中断指令。
-            Thread.sleep(300);
-            t1.interrupt();
-            System.out.println(t1.getName() +&quot; (&quot;+t1.getState()+&quot;) is interrupted.&quot;);
+            t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t1<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token string">" ("</span><span class="token operator">+</span>t1<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">") is started."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
 
-            // 主线程休眠300ms，然后查看t1的状态。
-            Thread.sleep(300);
-            System.out.println(t1.getName() +&quot; (&quot;+t1.getState()+&quot;) is interrupted now.&quot;);
-        &#125; catch (InterruptedException e) &#123;  
-            e.printStackTrace();
-        &#125;
-    &#125; 
-&#125;
-</code></pre>
+            <span class="token comment">// 主线程休眠300ms，然后主线程给t1发中断指令。</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            t1<span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t1<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token string">" ("</span><span class="token operator">+</span>t1<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">") is interrupted."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 主线程休眠300ms，然后查看t1的状态。</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t1<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token string">" ("</span><span class="token operator">+</span>t1<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">") is interrupted now."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>t1 (NEW) is new.
+<pre class="line-numbers language-none"><code class="language-none">t1 (NEW) is new.
 t1 (RUNNABLE) is started.
 t1 (RUNNABLE) loop 1
 t1 (RUNNABLE) loop 2
 t1 (TIMED_WAITING) is interrupted.
 t1 (RUNNABLE) catch InterruptedException.
-t1 (TERMINATED) is interrupted now.
-</code></pre>
+t1 (TERMINATED) is interrupted now.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：</p>
 <ul>
 <li>主线程<code>main</code>中通过<code>new MyThread(&quot;t1&quot;)</code>创建线程<code>t1</code>，之后通过<code>t1.start()</code>启动线程<code>t1</code>。</li>
@@ -1022,7 +1022,7 @@ t1 (TERMINATED) is interrupted now.
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

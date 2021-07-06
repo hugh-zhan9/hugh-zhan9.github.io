@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1368054-fe79012e98f787ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp">
 <meta property="article:published_time" content="2020-11-22T20:49:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +297,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.4k</span>
+              <span>9.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -338,9 +338,9 @@
 <li>图形界面</li>
 </ul>
 <p>指令：</p>
-<pre><code class="shell">$ command [-options] parameter1 parameter2
-    命令        选项        参数1        参数2
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">$ <span class="token builtin class-name">command</span> <span class="token punctuation">[</span>-options<span class="token punctuation">]</span> parameter1 parameter2
+	命令		选项		参数1		参数2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>中括号<code>[]</code>并不存在于实际指令，加入选项设定时，通常会带<code>-</code>号，例如<code>-h</code>；有时候会使用选项的完整全名，则选项前面带有<code>--</code>，例如<code>--help</code>；</p>
 <p>指令、选项、参数之间使用空格来区分，不论几个空格都会视为一个。</p>
 <blockquote>
@@ -356,26 +356,26 @@
 <p>关机</p>
 </blockquote>
 <p>关机指令为<code>shutdown</code></p>
-<pre><code class="shell">sync # 将数据同步到硬盘中
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">sync</span> <span class="token comment"># 将数据同步到硬盘中</span>
 
-shutdown
+<span class="token function">shutdown</span>
 
-shutdown -h 10 # 十分钟之后关机
+<span class="token function">shutdown</span> -h <span class="token number">10</span> <span class="token comment"># 十分钟之后关机</span>
 
-shutdown -h now # 立马关机
+<span class="token function">shutdown</span> -h now <span class="token comment"># 立马关机</span>
 
-shutdown -h 20:25 # 20:25关机
+<span class="token function">shutdown</span> -h <span class="token number">20</span>:25 <span class="token comment"># 20:25关机</span>
 
-shutdown -h +10 # 
+<span class="token function">shutdown</span> -h +10 <span class="token comment"># </span>
 
-shutdown -r now # 立即重启
+<span class="token function">shutdown</span> -r now <span class="token comment"># 立即重启</span>
 
-shutdown -r +10 # 十分钟后重启
+<span class="token function">shutdown</span> -r +10 <span class="token comment"># 十分钟后重启</span>
 
-reboot # 重启，等同于shutdown -r now
+<span class="token function">reboot</span> <span class="token comment"># 重启，等同于shutdown -r now</span>
 
-halt # 关闭系统，等同于shutdown -h now 和poweroff
-</code></pre>
+<span class="token function">halt</span> <span class="token comment"># 关闭系统，等同于shutdown -h now 和poweroff</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>不管是关机还是重启，首先运行<code>sync</code>命令，同步数据。</p>
 <blockquote>
 <p>系统目录结构</p>
@@ -387,8 +387,8 @@ halt # 关闭系统，等同于shutdown -h now 和poweroff
 </li>
 </ul>
 <p>运行<code>ls /</code></p>
-<pre><code class="shell">bin boot dev rtv home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">bin boot dev rtv home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><code>/bin</code>：Binary的缩写，存放常用的命令。</p>
 <p><code>/boot</code>：存放Linux启动时使用的一些核心文件，包括一些连接文件以及镜像文件。</p>
 <p><code>/dev</code>：Device的缩写，存放Linux的外部设备，在Linux中访问设备的方式和访问文件的方式是相同的。</p>
@@ -462,18 +462,22 @@ halt # 关闭系统，等同于shutdown -h now 和poweroff
 <li><code>-R</code>：递归更改文件属组，如果在更改某个目录的属组时加上<code>-R</code>参数，那么该目录下所有文件的属组都会更改。</li>
 </ul>
 <p><code>chown</code>：更改文件属主，也可以同时修改文件属组</p>
-<pre><code class="shell">chown -R [属主名] [文件名]
-chown -R [属主名]:[属组名] [文件名]
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">chown</span> -R <span class="token punctuation">[</span>属主名<span class="token punctuation">]</span> <span class="token punctuation">[</span>文件名<span class="token punctuation">]</span>
+<span class="token function">chown</span> -R <span class="token punctuation">[</span>属主名<span class="token punctuation">]</span>:<span class="token punctuation">[</span>属组名<span class="token punctuation">]</span> <span class="token punctuation">[</span>文件名<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+
 <p><code>chmod</code>：更改文件属性，<code>chmod xxx [filename]</code></p>
 <p>Linux文件属性由两种设置方法，一种是数字（常用），一种是符号。Linux文件的基本权限有九个，分别是<code>owner/group/others</code>三种身份各自的<code>read/write/execute</code>权限，数字421分别对应字母<code>rwx</code>。</p>
-<pre><code class="shell">r:4        w:2        x:1
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">r:4		w:2		x:1
 
 可读可写可执行:7
 可读可写不可执行:6
 
-chmod 777 [文件名]     赋予所有用户该文件可读可写可执行权限
-</code></pre>
+<span class="token function">chmod</span> <span class="token number">777</span> <span class="token punctuation">[</span>文件名<span class="token punctuation">]</span> 	赋予所有用户该文件可读可写可执行权限<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h1 id="文件内容查看"><a href="#文件内容查看" class="headerlink" title="文件内容查看"></a>文件内容查看</h1><p><code>cat</code>：由第一行开始显示文件内容</p>
 <p><code>tac</code>：由最后一行开始显示文件内容</p>
 <p><code>nl</code>：显示的时候，同步输出行号</p>
@@ -534,22 +538,24 @@ chmod 777 [文件名]     赋予所有用户该文件可读可写可执行权限
 <p><code>nG</code>：表示移动到这个档案的第n行</p>
 <p><code>gg</code>：移动到这个档案的第一行，</p>
 <p>替换/搜索</p>
-<pre><code class="shell"># 全匹配
-/[查找的字符]    向下查
-?[查找的字符]    向上查
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 全匹配</span>
+/<span class="token punctuation">[</span>查找的字符<span class="token punctuation">]</span>	向下查
+?<span class="token punctuation">[</span>查找的字符<span class="token punctuation">]</span>	向上查
 
-# 模糊查询
-.    匹配一个字符
-*    匹配多个字符
+<span class="token comment"># 模糊查询</span>
+<span class="token builtin class-name">.</span>	匹配一个字符
+*	匹配多个字符
 
-n/N     分别表示查找下一处和上一处
-</code></pre>
+n/N 	分别表示查找下一处和上一处<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>…</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ballack_linux/article/details/53187283">https://blog.csdn.net/ballack_linux/article/details/53187283</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42007020/article/details/107536377">https://blog.csdn.net/qq_42007020/article/details/107536377</a></p>
 <h1 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h1><p>实际上就是修改文件：<code>/etc/passwd</code></p>
-<pre><code>用户名：口令（登陆密码，不可见）：用户标识号：组标识号：注释性描述：主目录：登录shell
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">用户名：口令（登陆密码，不可见）：用户标识号：组标识号：注释性描述：主目录：登录shell<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>这个文件的每一行都表示一个用户，可以在这个文件中看出用户的主目录在哪，属于哪个组。</p>
 <p><code>useradd</code>：创建用户</p>
 <ul>
@@ -585,12 +591,16 @@ n/N     分别表示查找下一处和上一处
 <li><code>-sm /*</code>：检查根目录下每个目录所占用的容量</li>
 </ul>
 <p>Linux挂载磁盘</p>
-<pre><code class="shell">mount /dev/hugh /mnt/hugh
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">mount</span> /dev/hugh /mnt/hugh
 将外部设备hugh挂载到mnt目录下
-umount [挂载位置]
+<span class="token function">umount</span> <span class="token punctuation">[</span>挂载位置<span class="token punctuation">]</span>
 卸载 
-umont -f [挂载位置]      强制卸载
-</code></pre>
+umont -f <span class="token punctuation">[</span>挂载位置<span class="token punctuation">]</span> 	 强制卸载<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
 <h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><p>每一个进程都有一个pid号，每一个进程都会有一个父进程，</p>
 <p>进程有两种存在方式：前台/后台运行</p>
 <p>一般服务都是后台运行，基本的程序都是前台运行。</p>
@@ -601,12 +611,14 @@ umont -f [挂载位置]      强制卸载
 <li><code>-x</code>：显示后台运行进程的参数</li>
 <li><code>-ef</code>：查看父进程的信息（一般使用pstree查看）</li>
 </ul>
-<pre><code>ps -aux|
-# | 在Linux中叫做管道符         A|B 将A命令的结果给B命令作为参数
+<pre class="line-numbers language-none"><code class="language-none">ps -aux|
+# | 在Linux中叫做管道符 		A|B 将A命令的结果给B命令作为参数
 grep 查找文件中符合条件的字符串.
 
-ps -aux|grep mysql    查看进程中所有和mysql相关的进程
-</code></pre>
+ps -aux|grep mysql	查看进程中所有和mysql相关的进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p><code>pstree</code>：查看进程树</p>
 <ul>
 <li><code>-p</code>：显示父id</li>
@@ -615,117 +627,127 @@ ps -aux|grep mysql    查看进程中所有和mysql相关的进程
 <p><code>kill</code>：结束进程，<code>kill -9 [进程的pid]</code></p>
 <hr>
 <h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><h2 id="rpm安装"><a href="#rpm安装" class="headerlink" title="rpm安装"></a>rpm安装</h2><p>Java安装</p>
-<pre><code>解压压缩包
-命令:tar -zxvf jdk-8u171-linux-x64.tar.gz -C /usr/local/src/
+<pre class="line-numbers language-none"><code class="language-none">解压压缩包
+命令:tar -zxvf jdk-8u171-linux-x64.tar.gz -C &#x2F;usr&#x2F;local&#x2F;src&#x2F;
 因为我的jdk放在这个目录下所以直接解压到这个src目录下了
 
-配置环境变量：vi /etc/profile
+配置环境变量：vi &#x2F;etc&#x2F;profile
 
 另起一行写下如下数据
-export JAVA_HOME=/usr/local/src/jdk1.8.0_171 （根据自己的完整路径修改）
-export PATH=$PATH:$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH
-export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib
+export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;src&#x2F;jdk1.8.0_171 （根据自己的完整路径修改）
+export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JAVA_HOME&#x2F;jre&#x2F;bin:$PATH
+export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib:$JAVA_HOME&#x2F;jre&#x2F;lib
 
-执行命令:source /etc/profile 让环境变量生效
+执行命令:source &#x2F;etc&#x2F;profile 让环境变量生效
 然后执行以下命令验证是否安装成功:
 java -version
-此时就可以看到自己的环境变量已经设置成功了.显示了JDK的版本
-</code></pre>
+此时就可以看到自己的环境变量已经设置成功了.显示了JDK的版本<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>npm方式</p>
-<pre><code class="shell">检测当前环境是否存在Java环境 java-version
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">检测当前环境是否存在Java环境 java-version
 如果有的话就卸载： 
-    rpm -qa|grep jdk 检测JDK版本信息
-    rpm -e --nodeps [jdk版本信息]  卸载命令
-    
-rpm -ivh [rpm安装包]     安装
+	<span class="token function">rpm</span> -qa<span class="token operator">|</span><span class="token function">grep</span> jdk 检测JDK版本信息
+	<span class="token function">rpm</span> -e --nodeps <span class="token punctuation">[</span>jdk版本信息<span class="token punctuation">]</span>  卸载命令
+	
+<span class="token function">rpm</span> -ivh <span class="token punctuation">[</span>rpm安装包<span class="token punctuation">]</span> 	安装
 
 
-/etc/profile    配置环境变量(/etc/profile就是环境变量文件)
-vim /etc/profile      修改环境变量，在最后一行添加：
-    JAVA_HOME=/usr/java/jdk1.8.0_271-amd64
-    JRE_HOME=$JAVA_HOME/jre
-    CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib/rt.jar
-    PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
-    export JAVA_HOME JRE_HOME CLASSPATH PATH
+/etc/profile	配置环境变量<span class="token punctuation">(</span>/etc/profile就是环境变量文件<span class="token punctuation">)</span>
+<span class="token function">vim</span> /etc/profile  	修改环境变量，在最后一行添加：
+	<span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/usr/java/jdk1.8.0_271-amd64
+	<span class="token assign-left variable">JRE_HOME</span><span class="token operator">=</span><span class="token variable">$JAVA_HOME</span>/jre
+	<span class="token assign-left variable">CLASSPATH</span><span class="token operator">=</span>.:<span class="token variable">$JAVA_HOME</span>/lib/dt.jar:<span class="token variable">$JAVA_HOME</span>/lib/tools.jar:<span class="token variable">$JRE_HOME</span>/lib/rt.jar
+	<span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token environment constant">$PATH</span><span class="token builtin class-name">:</span><span class="token variable">$JAVA_HOME</span>/bin:<span class="token variable">$JRE_HOME</span>/bin
+	<span class="token builtin class-name">export</span> JAVA_HOME JRE_HOME CLASSPATH <span class="token environment constant">PATH</span>
 
-source /etc/profile 让配置文件生效
+<span class="token builtin class-name">source</span> /etc/profile 让配置文件生效
 
-firewall-cmd --list-ports      查看防火墙开启端口列表
-firewall-cmd --zone=public --add-port=[需要开启的端口号]/tcp --permanent     开启端口命令
-    --zone：作用域
-    --80/tcp：端口/通讯协议
-    --permanent：永久有效，否则重启之后失效
-systemctl restart firewalld.service    重启防火墙服务
+firewall-cmd --list-ports  	查看防火墙开启端口列表
+firewall-cmd --zone<span class="token operator">=</span>public --add-port<span class="token operator">=</span><span class="token punctuation">[</span>需要开启的端口号<span class="token punctuation">]</span>/tcp --permanent 	开启端口命令
+	--zone：作用域
+	--80/tcp：端口/通讯协议
+	--permanent：永久有效，否则重启之后失效
+systemctl restart firewalld.service	重启防火墙服务
 
 
-java -jar [项目名称]    发布项目    可以通过 nohuop后台执行
-</code></pre>
-<h2 id="解压缩安装"><a href="#解压缩安装" class="headerlink" title="解压缩安装"></a>解压缩安装</h2><pre><code class="shell">tar -zxvf [文件名.tar.gz]     解压文件
+java -jar <span class="token punctuation">[</span>项目名称<span class="token punctuation">]</span>	发布项目	可以通过 nohuop后台执行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-./startup.sh     cd进入bin目录启动.sh文件即可执行对应的操作
-</code></pre>
+
+
+
+
+<h2 id="解压缩安装"><a href="#解压缩安装" class="headerlink" title="解压缩安装"></a>解压缩安装</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">tar</span> -zxvf <span class="token punctuation">[</span>文件名.tar.gz<span class="token punctuation">]</span> 	解压文件
+
+./startup.sh	 cd进入bin目录启动.sh文件即可执行对应的操作<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>域名解析后，端口时80 -http或者443 -https可以直接访问，如果是9000 8080，就需要通过Apache或者Nginx反向代理即可。</p>
 <h2 id="yum在线安装"><a href="#yum在线安装" class="headerlink" title="yum在线安装"></a>yum在线安装</h2><p>docker安装</p>
-<pre><code class="shell"># yum安装命令
-yum -y install [包名]     # yum install 安装命令  -y自动确认所有提示
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># yum安装命令</span>
+yum -y <span class="token function">install</span> <span class="token punctuation">[</span>包名<span class="token punctuation">]</span> 	<span class="token comment"># yum install 安装命令  -y自动确认所有提示</span>
 
 
 
-# 检测当前系统版本
-cat /etc/redhat-release     
+<span class="token comment"># 检测当前系统版本</span>
+<span class="token function">cat</span> /etc/redhat-release 	
 
-# 安装准备环境
-yum -y install gcc
-yum -y install gcc-c++
+<span class="token comment"># 安装准备环境</span>
+yum -y <span class="token function">install</span> gcc
+yum -y <span class="token function">install</span> gcc-c++
 
-# 清除以前的docker
-yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine
+<span class="token comment"># 清除以前的docker</span>
+yum remove docker <span class="token punctuation">\</span> docker-client <span class="token punctuation">\</span> docker-client-latest <span class="token punctuation">\</span> docker-common <span class="token punctuation">\</span> docker-latest <span class="token punctuation">\</span> docker-latest-logrotate <span class="token punctuation">\</span> docker-logrotate <span class="token punctuation">\</span> docker-engine
 
-# 安装docker需要的依赖
-yum install -y yum-utils
-yum install -y device-mapper-persistent-data 
-yum install -y lvm2
+<span class="token comment"># 安装docker需要的依赖</span>
+yum <span class="token function">install</span> -y yum-utils
+yum <span class="token function">install</span> -y device-mapper-persistent-data 
+yum <span class="token function">install</span> -y lvm2
 
-# 安装阿里云docker镜像
+<span class="token comment"># 安装阿里云docker镜像</span>
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
-# 更新yum软件包索引
+<span class="token comment"># 更新yum软件包索引</span>
 yum makecache fast
 
-# 安装docker CE
-yum -y install docker-ce docker-ce-cli containerd.io
+<span class="token comment"># 安装docker CE</span>
+yum -y <span class="token function">install</span> docker-ce docker-ce-cli containerd.io
 
-# 启动docker
+<span class="token comment"># 启动docker</span>
 systemctl start docker
 
-# 测试
+<span class="token comment"># 测试</span>
 docker version
 docker run hello-world
-docker images
-</code></pre>
-<h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><pre><code class="shell"># 查看firewall服务状态
+docker images<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+<h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 查看firewall服务状态</span>
 systemctl status firewalld
-# 防火墙服务
+<span class="token comment"># 防火墙服务</span>
 
-service firewalld start    # 开启
-service firewalld restart    # 重启
-service firewalld stop    # 停止
+<span class="token function">service</span> firewalld start	<span class="token comment"># 开启</span>
+<span class="token function">service</span> firewalld restart	<span class="token comment"># 重启</span>
+<span class="token function">service</span> firewalld stop	<span class="token comment"># 停止</span>
 
-# 查看防火墙规则
-firewall-cmd --list-all    # 查看全部信息
-firewall-cmd --list-ports    # 查看端口信息
+<span class="token comment"># 查看防火墙规则</span>
+firewall-cmd --list-all	<span class="token comment"># 查看全部信息</span>
+firewall-cmd --list-ports	<span class="token comment"># 查看端口信息</span>
 
-# 开启端口
-firewall-cmd --zone=public --add-port=3306/tcp --permanent
+<span class="token comment"># 开启端口</span>
+firewall-cmd --zone<span class="token operator">=</span>public --add-port<span class="token operator">=</span><span class="token number">3306</span>/tcp --permanent
 
-# 重启防火墙
+<span class="token comment"># 重启防火墙</span>
 systemctl restart firewalled.service
 
-# 命令含义
---zone    # 作用域
---add-port=80/tcp    # 添加端口，格式为：端口/通讯协议
---permanent    # 永久有效，否则重启之后失效
-</code></pre>
+<span class="token comment"># 命令含义</span>
+--zone	<span class="token comment"># 作用域</span>
+--add-port<span class="token operator">=</span><span class="token number">80</span>/tcp	<span class="token comment"># 添加端口，格式为：端口/通讯协议</span>
+--permanent	<span class="token comment"># 永久有效，否则重启之后失效</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h1 id="Vmware"><a href="#Vmware" class="headerlink" title="Vmware"></a>Vmware</h1><h2 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h2><p>保留当前系统信息为快照，随时可以恢复，以防系统出现问题。</p>
 <h2 id="本地网络配置"><a href="#本地网络配置" class="headerlink" title="本地网络配置"></a>本地网络配置</h2><p>需要保证Linux虚拟机和本机处于同一个网段（计算机网络原理）</p>
 <p>例如：</p>
@@ -733,104 +755,111 @@ systemctl restart firewalled.service
 <p>Linux：<code>192.168.0.110</code></p>
 <p><code>/etc/sysconfig/network-scripts/ifcfg-eno16777736</code></p>
 <h3 id="动态配置"><a href="#动态配置" class="headerlink" title="动态配置"></a>动态配置</h3><p>修改<code>vim ifcfg-eno16777736</code></p>
-<pre><code>TYPE=Ethernet
-PROXY_METHOD=none
-BROWSER_ONLY=no
-BOOTPROTO=dhcp
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-IPV6_ADDR_GEN_MODE=stable-privacy
-NAME=eno16777736
-UUID=e9c1a29d-8483-439b-b438-b54ee084b211
-DEVICE=eno16777736
-ONBOOT=yes
-PEERDNS=yes
-PEERROUTES=yes
-IPV6_PEERDNS=yes
-IPV6_PEERROUTES=yes
-</code></pre>
-<h3 id="静态配置"><a href="#静态配置" class="headerlink" title="静态配置"></a>静态配置</h3><pre><code>TYPE=Ethernet
-BOOTPROTO=none
-DEFROUTE=yes
-NAME=eno16777736
-UUID=e9c1a29d-8483-439b-b438-b54ee084b211
-ONBOOT=yes
-DNS1=8.8.8.8
-IPADDR=192.168.0.110
-PREFIX=24
-GATEWAY=192.168.0.1
-IPV4_FAILURE_FATAL=no
-IPV6INIT=no
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">TYPE&#x3D;Ethernet
+PROXY_METHOD&#x3D;none
+BROWSER_ONLY&#x3D;no
+BOOTPROTO&#x3D;dhcp
+DEFROUTE&#x3D;yes
+IPV4_FAILURE_FATAL&#x3D;no
+IPV6INIT&#x3D;yes
+IPV6_AUTOCONF&#x3D;yes
+IPV6_DEFROUTE&#x3D;yes
+IPV6_FAILURE_FATAL&#x3D;no
+IPV6_ADDR_GEN_MODE&#x3D;stable-privacy
+NAME&#x3D;eno16777736
+UUID&#x3D;e9c1a29d-8483-439b-b438-b54ee084b211
+DEVICE&#x3D;eno16777736
+ONBOOT&#x3D;yes
+PEERDNS&#x3D;yes
+PEERROUTES&#x3D;yes
+IPV6_PEERDNS&#x3D;yes
+IPV6_PEERROUTES&#x3D;yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="静态配置"><a href="#静态配置" class="headerlink" title="静态配置"></a>静态配置</h3><pre class="line-numbers language-none"><code class="language-none">TYPE&#x3D;Ethernet
+BOOTPROTO&#x3D;none
+DEFROUTE&#x3D;yes
+NAME&#x3D;eno16777736
+UUID&#x3D;e9c1a29d-8483-439b-b438-b54ee084b211
+ONBOOT&#x3D;yes
+DNS1&#x3D;8.8.8.8
+IPADDR&#x3D;192.168.0.110
+PREFIX&#x3D;24
+GATEWAY&#x3D;192.168.0.1
+IPV4_FAILURE_FATAL&#x3D;no
+IPV6INIT&#x3D;no<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h3 id="傻瓜式配置，只有图形界面有效"><a href="#傻瓜式配置，只有图形界面有效" class="headerlink" title="傻瓜式配置，只有图形界面有效"></a>傻瓜式配置，只有图形界面有效</h3><p><code>nm-connection-editor</code></p>
-<h1 id="redis-安装"><a href="#redis-安装" class="headerlink" title="redis 安装"></a>redis 安装</h1><pre><code class="shell"># 解压redis的压缩文件
-tar -zxvf [redis压缩文件名称]
+<h1 id="redis-安装"><a href="#redis-安装" class="headerlink" title="redis 安装"></a>redis 安装</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 解压redis的压缩文件</span>
+<span class="token function">tar</span> -zxvf <span class="token punctuation">[</span>redis压缩文件名称<span class="token punctuation">]</span>
 
-# 解压完成之后执行make命令编译，如果没有安装gcc会报错，使用make distclean清理之前的编译
-make
+<span class="token comment"># 解压完成之后执行make命令编译，如果没有安装gcc会报错，使用make distclean清理之前的编译</span>
+<span class="token function">make</span>
 
-#报错
+<span class="token comment">#报错</span>
 server.c:2868:11: error: ‘struct redisServer’ has no member named ‘cron_malloc_stats’
-     server.cron_malloc_stats.allocator_resident = 0;
+     server.cron_malloc_stats.allocator_resident <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
            ^
-....
+<span class="token punctuation">..</span><span class="token punctuation">..</span>
 
-# 错误原因：gcc版本问题，新版本的。redis6.0以上，升级版本
-yum -y install centos-release-scl
-yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
-scl enable devtoolset-9 bash
-# 注意：scl命令启用只是临时的，退出xshell或者重启就会恢复到原来的gcc版本。
-# 如果要长期生效的话，执行如下：
-echo &quot;source /opt/rh/devtoolset-9/enable&quot; &gt;&gt;/etc/profile
+<span class="token comment"># 错误原因：gcc版本问题，新版本的。redis6.0以上，升级版本</span>
+yum -y <span class="token function">install</span> centos-release-scl
+yum -y <span class="token function">install</span> devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+scl <span class="token builtin class-name">enable</span> devtoolset-9 <span class="token function">bash</span>
+<span class="token comment"># 注意：scl命令启用只是临时的，退出xshell或者重启就会恢复到原来的gcc版本。</span>
+<span class="token comment"># 如果要长期生效的话，执行如下：</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"source /opt/rh/devtoolset-9/enable"</span> <span class="token operator">>></span>/etc/profile
 
-# 再次执行make命令即可编译
+<span class="token comment"># 再次执行make命令即可编译</span>
 
-# 创建快捷方式至 /usr/local/bin
-make install
+<span class="token comment"># 创建快捷方式至 /usr/local/bin</span>
+<span class="token function">make</span> <span class="token function">install</span>
 
-# 前台启动（会占用整个命令行窗口）
+<span class="token comment"># 前台启动（会占用整个命令行窗口）</span>
 redis-server
-# 后台启动redis
-redis-server &amp;
-# 启动redis服务时，指定配置文件（redis.conf）
-redis-server [配置文件名称] &amp;
+<span class="token comment"># 后台启动redis</span>
+redis-server <span class="token operator">&amp;</span>
+<span class="token comment"># 启动redis服务时，指定配置文件（redis.conf）</span>
+redis-server <span class="token punctuation">[</span>配置文件名称<span class="token punctuation">]</span> <span class="token operator">&amp;</span>
 
-# 关闭redis
-redis-cli shutdown
+<span class="token comment"># 关闭redis</span>
+redis-cli <span class="token function">shutdown</span>
 
-# 启动redis客户端连接redis
+<span class="token comment"># 启动redis客户端连接redis</span>
 redis-cli
-# 连接指定端口号下的redis服务，默认6379
-redis-cli -p [端口号]
-# 连接其它地址的redis服务
-redis-cli -h [ip地址] -p [端口号]
+<span class="token comment"># 连接指定端口号下的redis服务，默认6379</span>
+redis-cli -p <span class="token punctuation">[</span>端口号<span class="token punctuation">]</span>
+<span class="token comment"># 连接其它地址的redis服务</span>
+redis-cli -h <span class="token punctuation">[</span>ip地址<span class="token punctuation">]</span> -p <span class="token punctuation">[</span>端口号<span class="token punctuation">]</span>
 
-# 关闭客户端，在客户端下执行
-exit/quit
-</code></pre>
+<span class="token comment"># 关闭客户端，在客户端下执行</span>
+exit/quit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h2 id="redis安装遇到的问题："><a href="#redis安装遇到的问题：" class="headerlink" title="redis安装遇到的问题："></a>redis安装遇到的问题：</h2><p>Redis安装完成之后，启动会默认使用安全模式启动</p>
 <p><img data-src="https://upload-images.jianshu.io/upload_images/1368054-fe79012e98f787ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp"></p>
-<pre><code class="log">redis.clients.jedis.exceptions.JedisDataException: DENIED Redis is running in protected mode because protected mode is enabled
-</code></pre>
+<pre class="line-numbers language-log" data-language="log"><code class="language-log"><span class="token property">redis.clients.jedis.exceptions.JedisDataException:</span> DENIED Redis is running in protected mode because protected mode is enabled<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>本机可以通过redis-cli连接，而其他机器却不可以连接。</p>
 <p>解决：</p>
 <p>修改配置文件../redis.conf</p>
-<pre><code class="conf"># bind 127.0.0.1  注释调用这个
-bind 0.0.0.0    # 使用这个表示所有的机器都可以连接
-</code></pre>
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf"># bind 127.0.0.1  注释调用这个
+bind 0.0.0.0	# 使用这个表示所有的机器都可以连接<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>Redis默认不是以守护进程的方式运行，可以通过该配置项修改，使用yes启用守护进程</p>
-<pre><code class="conf">daemonize  yes   # 改为yes可以使redis以守护进程的方式启动
-</code></pre>
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf">daemonize  yes   # 改为yes可以使redis以守护进程的方式启动<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>将保护模式关闭</p>
-<pre><code class="conf">protected-mode no # 关闭保护模式
-</code></pre>
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf">protected-mode no # 关闭保护模式<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>指定配置文件启动redis：</p>
-<pre><code class="shell">./redis-server redis.conf 
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">./redis-server redis.conf <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
 <p>如果还是不行的话，使用本机连接Redis，使用命令<code>CONFIG SET protected-mode no</code>关闭保护模式。</p>
 <blockquote>
 <p>参考：</p>
@@ -838,17 +867,17 @@ bind 0.0.0.0    # 使用这个表示所有的机器都可以连接
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/kawayiyy123/article/details/107110946">https://blog.csdn.net/kawayiyy123/article/details/107110946</a></p>
 </blockquote>
 <h1 id="tomcat-安装"><a href="#tomcat-安装" class="headerlink" title="tomcat 安装"></a>tomcat 安装</h1><p>下载好tomcat压缩包，移动到<code>/usr/local/tomcat</code>解压。</p>
-<pre><code class="shell">tar -zxvf apache-tomcat-9.0.39.tar.gz
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">tar</span> -zxvf apache-tomcat-9.0.39.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>解压之后即可在tomcat目录下的bin目录</p>
-<pre><code class="shell"># 启动
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 启动</span>
 ./catalina.sh start
 ./startup.sh
 
-# 关闭
+<span class="token comment"># 关闭</span>
 ./catalina.sh stop
-./shutdown
-</code></pre>
+./shutdown<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/moonsoft/p/9264883.html">https://www.cnblogs.com/moonsoft/p/9264883.html</a></p>
 </blockquote>
@@ -1059,7 +1088,7 @@ bind 0.0.0.0    # 使用这个表示所有的机器都可以连接
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

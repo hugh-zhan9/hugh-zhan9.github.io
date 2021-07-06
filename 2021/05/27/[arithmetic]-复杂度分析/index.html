@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/6d/ed/6df62366a60336d9de3bc34f488d8bed.jpg">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/49/04/497a3f120b7debee07dc0d03984faf04.jpg">
 <meta property="article:published_time" content="2021-05-27T20:10:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -263,7 +263,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -329,30 +329,28 @@
 </blockquote>
 <p>执行效率是算法一个非常重要的考量标准，那如何来衡量算法代码的执行效率呢？这就牵涉到时间、空间复杂度分析。时间、空间复杂度分析是一种不需要具体的测试数据测试就可以粗略估计算法的执行效率的方法。</p>
 <h1 id="大-O-复杂度表示"><a href="#大-O-复杂度表示" class="headerlink" title="大 O 复杂度表示"></a>大 O 复杂度表示</h1><p>代码的执行效率粗略的讲就是算法代码的执行时间。这里有一段简单的代码：求1，2，3…n 的累加和。</p>
-<pre><code class="java">int cal(int n) &#123;
-int sum = 0;
-int i = 1;
-for (; i &lt;= n; ++i) &#123;
-    sum = sum + i;
-&#125;
-    return sum;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	sum <span class="token operator">=</span> sum <span class="token operator">+</span> i<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>从 CPU 的角度来看，这段代码的每一行都执行着类似的操作：<strong>读数据-运算-写数据</strong>。尽管每行代码对应的 CPU 执行的个数、执行的时间都不一样，但是我们这里只是粗略估计，所以可以假设每行代码执行的时间都一样，为<code>unit_time</code>。在这个假设的基础之上，这段代码的总执行时间是多少呢？</p>
 <p>第 2、3 行代码分别需要 1 个<code>unit_time</code>的执行时间，第 4、5 行都运行了 n 遍，所以需要<code>2n * unit_time</code>的执行时间，所以这段代码总的执行时间就是<code>(2n+2) * unit_time</code>。可以看出来，所有代码的执行时间<code>T(n)</code>与每行代码的执行次数成正比。</p>
 <p>按照这个分析思路，我们再来看这段代码。</p>
-<pre><code class="c">int cal(int n) &#123;
-    int sum = 0;
-    int i = 1;
-    int j = 1;
-    for (; i &lt;= n; ++i) &#123;
-        j = 1;
-        for (; j &lt;= n; ++j) &#123;
-            sum = sum +  i * j;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> j <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			sum <span class="token operator">=</span> sum <span class="token operator">+</span>  i <span class="token operator">*</span> j<span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>依旧假设每个语句的执行时间是<code>unit_time</code>。那这段代码的总执行时间<code>T(n)</code>是多少呢？</p>
 <p>第 2、3、4 行代码，每行都需要 1 个<code>unit_time</code>的执行时间，第 5、6 行代码循环执行了 n 遍，需要<code>2n * unit_time</code>的执行时间，第 7、8 行代码循环执行了<code>n²</code>遍，所以需要<code>2n² * unit_time</code>的执行时间。所以，整段代码总的执行时间<code>T(n) = (2n²+2n+3) * unit_time</code>。</p>
 <p>尽管我们不知道<code>unit_time</code>的具体值，但是通过这两段代码执行时间的推导过程，我们可以得到一个非常重要的规律，那就是，所有代码的执行时间<code>T(n)</code>与每行代码的执行次数<code>f(n)</code>成正比。我们可以把这个规律总结成一个公式。注意，大 O 就要登场了！</p>
@@ -365,35 +363,32 @@ for (; i &lt;= n; ++i) &#123;
 <p>大 O 这种复杂度表示方法只是表示一种变化趋势，所以通常会忽略掉公式中的常量、低阶、系数，只需要记录一个最大阶的量级就可以了。</p>
 <p>所以在分析一个算法、一段代码的时间复杂度的时候，只需要关注循环执行次数最多的那一段代码就好了。这段核心代码执行次数 n 的量级，就是整段代码的时间复杂度。比如第一个例子的时间复杂度就是<code>O(n)</code>。</p>
 <ol>
-<li><p>加法法则：总时间复杂度等于量级最大的那段代码的复杂度</p>
-<pre><code class="java">int cal(int n) &#123;
- int sum_1 = 0;
- int p = 1;
- for (; p &lt; 100; ++p) &#123;
-     sum_1 = sum_1 + p;
- &#125;
+<li>加法法则：总时间复杂度等于量级最大的那段代码的复杂度<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">int</span> sum_1 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> p <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> p <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> <span class="token operator">++</span>p<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		sum_1 <span class="token operator">=</span> sum_1 <span class="token operator">+</span> p<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
 
- int sum_2 = 0;
- int q = 1;
- for (; q &lt; n; ++q) &#123;
-     sum_2 = sum_2 + q;
- &#125;
+	<span class="token keyword">int</span> sum_2 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> q <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> q <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>q<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		sum_2 <span class="token operator">=</span> sum_2 <span class="token operator">+</span> q<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
 
- int sum_3 = 0;
- int i = 1;
- int j = 1;
- for (; i &lt;= n; ++i) &#123;
-     j = 1;
-     for (; j &lt;= n; ++j) &#123;
-         sum_3 = sum_3 +  i * j;
-     &#125;
- &#125;
+	<span class="token keyword">int</span> sum_3 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> j <span class="token operator">&lt;=</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			sum_3 <span class="token operator">=</span> sum_3 <span class="token operator">+</span>  i <span class="token operator">*</span> j<span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
 
- return sum_1 + sum_2 + sum_3;
-&#125;
-</code></pre>
-<p>这个代码分为三个部分，分别是求<code>sum_1</code>、<code>sum_2</code>、<code>sum_3</code>。可以分别分析每一个部分的时间复杂度，再取一个最大量级的作为整段代码的复杂度。</p>
-</li>
+	<span class="token keyword">return</span> sum_1 <span class="token operator">+</span> sum_2 <span class="token operator">+</span> sum_3<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+这个代码分为三个部分，分别是求<code>sum_1</code>、<code>sum_2</code>、<code>sum_3</code>。可以分别分析每一个部分的时间复杂度，再取一个最大量级的作为整段代码的复杂度。</li>
 </ol>
 <p>这里我要再强调一下，即便这段代码循环 10000 次、100000 次，只要是一个已知的数，跟 n 无关，照样也是常量级的执行时间。当 n 无限大的时候，就可以忽略。尽管对代码的执行时间会有很大影响，但是<strong>回到时间复杂度的概念来说，它表示的是一个算法执行效率与数据规模增长的变化趋势，所以不管常量的执行时间多大，我们都可以忽略掉。因为它本身对增长趋势并没有影响。</strong></p>
 <p>那第二段代码和第三段代码的时间复杂度分别是<code>O(n)</code>和<code>O(n²)</code>。综合这三段代码的时间复杂度，我们取其中最大的量级。所以，整段代码的时间复杂度就为<code>O(n²)</code>。也就是说：<strong>总的时间复杂度就等于量级最大的那段代码的时间复杂度。</strong>那我们将这个规律抽象成公式就是：</p>
@@ -403,23 +398,22 @@ for (; i &lt;= n; ++i) &#123;
 </ol>
 <p><code>T(n) = T1(n) + T2(n) = max(O(f(n)), O(g(n))) = O(max(f(n), g(n)))</code>。</p>
 <p>也就是说：假设<code>T1(n) = O(n)，T2(n) = O(n2)，则 T1(n) * T2(n) = O(n3)</code>。落实到具体的代码上，可以把乘法法则看成是<strong>嵌套循环</strong></p>
-<pre><code class="c">int cal(int n)&#123;
-    int ret = 0;
-    int i = 1;
-    for (; i &lt; n; i++) &#123;
-        ret = ret + f(i);
-    &#125;
-&#125;
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">int</span> ret <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		ret <span class="token operator">=</span> ret <span class="token operator">+</span> <span class="token function">f</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-int f(int n) &#123;
-    int sum = 0;
-    int i = 1;
-    for (; i &lt; n; ++i) &#123;
-        sum = sum + i;
-    &#125;
-    return sum;
-&#125;
-</code></pre>
+<span class="token keyword">int</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		sum <span class="token operator">=</span> sum <span class="token operator">+</span> i<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> sum<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以单独<code>cal()</code>函数。假设<code>f()</code>只是一个普通的操作，那第4~6行的时间复杂度就是：<code>T1(n) = O(n)</code>。但<code>f()</code>函数本身不是一个简单的操作，它的时间复杂度是<code>T2(n) = O(n)</code>，所以整个<code>cal()</code>函数的实际复杂度就是：<code>T(n) = T1(n)</code><em><code>T2(n) = O(n</code></em><code>n) = O(n²)</code></p>
 <h1 id="几个常见时间复杂度实例分析"><a href="#几个常见时间复杂度实例分析" class="headerlink" title="几个常见时间复杂度实例分析"></a>几个常见时间复杂度实例分析</h1><p>常见的复杂度量级并不多，下面这些复杂度量级几乎涵盖了你今后可以接触的所有代码的复杂度量级。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/37/0a/3723793cc5c810e9d5b06bc95325bf0a.jpg"></p>
@@ -433,83 +427,85 @@ int f(int n) &#123;
 <h2 id="O-1"><a href="#O-1" class="headerlink" title="O(1)"></a>O(1)</h2><p>首先你必须明确一个概念，<code>O(1)</code>只是常量级时间复杂度的一种表示方法，并不是指只执行了一行代码。一段代码，即便有 3 行，它的时间复杂度也是 O(1），而不是 O(3)。</p>
 <p>只要代码的执行时间不随着 n 的增长而增长，这样的代码的时间复杂度都是<code>O(1)</code>。<strong>一般情况下，只要算法中不存在循环语句、递归语句，即使有成千上万行的代码，其时间复杂度也是<code>Ο(1)</code>。</strong></p>
 <h2 id="O-logn-、O-nlogn"><a href="#O-logn-、O-nlogn" class="headerlink" title="O(logn)、O(nlogn)"></a>O(logn)、O(nlogn)</h2><p>对数阶时间复杂度非常常见，同时也是最难分析的一种时间复杂度。</p>
-<pre><code class="c">i=1;
-while (i &lt;= n)  &#123;
-    i = i * 2;
-&#125;
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;=</span> n<span class="token punctuation">)</span>  <span class="token punctuation">&#123;</span>
+    i <span class="token operator">=</span> i <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>第三行代码是循环执行次数最多的。所以，我们只要能计算出这行代码被执行了多少次，就能知道整段代码的时间复杂度。</p>
 <p>从代码中可以看出，变量 <code>i</code> 的值从 1 开始取，每循环一次就乘以 2。当大于 n 时，循环结束。还记得我们高中学过的等比数列吗？实际上，变量 i 的取值就是一个等比数列。如果我把它一个一个列出来，就应该是这个样子的：</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/9b/9a/9b1c88264e7a1a20b5954be9bc4bec9a.jpg"></p>
 <p>所以，我们只要知道 x 值是多少，就知道这行代码执行的次数了。通过 <code>2^x=n</code> 求解 x ，<code>x=log₂n</code>，所以，这段代码的时间复杂度就是 <code>O(log₂n)</code>。</p>
 <p>修改一下上面的代码：</p>
-<pre><code class="c">i=1;
-while (i &lt;= n)  &#123;
-    i = i * 3;
-&#125;
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;=</span> n<span class="token punctuation">)</span>  <span class="token punctuation">&#123;</span>
+    i <span class="token operator">=</span> i <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>复杂度就变成了<code>O(log₃n)</code>。实际上，不管以2还是3甚至100为底，我们通常把所有对数阶的时间复杂度都记为<code>O(logn)</code>。</p>
 <p>我们知道，对数之间是可以互相转换的，<code>log₃n = log₃² * log₂n</code>，所以 <code>O(log₃n) = O(C *  log₂n)</code>，其中 <code>C = log₃²</code> 是一个常量。基于我们前面的一个理论：<strong>在采用大 O 标记复杂度的时候，可以忽略系数，即 <code>O(Cf(n)) = O(f(n))</code>。</strong>所以，<code>O(log₂n)</code> 就等于 <code>O(log₃n)</code>。因此，在对数阶时间复杂度的表示方法里统一表示为 <code>O(logn)</code>。</p>
 <p>如果理解了 <code>O(logn)</code>，那 <code>O(nlogn)</code> 就很容易理解了。根据乘法法则，如果一段代码的时间复杂度是 <code>O(logn)</code>，循环执行 n 遍，时间复杂度就是 <code>O(nlogn)</code> 了。而且<code>O(nlogn)</code> 是一种非常常见的算法时间复杂度。比如，归并排序、快速排序的时间复杂度都是 <code>O(nlogn)</code>。</p>
-<h2 id="O-m-n-、O-m-n"><a href="#O-m-n-、O-m-n" class="headerlink" title="O(m+n)、O(m*n)"></a>O(m+n)、O(m*n)</h2><pre><code class="c">int cal(int m, int n) &#123;
-    int sum_1 = 0;
-    int i = 1;
-    for (; i &lt; m; ++i) &#123;
-        sum_1 = sum_1 + i;
-    &#125;
+<h2 id="O-m-n-、O-m-n"><a href="#O-m-n-、O-m-n" class="headerlink" title="O(m+n)、O(m*n)"></a>O(m+n)、O(m*n)</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">cal</span><span class="token punctuation">(</span><span class="token keyword">int</span> m<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> sum_1 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> m<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        sum_1 <span class="token operator">=</span> sum_1 <span class="token operator">+</span> i<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    int sum_2 = 0;
-    int j = 1;
-    for (; j &lt; n; ++j) &#123;
-        sum_2 = sum_2 + j;
-    &#125;
+    <span class="token keyword">int</span> sum_2 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        sum_2 <span class="token operator">=</span> sum_2 <span class="token operator">+</span> j<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    return sum_1 + sum_2;
-&#125;
-</code></pre>
+    <span class="token keyword">return</span> sum_1 <span class="token operator">+</span> sum_2<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>从代码中可以看出，m 和 n 是表示两个数据规模。我们无法事先评估 m 和 n 谁的量级大，所以我们在表示复杂度的时候，就不能简单地利用加法法则，省略掉其中一个。所以，上面代码的时间复杂度就是 <code>O(m+n)</code>。</p>
 <p>针对这种情况，原来的加法法则就不正确了，我们需要将加法规则改为：<code>T1(m) + T2(n) = O(f(m) + g(n))</code>。但是乘法法则继续有效：<code>T1(m)*T2(n) = O(f(m) * f(n))</code>。</p>
 <h1 id="空间复杂度分析"><a href="#空间复杂度分析" class="headerlink" title="空间复杂度分析"></a>空间复杂度分析</h1><p>时间复杂度的全称是<strong>渐进时间复杂度，表示算法的执行时间与数据规模之间的增长关系。</strong>类比一下，空间复杂度全称就是<strong>渐进空间复杂度</strong>（asymptotic space complexity），<strong>表示算法的存储空间与数据规模之间的增长关系。</strong></p>
-<pre><code class="c">void print(int n) &#123;
-    int i = 0;
-    int[] a = new int[n];
-    for (i; i &lt;n; ++i) &#123;
-        a[i] = i * i;
-    &#125;
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token punctuation">;</span> i <span class="token operator">&lt;</span>n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> i <span class="token operator">*</span> i<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    for (i = n-1; i &gt;= 0; --i) &#123;
-        print out a[i]
-    &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        print out a<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>跟时间复杂度分析一样，我们可以看到，第 2 行代码中，我们申请了一个空间存储变量 <code>i</code>，但是它是常量阶的，跟数据规模 n 没有关系，所以我们可以忽略。第 3 行申请了一个大小为 n 的 <code>int</code> 类型数组，除此之外，剩下的代码都没有占用更多的空间，所以整段代码的空间复杂度就是 <code>O(n)</code>。</p>
 <p>我们常见的空间复杂度就是 <code>O(1)</code>、<code>O(n)</code>、<code>O(n2 )</code>，像 <code>O(logn)</code>、<code>O(nlogn)</code> 这样的对数阶复杂度平时都用不到。而且，空间复杂度分析比时间复杂度分析要简单很多。</p>
 <h1 id="最好、最坏情况时间复杂度"><a href="#最好、最坏情况时间复杂度" class="headerlink" title="最好、最坏情况时间复杂度"></a>最好、最坏情况时间复杂度</h1><p>来分析一下这段代码的时间复杂度</p>
-<pre><code class="c">// n表示数组array的长度
-int find(int[] array, int n, int x) &#123;
-    int i = 0;
-    int pos = -1;
-    for (; i &lt; n; ++i) &#123;
-        if (array[i] == x) pos = i;
-    &#125;
-    return pos;
-&#125;
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// n表示数组array的长度</span>
+<span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> pos <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> x<span class="token punctuation">)</span> pos <span class="token operator">=</span> i<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这段代码要实现的功能是在一个无序的数组（array）中，查找变量 <code>x</code> 出现的位置。如果没有找到，就返回 -1。按照上节课讲的分析方法，这段代码的复杂度是 O(n)，其中，n 代表数组的长度。</p>
 <p>我们在数组中查找一个数据，并不需要每次都把整个数组都遍历一遍，因为有可能中途找到就可以提前结束循环了。这段代码写得不够高效。可以这样优化一下这段查找代码。</p>
-<pre><code class="c">// n表示数组array的长度
-int find(int[] array, int n, int x) &#123;
-    int i = 0;
-      int pos = -1;
-      for (; i &lt; n; ++i) &#123;
-        if (array[i] == x) &#123;
-            pos = i;
-            break;
-        &#125;
-      &#125;
-      return pos;
-&#125;
-</code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// n表示数组array的长度</span>
+<span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  	<span class="token keyword">int</span> pos <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+  	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            pos <span class="token operator">=</span> i<span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+    	<span class="token punctuation">&#125;</span>
+  	<span class="token punctuation">&#125;</span>
+  	<span class="token keyword">return</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这个时候，问题就来了。我们优化完之后，这段代码的时间复杂度还是 <code>O(n)</code> 吗？很显然，前面的分析方法，解决不了这个问题。</p>
 <p>因为，要查找的变量 x 可能出现在数组的任意位置。如果数组中第一个元素正好是要查找的变量 x，那就不需要继续遍历剩下的 n-1 个数据了，那时间复杂度就是 <code>O(1)</code>。但如果数组中不存在变量 x，那我们就需要把整个数组都遍历一遍，时间复杂度就成了 <code>O(n)</code>。所以，不同的情况下，这段代码的时间复杂度是不一样的。</p>
 <p>为了表示代码在不同情况下的不同时间复杂度，我们需要引入三个概念：<strong>最好情况时间复杂度、最坏情况时间复杂度和平均情况时间复杂度。</strong></p>
@@ -527,25 +523,25 @@ int find(int[] array, int n, int x) &#123;
 <p>你可能会说，平均时间复杂度分析好复杂啊，还要涉及概率论的知识。实际上，在大多数情况下，我们并不需要区分最好、最坏、平均情况时间复杂度三种情况。很多时候，我们使用一个复杂度就可以满足需求了。只有同一块代码在不同的情况下，时间复杂度有量级的差距，我们才会使用这三种复杂度表示法来区分。</p>
 <h1 id="均摊时间复杂度"><a href="#均摊时间复杂度" class="headerlink" title="均摊时间复杂度"></a>均摊时间复杂度</h1><p>均摊时间复杂度的分析方法叫做：<strong>摊还分析（或者叫平摊分析）</strong>。均摊时间复杂度，听起来跟平均时间复杂度有点儿像。对于初学者来说，这两个概念确实非常容易弄混。</p>
 <p>前面说了，大部分情况下并不需要区分最好、最坏、平均三种复杂度。平均复杂度只在某些特殊情况下才会用到，而均摊时间复杂度应用的场景比它更加特殊、更加有限。</p>
-<pre><code class="c">// array表示一个长度为n的数组
-// 代码中的array.length就等于n
-int[] array = new int[n];
-int count = 0;
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// array表示一个长度为n的数组</span>
+<span class="token comment">// 代码中的array.length就等于n</span>
+<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-void insert(int val) &#123;
-    if (count == array.length) &#123;
-        int sum = 0;
-        for (int i = 0; i &lt; array.length; ++i) &#123;
-            sum = sum + array[i];
-        &#125;
-        array[0] = sum;
-        count = 1;
-    &#125;
+<span class="token keyword">void</span> <span class="token function">insert</span><span class="token punctuation">(</span><span class="token keyword">int</span> val<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">==</span> array<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> array<span class="token punctuation">.</span>length<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            sum <span class="token operator">=</span> sum <span class="token operator">+</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> sum<span class="token punctuation">;</span>
+        count <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    array[count] = val;
-    ++count;
-&#125;
-</code></pre>
+    array<span class="token punctuation">[</span>count<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+    <span class="token operator">++</span>count<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>解释一下这段代码。这段代码实现了一个往数组中插入数据的功能。当数组满了之后，也就是代码中的 <code>count == array.length</code> 时，我们用 for 循环遍历数组求和，并清空数组，将求和之后的 sum 值放到数组的第一个位置，然后再将新的数据插入。但如果数组一开始就有空闲空间，则直接将数据插入数组。</p>
 <p>最理想的情况下，数组中有空闲空间，我们只需要将数据插入到数组下标为 count 的位置就可以了，所以最好情况时间复杂度为 <code>O(1)</code>。</p>
 <p>最坏的情况下，数组中没有空闲空间了，我们需要先做一次数组的遍历求和，然后再将数据插入，所以最坏情况时间复杂度为 <code>O(n)</code>。</p>
@@ -564,29 +560,29 @@ void insert(int val) &#123;
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>复杂度也叫渐进复杂度，包括时间复杂度和空间复杂度，用来分析算法执行效率与数据规模之间的增长关系，可以粗略地表示，越高阶复杂度的算法，执行效率越低。</p>
 <p><img data-src="https://static001.geekbang.org/resource/image/49/04/497a3f120b7debee07dc0d03984faf04.jpg"></p>
 <h2 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h2><p>分析一下下面这 <code>add()</code> 函数的时间复杂度。</p>
-<pre><code class="java">// 全局变量，大小为10的数组array，长度len，下标i。
-int array[] = new int[10]; 
-int len = 10;
-int i = 0;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 全局变量，大小为10的数组array，长度len，下标i。</span>
+<span class="token keyword">int</span> array<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 
+<span class="token keyword">int</span> len <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-// 往数组中添加一个元素
-void add(int element) &#123;
-    if (i &gt;= len) &#123; // 数组空间不够了
-        // 重新申请一个2倍大小的数组空间
-        int new_array[] = new int[len*2];
-        // 把原来array数组中的数据依次copy到new_array
-        for (int j = 0; j &lt; len; ++j) &#123;
-            new_array[j] = array[j];
-        &#125;
-        // new_array复制给array，array现在大小就是2倍len了
-        array = new_array;
-        len = 2 * len;
-    &#125;
-    // 将element放到下标为i的位置，下标i加一
-    array[i] = element;
-    ++i;
-&#125;
-</code></pre>
+<span class="token comment">// 往数组中添加一个元素</span>
+<span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">int</span> element<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">>=</span> len<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 数组空间不够了</span>
+        <span class="token comment">// 重新申请一个2倍大小的数组空间</span>
+        <span class="token keyword">int</span> new_array<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>len<span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token comment">// 把原来array数组中的数据依次copy到new_array</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> len<span class="token punctuation">;</span> <span class="token operator">++</span>j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            new_array<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> array<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// new_array复制给array，array现在大小就是2倍len了</span>
+        array <span class="token operator">=</span> new_array<span class="token punctuation">;</span>
+        len <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> len<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 将element放到下标为i的位置，下标i加一</span>
+    array<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> element<span class="token punctuation">;</span>
+    <span class="token operator">++</span>i<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>答案：</p>
 <ol>
 <li><p>最好情况时间复杂度为 <code>O(1)</code></p>
@@ -805,7 +801,7 @@ void add(int element) &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

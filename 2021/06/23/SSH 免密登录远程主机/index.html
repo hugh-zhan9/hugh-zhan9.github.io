@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.bing.com/th?id=OHR.ReussRiver_ZH-CN5897721217_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp">
 <meta property="article:published_time" content="2021-06-23T17:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.207Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.716Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="Github">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +297,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.7k</span>
+              <span>7.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -353,41 +353,41 @@
 <p>第五步，服务器收到客户端发来的加密签名后，使用对应的公钥解密，然后跟原始数据比较。如果一致，就允许用户登录。</p>
 <h2 id="ssh-key命令：生成密钥"><a href="#ssh-key命令：生成密钥" class="headerlink" title="ssh-key命令：生成密钥"></a><code>ssh-key</code>命令：生成密钥</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>密钥登录时，首先需要生成公钥和私钥。OpenSSH 提供了一个工具程序<code>ssh-keygen</code>命令，用来生成密钥。</p>
 <p>直接输入<code>ssh-keygen</code>，程序会询问一系列问题，然后生成密钥。</p>
-<pre><code>$ ssh-keygen
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>通常做法是使用<code>-t</code>参数，指定密钥的加密算法。</p>
-<pre><code>$ ssh-keygen -t dsa
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -t dsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面示例中，<code>-t</code>参数用来指定密钥的加密算法，一般会选择<code>dsa</code>算法或<code>rsa</code>算法。注意，这个参数没有默认值。</p>
 <p>输入上面的命令以后，<code>ssh-keygen</code>会要求用户回答一些问题。</p>
-<pre><code>$ ssh-keygen -t dsa
-Generating public/private dsa key pair.
-Enter file in which to save the key (/home/username/.ssh/id_dsa):  press ENTER
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -t dsa
+Generating public&#x2F;private dsa key pair.
+Enter file in which to save the key (&#x2F;home&#x2F;username&#x2F;.ssh&#x2F;id_dsa):  press ENTER
 Enter passphrase (empty for no passphrase): ********
 Enter same passphrase again: ********
-Your identification has been saved in /home/username/.ssh/id_dsa.
-Your public key has been saved in /home/username/.ssh/id_dsa.pub.
+Your identification has been saved in &#x2F;home&#x2F;username&#x2F;.ssh&#x2F;id_dsa.
+Your public key has been saved in &#x2F;home&#x2F;username&#x2F;.ssh&#x2F;id_dsa.pub.
 The key fingerprint is:
-14:ba:06:98:a8:98:ad:27:b5:ce:55:85:ec:64:37:19 username@shell.isp.com
-</code></pre>
+14:ba:06:98:a8:98:ad:27:b5:ce:55:85:ec:64:37:19 username@shell.isp.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上面示例中，执行<code>ssh-keygen</code>命令以后，会出现第一个问题，询问密钥保存的文件名，默认是<code>~/.ssh/id_dsa</code>文件，这个是私钥的文件名，对应的公钥文件<code>~/.ssh/id_dsa.pub</code>是自动生成的。用户的密钥一般都放在主目录的<code>.ssh</code>目录里面。</p>
 <p>如果选择<code>rsa</code>算法，生成的密钥文件默认就会是<code>~/.ssh/id_rsa</code>（私钥）和<code>~/.ssh/id_rsa.pub</code>（公钥）。</p>
 <p>接着，就会是第二个问题，询问是否要为私钥文件设定密码保护（passphrase）。这样的话，即使入侵者拿到私钥，还是需要破解密码。如果为了方便，不想设定密码保护，可以直接按回车键，密码就会为空。后面还会让你再输入一次密码，两次输入必须一致。注意，这里“密码”的英文单词是 passphrase，这是为了避免与 Linux 账户的密码单词 password 混淆，表示这不是用户系统账户的密码。</p>
 <p>最后，就会生成私钥和公钥，屏幕上还会给出公钥的指纹，以及当前的用户名和主机名作为注释，用来识别密钥的来源。</p>
 <p>公钥文件和私钥文件都是文本文件，可以用文本编辑器看一下它们的内容。公钥文件的内容类似下面这样。</p>
-<pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAvpB4lUbAaEbh9u6HLig7amsfywD4fqSZq2ikACIUBn3GyRPfeF93l/
+<pre class="line-numbers language-none"><code class="language-none">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAvpB4lUbAaEbh9u6HLig7amsfywD4fqSZq2ikACIUBn3GyRPfeF93l&#x2F;
 weQh702ofXbDydZAKMcDvBJqRhUotQUwqV6HJxqoqPDlPGUUyo8RDIkLUIPRyq
-ypZxmK9aCXokFiHoGCXfQ9imUP/w/jfqb9ByDtG97tUJF6nFMP5WzhM= username@shell.isp.com
-</code></pre>
+ypZxmK9aCXokFiHoGCXfQ9imUP&#x2F;w&#x2F;jfqb9ByDtG97tUJF6nFMP5WzhM&#x3D; username@shell.isp.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>上面示例中，末尾的<code>username@shell.isp.com</code>是公钥的注释，用来识别不同的公钥，表示这是哪台主机（<code>shell.isp.com</code>）的哪个用户（<code>username</code>）的公钥，不是必需项。</p>
 <p>注意，公钥只有一行。因为它太长了，所以上面分成三行显示。</p>
 <p>下面的命令可以列出用户所有的公钥。</p>
-<pre><code>$ ls -l ~/.ssh/id_*.pub
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ls -l ~&#x2F;.ssh&#x2F;id_*.pub<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>生成密钥以后，建议修改它们的权限，防止其他人读取。</p>
-<pre><code>$ chmod 600 ~/.ssh/id_rsa
-$ chmod 600 ~/.ssh/id_rsa.pub
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ chmod 600 ~&#x2F;.ssh&#x2F;id_rsa
+$ chmod 600 ~&#x2F;.ssh&#x2F;id_rsa.pub<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h3 id="配置项"><a href="#配置项" class="headerlink" title="配置项"></a>配置项</h3><p><code>ssh-keygen</code>的命令行配置项，主要有下面这些。</p>
 <p><strong>（1）<code>-b</code></strong></p>
 <p><code>-b</code>参数指定密钥的二进制位数。这个参数值越大，密钥就越不容易破解，但是加密解密的计算开销也会加大。</p>
@@ -395,110 +395,110 @@ $ chmod 600 ~/.ssh/id_rsa.pub
 <p><strong>（2）<code>-C</code></strong></p>
 <p><code>-C</code>参数可以为密钥文件指定新的注释，格式为<code>username@host</code>。</p>
 <p>下面命令生成一个4096位 RSA 加密算法的密钥对，并且给出了用户名和主机名。</p>
-<pre><code>$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@domain.com&quot;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@domain.com&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>（3）<code>-f</code></strong></p>
 <p><code>-f</code>参数指定生成的私钥文件。</p>
-<pre><code>$ ssh-keygen -t dsa -f mykey
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -t dsa -f mykey<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面命令会在当前目录生成私钥文件<code>mykey</code>和公钥文件<code>mykey.pub</code>。</p>
 <p><strong>（4）<code>-F</code></strong></p>
 <p><code>-F</code>参数检查某个主机名是否在<code>known_hosts</code>文件里面。</p>
-<pre><code>$ ssh-keygen -F example.com
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -F example.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>（5）<code>-N</code></strong></p>
 <p><code>-N</code>参数用于指定私钥的密码（passphrase）。</p>
-<pre><code>$ ssh-keygen -t dsa -N secretword
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -t dsa -N secretword<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>（6）<code>-p</code></strong></p>
 <p><code>-p</code>参数用于重新指定私钥的密码（passphrase）。它与<code>-N</code>的不同之处在于，新密码不在命令中指定，而是执行后再输入。ssh 先要求输入旧密码，然后要求输入两遍新密码。</p>
 <p><strong>（7）<code>-R</code></strong></p>
 <p><code>-R</code>参数将指定的主机公钥指纹移出<code>known_hosts</code>文件。</p>
-<pre><code>$ ssh-keygen -R example.com
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-keygen -R example.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>（8）<code>-t</code></strong></p>
-<pre><code>-t`参数用于指定生成密钥的加密算法，一般为`dsa`或`rsa
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">-t&#96;参数用于指定生成密钥的加密算法，一般为&#96;dsa&#96;或&#96;rsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="手动上传公钥"><a href="#手动上传公钥" class="headerlink" title="手动上传公钥"></a>手动上传公钥</h2><p>生成密钥以后，公钥必须上传到服务器，才能使用公钥登录。</p>
 <p>OpenSSH 规定，用户公钥保存在服务器的<code>~/.ssh/authorized_keys</code>文件。你要以哪个用户的身份登录到服务器，密钥就必须保存在该用户主目录的<code>~/.ssh/authorized_keys</code>文件。只要把公钥添加到这个文件之中，就相当于公钥上传到服务器了。每个公钥占据一行。如果该文件不存在，可以手动创建。</p>
 <p>用户可以手动编辑该文件，把公钥粘贴进去，也可以在本机计算机上，执行下面的命令。</p>
-<pre><code>$ cat ~/.ssh/id_rsa.pub | ssh user@host &quot;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&quot;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ cat ~&#x2F;.ssh&#x2F;id_rsa.pub | ssh user@host &quot;mkdir -p ~&#x2F;.ssh &amp;&amp; cat &gt;&gt; ~&#x2F;.ssh&#x2F;authorized_keys&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面示例中，<code>user@host</code>要替换成你所要登录的用户名和主机名。</p>
 <p>注意，<code>authorized_keys</code>文件的权限要设为<code>644</code>，即只有文件所有者才能写。如果权限设置不对，SSH 服务器可能会拒绝读取该文件。</p>
-<pre><code>$ chmod 644 ~/.ssh/authorized_keys
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ chmod 644 ~&#x2F;.ssh&#x2F;authorized_keys<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>只要公钥上传到服务器，下次登录时，OpenSSH 就会自动采用密钥登录，不再提示输入密码。</p>
-<pre><code>$ ssh -l username shell.isp.com
-Enter passphrase for key &#39;/home/you/.ssh/id_dsa&#39;: ************
+<pre class="line-numbers language-none"><code class="language-none">$ ssh -l username shell.isp.com
+Enter passphrase for key &#39;&#x2F;home&#x2F;you&#x2F;.ssh&#x2F;id_dsa&#39;: ************
 Last login: Mon Mar 24 02:17:27 2014 from ex.ample.com
-shell.isp.com&gt;
-</code></pre>
+shell.isp.com&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上面例子中，SSH 客户端使用私钥之前，会要求用户输入密码（passphrase），用来解开私钥。</p>
 <h2 id="ssh-copy-id-命令：自动上传公钥"><a href="#ssh-copy-id-命令：自动上传公钥" class="headerlink" title="ssh-copy-id 命令：自动上传公钥"></a>ssh-copy-id 命令：自动上传公钥</h2><p>OpenSSH 自带一个<code>ssh-copy-id</code>命令，可以自动将公钥拷贝到远程服务器的<code>~/.ssh/authorized_keys</code>文件。如果<code>~/.ssh/authorized_keys</code>文件不存在，<code>ssh-copy-id</code>命令会自动创建该文件。</p>
 <p>用户在本地计算机执行下面的命令，就可以把本地的公钥拷贝到服务器。</p>
-<pre><code>$ ssh-copy-id -i key_file user@host
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-copy-id -i key_file user@host<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面命令中，<code>-i</code>参数用来指定公钥文件，<code>user</code>是所要登录的账户名，<code>host</code>是服务器地址。如果省略用户名，默认为当前的本机用户名。执行完该命令，公钥就会拷贝到服务器。</p>
 <p>注意，公钥文件可以不指定路径和<code>.pub</code>后缀名，<code>ssh-copy-id</code>会自动在<code>~/.ssh</code>目录里面寻找。</p>
-<pre><code>$ ssh-copy-id -i id_rsa user@host
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-copy-id -i id_rsa user@host<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面命令中，公钥文件会自动匹配到<code>~/.ssh/id_rsa.pub</code>。</p>
 <p><code>ssh-copy-id</code>会采用密码登录，系统会提示输入远程服务器的密码。</p>
 <p>注意，<code>ssh-copy-id</code>是直接将公钥添加到<code>authorized_keys</code>文件的末尾。如果<code>authorized_keys</code>文件的末尾不是一个换行符，会导致新的公钥添加到前一个公钥的末尾，两个公钥连在一起，使得它们都无法生效。所以，如果<code>authorized_keys</code>文件已经存在，使用<code>ssh-copy-id</code>命令之前，务必保证<code>authorized_keys</code>文件的末尾是换行符（假设该文件已经存在）。</p>
 <h2 id="ssh-agent-命令，ssh-add-命令"><a href="#ssh-agent-命令，ssh-add-命令" class="headerlink" title="ssh-agent 命令，ssh-add 命令"></a>ssh-agent 命令，ssh-add 命令</h2><h3 id="基本用法-1"><a href="#基本用法-1" class="headerlink" title="基本用法"></a>基本用法</h3><p>私钥设置了密码以后，每次使用都必须输入密码，有时让人感觉非常麻烦。比如，连续使用<code>scp</code>命令远程拷贝文件时，每次都要求输入密码。</p>
 <p><code>ssh-agent</code>命令就是为了解决这个问题而设计的，它让用户在整个 Bash 对话（session）之中，只在第一次使用 SSH 命令时输入密码，然后将私钥保存在内存中，后面都不需要再输入私钥的密码了。</p>
 <p>第一步，使用下面的命令新建一次命令行对话。</p>
-<pre><code>$ ssh-agent bash
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-agent bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面命令中，如果你使用的命令行环境不是 Bash，可以用其他的 Shell 命令代替。比如<code>zsh</code>和<code>fish</code>。</p>
 <p>如果想在当前对话启用<code>ssh-agent</code>，可以使用下面的命令。</p>
-<pre><code>$ eval `ssh-agent`
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ eval &#96;ssh-agent&#96;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面命令中，<code>ssh-agent</code>会先自动在后台运行，并将需要设置的环境变量输出在屏幕上，类似下面这样。</p>
-<pre><code>$ ssh-agent
-SSH_AUTH_SOCK=/tmp/ssh-barrett/ssh-22841-agent; export SSH_AUTH_SOCK;
-SSH_AGENT_PID=22842; export SSH_AGENT_PID;
-echo Agent pid 22842;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-agent
+SSH_AUTH_SOCK&#x3D;&#x2F;tmp&#x2F;ssh-barrett&#x2F;ssh-22841-agent; export SSH_AUTH_SOCK;
+SSH_AGENT_PID&#x3D;22842; export SSH_AGENT_PID;
+echo Agent pid 22842;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>eval</code>命令的作用，就是运行上面的<code>ssh-agent</code>命令的输出，设置环境变量。</p>
 <p>第二步，在新建的 Shell 对话里面，使用<code>ssh-add</code>命令添加默认的私钥（比如<code>~/.ssh/id_rsa</code>，或<code>~/.ssh/id_dsa</code>，或<code>~/.ssh/id_ecdsa</code>，或<code>~/.ssh/id_ed25519</code>）。</p>
-<pre><code>$ ssh-add
-Enter passphrase for /home/you/.ssh/id_dsa: ********
-Identity added: /home/you/.ssh/id_dsa (/home/you/.ssh/id_dsa)
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-add
+Enter passphrase for &#x2F;home&#x2F;you&#x2F;.ssh&#x2F;id_dsa: ********
+Identity added: &#x2F;home&#x2F;you&#x2F;.ssh&#x2F;id_dsa (&#x2F;home&#x2F;you&#x2F;.ssh&#x2F;id_dsa)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>上面例子中，添加私钥时，会要求输入密码。以后，在这个对话里面再使用密钥时，就不需要输入私钥的密码了，因为私钥已经加载到内存里面了。</p>
 <p>如果添加的不是默认私钥，<code>ssh-add</code>命令需要显式指定私钥文件。</p>
-<pre><code>$ ssh-add my-other-key-file
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-add my-other-key-file<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面的命令中，<code>my-other-key-file</code>就是用户指定的私钥文件。</p>
 <p>第三步，使用 ssh 命令正常登录远程服务器。</p>
-<pre><code>$ ssh remoteHost
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh remoteHost<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>上面命令中，<code>remoteHost</code>是远程服务器的地址，ssh 使用的是默认的私钥。这时如果私钥设有密码，ssh 将不再询问密码，而是直接取出内存里面的私钥。</p>
 <p>如果要使用其他私钥登录服务器，需要使用 ssh 命令的<code>-i</code>参数指定私钥文件。</p>
-<pre><code>$ ssh –i OpenSSHPrivateKey remoteHost
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh –i OpenSSHPrivateKey remoteHost<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>最后，如果要退出<code>ssh-agent</code>，可以直接退出子 Shell（按下 Ctrl + d），也可以使用下面的命令。</p>
-<pre><code>$ ssh-agent -k
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-agent -k<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h3 id="ssh-add命令"><a href="#ssh-add命令" class="headerlink" title="ssh-add命令"></a><code>ssh-add</code>命令</h3><p><code>ssh-add</code>命令用来将私钥加入<code>ssh-agent</code>，它有如下的参数。</p>
 <p><strong>（1）<code>-d</code></strong></p>
 <p><code>-d</code>参数从内存中删除指定的私钥。</p>
-<pre><code>$ ssh-add -d name-of-key-file
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-add -d name-of-key-file<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>（2）<code>-D</code></strong></p>
 <p><code>-D</code>参数从内存中删除所有已经添加的私钥。</p>
-<pre><code>$ ssh-add -D
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-add -D<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>（3）<code>-l</code></strong></p>
 <p><code>-l</code>参数列出所有已经添加的私钥。</p>
-<pre><code>$ ssh-add -l
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">$ ssh-add -l<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="关闭密码登录"><a href="#关闭密码登录" class="headerlink" title="关闭密码登录"></a>关闭密码登录</h2><p>为了安全性，启用密钥登录之后，最好关闭服务器的密码登录。</p>
 <p>对于 OpenSSH，具体方法就是打开服务器 sshd 的配置文件<code>/etc/ssh/sshd_config</code>，将<code>PasswordAuthentication</code>这一项设为<code>no</code>。</p>
-<pre><code>PasswordAuthentication no
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">PasswordAuthentication no<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>修改配置文件以后，不要忘了重新启动 sshd，否则不会生效。</p>
 <hr>
 <p>开发过程中经常需要通过<code>SSH</code>协议登录到服务器做一些部署测试环境、查看日志等操作，需要记住很多服务器的账号和密码。密码设置的太简单了，不安全；密码设置的太复杂了，记不住。</p>
@@ -509,62 +509,60 @@ Identity added: /home/you/.ssh/id_dsa (/home/you/.ssh/id_dsa)
 <li><p><strong>生成秘钥</strong><br>通过<code>ssh-keygen</code>可以生成一对秘钥。这是一个交互式命令，需要你回答几个问题，不过不要担心，一般你只需要一路回车即可。</p>
 </li>
 <li><p><strong>将公钥添加到远程主机中</strong><br><code>ssh-copy-id</code>命令可以把本地主机的公钥复制到远程主机的<code>authorized_keys</code>文件中，它还会给远程主机的用户主目录和<code>~/.ssh</code>, 和<code>~/.ssh/authorized_keys</code>设置合适的权限。</p>
-<pre><code>ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
-</code></pre>
-</li>
+<pre class="line-numbers language-none"><code class="language-none">ssh-copy-id -i ~&#x2F;.ssh&#x2F;id_rsa.pub user@server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ol>
 <p>大功告成，现在再通过<code>ssh user@server</code>登录服务器时就不需要输入密码了。</p>
 <h1 id="Hexo-部署"><a href="#Hexo-部署" class="headerlink" title="Hexo 部署"></a>Hexo 部署</h1><p>Github Actions 可以实现 CI/CD 工作流，抓取代码、运行测试、登录远程服务器，发布到第三方服务等等，这样就可以将服务部署到我们想部署的地方</p>
 <p>设置免密登录</p>
 <p>基本上按照<a target="_blank" rel="noopener" href="https://inkdp.github.io/skill/front-end/3295.html">这里</a>的步骤就可以实现部署，这里主要记录一下踩的坑奥。</p>
 <p>首先创建一个<code>deploy.yml</code>，<code>$&#123;&#123; secrets.CI_TOKEN &#125;&#125;</code>设置Github Token。<code>$&#123;&#123; secrets.ACTIONS_DEPLOY_KEY &#125;&#125;</code>设置你的公钥。</p>
-<pre><code class="yml">name: CI
-on:
-  push:
-    branches:
-      - hexo
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 切换分支
-        uses: actions/checkout@v2
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">name</span><span class="token punctuation">:</span> CI
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> hexo
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">build</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 切换分支
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v2
 
-      - name: 安装依赖
-        if: steps.cache.outputs.cache-hit != &#39;true&#39;
-        run: npm ci
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 安装依赖
+        <span class="token key atrule">if</span><span class="token punctuation">:</span> steps.cache.outputs.cache<span class="token punctuation">-</span>hit <span class="token tag">!=</span> 'true'
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> npm ci
 
-      - name: 清除Hexo
-        uses: heowc/action-hexo@main
-        with:
-          args: clean
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 清除Hexo
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> heowc/action<span class="token punctuation">-</span>hexo@main
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">args</span><span class="token punctuation">:</span> clean
 
-      - name: 生成Hexo
-        uses: heowc/action-hexo@main
-        with:
-          args: generate
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 生成Hexo
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> heowc/action<span class="token punctuation">-</span>hexo@main
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">args</span><span class="token punctuation">:</span> generate
 
-      - name: 部署到master分支
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: $&#123;&#123; secrets.CI_TOKEN &#125;&#125;
-          # 你自己的仓库地址
-          external_repository: hugh-zhan9/hugh-zhan9.github.io
-          publish_branch: master
-          publish_dir: ./public
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 部署到master分支
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> peaceiris/actions<span class="token punctuation">-</span>gh<span class="token punctuation">-</span>pages@v3
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">personal_token</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.CI_TOKEN <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token comment"># 你自己的仓库地址</span>
+          <span class="token key atrule">external_repository</span><span class="token punctuation">:</span> hugh<span class="token punctuation">-</span>zhan9/hugh<span class="token punctuation">-</span>zhan9.github.io
+          <span class="token key atrule">publish_branch</span><span class="token punctuation">:</span> master
+          <span class="token key atrule">publish_dir</span><span class="token punctuation">:</span> ./public
 
-      - name: 部署到个人服务器
-        env:
-          ACTION_DEPLOY_KEY: $&#123;&#123; secrets.ACTIONS_DEPLOY_KEY &#125;&#125;
-          SERVER_DIR: root@8.129.53.152:/var/www
-        run: |
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 部署到个人服务器
+        <span class="token key atrule">env</span><span class="token punctuation">:</span>
+          <span class="token key atrule">ACTION_DEPLOY_KEY</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.ACTIONS_DEPLOY_KEY <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token key atrule">SERVER_DIR</span><span class="token punctuation">:</span> root@8.129.53.152<span class="token punctuation">:</span>/var/www
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
           mkdir -p ~/.ssh/
-          echo &quot;$ACTION_DEPLOY_KEY&quot; &gt; ~/.ssh/id_rsa
+          echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           # 将public 里的东西发布到 SERVER_DIR 下的 hexo文件夹，注意修改成你需要的路径
           mv ./public ./hexo
-          scp -o StrictHostKeyChecking=no -r ./hexo $SERVER_DIR
-</code></pre>
+          scp -o StrictHostKeyChecking=no -r ./hexo $SERVER_DIR</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>小声嘀咕</strong>：注意 Github 中 secrets 设置的字符要与<code>deploy.yml</code>中的对应，否则读不到值还不容易发现，毕竟我在这找了一天，还是<a target="_blank" rel="noopener" href="https://github.com/InkDP">老哥</a>帮忙发现的</p>
 
     </div>
@@ -775,7 +773,7 @@ jobs:
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

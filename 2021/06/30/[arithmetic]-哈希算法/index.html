@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://47.98.158.110:8888/group1/M00/00/00/L2KebmDcZzGAKerNAAT94fwnY7M231.jpg">
 <meta property="article:published_time" content="2021-06-30T20:43:31.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="数据结构与算法">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -330,13 +330,13 @@
 <li>哈希算法的执行效率要尽量高效，针对较长的文本，也能快速地计算出哈希值。</li>
 </ul>
 <p>这些定义和要求都比较理论可能还是不好理解，拿 MD5 这种哈希算法来具体说明一下。下面分别对 “今天我来讲哈希算法” 和 “jiajia” 这两个文本计算 MD5 哈希值，得到两串看起来毫无规律的字符串（MD5 的哈希值是 128 位的 Bit 长度，为了方便表示把它们转化成了 16 进制编码）。可以看出来，无论要哈希的文本有多长、多短，通过 MD5 哈希之后，得到的哈希值的长度都是相同的，而且得到的哈希值看起来像一堆随机数，完全没有规律。</p>
-<pre><code>MD5(&quot;今天我来讲哈希算法&quot;) = bb4767201ad42c74e650c1b6c03d78fa
-MD5(&quot;jiajia&quot;) = cd611a31ea969b908932d44d126d195b
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">MD5(&quot;今天我来讲哈希算法&quot;) &#x3D; bb4767201ad42c74e650c1b6c03d78fa
+MD5(&quot;jiajia&quot;) &#x3D; cd611a31ea969b908932d44d126d195b<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>再来看两个非常相似的文本，”我今天讲哈希算法！”和”我今天讲哈希算法”。这两个文本只有一个感叹号的区别。如果用 MD5 哈希算法分别计算它们的哈希值，你会发现尽管只有一字之差，得到的哈希值也是完全不同的。</p>
-<pre><code>MD5(&quot;我今天讲哈希算法！&quot;) = 425f0d5a917188d2c3c3dc85b5e4f2cb
-MD5(&quot;我今天讲哈希算法&quot;) = a1fb91ac128e6aa37fe42c663971ac3d
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">MD5(&quot;我今天讲哈希算法！&quot;) &#x3D; 425f0d5a917188d2c3c3dc85b5e4f2cb
+MD5(&quot;我今天讲哈希算法&quot;) &#x3D; a1fb91ac128e6aa37fe42c663971ac3d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>前面也说了，通过哈希算法得到的哈希值，很难反向推导出原始数据。比如上面的例子中，就很难通过哈希值 “a1fb91ac128e6aa37fe42c663971ac3d” 反推出对应的文本 “我今天讲哈希算法”。</p>
 <p>哈希算法要处理的文本可能是各种各样的。比如，对于非常长的文本，如果哈希算法的计算时间很长，那就只能停留在理论研究的层面，很难应用到实际的软件开发中。比如把今天这篇包含 4000 多个汉字的文章，用 MD5 计算哈希值，用不了 1ms 的时间。</p>
 <p>哈希算法的应用非常非常多，下面是最常见的七个，分别是安全加密、唯一标识、数据校验、散列函数、负载均衡、数据分片、分布式存储。</p>
@@ -345,8 +345,8 @@ MD5(&quot;我今天讲哈希算法&quot;) = a1fb91ac128e6aa37fe42c663971ac3d
 <p>第一点是很难根据哈希值反向推导出原始数据，第二点是散列冲突的概率要很小。第一点很好理解，加密的目的就是防止原始数据泄露，所以很难通过哈希值反向推导原始数据，这是一个最基本的要求。所以我着重讲一下第二点。实际上不管是什么哈希算法，只能尽量减少碰撞冲突的概率，理论上是没办法做到完全不冲突的。为什么这么说呢？</p>
 <p>这里就基于组合数学中一个非常基础的理论，鸽巢原理（也叫抽屉原理）。这个原理本身很简单，它是说，如果有 10 个鸽巢，有 11 只鸽子，那肯定有 1 个鸽巢中的鸽子数量多于 1 个，换句话说就是，肯定有 2 只鸽子在 1 个鸽巢内。</p>
 <p>有了鸽巢原理的铺垫之后，再来看为什么哈希算法无法做到零冲突？哈希算法产生的哈希值的长度是固定且有限的。比如前面举的 MD5 的例子，哈希值是固定的 128 位二进制串，能表示的数据是有限的，最多能表示 2^128 个数据，而要哈希的数据是无穷的。基于鸽巢原理，如果对 2^128+1 个数据求哈希值，就必然会存在哈希值相同的情况。一般情况下，哈希值越长的哈希算法，散列冲突的概率越低。</p>
-<pre><code>2^128=340282366920938463463374607431768211456
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">2^128&#x3D;340282366920938463463374607431768211456<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>即便哈希算法存在散列冲突的情况，但是因为哈希值的范围很大，冲突的概率极低，所以相对来说还是很难破解的。像 MD5 有 2^128 个不同的哈希值，这个数据已经是一个天文数字了，所以散列冲突的概率要小于 1/2^128。如果拿到一个 MD5 哈希值，希望通过毫无规律的穷举的方法，找到跟这个 MD5 值相同的另一个数据，那耗费的时间应该是个天文数字。所以，即便哈希算法存在冲突，但是在有限的时间和资源下，哈希算法还是很难被破解的。</p>
 <p>除此之外，没有绝对安全的加密。越复杂、越难破解的加密算法，需要的计算时间也越长。比如 SHA-256 比 SHA-1 要更复杂、更安全，相应的计算时间就会比较长。密码学界也一直致力于找到一种快速并且很难被破解的哈希算法。在实际的开发过程中，也需要权衡破解难度和计算时间，来决定究竟使用哪种加密算法。</p>
 <h1 id="唯一标识"><a href="#唯一标识" class="headerlink" title="唯一标识"></a>唯一标识</h1><p>举一个例子。如果要在海量的图库中搜索一张图是否存在，不能单纯地用图片的元信息（比如图片名称）来比对，因为有可能存在名称相同但图片内容不同，或者名称不同图片内容相同的情况。那该如何搜索呢？</p>
@@ -633,7 +633,7 @@ MD5(&quot;我今天讲哈希算法&quot;) = a1fb91ac128e6aa37fe42c663971ac3d
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

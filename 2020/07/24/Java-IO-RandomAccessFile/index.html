@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-24T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.203Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.712Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,7 +295,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
+              <span>4.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -320,50 +320,50 @@
 <h1 id="RandomAccessFile-简介"><a href="#RandomAccessFile-简介" class="headerlink" title="RandomAccessFile 简介"></a>RandomAccessFile 简介</h1><p><code>RandomAccessFile</code>是随机访问文件(包括读/写)的类。它支持对文件随机访问的读取和写入，即我们可以从指定的位置读取/写入文件数据。</p>
 <p>需要注意的是，<code>RandomAccessFile</code>虽然属于<code>java.io</code>包，但它不是<code>InputStream</code>或者<code>OutputStream</code>的子类；它也不同于<code>FileInputStream</code>和<code>FileOutputStream</code>。 <code>FileInputStream</code>只能对文件进行读操作，而<code>FileOutputStream</code>只能对文件进行写操作；但是，<code>RandomAccessFile</code>同时支持文件的读和写，并且它支持随机访问。</p>
 <p>RandomAccessFile 函数列表</p>
-<pre><code class="java">// 构造函数
-RandomAccessFile(File file, String mode)
-RandomAccessFile(String fileName, String mode)
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 构造函数</span>
+<span class="token class-name">RandomAccessFile</span><span class="token punctuation">(</span><span class="token class-name">File</span> file<span class="token punctuation">,</span> <span class="token class-name">String</span> mode<span class="token punctuation">)</span>
+<span class="token class-name">RandomAccessFile</span><span class="token punctuation">(</span><span class="token class-name">String</span> fileName<span class="token punctuation">,</span> <span class="token class-name">String</span> mode<span class="token punctuation">)</span>
 
-void     close()
-synchronized final FileChannel     getChannel()
-final FileDescriptor     getFD()
-long     getFilePointer()
-long     length()
-int     read(byte[] buffer, int byteOffset, int byteCount)
-int     read(byte[] buffer)
-int     read()
-final boolean     readBoolean()
-final byte     readByte()
-final char     readChar()
-final double     readDouble()
-final float     readFloat()
-final void     readFully(byte[] dst)
-final void     readFully(byte[] dst, int offset, int byteCount)
-final int     readInt()
-final String     readLine()
-final long     readLong()
-final short     readShort()
-final String     readUTF()
-final int     readUnsignedByte()
-final int     readUnsignedShort()
-void     seek(long offset)
-void     setLength(long newLength)
-int     skipBytes(int count)
-void     write(int oneByte)
-void     write(byte[] buffer, int byteOffset, int byteCount)
-void     write(byte[] buffer)
-final void     writeBoolean(boolean val)
-final void     writeByte(int val)
-final void     writeBytes(String str)
-final void     writeChar(int val)
-final void     writeChars(String str)
-final void     writeDouble(double val)
-final void     writeFloat(float val)
-final void     writeInt(int val)
-final void     writeLong(long val)
-final void     writeShort(int val)
-final void     writeUTF(String str)
-</code></pre>
+<span class="token keyword">void</span>     <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">final</span> <span class="token class-name">FileChannel</span>     <span class="token function">getChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token class-name">FileDescriptor</span>     <span class="token function">getFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">long</span>     <span class="token function">getFilePointer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">long</span>     <span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">int</span>     <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> byteOffset<span class="token punctuation">,</span> <span class="token keyword">int</span> byteCount<span class="token punctuation">)</span>
+<span class="token keyword">int</span>     <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">)</span>
+<span class="token keyword">int</span>     <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">boolean</span>     <span class="token function">readBoolean</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">byte</span>     <span class="token function">readByte</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">char</span>     <span class="token function">readChar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">double</span>     <span class="token function">readDouble</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">float</span>     <span class="token function">readFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">readFully</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dst<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">readFully</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> dst<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> byteCount<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">int</span>     <span class="token function">readInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token class-name">String</span>     <span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">long</span>     <span class="token function">readLong</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">short</span>     <span class="token function">readShort</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token class-name">String</span>     <span class="token function">readUTF</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">int</span>     <span class="token function">readUnsignedByte</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">int</span>     <span class="token function">readUnsignedShort</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span>     <span class="token function">seek</span><span class="token punctuation">(</span><span class="token keyword">long</span> offset<span class="token punctuation">)</span>
+<span class="token keyword">void</span>     <span class="token function">setLength</span><span class="token punctuation">(</span><span class="token keyword">long</span> newLength<span class="token punctuation">)</span>
+<span class="token keyword">int</span>     <span class="token function">skipBytes</span><span class="token punctuation">(</span><span class="token keyword">int</span> count<span class="token punctuation">)</span>
+<span class="token keyword">void</span>     <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">int</span> oneByte<span class="token punctuation">)</span>
+<span class="token keyword">void</span>     <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> byteOffset<span class="token punctuation">,</span> <span class="token keyword">int</span> byteCount<span class="token punctuation">)</span>
+<span class="token keyword">void</span>     <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeBoolean</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeByte</span><span class="token punctuation">(</span><span class="token keyword">int</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeBytes</span><span class="token punctuation">(</span><span class="token class-name">String</span> str<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeChar</span><span class="token punctuation">(</span><span class="token keyword">int</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeChars</span><span class="token punctuation">(</span><span class="token class-name">String</span> str<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeDouble</span><span class="token punctuation">(</span><span class="token keyword">double</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeFloat</span><span class="token punctuation">(</span><span class="token keyword">float</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeInt</span><span class="token punctuation">(</span><span class="token keyword">int</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeLong</span><span class="token punctuation">(</span><span class="token keyword">long</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeShort</span><span class="token punctuation">(</span><span class="token keyword">int</span> val<span class="token punctuation">)</span>
+<span class="token keyword">final</span> <span class="token keyword">void</span>     <span class="token function">writeUTF</span><span class="token punctuation">(</span><span class="token class-name">String</span> str<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="RandomAccessFile-模式说明"><a href="#RandomAccessFile-模式说明" class="headerlink" title="RandomAccessFile 模式说明"></a>RandomAccessFile 模式说明</h1><p><code>RandomAccessFile</code>共有4种模式：<code>r</code>, <code>rw</code>, <code>rws</code>和<code>rwd</code>。</p>
 <blockquote>
 <p><code>r</code>以只读方式打开。调用结果对象的任何<code>write</code>方法都将导致抛出<code> IOException</code>。</p>
@@ -386,17 +386,17 @@ final void     writeUTF(String str)
 <p>当操作的文件是存储在本地的基础存储设备上时(如硬盘, NandFlash等)，<code>rws</code>或<code>rwd</code>, <code>rw</code>才有区别。</p>
 <p>当模式是<code>rws</code>并且操作的是基础存储设备上的文件；那么，每次更改文件内容(如<code>write()</code>写入数据)或修改文件元数据(如文件的<code>mtime</code>)时，都会将这些改变同步到基础存储设备上。</p>
 <p>当模式是<code>rwd</code>并且操作的是基础存储设备上的文件；那么，每次更改文件内容(如<code>write()</code>写入数据)时，都会将这些改变同步到基础存储设备上。<br>当模式是<code>rw</code>并且操作的是基础存储设备上的文件；那么，关闭文件时，会将文件内容的修改同步到基础存储设备上。至于，更改文件内容时，是否会立即同步，取决于系统底层实现。</p>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.PrintStream;;
-import java.io.RandomAccessFile;
-import java.io.IOException;
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">File</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileDescriptor</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">BufferedInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">BufferedOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PrintStream</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">RandomAccessFile</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
 
-/**
+<span class="token comment">/**
  * RandomAccessFile 测试程序
  *
  * 运行结果(输出如下)：
@@ -405,110 +405,110 @@ import java.io.IOException;
  * buf=9876543210
  * 
  * 此外,
- *     在源文件所在目录生成了file.txt。
- *     注意RandomAccessFile写入boolean, byte, char, int,所占的字符个数。
- */
-public class RandomAccessFileTest &#123;
+ * 	在源文件所在目录生成了file.txt。
+ * 	注意RandomAccessFile写入boolean, byte, char, int,所占的字符个数。
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RandomAccessFileTest</span> <span class="token punctuation">&#123;</span>
 
-    private static final String FileName = &quot;file.txt&quot;;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token class-name">FileName</span> <span class="token operator">=</span> <span class="token string">"file.txt"</span><span class="token punctuation">;</span>
 
-    public static void main(String[] args) &#123;
-        // 若文件file.txt存在，则删除该文件。
-        File file = new File(FileName);
-        if (file.exists())
-            file.delete();
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 若文件file.txt存在，则删除该文件。</span>
+        <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            file<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        testCreateWrite();
-        testAppendWrite();
-        testRead();
-    &#125;
+        <span class="token function">testCreateWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">testAppendWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">testRead</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 若file.txt不存在的话，则新建文件，并向文件中写入内容
-     */
-    private static void testCreateWrite() &#123;
-        try &#123;
-            // 创建文件file.txt对应File对象
-            File file = new File(FileName);
-            // 创建文件file.txt对应的RandomAccessFile对象
-            RandomAccessFile raf = new RandomAccessFile(file, &quot;rw&quot;);
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testCreateWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 创建文件file.txt对应File对象</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 创建文件file.txt对应的RandomAccessFile对象</span>
+            <span class="token class-name">RandomAccessFile</span> raf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RandomAccessFile</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token string">"rw"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 向文件中写入26个字母+回车
-            raf.writeChars(&quot;abcdefghijklmnopqrstuvwxyz\n&quot;);
-            // 向文件中写入 9876543210+回车
-            raf.writeChars(&quot;9876543210\n&quot;);
+            <span class="token comment">// 向文件中写入26个字母+回车</span>
+            raf<span class="token punctuation">.</span><span class="token function">writeChars</span><span class="token punctuation">(</span><span class="token string">"abcdefghijklmnopqrstuvwxyz\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 向文件中写入 9876543210+回车</span>
+            raf<span class="token punctuation">.</span><span class="token function">writeChars</span><span class="token punctuation">(</span><span class="token string">"9876543210\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            raf.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+            raf<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 向文件末尾追加内容
-     */
-    private static void testAppendWrite() &#123;
-        try &#123;
-            // 创建文件file.txt对应File对象
-            File file = new File(FileName);
-            // 创建文件file.txt对应的RandomAccessFile对象
-            RandomAccessFile raf = new RandomAccessFile(file, &quot;rw&quot;);
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testAppendWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 创建文件file.txt对应File对象</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 创建文件file.txt对应的RandomAccessFile对象</span>
+            <span class="token class-name">RandomAccessFile</span> raf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RandomAccessFile</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token string">"rw"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 获取文件长度
-            long fileLen = raf.length();
-            // 将位置定位到文件末尾
-            raf.seek(fileLen);
+            <span class="token comment">// 获取文件长度</span>
+            <span class="token keyword">long</span> fileLen <span class="token operator">=</span> raf<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 将位置定位到文件末尾</span>
+            raf<span class="token punctuation">.</span><span class="token function">seek</span><span class="token punctuation">(</span>fileLen<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 以下向raf文件中写数据  
-            raf.writeBoolean(true); // 占1个字节  
-            raf.writeByte(0x41);    // 占1个字节  
-            raf.writeChar(&#39;a&#39;);     // 占2个字节  
-            raf.writeShort(0x3c3c); // 占2个字节  
-            raf.writeInt(0x75);     // 占4个字节  
-            raf.writeLong(0x1234567890123456L); // 占8个字节  
-            raf.writeFloat(4.7f);  // 占4个字节  
-            raf.writeDouble(8.256);// 占8个字节  
-            raf.writeUTF(&quot;UTF严&quot;); // UTF-8格式写入
-            raf.writeChar(&#39;\n&#39;);   // 占2个字符。换行符
+            <span class="token comment">// 以下向raf文件中写数据  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeBoolean</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 占1个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeByte</span><span class="token punctuation">(</span><span class="token number">0x41</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 占1个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeChar</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// 占2个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeShort</span><span class="token punctuation">(</span><span class="token number">0x3c3c</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 占2个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeInt</span><span class="token punctuation">(</span><span class="token number">0x75</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// 占4个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeLong</span><span class="token punctuation">(</span><span class="token number">0</span>x1234567890123456L<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 占8个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeFloat</span><span class="token punctuation">(</span><span class="token number">4.7f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 占4个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeDouble</span><span class="token punctuation">(</span><span class="token number">8.256</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 占8个字节  </span>
+            raf<span class="token punctuation">.</span><span class="token function">writeUTF</span><span class="token punctuation">(</span><span class="token string">"UTF严"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// UTF-8格式写入</span>
+            raf<span class="token punctuation">.</span><span class="token function">writeChar</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// 占2个字符。换行符</span>
 
-            raf.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+            raf<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 通过RandomAccessFile读取文件
-     */
-    private static void testRead() &#123;
-        try &#123;
-            // 创建文件file.txt对应File对象
-            File file = new File(FileName);
-            // 创建文件file.txt对应的RandomAccessFile对象，以只读方式打开
-            RandomAccessFile raf = new RandomAccessFile(file, &quot;r&quot;);
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testRead</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 创建文件file.txt对应File对象</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 创建文件file.txt对应的RandomAccessFile对象，以只读方式打开</span>
+            <span class="token class-name">RandomAccessFile</span> raf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RandomAccessFile</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 读取一个字符
-            char c1 = raf.readChar();
-            System.out.println(&quot;c1=&quot;+c1);
-            // 读取一个字符
-            char c2 = raf.readChar();
-            System.out.println(&quot;c2=&quot;+c2);
+            <span class="token comment">// 读取一个字符</span>
+            <span class="token keyword">char</span> c1 <span class="token operator">=</span> raf<span class="token punctuation">.</span><span class="token function">readChar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"c1="</span><span class="token operator">+</span>c1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 读取一个字符</span>
+            <span class="token keyword">char</span> c2 <span class="token operator">=</span> raf<span class="token punctuation">.</span><span class="token function">readChar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"c2="</span><span class="token operator">+</span>c2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 跳过54个字节。
-            raf.seek(54);
+            <span class="token comment">// 跳过54个字节。</span>
+            raf<span class="token punctuation">.</span><span class="token function">seek</span><span class="token punctuation">(</span><span class="token number">54</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 测试read(byte[] buffer, int byteOffset, int byteCount)
-            byte[] buf = new byte[20];
-            raf.read(buf, 0, buf.length);
-            System.out.println(&quot;buf=&quot;+(new String(buf)));
+            <span class="token comment">// 测试read(byte[] buffer, int byteOffset, int byteCount)</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            raf<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> buf<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"buf="</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            raf.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+            raf<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -716,7 +716,7 @@ public class RandomAccessFileTest &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

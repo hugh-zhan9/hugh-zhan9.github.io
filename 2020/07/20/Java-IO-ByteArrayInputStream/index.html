@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-20T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.199Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -320,110 +320,114 @@
 <h1 id="ByteArrayInputStream-介绍"><a href="#ByteArrayInputStream-介绍" class="headerlink" title="ByteArrayInputStream 介绍"></a>ByteArrayInputStream 介绍</h1><p><code>ByteArrayInputStream</code>是字节分段输入流。它继承于<code>InputStream</code>。</p>
 <p>它包含一个内部缓冲区，该缓冲区包含从流中读取的字节；通俗地说，它的内部缓冲区就是一个字节数组，而<code>ByteArrayInputStream</code>就是字节通过数组来实现的。<br><code>InputStream</code>通过<code>read()</code>扩展提供接口，供其来读取字节数据；而<code>ByteArrayInputStream</code>的内部额外的定义了一个计数器，它被用来跟踪<code>read()</code>方法要读取的下一个字节。</p>
 <p>InputStream 函数列表</p>
-<pre><code class="java">// 构造函数
-InputStream()
-// 常用方法
-              int      available()
-             void      close()
-             void      mark(int readlimit)
-          boolean      markSupported()
-              int      read(byte[] buffer)
-abstract      int      read()
-              int      read(byte[] buffer, int offset, int length)
-synchronized void      reset()
-             long      skip(int oneByte)
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 构造函数</span>
+<span class="token class-name">InputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 常用方法</span>
+              <span class="token keyword">int</span>      <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+             <span class="token keyword">void</span>      <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+             <span class="token keyword">void</span>      <span class="token function">mark</span><span class="token punctuation">(</span><span class="token keyword">int</span> readlimit<span class="token punctuation">)</span>
+          <span class="token keyword">boolean</span>      <span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+              <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">)</span>
+<span class="token keyword">abstract</span>      <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+              <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">void</span>      <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	         <span class="token keyword">long</span>      <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">int</span> oneByte<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>ByteArrayInputStream 函数列表</p>
-<pre><code class="java">// 构造方法
-ByteArrayInputStream(byte[] buf)
-ByteArrayInputStream(byte[] buf, int offset, int length)    
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 构造方法</span>
+<span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf<span class="token punctuation">)</span>
+<span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">)</span>    
 
-// 常用方法
-synchronized  int      available()
-             void      close()
-synchronized void      mark(int readlimit)
-          boolean      markSupported()
-synchronized  int      read()
-synchronized  int      read(byte[] buffer, int offset, int length)
-synchronized void      reset()
-synchronized long      skip(int ByteCount)   
-</code></pre>
-<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><pre><code class="java">import java.io.ByteArrayInputStream;
+<span class="token comment">// 常用方法</span>
+<span class="token keyword">synchronized</span>  <span class="token keyword">int</span>      <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+             <span class="token keyword">void</span>      <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">void</span>      <span class="token function">mark</span><span class="token punctuation">(</span><span class="token keyword">int</span> readlimit<span class="token punctuation">)</span>
+          <span class="token keyword">boolean</span>      <span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span>  <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span>  <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">void</span>      <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">long</span>      <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token class-name">ByteCount</span><span class="token punctuation">)</span>   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-public class ByteArrayInputStreamTest &#123;
 
-    private static final int LEN = 5;
-    // 对应英文字母 abcddefghijklmnopqrsttuvwxyz
-    private static final byte[] ArrayLetters = &#123;
-        0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F,
-        0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7A
-    &#125;;
 
-    public static void main(String[] args) &#123;
-        String tmp = new String(ArrayLetters);
-        System.out.println(&quot;ArrayLetters=&quot;+tmp);
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">;</span>
 
-        tesByteArrayInputStream();
-    &#125;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ByteArrayInputStreamTest</span> <span class="token punctuation">&#123;</span>
 
-    /**
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> LEN <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token comment">// 对应英文字母 abcddefghijklmnopqrsttuvwxyz</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token class-name">ArrayLetters</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token number">0x61</span><span class="token punctuation">,</span> <span class="token number">0x62</span><span class="token punctuation">,</span> <span class="token number">0x63</span><span class="token punctuation">,</span> <span class="token number">0x64</span><span class="token punctuation">,</span> <span class="token number">0x65</span><span class="token punctuation">,</span> <span class="token number">0x66</span><span class="token punctuation">,</span> <span class="token number">0x67</span><span class="token punctuation">,</span> <span class="token number">0x68</span><span class="token punctuation">,</span> <span class="token number">0x69</span><span class="token punctuation">,</span> <span class="token number">0x6A</span><span class="token punctuation">,</span> <span class="token number">0x6B</span><span class="token punctuation">,</span> <span class="token number">0x6C</span><span class="token punctuation">,</span> <span class="token number">0x6D</span><span class="token punctuation">,</span> <span class="token number">0x6E</span><span class="token punctuation">,</span> <span class="token number">0x6F</span><span class="token punctuation">,</span>
+        <span class="token number">0x70</span><span class="token punctuation">,</span> <span class="token number">0x71</span><span class="token punctuation">,</span> <span class="token number">0x72</span><span class="token punctuation">,</span> <span class="token number">0x73</span><span class="token punctuation">,</span> <span class="token number">0x74</span><span class="token punctuation">,</span> <span class="token number">0x75</span><span class="token punctuation">,</span> <span class="token number">0x76</span><span class="token punctuation">,</span> <span class="token number">0x77</span><span class="token punctuation">,</span> <span class="token number">0x78</span><span class="token punctuation">,</span> <span class="token number">0x79</span><span class="token punctuation">,</span> <span class="token number">0x7A</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> tmp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token class-name">ArrayLetters</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ArrayLetters="</span><span class="token operator">+</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">tesByteArrayInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">/**
      * ByteArrayInputStream的API测试函数
-     */
-    private static void tesByteArrayInputStream() &#123;
-        // 创建ByteArrayInputStream字节流，内容是ArrayLetters数组
-        ByteArrayInputStream bais = new ByteArrayInputStream(ArrayLetters);
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">tesByteArrayInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 创建ByteArrayInputStream字节流，内容是ArrayLetters数组</span>
+        <span class="token class-name">ByteArrayInputStream</span> bais <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span><span class="token class-name">ArrayLetters</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 从字节流中读取5个字节
-        for (int i=0; i&lt;LEN; i++) &#123;
-            // 若能继续读取下一个字节，则读取下一个字节
-            if (bais.available() &gt;= 0) &#123;
-                // 读取字节流的下一个字节
-                int tmp = bais.read();
-                System.out.printf(&quot;%d : 0x%s\n&quot;, i, Integer.toHexString(tmp));
-            &#125;
-        &#125;
+        <span class="token comment">// 从字节流中读取5个字节</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>LEN<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 若能继续读取下一个字节，则读取下一个字节</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>bais<span class="token punctuation">.</span><span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 读取字节流的下一个字节</span>
+                <span class="token keyword">int</span> tmp <span class="token operator">=</span> bais<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d : 0x%s\n"</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">toHexString</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // 若该字节流不支持标记功能，则直接退出
-        if (!bais.markSupported()) &#123;
-            System.out.println(&quot;make not supported!&quot;);
-            return ;
-        &#125;
+        <span class="token comment">// 若该字节流不支持标记功能，则直接退出</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>bais<span class="token punctuation">.</span><span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"make not supported!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // 标记字节流中下一个被读取的位置。即--标记0x66，因为因为前面已经读取了5个字节，所以下一个被读取的位置是第6个字节
-        // ByteArrayInputStream类的mark(0)函数中的参数0是没有实际意义的。
-        // mark()与reset()是配套的，reset()会将字节流中下一个被读取的位置重置为mark()中所保存的位置
-        bais.mark(0);
+        <span class="token comment">// 标记字节流中下一个被读取的位置。即--标记0x66，因为因为前面已经读取了5个字节，所以下一个被读取的位置是第6个字节</span>
+        <span class="token comment">// ByteArrayInputStream类的mark(0)函数中的参数0是没有实际意义的。</span>
+        <span class="token comment">// mark()与reset()是配套的，reset()会将字节流中下一个被读取的位置重置为mark()中所保存的位置</span>
+        bais<span class="token punctuation">.</span><span class="token function">mark</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 跳过5个字节。跳过5个字节后，字节流中下一个被读取的值应该是0x6B
-        bais.skip(5);
+        <span class="token comment">// 跳过5个字节。跳过5个字节后，字节流中下一个被读取的值应该是0x6B</span>
+        bais<span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 从字节流中读取5个数据。即读取0x6B, 0x6C, 0x6D, 0x6E, 0x6F
-        byte[] buf = new byte[LEN];
-        bais.read(buf, 0, LEN);
-        // 将buf转换为String字符串。0x6B, 0x6C, 0x6D, 0x6E, 0x6F对应字符是klmno
-        String str1 = new String(buf);
-        System.out.printf(&quot;str1=%s\n&quot;, str1);
+        <span class="token comment">// 从字节流中读取5个数据。即读取0x6B, 0x6C, 0x6D, 0x6E, 0x6F</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>LEN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        bais<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> LEN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 将buf转换为String字符串。0x6B, 0x6C, 0x6D, 0x6E, 0x6F对应字符是klmno</span>
+        <span class="token class-name">String</span> str1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"str1=%s\n"</span><span class="token punctuation">,</span> str1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 重置字节流：即，将字节流中下一个被读取的位置重置到mark()所标记的位置，即0x66。
-        bais.reset();
-        // 从重置后的字节流中读取5个字节到buf中。即读取0x66, 0x67, 0x68, 0x69, 0x6A
-        bais.read(buf, 0, LEN);
-        // 将buf转换为String字符串。0x66, 0x67, 0x68, 0x69, 0x6A对应字符是fghij
-        String str2 = new String(buf);
-        System.out.printf(&quot;str2=%s\n&quot;, str2);
-    &#125;
-&#125;
-</code></pre>
+        <span class="token comment">// 重置字节流：即，将字节流中下一个被读取的位置重置到mark()所标记的位置，即0x66。</span>
+        bais<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 从重置后的字节流中读取5个字节到buf中。即读取0x66, 0x67, 0x68, 0x69, 0x6A</span>
+        bais<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> LEN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 将buf转换为String字符串。0x66, 0x67, 0x68, 0x69, 0x6A对应字符是fghij</span>
+        <span class="token class-name">String</span> str2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"str2=%s\n"</span><span class="token punctuation">,</span> str2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>ArrayLetters=abcdefghijklmnopqrstuvwxyz
+<pre class="line-numbers language-none"><code class="language-none">ArrayLetters&#x3D;abcdefghijklmnopqrstuvwxyz
 0 : 0x61
 1 : 0x62
 2 : 0x63
 3 : 0x64
 4 : 0x65
-str1=klmno
-str2=fghij
-</code></pre>
+str1&#x3D;klmno
+str2&#x3D;fghij<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>结果说明：</p>
 <ul>
 <li><code>ArrayLetters</code>是字节数组。0x61对应的ASCII码值是a，0x62对应的ASCII码值是b，依次类推…</li>
@@ -434,193 +438,194 @@ str2=fghij
 <li><code>bais.read(buf, 0, LEN)</code>，这句话是从字节流中读取<code>LEN</code>个数据写入到<code>buf</code>中，0表示从<code>buf</code>的第0个位置开始写入。</li>
 <li><code>bais.reset()</code>，这句话是将字节流中下一个被读取的位置重置到<code>mark()</code>所标记的位置，即0x66。</li>
 </ul>
-<h1 id="InputStream-源码分析"><a href="#InputStream-源码分析" class="headerlink" title="InputStream 源码分析"></a>InputStream 源码分析</h1><pre><code class="java">package java.io;
+<h1 id="InputStream-源码分析"><a href="#InputStream-源码分析" class="headerlink" title="InputStream 源码分析"></a>InputStream 源码分析</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">java<span class="token punctuation">.</span>io</span><span class="token punctuation">;</span>
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">ArrayList</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Objects</span><span class="token punctuation">;</span>
 
-public abstract class InputStream implements Closeable &#123;
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">InputStream</span> <span class="token keyword">implements</span> <span class="token class-name">Closeable</span> <span class="token punctuation">&#123;</span>
 
 
-    // 能skip的最大缓冲区大小
-    private static final int MAX_SKIP_BUFFER_SIZE = 2048;
-    // 默认缓冲区大小
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
+    <span class="token comment">// 能skip的最大缓冲区大小</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MAX_SKIP_BUFFER_SIZE <span class="token operator">=</span> <span class="token number">2048</span><span class="token punctuation">;</span>
+	<span class="token comment">// 默认缓冲区大小</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> DEFAULT_BUFFER_SIZE <span class="token operator">=</span> <span class="token number">8192</span><span class="token punctuation">;</span>
 
-    // 从输入流中读取数据的下一个字节
-    public abstract int read() throws IOException;
+    <span class="token comment">// 从输入流中读取数据的下一个字节</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span><span class="token punctuation">;</span>
 
-    // 将数据从输入流读取至byte数组
-    public int read(byte b[]) throws IOException &#123;
-        return read(b, 0, b.length);
-    &#125;
+    <span class="token comment">// 将数据从输入流读取至byte数组</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">read</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> b<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 将最多len个数据字节从此输入流读入byte数组
-    public int read(byte b[], int off, int len) throws IOException &#123;
-        Objects.checkFromIndexSize(off, len, b.length);
-        if (len == 0) &#123;
-            return 0;
-        &#125;
+    <span class="token comment">// 将最多len个数据字节从此输入流读入byte数组</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Objects</span><span class="token punctuation">.</span><span class="token function">checkFromIndexSize</span><span class="token punctuation">(</span>off<span class="token punctuation">,</span> len<span class="token punctuation">,</span> b<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        int c = read();
-        if (c == -1) &#123;
-            return -1;
-        &#125;
-        b[off] = (byte)c;
+        <span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        b<span class="token punctuation">[</span>off<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span>c<span class="token punctuation">;</span>
 
-        int i = 1;
-        try &#123;
-            for (; i &lt; len ; i++) &#123;
-                c = read();
-                if (c == -1) &#123;
-                    break;
-                &#125;
-                b[off + i] = (byte)c;
-            &#125;
-        &#125; catch (IOException ee) &#123;
-        &#125;
-        return i;
-    &#125;
-    // 跳过输入流中的n个字节
-    public long skip(long n) throws IOException &#123;
+        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> len <span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                c <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                b<span class="token punctuation">[</span>off <span class="token operator">+</span> i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span>c<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> ee<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> i<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 跳过输入流中的n个字节</span>
+    <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
 
-        long remaining = n;
-        int nr;
+        <span class="token keyword">long</span> remaining <span class="token operator">=</span> n<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> nr<span class="token punctuation">;</span>
 
-        if (n &lt;= 0) &#123;
-            return 0;
-        &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        int size = (int)Math.min(MAX_SKIP_BUFFER_SIZE, remaining);
-        byte[] skipBuffer = new byte[size];
-        while (remaining &gt; 0) &#123;
-            nr = read(skipBuffer, 0, (int)Math.min(size, remaining));
-            if (nr &lt; 0) &#123;
-                break;
-            &#125;
-            remaining -= nr;
-        &#125;
+        <span class="token keyword">int</span> size <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>MAX_SKIP_BUFFER_SIZE<span class="token punctuation">,</span> remaining<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> skipBuffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>size<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>remaining <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            nr <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span>skipBuffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>size<span class="token punctuation">,</span> remaining<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>nr <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            remaining <span class="token operator">-=</span> nr<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        return n - remaining;
-    &#125;
+        <span class="token keyword">return</span> n <span class="token operator">-</span> remaining<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public int available() throws IOException &#123;
-        return 0;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
    
-    public void close() throws IOException &#123;&#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
 
     
-    public synchronized void mark(int readlimit) &#123;&#125;
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">mark</span><span class="token punctuation">(</span><span class="token keyword">int</span> readlimit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
 
    
-    public synchronized void reset() throws IOException &#123;
-        throw new IOException(&quot;mark/reset not supported&quot;);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"mark/reset not supported"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public boolean markSupported() &#123;
-        return false;
-    &#125;
-&#125;
-</code></pre>
-<h1 id="ByteArrayInputStream-源码分析"><a href="#ByteArrayInputStream-源码分析" class="headerlink" title="ByteArrayInputStream 源码分析"></a>ByteArrayInputStream 源码分析</h1><pre><code class="java">package java.io;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-import java.util.Arrays;
-import java.util.Objects;
+<h1 id="ByteArrayInputStream-源码分析"><a href="#ByteArrayInputStream-源码分析" class="headerlink" title="ByteArrayInputStream 源码分析"></a>ByteArrayInputStream 源码分析</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">java<span class="token punctuation">.</span>io</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Arrays</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Objects</span><span class="token punctuation">;</span>
 
 
-public class ByteArrayInputStream extends InputStream &#123;
-    // 保存字节输入流数据的字节数组
-    protected byte buf[];
-    // 下一个会被读取的字节的索引
-    protected int pos;
-    // 标记的索引
-    protected int mark = 0;
-    // 字节流的长度
-    protected int count;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ByteArrayInputStream</span> <span class="token keyword">extends</span> <span class="token class-name">InputStream</span> <span class="token punctuation">&#123;</span>
+	<span class="token comment">// 保存字节输入流数据的字节数组</span>
+    <span class="token keyword">protected</span> <span class="token keyword">byte</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment">// 下一个会被读取的字节的索引</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> pos<span class="token punctuation">;</span>
+    <span class="token comment">// 标记的索引</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> mark <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token comment">// 字节流的长度</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>
     
-    // 构造函数：创建一个内容为buf的字节流
-    public ByteArrayInputStream(byte buf[]) &#123;
-        this.buf = buf;
-        this.pos = 0;
-        this.count = buf.length;
-    &#125;
+    <span class="token comment">// 构造函数：创建一个内容为buf的字节流</span>
+    <span class="token keyword">public</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span><span class="token keyword">byte</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>buf <span class="token operator">=</span> buf<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> buf<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造函数：创建一个内容为buf的字节流，并且是从offset位置开始读取数据，读取的长度为length
-    public ByteArrayInputStream(byte buf[], int offset, int length) &#123;
-        this.buf = buf;
-        this.pos = offset;
-        this.count = Math.min(offset + length, buf.length);
-        this.mark = offset;
-    &#125;
+	<span class="token comment">// 构造函数：创建一个内容为buf的字节流，并且是从offset位置开始读取数据，读取的长度为length</span>
+    <span class="token keyword">public</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span><span class="token keyword">byte</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>buf <span class="token operator">=</span> buf<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>pos <span class="token operator">=</span> offset<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>offset <span class="token operator">+</span> length<span class="token punctuation">,</span> buf<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>mark <span class="token operator">=</span> offset<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    // 读取下一个字节
-    public synchronized int read() &#123;
-        return (pos &lt; count) ? (buf[pos++] &amp; 0xff) : -1;
-    &#125;
+    <span class="token comment">// 读取下一个字节</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>pos <span class="token operator">&lt;</span> count<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">(</span>buf<span class="token punctuation">[</span>pos<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 将字节流的数据写入到字节数组b中
-    // off是字节数组b的偏移量，表示从数组b的off位置开始写入数据
-    // len是写入的字节长度
-    public synchronized int read(byte b[], int off, int len) &#123;
-        Objects.checkFromIndexSize(off, len, b.length);
+	<span class="token comment">// 将字节流的数据写入到字节数组b中</span>
+    <span class="token comment">// off是字节数组b的偏移量，表示从数组b的off位置开始写入数据</span>
+    <span class="token comment">// len是写入的字节长度</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Objects</span><span class="token punctuation">.</span><span class="token function">checkFromIndexSize</span><span class="token punctuation">(</span>off<span class="token punctuation">,</span> len<span class="token punctuation">,</span> b<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        if (pos &gt;= count) &#123;
-            return -1;
-        &#125;
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>pos <span class="token operator">>=</span> count<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        int avail = count - pos;
-        if (len &gt; avail) &#123;
-            len = avail;
-        &#125;
-        if (len &lt;= 0) &#123;
-            return 0;
-        &#125;
-        System.arraycopy(buf, pos, b, off, len);
-        pos += len;
-        return len;
-    &#125;
+        <span class="token keyword">int</span> avail <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">></span> avail<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            len <span class="token operator">=</span> avail<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> b<span class="token punctuation">,</span> off<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        pos <span class="token operator">+=</span> len<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> len<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 跳过字节流中的n个字节
-    public synchronized long skip(long n) &#123;
-        long k = count - pos;
-        if (n &lt; k) &#123;
-            k = n &lt; 0 ? 0 : n;
-        &#125;
+    <span class="token comment">// 跳过字节流中的n个字节</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">long</span> <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">long</span> k <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;</span> k<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            k <span class="token operator">=</span> n <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> n<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        pos += k;
-        return k;
-    &#125;
+        pos <span class="token operator">+=</span> k<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> k<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 是否能读取字节流的下一个字节
-    public synchronized int available() &#123;
-        return count - pos;
-    &#125;
+	<span class="token comment">// 是否能读取字节流的下一个字节</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 是否支持标签
-    public boolean markSupported() &#123;
-        return true;
-    &#125;
+    <span class="token comment">// 是否支持标签</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 保存当前位置，readAheadLimit在此没有任何实际意义
-    public void mark(int readAheadLimit) &#123;
-        mark = pos;
-    &#125;
+    <span class="token comment">// 保存当前位置，readAheadLimit在此没有任何实际意义</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">mark</span><span class="token punctuation">(</span><span class="token keyword">int</span> readAheadLimit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        mark <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 重置字节流的读取所有为mark标记的位置
-    public synchronized void reset() &#123;
-        pos = mark;
-    &#125;
+	<span class="token comment">// 重置字节流的读取所有为mark标记的位置</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        pos <span class="token operator">=</span> mark<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    public void close() throws IOException &#123;
-    &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：</p>
 <p>ByteArrayInputStream实际上是通过字节数组去保存数据。</p>
 <ul>
@@ -654,8 +659,8 @@ public class ByteArrayInputStream extends InputStream &#123;
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/19/Java-IO-Serializable-Externalizable/" rel="prev" title="Java IO之 序列化(Serializable和Externalizable)详解">
-      <i class="fa fa-chevron-left"></i> Java IO之 序列化(Serializable和Externalizable)详解
+    <a href="/2020/07/20/Java-IO-FilterInputStream/" rel="prev" title="Java IO之 FilterInputStream详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 FilterInputStream详解
     </a></div>
       <div class="post-nav-item">
     <a href="/2020/07/20/Java-IO-FileDescriptor/" rel="next" title="Java IO之 FileDescriptor详解">
@@ -837,7 +842,7 @@ public class ByteArrayInputStream extends InputStream &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

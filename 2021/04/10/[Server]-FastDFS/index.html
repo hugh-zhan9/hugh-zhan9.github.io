@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/04/10/KlCwIHqhvfim4cG.png">
 <meta property="og:image" content="https://i.loli.net/2021/04/10/PXqFEeNojHUZ673.png">
 <meta property="article:published_time" content="2021-04-10T16:29:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.215Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.724Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="FastDFS">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,14 +299,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>31k</span>
+              <span>32k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>28 分钟</span>
+              <span>29 分钟</span>
             </span>
 
         </div>
@@ -343,102 +343,102 @@
 <p><img data-src="https://i.loli.net/2021/04/10/PXqFEeNojHUZ673.png"></p>
 <p>跟上传一样，在文件下载时客户端可以选择任意tracker server。tracker发送download请求给某个tracker，必须带上文件名信息，tracke从文件名中解析出文件的group、大小、创建时间等信息，然后为该请求选择一个storage用来服务读请求。</p>
 <h1 id="单体安装FastDFS服务"><a href="#单体安装FastDFS服务" class="headerlink" title="单体安装FastDFS服务"></a>单体安装FastDFS服务</h1><p>接下来在虚拟机中单体安装一下服务，安装需要的依赖时出现 yum 占用情况：<code>Another app is currently holding the yum lock; waiting for it to exit...</code>，表明虚拟机中有别的服务正在占用<code>yum</code>服务，关掉它。</p>
-<pre><code class="shell">[root@localhost ~]# yum groupinstall &quot;Development Tools&quot; &quot;Server platform Development&quot; -y
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># yum groupinstall "Development Tools" "Server platform Development" -y</span>
 Loaded plugins: fastestmirror, langpacks
-There is no installed groups file.
-Maybe run: yum groups mark convert (see man yum)
-Existing lock /var/run/yum.pid: another copy is running as pid 14754.
-Another app is currently holding the yum lock; waiting for it to exit...
+There is no installed <span class="token function">groups</span> file.
+Maybe run: yum <span class="token function">groups</span> mark convert <span class="token punctuation">(</span>see <span class="token function">man</span> yum<span class="token punctuation">)</span>
+Existing lock /var/run/yum.pid: another copy is running as pid <span class="token number">14754</span>.
+Another app is currently holding the yum lock<span class="token punctuation">;</span> waiting <span class="token keyword">for</span> it to exit<span class="token punctuation">..</span>.
   The other application is: PackageKit
-    Memory : 182 M RSS (630 MB VSZ)
-    Started: Wed Apr  7 20:12:13 2021 - 05:33 ago
-    State  : Sleeping, pid: 14754
+    Memory <span class="token builtin class-name">:</span> <span class="token number">182</span> M RSS <span class="token punctuation">(</span><span class="token number">630</span> MB VSZ<span class="token punctuation">)</span>
+    Started: Wed Apr  <span class="token number">7</span> <span class="token number">20</span>:12:13 <span class="token number">2021</span> - 05:33 ago
+    State  <span class="token builtin class-name">:</span> Sleeping, pid: <span class="token number">14754</span>
 ^C
 
 Exiting on user cancel.
-[root@localhost ~]# ps aux|grep yum
-root      14754  3.8  9.9 644932 185604 ?       SN   20:12   0:16 /usr/bin/python /usr/share/PackageKit/helpers/yum/yumBackend.py get-updates none
-root      15803  0.0  0.0 112808   968 pts/1    S+   20:19   0:00 grep --color=auto yum
-[root@localhost ~]# kill -9 14754
-[root@localhost ~]# ps aux|grep yum
-root      15835  0.0  0.0 112808   968 pts/1    S+   20:19   0:00 grep --color=auto yum
-</code></pre>
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># ps aux|grep yum</span>
+root      <span class="token number">14754</span>  <span class="token number">3.8</span>  <span class="token number">9.9</span> <span class="token number">644932</span> <span class="token number">185604</span> ?       SN   <span class="token number">20</span>:12   <span class="token number">0</span>:16 /usr/bin/python /usr/share/PackageKit/helpers/yum/yumBackend.py get-updates none
+root      <span class="token number">15803</span>  <span class="token number">0.0</span>  <span class="token number">0.0</span> <span class="token number">112808</span>   <span class="token number">968</span> pts/1    S+   <span class="token number">20</span>:19   <span class="token number">0</span>:00 <span class="token function">grep</span> --color<span class="token operator">=</span>auto yum
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># kill -9 14754</span>
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># ps aux|grep yum</span>
+root      <span class="token number">15835</span>  <span class="token number">0.0</span>  <span class="token number">0.0</span> <span class="token number">112808</span>   <span class="token number">968</span> pts/1    S+   <span class="token number">20</span>:19   <span class="token number">0</span>:00 <span class="token function">grep</span> --color<span class="token operator">=</span>auto yum<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="安装服务需要的依赖："><a href="#安装服务需要的依赖：" class="headerlink" title="安装服务需要的依赖："></a>安装服务需要的依赖：</h2><ul>
 <li><code>yum groupinstall &quot;Development Tools&quot; &quot;Server platform Development&quot; -y</code></li>
 <li><code>yum install -y libao*</code></li>
 <li><code>yum -y install cmake make gcc-c++</code></li>
 </ul>
-<pre><code class="shell">[root@localhost ~]# yum groupinstall &quot;Development Tools&quot; &quot;Server platform Development&quot; -y
-BDB2053 Freeing read locks for locker 0xa89: 14754/139637928314688
-BDB2053 Freeing read locks for locker 0xa8b: 14754/139637928314688
-...
-Complete!
-[root@localhost ~]# yum install -y libao*
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># yum groupinstall "Development Tools" "Server platform Development" -y</span>
+BDB2053 Freeing <span class="token builtin class-name">read</span> locks <span class="token keyword">for</span> locker 0xa89: <span class="token number">14754</span>/139637928314688
+BDB2053 Freeing <span class="token builtin class-name">read</span> locks <span class="token keyword">for</span> locker 0xa8b: <span class="token number">14754</span>/139637928314688
+<span class="token punctuation">..</span>.
+Complete<span class="token operator">!</span>
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># yum install -y libao*</span>
 Loaded plugins: fastestmirror, langpacks
 Loading mirror speeds from cached hostfile
-...                                    
-Complete!
-[root@localhost ~]# yum -y install cmake make gcc-c++
+<span class="token punctuation">..</span>.                                    
+Complete<span class="token operator">!</span>
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># yum -y install cmake make gcc-c++</span>
 Loaded plugins: fastestmirror, langpacks
 Loading mirror speeds from cached hostfile
-...
-Complete!
-</code></pre>
+<span class="token punctuation">..</span>.
+Complete<span class="token operator">!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>依赖安装完成后，创建目录存储需要的压缩包，同时将压缩包传入服务器</p>
-<pre><code class="shell">[root@localhost home]# mkdir -p /usr/local/fastdfs
-[root@localhost home]# cd /usr/local/fastdfs/
-[root@localhost fastdfs]# ls
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost home<span class="token punctuation">]</span><span class="token comment"># mkdir -p /usr/local/fastdfs</span>
+<span class="token punctuation">[</span>root@localhost home<span class="token punctuation">]</span><span class="token comment"># cd /usr/local/fastdfs/</span>
+<span class="token punctuation">[</span>root@localhost fastdfs<span class="token punctuation">]</span><span class="token comment"># ls</span>
 fastdfs-6.06.tar.gz               libfastcommon-1.0.43.tar.gz
-fastdfs-nginx-module-1.22.tar.gz  nginx-1.16.1.tar.gz
-</code></pre>
-<h2 id="安装-FastDFS-需要的依赖包："><a href="#安装-FastDFS-需要的依赖包：" class="headerlink" title="安装 FastDFS 需要的依赖包："></a>安装 FastDFS 需要的依赖包：</h2><pre><code class="shell">[root@localhost fastdfs]# tar -zxvf libfastcommon-1.0.43.tar.gz 
+fastdfs-nginx-module-1.22.tar.gz  nginx-1.16.1.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="安装-FastDFS-需要的依赖包："><a href="#安装-FastDFS-需要的依赖包：" class="headerlink" title="安装 FastDFS 需要的依赖包："></a>安装 FastDFS 需要的依赖包：</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost fastdfs<span class="token punctuation">]</span><span class="token comment"># tar -zxvf libfastcommon-1.0.43.tar.gz </span>
 libfastcommon-1.0.43/
-...
+<span class="token punctuation">..</span>.
 libfastcommon-1.0.43/src/tests/test_thourands_seperator.c
-[root@localhost fastdfs]# ls
+<span class="token punctuation">[</span>root@localhost fastdfs<span class="token punctuation">]</span><span class="token comment"># ls</span>
 fastdfs-6.06.tar.gz               libfastcommon-1.0.43.tar.gz
 fastdfs-nginx-module-1.22.tar.gz  nginx-1.16.1.tar.gz
 libfastcommon-1.0.43
-[root@localhost fastdfs]# cd libfastcommon-1.0.43/
-[root@localhost libfastcommon-1.0.43]# ll
-total 32
-drwxrwxr-x 2 root root   114 Dec 25  2019 doc
--rw-rw-r-- 1 root root 10301 Dec 25  2019 HISTORY
--rw-rw-r-- 1 root root   674 Dec 25  2019 INSTALL
--rw-rw-r-- 1 root root  1607 Dec 25  2019 libfastcommon.spec
--rwxrwxr-x 1 root root  3253 Dec 25  2019 make.sh
-drwxrwxr-x 2 root root   191 Dec 25  2019 php-fastcommon
--rw-rw-r-- 1 root root  2776 Dec 25  2019 README
-drwxrwxr-x 3 root root  4096 Dec 25  2019 src
-</code></pre>
-<p>编译并安装服务：</p>
-<pre><code class="shell">[root@localhost libfastcommon-1.0.43]# ./make.sh 
-cc -Wall -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -g -O3 -c -o hash.o hash.c  
-...
-common_blocked_queue.o multi_socket_client.o skiplist_set.o json_parser.o buffered_file_writer.o
-[root@localhost libfastcommon-1.0.43]# ./make.sh install
-mkdir -p /usr/lib64
-mkdir -p /usr/lib
-mkdir -p /usr/include/fastcommon
-...
-if [ ! -e /usr/lib/libfastcommon.so ]; then ln -s /usr/lib64/libfastcommon.so /usr/lib/libfastcommon.so; fi
-</code></pre>
-<p>因为FastDFS主程序设置的lib目录是在<code>usr/local/lib</code>，所以需要设置软链接</p>
-<pre><code class="shell">[root@localhost libfastcommon-1.0.43]# ln -s /usr/lib64/libfastcommon.so  /usr/local/lib/libfastcommon.so
-[root@localhost libfastcommon-1.0.43]# ln -s /usr/local/lib64/libfdfsclient.so /usr/local/lib/libfdfsclient.so
-[root@localhost libfastcommon-1.0.43]# ln -s /usr/local/lib64/libfdfsclient.so /usr/lib/libfdfsclient.so
-</code></pre>
-<h2 id="安装FastDFS主程序"><a href="#安装FastDFS主程序" class="headerlink" title="安装FastDFS主程序"></a>安装FastDFS主程序</h2><p>解压主程序压缩包，修改安装路径（可选）：</p>
-<pre><code class="shell">cd 至解压路径
+<span class="token punctuation">[</span>root@localhost fastdfs<span class="token punctuation">]</span><span class="token comment"># cd libfastcommon-1.0.43/</span>
+<span class="token punctuation">[</span>root@localhost libfastcommon-1.0.43<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">32</span>
+drwxrwxr-x <span class="token number">2</span> root root   <span class="token number">114</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> doc
+-rw-rw-r-- <span class="token number">1</span> root root <span class="token number">10301</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> HISTORY
+-rw-rw-r-- <span class="token number">1</span> root root   <span class="token number">674</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> INSTALL
+-rw-rw-r-- <span class="token number">1</span> root root  <span class="token number">1607</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> libfastcommon.spec
+-rwxrwxr-x <span class="token number">1</span> root root  <span class="token number">3253</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> make.sh
+drwxrwxr-x <span class="token number">2</span> root root   <span class="token number">191</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> php-fastcommon
+-rw-rw-r-- <span class="token number">1</span> root root  <span class="token number">2776</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> README
+drwxrwxr-x <span class="token number">3</span> root root  <span class="token number">4096</span> Dec <span class="token number">25</span>  <span class="token number">2019</span> src<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-vi make.sh
-修改前：TARGET_PREFIX=$DESTDIR/usr
-修改后：TARGET_PREFIX=$DESTDIR/usr/local
+<p>编译并安装服务：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost libfastcommon-1.0.43<span class="token punctuation">]</span><span class="token comment"># ./make.sh </span>
+cc -Wall -D_FILE_OFFSET_BITS<span class="token operator">=</span><span class="token number">64</span> -D_GNU_SOURCE -g -O3 -c -o hash.o hash.c  
+<span class="token punctuation">..</span>.
+common_blocked_queue.o multi_socket_client.o skiplist_set.o json_parser.o buffered_file_writer.o
+<span class="token punctuation">[</span>root@localhost libfastcommon-1.0.43<span class="token punctuation">]</span><span class="token comment"># ./make.sh install</span>
+<span class="token function">mkdir</span> -p /usr/lib64
+<span class="token function">mkdir</span> -p /usr/lib
+<span class="token function">mkdir</span> -p /usr/include/fastcommon
+<span class="token punctuation">..</span>.
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token operator">!</span> -e /usr/lib/libfastcommon.so <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span> <span class="token function">ln</span> -s /usr/lib64/libfastcommon.so /usr/lib/libfastcommon.so<span class="token punctuation">;</span> <span class="token keyword">fi</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>因为FastDFS主程序设置的lib目录是在<code>usr/local/lib</code>，所以需要设置软链接</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost libfastcommon-1.0.43<span class="token punctuation">]</span><span class="token comment"># ln -s /usr/lib64/libfastcommon.so  /usr/local/lib/libfastcommon.so</span>
+<span class="token punctuation">[</span>root@localhost libfastcommon-1.0.43<span class="token punctuation">]</span><span class="token comment"># ln -s /usr/local/lib64/libfdfsclient.so /usr/local/lib/libfdfsclient.so</span>
+<span class="token punctuation">[</span>root@localhost libfastcommon-1.0.43<span class="token punctuation">]</span><span class="token comment"># ln -s /usr/local/lib64/libfdfsclient.so /usr/lib/libfdfsclient.so</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="安装FastDFS主程序"><a href="#安装FastDFS主程序" class="headerlink" title="安装FastDFS主程序"></a>安装FastDFS主程序</h2><p>解压主程序压缩包，修改安装路径（可选）：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token builtin class-name">cd</span> 至解压路径
+
+<span class="token function">vi</span> make.sh
+修改前：TARGET_PREFIX<span class="token operator">=</span><span class="token variable">$DESTDIR</span>/usr
+修改后：TARGET_PREFIX<span class="token operator">=</span><span class="token variable">$DESTDIR</span>/usr/local
 
 编译并安装
 ./make.sh
-./make.sh install
-</code></pre>
+./make.sh <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>安装后：</p>
 <ul>
 <li><code>/usr/local/bin</code>：可执行文件所在位置，默认安装在<code>/usr/bin</code>中</li>
@@ -448,163 +448,166 @@ vi make.sh
 </ul>
 <p>服务配置与脚本所在位置</p>
 <p><code>/etc/init.d</code>：脚本所在位置</p>
-<pre><code class="shell">[root@localhost fdfs]# cd /etc/init.d
-[root@localhost init.d]# ll
-total 60
--rwxr-xr-x  1 root root   961 Apr  7 21:06 fdfs_storaged
--rwxr-xr-x  1 root root   963 Apr  7 21:06 fdfs_trackerd
--rw-r--r--. 1 root root 18281 Aug 19  2019 functions
-lrwxrwxrwx. 1 root root    35 Nov  5 20:17 jexec -&gt; /usr/java/latest/.java/init.d/jexec
--rwxr-xr-x. 1 root root 10576 Nov 13 22:31 mysql
--rwxr-xr-x. 1 root root  4569 Aug 19  2019 netconsole
--rwxr-xr-x. 1 root root  7928 Aug 19  2019 network
--rw-r--r--. 1 root root  1160 Apr  1  2020 README
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># cd /etc/init.d</span>
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">60</span>
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">961</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_storaged
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">963</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_trackerd
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">18281</span> Aug <span class="token number">19</span>  <span class="token number">2019</span> functions
+lrwxrwxrwx. <span class="token number">1</span> root root    <span class="token number">35</span> Nov  <span class="token number">5</span> <span class="token number">20</span>:17 jexec -<span class="token operator">></span> /usr/java/latest/.java/init.d/jexec
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">10576</span> Nov <span class="token number">13</span> <span class="token number">22</span>:31 mysql
+-rwxr-xr-x. <span class="token number">1</span> root root  <span class="token number">4569</span> Aug <span class="token number">19</span>  <span class="token number">2019</span> netconsole
+-rwxr-xr-x. <span class="token number">1</span> root root  <span class="token number">7928</span> Aug <span class="token number">19</span>  <span class="token number">2019</span> network
+-rw-r--r--. <span class="token number">1</span> root root  <span class="token number">1160</span> Apr  <span class="token number">1</span>  <span class="token number">2020</span> README<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>/etc/fdfs</code>：配置文件所在位置</p>
-<pre><code class="shell">[root@localhost fastdfs-6.06]# cd /etc/fdfs/
-[root@localhost fdfs]# ll
-total 32
--rw-r--r-- 1 root root  1909 Apr  7 21:06 client.conf.sample
--rw-r--r-- 1 root root 10246 Apr  7 21:06 storage.conf.sample
--rw-r--r-- 1 root root   620 Apr  7 21:06 storage_ids.conf.sample
--rw-r--r-- 1 root root  9138 Apr  7 21:06 tracker.conf.sample
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost fastdfs-6.06<span class="token punctuation">]</span><span class="token comment"># cd /etc/fdfs/</span>
+<span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">32</span>
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">1909</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 client.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">10246</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 storage.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root   <span class="token number">620</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 storage_ids.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">9138</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 tracker.conf.sample<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>/usr/local/bin</code>：内置命令</p>
-<pre><code class="shell">[root@localhost init.d]# cd /usr/local/bin
-[root@localhost bin]# ll
-total 52324
--rw-r--r--. 1 root root     7473 Nov  9 23:57 dump.rdb
--rwxr-xr-x  1 root root   362256 Apr  7 21:06 fdfs_appender_test
--rwxr-xr-x  1 root root   362032 Apr  7 21:06 fdfs_appender_test1
--rwxr-xr-x  1 root root   348912 Apr  7 21:06 fdfs_append_file
--rwxr-xr-x  1 root root   348528 Apr  7 21:06 fdfs_crc32
--rwxr-xr-x  1 root root   348944 Apr  7 21:06 fdfs_delete_file
--rwxr-xr-x  1 root root   349680 Apr  7 21:06 fdfs_download_file
--rwxr-xr-x  1 root root   349632 Apr  7 21:06 fdfs_file_info
--rwxr-xr-x  1 root root   364952 Apr  7 21:06 fdfs_monitor
--rwxr-xr-x  1 root root   349168 Apr  7 21:06 fdfs_regenerate_filename
--rwxr-xr-x  1 root root  1280144 Apr  7 21:06 fdfs_storaged
--rwxr-xr-x  1 root root   372120 Apr  7 21:06 fdfs_test
--rwxr-xr-x  1 root root   367240 Apr  7 21:06 fdfs_test1
--rwxr-xr-x  1 root root   512360 Apr  7 21:06 fdfs_trackerd
--rwxr-xr-x  1 root root   349872 Apr  7 21:06 fdfs_upload_appender
--rwxr-xr-x  1 root root   350888 Apr  7 21:06 fdfs_upload_file
--rwxr-xr-x. 1 root root  6398656 Nov  5 22:13 redis-benchmark
--rwxr-xr-x. 1 root root 11321584 Nov  5 22:13 redis-check-aof
--rwxr-xr-x. 1 root root 11321584 Nov  5 22:13 redis-check-rdb
--rwxr-xr-x. 1 root root  6726104 Nov  5 22:13 redis-cli
-lrwxrwxrwx. 1 root root       12 Nov  5 22:13 redis-sentinel -&gt; redis-server
--rwxr-xr-x. 1 root root 11321584 Nov  5 22:13 redis-server
--rwxr-xr-x  1 root root     1768 Apr  7 21:06 restart.sh
--rwxr-xr-x  1 root root     1680 Apr  7 21:06 stop.sh
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># cd /usr/local/bin</span>
+<span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">52324</span>
+-rw-r--r--. <span class="token number">1</span> root root     <span class="token number">7473</span> Nov  <span class="token number">9</span> <span class="token number">23</span>:57 dump.rdb
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">362256</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_appender_test
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">362032</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_appender_test1
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">348912</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_append_file
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">348528</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_crc32
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">348944</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_delete_file
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">349680</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_download_file
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">349632</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_file_info
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">364952</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_monitor
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">349168</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_regenerate_filename
+-rwxr-xr-x  <span class="token number">1</span> root root  <span class="token number">1280144</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_storaged
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">372120</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_test
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">367240</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_test1
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">512360</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_trackerd
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">349872</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_upload_appender
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">350888</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_upload_file
+-rwxr-xr-x. <span class="token number">1</span> root root  <span class="token number">6398656</span> Nov  <span class="token number">5</span> <span class="token number">22</span>:13 redis-benchmark
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">11321584</span> Nov  <span class="token number">5</span> <span class="token number">22</span>:13 redis-check-aof
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">11321584</span> Nov  <span class="token number">5</span> <span class="token number">22</span>:13 redis-check-rdb
+-rwxr-xr-x. <span class="token number">1</span> root root  <span class="token number">6726104</span> Nov  <span class="token number">5</span> <span class="token number">22</span>:13 redis-cli
+lrwxrwxrwx. <span class="token number">1</span> root root       <span class="token number">12</span> Nov  <span class="token number">5</span> <span class="token number">22</span>:13 redis-sentinel -<span class="token operator">></span> redis-server
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">11321584</span> Nov  <span class="token number">5</span> <span class="token number">22</span>:13 redis-server
+-rwxr-xr-x  <span class="token number">1</span> root root     <span class="token number">1768</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 restart.sh
+-rwxr-xr-x  <span class="token number">1</span> root root     <span class="token number">1680</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 stop.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>复制配置文件</p>
-<pre><code class="shell">[root@localhost bin]# cd /etc/fdfs/
-[root@localhost fdfs]# ll
-total 32
--rw-r--r-- 1 root root  1909 Apr  7 21:06 client.conf.sample
--rw-r--r-- 1 root root 10246 Apr  7 21:06 storage.conf.sample
--rw-r--r-- 1 root root   620 Apr  7 21:06 storage_ids.conf.sample
--rw-r--r-- 1 root root  9138 Apr  7 21:06 tracker.conf.sample
-[root@localhost fdfs]# cp tracker.conf.sample tracker.conf
-[root@localhost fdfs]# cp storage.conf.sample storage.conf
-[root@localhost fdfs]# ll
-total 56
--rw-r--r-- 1 root root  1909 Apr  7 21:06 client.conf.sample
--rw-r--r-- 1 root root 10246 Apr  7 21:16 storage.conf
--rw-r--r-- 1 root root 10246 Apr  7 21:06 storage.conf.sample
--rw-r--r-- 1 root root   620 Apr  7 21:06 storage_ids.conf.sample
--rw-r--r-- 1 root root  9138 Apr  7 21:16 tracker.conf
--rw-r--r-- 1 root root  9138 Apr  7 21:06 tracker.conf.sample
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost bin<span class="token punctuation">]</span><span class="token comment"># cd /etc/fdfs/</span>
+<span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">32</span>
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">1909</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 client.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">10246</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 storage.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root   <span class="token number">620</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 storage_ids.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">9138</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 tracker.conf.sample
+<span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># cp tracker.conf.sample tracker.conf</span>
+<span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># cp storage.conf.sample storage.conf</span>
+<span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">56</span>
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">1909</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 client.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">10246</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:16 storage.conf
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">10246</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 storage.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root   <span class="token number">620</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 storage_ids.conf.sample
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">9138</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:16 tracker.conf
+-rw-r--r-- <span class="token number">1</span> root root  <span class="token number">9138</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 tracker.conf.sample
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>修改<code>trackerd</code>配置文件：</p>
-<pre><code class="conf"># is this config file disabled
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf"># is this config file disabled
 # false for enabled
 # true for disabled
 # 配置文件是否不生效，false为生效
-disabled = false
+disabled &#x3D; false
 
 # bind an address of this host
 # empty for bind all addresses of this host
-bind_addr =
+bind_addr &#x3D;
 
 # the tracker server port
-port = 22122
+port &#x3D; 22122
 
 # connect timeout in seconds
 # default value is 30
 # Note: in the intranet network (LAN), 2 seconds is enough.
-connect_timeout = 5
+connect_timeout &#x3D; 5
 
 # network timeout in seconds for send and recv
 # default value is 30
-network_timeout = 60
+network_timeout &#x3D; 60
 
 # the base path to store data and log files
 # 文件存储路径
-base_path = /home/yuqing/fastdfs
+base_path &#x3D; &#x2F;home&#x2F;yuqing&#x2F;fastdfs
 
 # max concurrent connections this server support
 # you should set this parameter larger, eg. 10240
 # default value is 256
-max_connections = 1024
+max_connections &#x3D; 1024
 
 # accept thread count
 # default value is 1 which is recommended
 # since V4.07
-accept_threads = 1
+accept_threads &#x3D; 1
 
 # work thread count
 # work threads to deal network io
 # default value is 4
 # since V2.00
-work_threads = 4
+work_threads &#x3D; 4
 
 # the min network buff size
 # default value 8KB
-min_buff_size = 8KB
+min_buff_size &#x3D; 8KB
 
 # the max network buff size
 # default value 128KB
-max_buff_size = 128KB
+max_buff_size &#x3D; 128KB
 
 # the method for selecting group to upload files
 # 0: round robin
 # 1: specify group
 # 2: load balance, select the max free space group to upload file
-store_lookup = 2
+store_lookup &#x3D; 2
 
 # which group to upload file
 # when store_lookup set to 1, must set store_group to the group name
-store_group = group2
+store_group &#x3D; group2
 
 # which storage server to upload file
 # 0: round robin (default)
 # 1: the first server order by ip address
 # 2: the first server order by priority (the minimal)
 # Note: if use_trunk_file set to true, must set store_server to 1 or 2
-store_server = 0
+store_server &#x3D; 0
 
 # which path (means disk or mount point) of the storage server to upload file
 # 0: round robin
 # 2: load balance, select the max free space path to upload file
-store_path = 0
+store_path &#x3D; 0
 
 # which storage server to download file
 # 0: round robin (default)
 # 1: the source storage server which the current file uploaded to
-download_server = 0
+download_server &#x3D; 0
 
 # reserved storage space for system or other applications.
 # if the free(available) space of any stoarge server in 
-# a group &lt;= reserved_storage_space, no file can be uploaded to this group.
+# a group &lt;&#x3D; reserved_storage_space, no file can be uploaded to this group.
 # bytes unit can be one of follows:
 ### G or g for gigabyte(GB)
 ### M or m for megabyte(MB)
 ### K or k for kilobyte(KB)
 ### no unit for byte(B)
-### XX.XX% as ratio such as: reserved_storage_space = 10%
-reserved_storage_space = 20%
+### XX.XX% as ratio such as: reserved_storage_space &#x3D; 10%
+reserved_storage_space &#x3D; 20%
 
 #standard log level as syslog, case insensitive, value list:
 ### emerg for emergency
@@ -615,111 +618,111 @@ reserved_storage_space = 20%
 ### notice
 ### info
 ### debug
-log_level = info
+log_level &#x3D; info
 
 #unix group name to run this program, 
 #not set (empty) means run by the group of current user
-run_by_group=
+run_by_group&#x3D;
 
 #unix username to run this program,
 #not set (empty) means run by current user
-run_by_user =
+run_by_user &#x3D;
 
 # allow_hosts can ocur more than once, host can be hostname or ip address,
 # &quot;*&quot; (only one asterisk) means match all ip addresses
-# we can use CIDR ips like 192.168.5.64/26
+# we can use CIDR ips like 192.168.5.64&#x2F;26
 # and also use range like these: 10.0.1.[0-254] and host[01-08,20-25].domain.com
 # for example:
-# allow_hosts=10.0.1.[1-15,20]
-# allow_hosts=host[01-08,20-25].domain.com
-# allow_hosts=192.168.5.64/26
-allow_hosts = *
+# allow_hosts&#x3D;10.0.1.[1-15,20]
+# allow_hosts&#x3D;host[01-08,20-25].domain.com
+# allow_hosts&#x3D;192.168.5.64&#x2F;26
+allow_hosts &#x3D; *
 
 # sync log buff to disk every interval seconds
 # default value is 10 seconds
-sync_log_buff_interval = 1
+sync_log_buff_interval &#x3D; 1
 
 # check storage server alive interval seconds
-check_active_interval = 120
+check_active_interval &#x3D; 120
 
-# thread stack size, should &gt;= 64KB
+# thread stack size, should &gt;&#x3D; 64KB
 # default value is 256KB
-thread_stack_size = 256KB
+thread_stack_size &#x3D; 256KB
 
 # auto adjust when the ip address of the storage server changed
 # default value is true
-storage_ip_changed_auto_adjust = true
+storage_ip_changed_auto_adjust &#x3D; true
 
 # storage sync file max delay seconds
 # default value is 86400 seconds (one day)
 # since V2.00
-storage_sync_file_max_delay = 86400
+storage_sync_file_max_delay &#x3D; 86400
 
 # the max time of storage sync a file
 # default value is 300 seconds
 # since V2.00
-storage_sync_file_max_time = 300
+storage_sync_file_max_time &#x3D; 300
 
 # if use a trunk file to store several small files
 # default value is false
 # since V3.00
-use_trunk_file = false 
+use_trunk_file &#x3D; false 
 
-# the min slot size, should &lt;= 4KB
+# the min slot size, should &lt;&#x3D; 4KB
 # default value is 256 bytes
 # since V3.00
-slot_min_size = 256
+slot_min_size &#x3D; 256
 
 # the max slot size, should &gt; slot_min_size
-# store the upload file to trunk file when it&#39;s size &lt;=  this value
+# store the upload file to trunk file when it&#39;s size &lt;&#x3D;  this value
 # default value is 16MB
 # since V3.00
-slot_max_size = 1MB
+slot_max_size &#x3D; 1MB
 
 # the alignment size to allocate the trunk space
 # default value is 0 (never align)
 # since V6.05
 # NOTE: the larger the alignment size, the less likely of disk
 #       fragmentation, but the more space is wasted.
-trunk_alloc_alignment_size = 256
+trunk_alloc_alignment_size &#x3D; 256
 
 # if merge contiguous free spaces of trunk file
 # default value is false
 # since V6.05
-trunk_free_space_merge = true
+trunk_free_space_merge &#x3D; true
 
-# if delete / reclaim the unused trunk files
+# if delete &#x2F; reclaim the unused trunk files
 # default value is false
 # since V6.05
-delete_unused_trunk_files = false
+delete_unused_trunk_files &#x3D; false
 
-# the trunk file size, should &gt;= 4MB
+# the trunk file size, should &gt;&#x3D; 4MB
 # default value is 64MB
 # since V3.00
-trunk_file_size = 64MB
+trunk_file_size &#x3D; 64MB
 
 # if create trunk file advancely
 # default value is false
 # since V3.06
-trunk_create_file_advance = false
+trunk_create_file_advance &#x3D; false
 
 # the time base to create trunk file
 # the time format: HH:MM
 # default value is 02:00
 # since V3.06
-trunk_create_file_time_base = 02:00
+trunk_create_file_time_base &#x3D; 02:00
 
 # the interval of create trunk file, unit: second
 # default value is 38400 (one day)
 # since V3.06
-trunk_create_file_interval = 86400
+trunk_create_file_interval &#x3D; 86400
 
 # the threshold to create trunk file
 # when the free trunk file size less than the threshold,
 # will create he trunk files
 # default value is 0
 # since V3.06
-trunk_create_file_space_threshold = 20G
+trunk_create_file_space_threshold &#x3D; 20G
 
 # if check trunk space occupying when loading trunk free spaces
 # the occupied spaces will be ignored
@@ -727,13 +730,13 @@ trunk_create_file_space_threshold = 20G
 # since V3.09
 # NOTICE: set this parameter to true will slow the loading of trunk spaces 
 # when startup. you should set this parameter to true when neccessary.
-trunk_init_check_occupying = false
+trunk_init_check_occupying &#x3D; false
 
 # if ignore storage_trunk.dat, reload from trunk binlog
 # default value is false
 # since V3.10
 # set to true once for version upgrade when your version less than V3.10
-trunk_init_reload_from_binlog = false
+trunk_init_reload_from_binlog &#x3D; false
 
 # the min interval for compressing the trunk binlog file
 # unit: second, 0 means never compress
@@ -741,25 +744,25 @@ trunk_init_reload_from_binlog = false
 # recommand to set this parameter to 86400 (one day)
 # default value is 0
 # since V5.01
-trunk_compress_binlog_min_interval = 86400
+trunk_compress_binlog_min_interval &#x3D; 86400
 
 # the interval for compressing the trunk binlog file
 # unit: second, 0 means never compress
 # recommand to set this parameter to 86400 (one day)
 # default value is 0
 # since V6.05
-trunk_compress_binlog_interval = 86400
+trunk_compress_binlog_interval &#x3D; 86400
 
 # compress the trunk binlog time base, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
 # default value is 03:00
 # since V6.05
-trunk_compress_binlog_time_base = 03:00
+trunk_compress_binlog_time_base &#x3D; 03:00
 
 # max backups for the trunk binlog file
 # default value is 0 (never backup)
 # since V6.05
-trunk_binlog_max_backups = 7
+trunk_binlog_max_backups &#x3D; 7
 
 # if use storage server ID instead of IP address
 # if you want to use dual IPs for storage server, you MUST set
@@ -767,12 +770,12 @@ trunk_binlog_max_backups = 7
 # configured by following item &quot;storage_ids_filename&quot;, such as storage_ids.conf
 # default value is false
 # since V4.00
-use_storage_id = false
+use_storage_id &#x3D; false
 
 # specify storage ids filename, can use relative or absolute path
 # this parameter is valid only when use_storage_id set to true
 # since V4.00
-storage_ids_filename = storage_ids.conf
+storage_ids_filename &#x3D; storage_ids.conf
 
 # id type of the storage server in the filename, values are:
 ## ip: the ip address of the storage server
@@ -780,226 +783,228 @@ storage_ids_filename = storage_ids.conf
 # this paramter is valid only when use_storage_id set to true
 # default value is ip
 # since V4.03
-id_type_in_filename = id
+id_type_in_filename &#x3D; id
 
 # if store slave file use symbol link
 # default value is false
 # since V4.01
-store_slave_file_use_link = false
+store_slave_file_use_link &#x3D; false
 
 # if rotate the error log every day
 # default value is false
 # since V4.02
-rotate_error_log = false
+rotate_error_log &#x3D; false
 
 # rotate error log time base, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
 # default value is 00:00
 # since V4.02
-error_log_rotate_time = 00:00
+error_log_rotate_time &#x3D; 00:00
 
 # if compress the old error log by gzip
 # default value is false
 # since V6.04
-compress_old_error_log = false
+compress_old_error_log &#x3D; false
 
 # compress the error log days before
 # default value is 1
 # since V6.04
-compress_error_log_days_before = 7
+compress_error_log_days_before &#x3D; 7
 
 # rotate error log when the log file exceeds this size
 # 0 means never rotates log file by log file size
 # default value is 0
 # since V4.02
-rotate_error_log_size = 0
+rotate_error_log_size &#x3D; 0
 
 # keep days of the log files
 # 0 means do not delete old log files
 # default value is 0
-log_file_keep_days = 0
+log_file_keep_days &#x3D; 0
 
 # if use connection pool
 # default value is false
 # since V4.05
-use_connection_pool = true
+use_connection_pool &#x3D; true
 
 # connections whose the idle time exceeds this time will be closed
 # unit: second
 # default value is 3600
 # since V4.05
-connection_pool_max_idle_time = 3600
+connection_pool_max_idle_time &#x3D; 3600
 
 # HTTP port on this tracker server
 # Http服务的端口号
-http.server_port = 8080
+http.server_port &#x3D; 8080
 
 # check storage HTTP server alive interval seconds
-# &lt;= 0 for never check
+# &lt;&#x3D; 0 for never check
 # default value is 30
-http.check_alive_interval = 30
+http.check_alive_interval &#x3D; 30
 
 # check storage HTTP server alive type, values are:
 #   tcp : connect to the storge server with HTTP port only, 
 #        do not request and get response
 #   http: storage check alive url must return http status 200
 # default value is tcp
-http.check_alive_type = tcp
+http.check_alive_type &#x3D; tcp
 
-# check storage HTTP server alive uri/url
-# NOTE: storage embed HTTP server support uri: /status.html
-http.check_alive_uri = /status.html
-</code></pre>
+# check storage HTTP server alive uri&#x2F;url
+# NOTE: storage embed HTTP server support uri: &#x2F;status.html
+http.check_alive_uri &#x3D; &#x2F;status.html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>启动<code>trackerd</code>服务</p>
-<pre><code class="shell">[root@localhost home]# cd /etc/init.d/
-[root@localhost init.d]# ll
-total 60
--rwxr-xr-x  1 root root   961 Apr  7 21:06 fdfs_storaged
--rwxr-xr-x  1 root root   963 Apr  7 21:06 fdfs_trackerd
--rw-r--r--. 1 root root 18281 Aug 19  2019 functions
-lrwxrwxrwx. 1 root root    35 Nov  5 20:17 jexec -&gt; /usr/java/latest/.java/init.d/jexec
--rwxr-xr-x. 1 root root 10576 Nov 13 22:31 mysql
--rwxr-xr-x. 1 root root  4569 Aug 19  2019 netconsole
--rwxr-xr-x. 1 root root  7928 Aug 19  2019 network
--rw-r--r--. 1 root root  1160 Apr  1  2020 README
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost home<span class="token punctuation">]</span><span class="token comment"># cd /etc/init.d/</span>
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># ll</span>
+total <span class="token number">60</span>
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">961</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_storaged
+-rwxr-xr-x  <span class="token number">1</span> root root   <span class="token number">963</span> Apr  <span class="token number">7</span> <span class="token number">21</span>:06 fdfs_trackerd
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">18281</span> Aug <span class="token number">19</span>  <span class="token number">2019</span> functions
+lrwxrwxrwx. <span class="token number">1</span> root root    <span class="token number">35</span> Nov  <span class="token number">5</span> <span class="token number">20</span>:17 jexec -<span class="token operator">></span> /usr/java/latest/.java/init.d/jexec
+-rwxr-xr-x. <span class="token number">1</span> root root <span class="token number">10576</span> Nov <span class="token number">13</span> <span class="token number">22</span>:31 mysql
+-rwxr-xr-x. <span class="token number">1</span> root root  <span class="token number">4569</span> Aug <span class="token number">19</span>  <span class="token number">2019</span> netconsole
+-rwxr-xr-x. <span class="token number">1</span> root root  <span class="token number">7928</span> Aug <span class="token number">19</span>  <span class="token number">2019</span> network
+-rw-r--r--. <span class="token number">1</span> root root  <span class="token number">1160</span> Apr  <span class="token number">1</span>  <span class="token number">2020</span> README
 
-[root@localhost init.d]# vi fdfs_trackerd 
-修改前：PRG=/usr/bin/fdfs_trackerd
-修改后：PRG=/usr/local/bin/fdfs_trackerd
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># vi fdfs_trackerd </span>
+修改前：PRG<span class="token operator">=</span>/usr/bin/fdfs_trackerd
+修改后：PRG<span class="token operator">=</span>/usr/local/bin/fdfs_trackerd
 
 启动：
-[root@localhost init.d]# ./fdfs_trackerd start
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># ./fdfs_trackerd start</span>
 Starting FastDFS tracker server: 
 
 查看启动状态
-[root@localhost init.d]# ./fdfs_trackerd status
-fdfs_trackerd (pid 32845) is running...
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># ./fdfs_trackerd status</span>
+fdfs_trackerd <span class="token punctuation">(</span>pid <span class="token number">32845</span><span class="token punctuation">)</span> is running<span class="token punctuation">..</span>.
 
 设置开启启动
-[root@localhost init.d]# vi /etc/rc.d/rc.local 
-在文件中添加：/etc/init.d/fdfs_tracked start
-</code></pre>
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># vi /etc/rc.d/rc.local </span>
+在文件中添加：/etc/init.d/fdfs_tracked start<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>修改<code>Storage</code>配置文件：</p>
-<pre><code class="conf"># is this config file disabled
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf"># is this config file disabled
 # false for enabled
 # true for disabled
-disabled = false
+disabled &#x3D; false
 
 # the name of the group this storage server belongs to
 #
 # comment or remove this item for fetching from tracker server,
 # in this case, use_storage_id must set to true in tracker.conf,
 # and storage_ids.conf must be configured correctly.
-group_name = group1
+group_name &#x3D; group1
 
 # bind an address of this host
 # empty for bind all addresses of this host
-bind_addr =
+bind_addr &#x3D;
 
 # if bind an address of this host when connect to other servers 
 # (this storage server as a client)
 # true for binding the address configured by the above parameter: &quot;bind_addr&quot;
 # false for binding any address of this host
-client_bind = true
+client_bind &#x3D; true
 
 # the storage server port
-port = 23000
+port &#x3D; 23000
 
 # connect timeout in seconds
 # default value is 30
 # Note: in the intranet network (LAN), 2 seconds is enough.
-connect_timeout = 5
+connect_timeout &#x3D; 5
 
 # network timeout in seconds for send and recv
 # default value is 30
-network_timeout = 60
+network_timeout &#x3D; 60
 
 # the heart beat interval in seconds
 # the storage server send heartbeat to tracker server periodically
 # default value is 30
-heart_beat_interval = 30
+heart_beat_interval &#x3D; 30
 
 # disk usage report interval in seconds
 # the storage server send disk usage report to tracker server periodically
 # default value is 300
-stat_report_interval = 60
+stat_report_interval &#x3D; 60
 
 # the base path to store data and log files
 # NOTE: the binlog files maybe are large, make sure
 #       the base path has enough disk space,
 #       eg. the disk free space should &gt; 50GB
 # 存放进程号、日志等基础的数据
-base_path = /home/fastdfs/storage/base
+base_path &#x3D; &#x2F;home&#x2F;fastdfs&#x2F;storage&#x2F;base
 
 # max concurrent connections the server supported,
 # you should set this parameter larger, eg. 10240
 # default value is 256
-max_connections = 1024
+max_connections &#x3D; 1024
 
-# the buff size to recv / send data from/to network
+# the buff size to recv &#x2F; send data from&#x2F;to network
 # this parameter must more than 8KB
 # 256KB or 512KB is recommended
 # default value is 64KB
 # since V2.00
-buff_size = 256KB
+buff_size &#x3D; 256KB
 
 # accept thread count
 # default value is 1 which is recommended
 # since V4.07
-accept_threads = 1
+accept_threads &#x3D; 1
 
 # work thread count
 # work threads to deal network io
 # default value is 4
 # since V2.00
-work_threads = 4
+work_threads &#x3D; 4
 
-# if disk read / write separated
+# if disk read &#x2F; write separated
 ##  false for mixed read and write
 ##  true for separated read and write
 # default value is true
 # since V2.00
-disk_rw_separated = true
+disk_rw_separated &#x3D; true
 
 # disk reader thread count per store path
-# for mixed read / write, this parameter can be 0
+# for mixed read &#x2F; write, this parameter can be 0
 # default value is 1
 # since V2.00
-disk_reader_threads = 1
+disk_reader_threads &#x3D; 1
 
 # disk writer thread count per store path
-# for mixed read / write, this parameter can be 0
+# for mixed read &#x2F; write, this parameter can be 0
 # default value is 1
 # since V2.00
-disk_writer_threads = 1
+disk_writer_threads &#x3D; 1
 
 # when no entry to sync, try read binlog again after X milliseconds
 # must &gt; 0, default value is 200ms
-sync_wait_msec = 50
+sync_wait_msec &#x3D; 50
 
 # after sync a file, usleep milliseconds
 # 0 for sync successively (never call usleep)
-sync_interval = 0
+sync_interval &#x3D; 0
 
 # storage sync start time of a day, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
-sync_start_time = 00:00
+sync_start_time &#x3D; 00:00
 
 # storage sync end time of a day, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
-sync_end_time = 23:59
+sync_end_time &#x3D; 23:59
 
 # write to the mark file after sync N files
 # default value is 500
-write_mark_file_freq = 500
+write_mark_file_freq &#x3D; 500
 
 # disk recovery thread count
 # default value is 1
 # since V6.04
-disk_recovery_threads = 3
+disk_recovery_threads &#x3D; 3
 
 # store path (disk or mount point) count, default value is 1
-store_path_count = 1
+store_path_count &#x3D; 1
 
 # store_path#, based on 0, to configure the store paths to store files
 # if store_path0 not exists, it&#39;s value is base_path (NOT recommended)
@@ -1009,12 +1014,12 @@ store_path_count = 1
 #       the store paths&#39; order is very important, don&#39;t mess up!!!
 #       the base_path should be independent (different) of the store paths
 # 文件存储的路径
-store_path0 = /home/yuqing/fastdfs
-#store_path1 = /home/yuqing/fastdfs2
+store_path0 &#x3D; &#x2F;home&#x2F;yuqing&#x2F;fastdfs
+#store_path1 &#x3D; &#x2F;home&#x2F;yuqing&#x2F;fastdfs2
 
 # subdir_count  * subdir_count directories will be auto created under each 
 # store_path (disk), value can be 1 to 256, default value is 256
-subdir_count_per_path = 256
+subdir_count_per_path &#x3D; 256
 
 # tracker_server can ocur more than once for multi tracker servers.
 # the value format of tracker_server is &quot;HOST:PORT&quot;,
@@ -1025,8 +1030,8 @@ subdir_count_per_path = 256
 #   for example: 192.168.2.100,122.244.141.46:22122
 #   another eg.: 192.168.1.10,172.17.4.21:22122
 # 修改成你tracker的地址
-tracker_server = 192.168.209.121:22122
-tracker_server = 192.168.209.122:22122
+tracker_server &#x3D; 192.168.209.121:22122
+tracker_server &#x3D; 192.168.209.122:22122
 
 #standard log level as syslog, case insensitive, value list:
 ### emerg for emergency
@@ -1037,187 +1042,187 @@ tracker_server = 192.168.209.122:22122
 ### notice
 ### info
 ### debug
-log_level = info
+log_level &#x3D; info
 
 #unix group name to run this program, 
 #not set (empty) means run by the group of current user
-run_by_group =
+run_by_group &#x3D;
 
 #unix username to run this program,
 #not set (empty) means run by current user
-run_by_user =
+run_by_user &#x3D;
 
 # allow_hosts can ocur more than once, host can be hostname or ip address,
 # &quot;*&quot; (only one asterisk) means match all ip addresses
-# we can use CIDR ips like 192.168.5.64/26
+# we can use CIDR ips like 192.168.5.64&#x2F;26
 # and also use range like these: 10.0.1.[0-254] and host[01-08,20-25].domain.com
 # for example:
-# allow_hosts=10.0.1.[1-15,20]
-# allow_hosts=host[01-08,20-25].domain.com
-# allow_hosts=192.168.5.64/26
-allow_hosts = *
+# allow_hosts&#x3D;10.0.1.[1-15,20]
+# allow_hosts&#x3D;host[01-08,20-25].domain.com
+# allow_hosts&#x3D;192.168.5.64&#x2F;26
+allow_hosts &#x3D; *
 
 # the mode of the files distributed to the data path
 # 0: round robin(default)
 # 1: random, distributted by hash code
-file_distribute_path_mode = 0
+file_distribute_path_mode &#x3D; 0
 
 # valid when file_distribute_to_path is set to 0 (round robin).
 # when the written file count reaches this number, then rotate to next path.
-# rotate to the first path (00/00) after the last path (such as FF/FF).
+# rotate to the first path (00&#x2F;00) after the last path (such as FF&#x2F;FF).
 # default value is 100
-file_distribute_rotate_count = 100
+file_distribute_rotate_count &#x3D; 100
 
 # call fsync to disk when write big file
 # 0: never call fsync
-# other: call fsync when written bytes &gt;= this bytes
+# other: call fsync when written bytes &gt;&#x3D; this bytes
 # default value is 0 (never call fsync)
-fsync_after_written_bytes = 0
+fsync_after_written_bytes &#x3D; 0
 
 # sync log buff to disk every interval seconds
 # must &gt; 0, default value is 10 seconds
-sync_log_buff_interval = 1
+sync_log_buff_interval &#x3D; 1
 
-# sync binlog buff / cache to disk every interval seconds
+# sync binlog buff &#x2F; cache to disk every interval seconds
 # default value is 60 seconds
-sync_binlog_buff_interval = 1
+sync_binlog_buff_interval &#x3D; 1
 
 # sync storage stat info to disk every interval seconds
 # default value is 300 seconds
-sync_stat_file_interval = 300
+sync_stat_file_interval &#x3D; 300
 
-# thread stack size, should &gt;= 512KB
+# thread stack size, should &gt;&#x3D; 512KB
 # default value is 512KB
-thread_stack_size = 512KB
+thread_stack_size &#x3D; 512KB
 
 # the priority as a source server for uploading file.
 # the lower this value, the higher its uploading priority.
 # default value is 10
-upload_priority = 10
+upload_priority &#x3D; 10
 
 # the NIC alias prefix, such as eth in Linux, you can see it by ifconfig -a
 # multi aliases split by comma. empty value means auto set by OS type
 # default values is empty
-if_alias_prefix =
+if_alias_prefix &#x3D;
 
 # if check file duplicate, when set to true, use FastDHT to store file indexes
 # 1 or yes: need check
 # 0 or no: do not check
 # default value is 0
-check_file_duplicate = 0
+check_file_duplicate &#x3D; 0
 
 # file signature method for check file duplicate
 ## hash: four 32 bits hash code
 ## md5: MD5 signature
 # default value is hash
 # since V4.01
-file_signature_method = hash
+file_signature_method &#x3D; hash
 
 # namespace for storing file indexes (key-value pairs)
-# this item must be set when check_file_duplicate is true / on
-key_namespace = FastDFS
+# this item must be set when check_file_duplicate is true &#x2F; on
+key_namespace &#x3D; FastDFS
 
 # set keep_alive to 1 to enable persistent connection with FastDHT servers
 # default value is 0 (short connection)
-keep_alive = 0
+keep_alive &#x3D; 0
 
 # you can use &quot;#include filename&quot; (not include double quotes) directive to 
 # load FastDHT server list, when the filename is a relative path such as 
-# pure filename, the base path is the base path of current/this config file.
-# must set FastDHT server list when check_file_duplicate is true / on
+# pure filename, the base path is the base path of current&#x2F;this config file.
+# must set FastDHT server list when check_file_duplicate is true &#x2F; on
 # please see INSTALL of FastDHT for detail
-##include /home/yuqing/fastdht/conf/fdht_servers.conf
+##include &#x2F;home&#x2F;yuqing&#x2F;fastdht&#x2F;conf&#x2F;fdht_servers.conf
 
 # if log to access log
 # default value is false
 # since V4.00
-use_access_log = false
+use_access_log &#x3D; false
 
 # if rotate the access log every day
 # default value is false
 # since V4.00
-rotate_access_log = false
+rotate_access_log &#x3D; false
 
 # rotate access log time base, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
 # default value is 00:00
 # since V4.00
-access_log_rotate_time = 00:00
+access_log_rotate_time &#x3D; 00:00
 
 # if compress the old access log by gzip
 # default value is false
 # since V6.04
-compress_old_access_log = false
+compress_old_access_log &#x3D; false
 
 # compress the access log days before
 # default value is 1
 # since V6.04
-compress_access_log_days_before = 7
+compress_access_log_days_before &#x3D; 7
 
 # if rotate the error log every day
 # default value is false
 # since V4.02
-rotate_error_log = false
+rotate_error_log &#x3D; false
 
 # rotate error log time base, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
 # default value is 00:00
 # since V4.02
-error_log_rotate_time = 00:00
+error_log_rotate_time &#x3D; 00:00
 
 # if compress the old error log by gzip
 # default value is false
 # since V6.04
-compress_old_error_log = false
+compress_old_error_log &#x3D; false
 
 # compress the error log days before
 # default value is 1
 # since V6.04
-compress_error_log_days_before = 7
+compress_error_log_days_before &#x3D; 7
 
 # rotate access log when the log file exceeds this size
 # 0 means never rotates log file by log file size
 # default value is 0
 # since V4.02
-rotate_access_log_size = 0
+rotate_access_log_size &#x3D; 0
 
 # rotate error log when the log file exceeds this size
 # 0 means never rotates log file by log file size
 # default value is 0
 # since V4.02
-rotate_error_log_size = 0
+rotate_error_log_size &#x3D; 0
 
 # keep days of the log files
 # 0 means do not delete old log files
 # default value is 0
-log_file_keep_days = 0
+log_file_keep_days &#x3D; 0
 
 # if skip the invalid record when sync file
 # default value is false
 # since V4.02
-file_sync_skip_invalid_record = false
+file_sync_skip_invalid_record &#x3D; false
 
 # if use connection pool
 # default value is false
 # since V4.05
-use_connection_pool = true
+use_connection_pool &#x3D; true
 
 # connections whose the idle time exceeds this time will be closed
 # unit: second
 # default value is 3600
 # since V4.05
-connection_pool_max_idle_time = 3600
+connection_pool_max_idle_time &#x3D; 3600
 
 # if compress the binlog files by gzip
 # default value is false
 # since V6.01
-compress_binlog = true
+compress_binlog &#x3D; true
 
 # try to compress binlog time, time format: Hour:Minute
 # Hour from 0 to 23, Minute from 0 to 59
 # default value is 01:30
 # since V6.01
-compress_binlog_time = 01:30
+compress_binlog_time &#x3D; 01:30
 
 # if check the mark of store path to prevent confusion
 # recommend to set this parameter to true
@@ -1225,93 +1230,95 @@ compress_binlog_time = 01:30
 # some specific purposes, you should set this parameter to false
 # default value is true
 # since V6.03
-check_store_path_mark = true
+check_store_path_mark &#x3D; true
 
 # use the ip address of this storage server if domain_name is empty,
 # else this domain name will ocur in the url redirected by the tracker server
-http.domain_name =
+http.domain_name &#x3D;
 
 # the port of the web server on this storage server
-http.server_port = 8888
-</code></pre>
+http.server_port &#x3D; 8888<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>启动服务</p>
-<pre><code class="shell">修改启动文件
-[root@localhost init.d]# vi /etc/init.d/fdfs_storaged 
-修改前：PRG=/usr/bin/fdfs_storaged
-修改后：PRG=/usr/local/bin/fdfs_storaged
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">修改启动文件
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># vi /etc/init.d/fdfs_storaged </span>
+修改前：PRG<span class="token operator">=</span>/usr/bin/fdfs_storaged
+修改后：PRG<span class="token operator">=</span>/usr/local/bin/fdfs_storaged
 
 启动服务:
-[root@localhost init.d]# ./fdfs_storaged start
-Starting FastDFS storage server: 
-</code></pre>
+<span class="token punctuation">[</span>root@localhost init.d<span class="token punctuation">]</span><span class="token comment"># ./fdfs_storaged start</span>
+Starting FastDFS storage server: <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h2 id="nginx安装"><a href="#nginx安装" class="headerlink" title="nginx安装"></a>nginx安装</h2><p>解压<code>fastdfs-nginx-module-1.22.tar.gz</code>包，修改解压目录下<code>src</code>文件夹中的<code>config</code>文件</p>
-<pre><code class="shell">修改配置：
-[root@localhost src]# vi config 
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">修改配置：
+<span class="token punctuation">[</span>root@localhost src<span class="token punctuation">]</span><span class="token comment"># vi config </span>
 
-ngx_addon_name=ngx_http_fastdfs_module
+<span class="token assign-left variable">ngx_addon_name</span><span class="token operator">=</span>ngx_http_fastdfs_module
 
-if test -n &quot;$&#123;ngx_module_link&#125;&quot;; then
-    ngx_module_type=HTTP
-    ngx_module_name=$ngx_addon_name
-    ngx_module_incs=&quot;/usr/local/include&quot;
-    ngx_module_libs=&quot;-lfastcommon -lfdfsclient&quot;
-    ngx_module_srcs=&quot;$ngx_addon_dir/ngx_http_fastdfs_module.c&quot;
-    ngx_module_deps=
-    CFLAGS=&quot;$CFLAGS -D_FILE_OFFSET_BITS=64 -DFDFS_OUTPUT_CHUNK_SIZE=&#39;256*1024&#39; -DFDFS_MOD_CONF_FILENAME=&#39;\&quot;/etc/fdfs/mod_fastdfs.conf\&quot;&#39;&quot;
-    . auto/module
-else
-    HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_fastdfs_module&quot;
-    NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_fastdfs_module.c&quot;
-    CORE_INCS=&quot;$CORE_INCS /usr/local/include/fastdfs /usr/include/fastcommon/&quot;
-    CORE_LIBS=&quot;$CORE_LIBS -lfastcommon -lfdfsclient&quot;
-    CFLAGS=&quot;$CFLAGS -D_FILE_OFFSET_BITS=64 -DFDFS_OUTPUT_CHUNK_SIZE=&#39;256*1024&#39; -DFDFS_MOD_CONF_FILENAME=&#39;\&quot;/etc/fdfs/mod_fastdfs.conf\&quot;&#39;&quot;
-fi
+<span class="token keyword">if</span> <span class="token builtin class-name">test</span> -n <span class="token string">"<span class="token variable">$&#123;ngx_module_link&#125;</span>"</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token assign-left variable">ngx_module_type</span><span class="token operator">=</span>HTTP
+    <span class="token assign-left variable">ngx_module_name</span><span class="token operator">=</span><span class="token variable">$ngx_addon_name</span>
+    <span class="token assign-left variable">ngx_module_incs</span><span class="token operator">=</span><span class="token string">"/usr/local/include"</span>
+    <span class="token assign-left variable">ngx_module_libs</span><span class="token operator">=</span><span class="token string">"-lfastcommon -lfdfsclient"</span>
+    <span class="token assign-left variable">ngx_module_srcs</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$ngx_addon_dir</span>/ngx_http_fastdfs_module.c"</span>
+    <span class="token assign-left variable">ngx_module_deps</span><span class="token operator">=</span>
+    <span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$CFLAGS</span> -D_FILE_OFFSET_BITS=64 -DFDFS_OUTPUT_CHUNK_SIZE='256*1024' -DFDFS_MOD_CONF_FILENAME='<span class="token entity" title="\&quot;">\"</span>/etc/fdfs/mod_fastdfs.conf<span class="token entity" title="\&quot;">\"</span>'"</span>
+    <span class="token builtin class-name">.</span> auto/module
+<span class="token keyword">else</span>
+    <span class="token assign-left variable">HTTP_MODULES</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$HTTP_MODULES</span> ngx_http_fastdfs_module"</span>
+    <span class="token assign-left variable">NGX_ADDON_SRCS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$NGX_ADDON_SRCS</span> <span class="token variable">$ngx_addon_dir</span>/ngx_http_fastdfs_module.c"</span>
+    <span class="token assign-left variable">CORE_INCS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$CORE_INCS</span> /usr/local/include/fastdfs /usr/include/fastcommon/"</span>
+    <span class="token assign-left variable">CORE_LIBS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$CORE_LIBS</span> -lfastcommon -lfdfsclient"</span>
+    <span class="token assign-left variable">CFLAGS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$CFLAGS</span> -D_FILE_OFFSET_BITS=64 -DFDFS_OUTPUT_CHUNK_SIZE='256*1024' -DFDFS_MOD_CONF_FILENAME='<span class="token entity" title="\&quot;">\"</span>/etc/fdfs/mod_fastdfs.conf<span class="token entity" title="\&quot;">\"</span>'"</span>
+<span class="token keyword">fi</span>
 
-如果没有修改则改为：CORE_INCS=&quot;$CORE_INCS /usr/include/fastdfs&quot;
-</code></pre>
+如果没有修改则改为：CORE_INCS<span class="token operator">=</span><span class="token string">"<span class="token variable">$CORE_INCS</span> /usr/include/fastdfs"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>安装 nginx 需要的依赖</p>
-<pre><code class="shell">yum install -y gcc gcc-c++ make automake autoconf libtool pcre pcre-develzlib zlib-devel openssl openssl-devel
-</code></pre>
-<p>将<code>fastdfs-nginx-module</code>模块加入到 nginx 并编译安装：</p>
-<pre><code class="shell">在nginx文件夹下：
-./configure \
---prefix=/usr/local/nginx \
---pid-path=/var/run/nginx/nginx.pid \
---lock-path=/var/lock/nginx.lock \
---error-log-path=/var/log/nginx/error.log \
---http-log-path=/var/log/nginx/access.log \
---with-http_gzip_static_module \
---http-client-body-temp-path=/var/temp/nginx/client \
---http-proxy-temp-path=/var/temp/nginx/proxy \
---http-fastcgi-temp-path=/var/temp/nginx/fastcgi \
---http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
---http-scgi-temp-path=/var/temp/nginx/scgi \
---add-module=/usr/local/fastdfs/fastdfs-nginx-module-1.22/src
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum <span class="token function">install</span> -y gcc gcc-c++ <span class="token function">make</span> automake autoconf libtool pcre pcre-develzlib zlib-devel openssl openssl-devel<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-make 
-make install
-</code></pre>
+<p>将<code>fastdfs-nginx-module</code>模块加入到 nginx 并编译安装：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">在nginx文件夹下：
+./configure <span class="token punctuation">\</span>
+--prefix<span class="token operator">=</span>/usr/local/nginx <span class="token punctuation">\</span>
+--pid-path<span class="token operator">=</span>/var/run/nginx/nginx.pid <span class="token punctuation">\</span>
+--lock-path<span class="token operator">=</span>/var/lock/nginx.lock <span class="token punctuation">\</span>
+--error-log-path<span class="token operator">=</span>/var/log/nginx/error.log <span class="token punctuation">\</span>
+--http-log-path<span class="token operator">=</span>/var/log/nginx/access.log <span class="token punctuation">\</span>
+--with-http_gzip_static_module <span class="token punctuation">\</span>
+--http-client-body-temp-path<span class="token operator">=</span>/var/temp/nginx/client <span class="token punctuation">\</span>
+--http-proxy-temp-path<span class="token operator">=</span>/var/temp/nginx/proxy <span class="token punctuation">\</span>
+--http-fastcgi-temp-path<span class="token operator">=</span>/var/temp/nginx/fastcgi <span class="token punctuation">\</span>
+--http-uwsgi-temp-path<span class="token operator">=</span>/var/temp/nginx/uwsgi <span class="token punctuation">\</span>
+--http-scgi-temp-path<span class="token operator">=</span>/var/temp/nginx/scgi <span class="token punctuation">\</span>
+--add-module<span class="token operator">=</span>/usr/local/fastdfs/fastdfs-nginx-module-1.22/src
+
+<span class="token function">make</span> 
+<span class="token function">make</span> <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>提供FastDFS需要的HTTP配置文件</p>
 <p>复制FastDFS安装包种的两个配置文件（<code>http.conf</code>和<code>mime.types</code>）到<code>etc/fdfs</code>目录下</p>
-<pre><code class="shell">[root@localhost fdfs]# cp /usr/local/fastdfs/fastdfs-6.06/conf/http.conf /etc/fdfs/
-[root@localhost fdfs]# cp /usr/local/fastdfs/fastdfs-6.06/conf/mine.types /etc/fdfs/
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># cp /usr/local/fastdfs/fastdfs-6.06/conf/http.conf /etc/fdfs/</span>
+<span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># cp /usr/local/fastdfs/fastdfs-6.06/conf/mine.types /etc/fdfs/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>创建nginx需要的软链接</p>
-<pre><code class="shell">[root@localhost fdfs]# ln -s /usr/local/lib64/libfdfsclient.so /usr/lib64/libfdfsclient.so
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># ln -s /usr/local/lib64/libfdfsclient.so /usr/lib64/libfdfsclient.so</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>nginx启动后，会默认的<code>/usr/lib64</code>目录下寻找需要的so文件。如果在安装FastDFS时，修改了<code>make.sh</code>文件中的<code>TARGET_PREFIX</code>参数则必须创建此软链接</p>
 <p>创建网络访问存储服务的软连接</p>
-<pre><code class="shell">[root@localhost fdfs]# ln -s /fastdfs/storage/store/data /fastdfs/storage/store/data/M00
-</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@localhost fdfs<span class="token punctuation">]</span><span class="token comment"># ln -s /fastdfs/storage/store/data /fastdfs/storage/store/data/M00</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>修改nginx的配置文件：</p>
-<pre><code class="conf">user  root;
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf">user  root;
 # worker_processes  1;
 
-#error_log  logs/error.log;
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
+#error_log  logs&#x2F;error.log;
+#error_log  logs&#x2F;error.log  notice;
+#error_log  logs&#x2F;error.log  info;
 
-#pid        logs/nginx.pid;
+#pid        logs&#x2F;nginx.pid;
 
 
 events &#123;
@@ -1321,13 +1328,13 @@ events &#123;
 
 http &#123;
     include       mime.types;
-    default_type  application/octet-stream;
+    default_type  application&#x2F;octet-stream;
 
     #log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
     #                  &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
     #                  &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
 
-    #access_log  logs/access.log  main;
+    #access_log  logs&#x2F;access.log  main;
 
     sendfile        on;
     #tcp_nopush     on;
@@ -1341,28 +1348,28 @@ http &#123;
         listen       8888;
         server_name  localhost;
 
-        location / &#123;
+        location &#x2F; &#123;
             root   html;
             index  index.html index.htm;
         &#125;
 
-        location ~/group[0-9]/M00 &#123;
+        location ~&#x2F;group[0-9]&#x2F;M00 &#123;
             ngx_fastdfs_module;
         &#125;
 
-        #error_page  404              /404.html;
+        #error_page  404              &#x2F;404.html;
 
-        # redirect server error pages to the static page /50x.html
+        # redirect server error pages to the static page &#x2F;50x.html
         #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html &#123;
+        error_page   500 502 503 504  &#x2F;50x.html;
+        location &#x3D; &#x2F;50x.html &#123;
             root   html;
         &#125;
 
         # proxy the PHP scripts to Apache listening on 127.0.0.1:80
         #
         #location ~ \.php$ &#123;
-        #    proxy_pass   http://127.0.0.1;
+        #    proxy_pass   http:&#x2F;&#x2F;127.0.0.1;
         #&#125;
 
         # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
@@ -1371,14 +1378,14 @@ http &#123;
         #    root           html;
         #    fastcgi_pass   127.0.0.1:9000;
         #    fastcgi_index  index.php;
-        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    fastcgi_param  SCRIPT_FILENAME  &#x2F;scripts$fastcgi_script_name;
         #    include        fastcgi_params;
         #&#125;
 
         # deny access to .htaccess files, if Apache&#39;s document root
         # concurs with nginx&#39;s one
         #
-        #location ~ /\.ht &#123;
+        #location ~ &#x2F;\.ht &#123;
         #    deny  all;
         #&#125;
     &#125;
@@ -1391,7 +1398,7 @@ http &#123;
     #    listen       somename:8080;
     #    server_name  somename  alias  another.alias;
 
-    #    location / &#123;
+    #    location &#x2F; &#123;
     #        root   html;
     #        index  index.html index.htm;
     #    &#125;
@@ -1413,26 +1420,26 @@ http &#123;
     #    ssl_ciphers  HIGH:!aNULL:!MD5;
     #    ssl_prefer_server_ciphers  on;
 
-    #    location / &#123;
+    #    location &#x2F; &#123;
     #        root   html;
     #        index  index.html index.htm;
     #    &#125;
     #&#125;
 
-&#125;
-</code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>再启动nginx就可以通过nginx访问FastDFS中的文件了</p>
 <h1 id="使用Java-API来控制FastDFS文件存储"><a href="#使用Java-API来控制FastDFS文件存储" class="headerlink" title="使用Java API来控制FastDFS文件存储"></a>使用Java API来控制FastDFS文件存储</h1><h2 id="FastDFS-Client使用方式"><a href="#FastDFS-Client使用方式" class="headerlink" title="FastDFS-Client使用方式"></a>FastDFS-Client使用方式</h2><p>在项目Pom当中加入依赖，Maven依赖为</p>
-<pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;com.github.tobato&lt;/groupId&gt;
-    &lt;artifactId&gt;fastdfs-client&lt;/artifactId&gt;
-    &lt;version&gt;1.27.2&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>com.github.tobato<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>fastdfs-client<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>1.27.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>在application.yml当中配置Fdfs相关参数</p>
-<pre><code># ===================================================================
+<pre class="line-numbers language-none"><code class="language-none"># &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
 # 分布式文件系统FDFS配置
-# ===================================================================
+# &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
 fdfs:
   so-timeout: 1501
   connect-timeout: 601 
@@ -1441,8 +1448,8 @@ fdfs:
     height: 150
   tracker-list:            #TrackerList参数,支持多个
     - 192.168.1.105:22122
-    - 192.168.1.106:22122 
-</code></pre>
+    - 192.168.1.106:22122 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>连接池的管理参数</p>
 <p>应用启动后拥有两个连接池管理对象:</p>
 <ul>
@@ -1450,7 +1457,7 @@ fdfs:
 <li>Storage连接池(<code>FdfsConnectionManager</code>)</li>
 </ul>
 <p>必要的时候可以注入这两个对象，跟踪打印并分析连接池的情况，两个连接池的参数配置一致，可参考 ConnectionPoolConfig 与 apache.pool2 进行优化配置，默认配置为</p>
-<pre><code>fdfs:
+<pre class="line-numbers language-none"><code class="language-none">fdfs:
    ..其他配置信息..
   pool:
     #从池中借出的对象的最大数目（配置为-1表示不限制）
@@ -1462,15 +1469,19 @@ fdfs:
     #每个key对应的连接池最大空闲连接数
     max-idle-per-key: 10
     #每个key对应的连接池最小空闲连接数
-    min-idle-per-key: 5
-</code></pre>
+    min-idle-per-key: 5<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>注意: key配置的是连接服务端的地址(IP+端口)连接情况，如果有连接不够用的情况可以调整以上参数</strong></p>
 <p>使用接口服务对 FastDFS 服务端进行操作，主要接口包括</p>
-<pre><code>1. TrackerClient - TrackerServer接口
+<pre class="line-numbers language-none"><code class="language-none">1. TrackerClient - TrackerServer接口
 2. GenerateStorageClient - 一般文件存储接口 (StorageServer接口)
 3. FastFileStorageClient - 为方便项目开发集成的简单接口(StorageServer接口)
-4. AppendFileStorageClient - 支持文件续传操作的接口 (StorageServer接口)
-</code></pre>
+4. AppendFileStorageClient - 支持文件续传操作的接口 (StorageServer接口)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
 <blockquote>
 <p>参考：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qiuhom-1874/p/12366808.html">https://www.cnblogs.com/qiuhom-1874/p/12366808.html</a><br>配置参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/ajsfo/article/details/6106438">https://blog.csdn.net/ajsfo/article/details/6106438</a><br>实现图床的思路：<a target="_blank" rel="noopener" href="https://blog.csdn.net/W_Meng_H/article/details/85402879">https://blog.csdn.net/W_Meng_H/article/details/85402879</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhoujian_Liu/article/details/80840269">https://blog.csdn.net/zhoujian_Liu/article/details/80840269</a><br>集群部署：<a target="_blank" rel="noopener" href="https://blog.csdn.net/xifeijian/article/details/38568521">https://blog.csdn.net/xifeijian/article/details/38568521</a></p>
@@ -1683,7 +1694,7 @@ fdfs:
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

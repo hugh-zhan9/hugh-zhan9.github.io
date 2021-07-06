@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-22T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.203Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,14 +295,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -328,518 +328,518 @@
 </ul>
 <h1 id="管道通信示例"><a href="#管道通信示例" class="headerlink" title="管道通信示例"></a>管道通信示例</h1><p>下面，我们看看多线程中通过管道通信的例子。例子中包括3个类：Receiver.java, PipedStreamTest.java 和 Sender.java。</p>
 <p>Receiver.java 代码</p>
-<pre><code class="java">import java.io.IOException;   
-import java.io.PipedInputStream;   
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>   
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PipedInputStream</span><span class="token punctuation">;</span>   
 
-@SuppressWarnings(&quot;all&quot;)   
-/**  
+<span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"all"</span><span class="token punctuation">)</span>   
+<span class="token comment">/**  
  * 接收者线程  
- */   
-public class Receiver extends Thread &#123;
+ */</span>   
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Receiver</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">&#123;</span>
 
-    // 管道输入流对象。
-    // 它和管道输出流(PipedOutputStream)对象绑定，
-    // 从而可以接收“管道输出流”的数据，再让用户读取。
-    private PipedInputStream in = new PipedInputStream();   
+    <span class="token comment">// 管道输入流对象。</span>
+    <span class="token comment">// 它和管道输出流(PipedOutputStream)对象绑定，</span>
+    <span class="token comment">// 从而可以接收“管道输出流”的数据，再让用户读取。</span>
+    <span class="token keyword">private</span> <span class="token class-name">PipedInputStream</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PipedInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
 
-    // 获得管道输入流对象
-    public PipedInputStream getInputStream()&#123;   
-        return in;   
-    &#125;   
+    <span class="token comment">// 获得管道输入流对象</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedInputStream</span> <span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>   
+        <span class="token keyword">return</span> in<span class="token punctuation">;</span>   
+    <span class="token punctuation">&#125;</span>   
 
-    @Override
-    public void run()&#123;   
-        readMessageOnce();
-        //readMessageContinued();
-    &#125;
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>   
+        <span class="token function">readMessageOnce</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//readMessageContinued();</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 从管道输入流中读取1次数据
-    public void readMessageOnce()&#123;
-        // 虽然buf的大小是2048个字节，但最多只会从管道输入流中读取1024个字节。
-        // 因为，管道输入流的缓冲区大小默认只有1024个字节。
-        byte[] buf = new byte[2048];
-        try &#123;
-            int len = in.read(buf);
-            System.out.println(new String(buf,0,len));
-            in.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-    // 从管道输入流读取&gt;1024个字节时，就停止读取
-    public void readMessageContinued() &#123;
-        int total=0;
-        while(true) &#123;
-            byte[] buf = new byte[1024];
-            try &#123;
-                int len = in.read(buf);
-                total += len;
-                System.out.println(new String(buf,0,len));
-                // 若读取的字节总数&gt;1024，则退出循环。
-                if (total &gt; 1024)
-                    break;
-            &#125; catch (IOException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
+    <span class="token comment">// 从管道输入流中读取1次数据</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">readMessageOnce</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token comment">// 虽然buf的大小是2048个字节，但最多只会从管道输入流中读取1024个字节。</span>
+        <span class="token comment">// 因为，管道输入流的缓冲区大小默认只有1024个字节。</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token number">2048</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">int</span> len <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 从管道输入流读取>1024个字节时，就停止读取</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">readMessageContinued</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> total<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">int</span> len <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                total <span class="token operator">+=</span> len<span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment">// 若读取的字节总数>1024，则退出循环。</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>total <span class="token operator">></span> <span class="token number">1024</span><span class="token punctuation">)</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-        try &#123;
-            in.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>Sender.java 代码</p>
-<pre><code class="java">import java.io.IOException;   
-import java.io.PipedOutputStream;   
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>   
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PipedOutputStream</span><span class="token punctuation">;</span>   
 
-@SuppressWarnings(&quot;all&quot;)
-/**  
+<span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"all"</span><span class="token punctuation">)</span>
+<span class="token comment">/**  
  * 发送者线程  
- */   
-public class Sender extends Thread &#123;
+ */</span>   
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Sender</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">&#123;</span>
 
-    // 管道输出流对象。
-    // 和管道输入流(PipedInputStream)对象绑定，
-    // 从而可以将数据发送给管道输入流的数据，然后用户可以从管道输入流读取数据。
-    private PipedOutputStream out = new PipedOutputStream();
+    <span class="token comment">// 管道输出流对象。</span>
+    <span class="token comment">// 和管道输入流(PipedInputStream)对象绑定，</span>
+    <span class="token comment">// 从而可以将数据发送给管道输入流的数据，然后用户可以从管道输入流读取数据。</span>
+    <span class="token keyword">private</span> <span class="token class-name">PipedOutputStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PipedOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    // 获得管道输出流对象
-    public PipedOutputStream getOutputStream()&#123;
-        return out;
-    &#125;   
+    <span class="token comment">// 获得管道输出流对象</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedOutputStream</span> <span class="token function">getOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> out<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>   
 
-    @Override
-    public void run()&#123;   
-        writeShortMessage();
-        //writeLongMessage();
-    &#125;   
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>   
+        <span class="token function">writeShortMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//writeLongMessage();</span>
+    <span class="token punctuation">&#125;</span>   
 
-    // 向管道输出流中写入一则较简短的消息：&quot;this is a short message&quot; 
-    private void writeShortMessage() &#123;
-        String strInfo = &quot;this is a short message&quot; ;
-        try &#123;
-            out.write(strInfo.getBytes());
-            out.close();   
-        &#125; catch (IOException e) &#123;   
-            e.printStackTrace();   
-        &#125;   
-    &#125;
-    // 向管道输出流中写入一则较长的消息
-    private void writeLongMessage() &#123;
-        StringBuilder sb = new StringBuilder();
-        // 通过for循环写入1020个字节
-        for (int i=0; i&lt;102; i++)
-            sb.append(&quot;0123456789&quot;);
-        // 再写入26个字节。
-        sb.append(&quot;abcdefghijklmnopqrstuvwxyz&quot;);
-        // str的总长度是1020+26=1046个字节
-        String str = sb.toString();
-        try &#123;
-            // 将1046个字节写入到管道输出流中
-            out.write(str.getBytes());
-            out.close();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+    <span class="token comment">// 向管道输出流中写入一则较简短的消息："this is a short message" </span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">writeShortMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> strInfo <span class="token operator">=</span> <span class="token string">"this is a short message"</span> <span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>strInfo<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>   
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
+        <span class="token punctuation">&#125;</span>   
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 向管道输出流中写入一则较长的消息</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">writeLongMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">StringBuilder</span> sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 通过for循环写入1020个字节</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">102</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+            sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"0123456789"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 再写入26个字节。</span>
+        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"abcdefghijklmnopqrstuvwxyz"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// str的总长度是1020+26=1046个字节</span>
+        <span class="token class-name">String</span> str <span class="token operator">=</span> sb<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 将1046个字节写入到管道输出流中</span>
+            out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>str<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>PipedStreamTest 代码</p>
-<pre><code class="java">import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.IOException;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PipedInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PipedOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
 
-@SuppressWarnings(&quot;all&quot;)   
-/**  
+<span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"all"</span><span class="token punctuation">)</span>   
+<span class="token comment">/**  
  * 管道输入流和管道输出流的交互程序
- */   
-public class PipedStreamTest &#123;
+ */</span>   
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PipedStreamTest</span> <span class="token punctuation">&#123;</span>
 
-    public static void main(String[] args) &#123;   
-        Sender t1 = new Sender();   
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>   
+        <span class="token class-name">Sender</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Sender</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
 
-        Receiver t2 = new Receiver();   
+        <span class="token class-name">Receiver</span> t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Receiver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
 
-        PipedOutputStream out = t1.getOutputStream();   
+        <span class="token class-name">PipedOutputStream</span> out <span class="token operator">=</span> t1<span class="token punctuation">.</span><span class="token function">getOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
 
-        PipedInputStream in = t2.getInputStream();   
+        <span class="token class-name">PipedInputStream</span> in <span class="token operator">=</span> t2<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
 
-        try &#123;   
-            //管道连接。下面2句话的本质是一样。
-            //out.connect(in);   
-            in.connect(out);   
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>   
+            <span class="token comment">//管道连接。下面2句话的本质是一样。</span>
+            <span class="token comment">//out.connect(in);   </span>
+            in<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>out<span class="token punctuation">)</span><span class="token punctuation">;</span>   
 
-            /**  
+            <span class="token comment">/**  
              * Thread类的START方法：  
              * 使该线程开始执行；Java 虚拟机调用该线程的 run 方法。   
              * 结果是两个线程并发地运行。当前线程（从调用返回给 start 方法）和另一个线程（执行其 run 方法）。   
              * 多次启动一个线程是非法的。特别是当线程已经结束执行后，不能再重新启动。   
-             */
-            t1.start();
-            t2.start();
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<h1 id="PipedOutputStream-源码分析"><a href="#PipedOutputStream-源码分析" class="headerlink" title="PipedOutputStream 源码分析"></a>PipedOutputStream 源码分析</h1><pre><code class="java">package java.io;
-import java.io.*;
+             */</span>
+            t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="PipedOutputStream-源码分析"><a href="#PipedOutputStream-源码分析" class="headerlink" title="PipedOutputStream 源码分析"></a>PipedOutputStream 源码分析</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">java<span class="token punctuation">.</span>io</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
 
 
-public class PipedOutputStream extends OutputStream &#123;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PipedOutputStream</span> <span class="token keyword">extends</span> <span class="token class-name">OutputStream</span> <span class="token punctuation">&#123;</span>
 
-    // 与PipedInputStream通信的PipedInputStream对象
-    private PipedInputStream sink;
+    <span class="token comment">// 与PipedInputStream通信的PipedInputStream对象</span>
+    <span class="token keyword">private</span> <span class="token class-name">PipedInputStream</span> sink<span class="token punctuation">;</span>
 
-    // 构造函数，指定配对的PipedInputStream
-    public PipedOutputStream(PipedInputStream snk)  throws IOException &#123;
-        connect(snk);
-    &#125;
+    <span class="token comment">// 构造函数，指定配对的PipedInputStream</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedOutputStream</span><span class="token punctuation">(</span><span class="token class-name">PipedInputStream</span> snk<span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">connect</span><span class="token punctuation">(</span>snk<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    // 构造函数
-    public PipedOutputStream() &#123;
-    &#125;
+    <span class="token comment">// 构造函数</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 将管道输出流和管道输入流连接
-    public synchronized void connect(PipedInputStream snk) throws IOException &#123;
-        if (snk == null) &#123;
-            throw new NullPointerException();
-        &#125; else if (sink != null || snk.connected) &#123;
-            throw new IOException(&quot;Already connected&quot;);
-        &#125;
-        // 设置管道输入流
-        sink = snk;
-        // 初始化管道输入流的读写位置
-        // int是PipedInputStream中定义的，代表管道输入流的读写位置
-        snk.in = -1;
-        // 初始化管道输出流的读写位置
-        // out是PipedInputStream中定义的，代表管道输出流的读写位置
-        snk.out = 0;
-        // 设置管道输入流和管道输出流为已连接状态
-        // connected是PipedInputStream中定义的，用于表示管道输入流与管道输出流是否已经连接
-        snk.connected = true;
-    &#125;
+    <span class="token comment">// 将管道输出流和管道输入流连接</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token class-name">PipedInputStream</span> snk<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>snk <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NullPointerException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>sink <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">||</span> snk<span class="token punctuation">.</span>connected<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Already connected"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 设置管道输入流</span>
+        sink <span class="token operator">=</span> snk<span class="token punctuation">;</span>
+        <span class="token comment">// 初始化管道输入流的读写位置</span>
+        <span class="token comment">// int是PipedInputStream中定义的，代表管道输入流的读写位置</span>
+        snk<span class="token punctuation">.</span>in <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token comment">// 初始化管道输出流的读写位置</span>
+        <span class="token comment">// out是PipedInputStream中定义的，代表管道输出流的读写位置</span>
+        snk<span class="token punctuation">.</span>out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token comment">// 设置管道输入流和管道输出流为已连接状态</span>
+        <span class="token comment">// connected是PipedInputStream中定义的，用于表示管道输入流与管道输出流是否已经连接</span>
+        snk<span class="token punctuation">.</span>connected <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 将int类型b写入管道输出流中
-    // 将b写入管道输出流之后，它会将b传输给管道输入流
-    public void write(int b)  throws IOException &#123;
-        if (sink == null) &#123;
-            throw new IOException(&quot;Pipe not connected&quot;);
-        &#125;
-        sink.receive(b);
-    &#125;
+    <span class="token comment">// 将int类型b写入管道输出流中</span>
+    <span class="token comment">// 将b写入管道输出流之后，它会将b传输给管道输入流</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">int</span> b<span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>sink <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe not connected"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        sink<span class="token punctuation">.</span><span class="token function">receive</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 将字节数组b写入管道输出流中
-    // 将数组b写入管道输出流之后，它将会将其传输给管道输入流
-    public void write(byte b[], int off, int len) throws IOException &#123;
-        if (sink == null) &#123;
-            throw new IOException(&quot;Pipe not connected&quot;);
-        &#125; else if (b == null) &#123;
-            throw new NullPointerException();
-        &#125; else if ((off &lt; 0) || (off &gt; b.length) || (len &lt; 0) ||
-                   ((off + len) &gt; b.length) || ((off + len) &lt; 0)) &#123;
-            throw new IndexOutOfBoundsException();
-        &#125; else if (len == 0) &#123;
-            return;
-        &#125;
-        // 管道输入流接收数据
-        sink.receive(b, off, len);
-    &#125;
+    <span class="token comment">// 将字节数组b写入管道输出流中</span>
+    <span class="token comment">// 将数组b写入管道输出流之后，它将会将其传输给管道输入流</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>sink <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe not connected"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>b <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NullPointerException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>off <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">(</span>off <span class="token operator">></span> b<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">(</span>len <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">||</span>
+                   <span class="token punctuation">(</span><span class="token punctuation">(</span>off <span class="token operator">+</span> len<span class="token punctuation">)</span> <span class="token operator">></span> b<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>off <span class="token operator">+</span> len<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IndexOutOfBoundsException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 管道输入流接收数据</span>
+        sink<span class="token punctuation">.</span><span class="token function">receive</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> off<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 清空管道输出流
-    // 这里会调用管道输入流的notifAll()
-    // 目的是让管道输入流放弃对当前资源的占用，让其它等待线程(等待读取管道输出流的线程)读取管道输出流的值。
-    public synchronized void flush() throws IOException &#123;
-        if (sink != null) &#123;
-            synchronized (sink) &#123;
-                sink.notifyAll();
-            &#125;
-        &#125;
-    &#125;
+    <span class="token comment">// 清空管道输出流</span>
+    <span class="token comment">// 这里会调用管道输入流的notifAll()</span>
+    <span class="token comment">// 目的是让管道输入流放弃对当前资源的占用，让其它等待线程(等待读取管道输出流的线程)读取管道输出流的值。</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>sink <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>sink<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                sink<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 关闭管道输出流
-    // 关闭之后，会调用receivedLast()通知管道输入流它已经关闭
-    public void close()  throws IOException &#123;
-        if (sink != null) &#123;
-            sink.receivedLast();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<h1 id="PipedInputStream-源码解析"><a href="#PipedInputStream-源码解析" class="headerlink" title="PipedInputStream 源码解析"></a>PipedInputStream 源码解析</h1><pre><code class="java">package java.io;
+    <span class="token comment">// 关闭管道输出流</span>
+    <span class="token comment">// 关闭之后，会调用receivedLast()通知管道输入流它已经关闭</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>sink <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            sink<span class="token punctuation">.</span><span class="token function">receivedLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-public class PipedInputStream extends InputStream &#123;
-    // 管道输出流是否关闭的标记
-    boolean closedByWriter = false;
-    // 管道输入流是否关闭的标记
-    volatile boolean closedByReader = false;
-    // 管道输入流与管道输出流是否连接的标记
-    // 它在PipedOutputStream的connect()连接函数中被设置为true
-    boolean connected = false;
+<h1 id="PipedInputStream-源码解析"><a href="#PipedInputStream-源码解析" class="headerlink" title="PipedInputStream 源码解析"></a>PipedInputStream 源码解析</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">java<span class="token punctuation">.</span>io</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PipedInputStream</span> <span class="token keyword">extends</span> <span class="token class-name">InputStream</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 管道输出流是否关闭的标记</span>
+    <span class="token keyword">boolean</span> closedByWriter <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token comment">// 管道输入流是否关闭的标记</span>
+    <span class="token keyword">volatile</span> <span class="token keyword">boolean</span> closedByReader <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token comment">// 管道输入流与管道输出流是否连接的标记</span>
+    <span class="token comment">// 它在PipedOutputStream的connect()连接函数中被设置为true</span>
+    <span class="token keyword">boolean</span> connected <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
 
        
-    Thread readSide;    // 读取管道数据的线程
-    Thread writeSide;   // 向管道写入数据的线程
-    // 管道的默认大小
-    private static final int DEFAULT_PIPE_SIZE = 1024;
+    <span class="token class-name">Thread</span> readSide<span class="token punctuation">;</span>    <span class="token comment">// 读取管道数据的线程</span>
+    <span class="token class-name">Thread</span> writeSide<span class="token punctuation">;</span>   <span class="token comment">// 向管道写入数据的线程</span>
+	<span class="token comment">// 管道的默认大小</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> DEFAULT_PIPE_SIZE <span class="token operator">=</span> <span class="token number">1024</span><span class="token punctuation">;</span>
 
-    protected static final int PIPE_SIZE = DEFAULT_PIPE_SIZE;
+    <span class="token keyword">protected</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> PIPE_SIZE <span class="token operator">=</span> DEFAULT_PIPE_SIZE<span class="token punctuation">;</span>
    
-    // 缓冲区
-    protected byte buffer[];
+    <span class="token comment">// 缓冲区</span>
+    <span class="token keyword">protected</span> <span class="token keyword">byte</span> buffer<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
    
-    // 下一个写入字节的位置。in==out代表满，说明写入的数据全部被读取了
-    protected int in = -1;
-    // 下一个读取字节的位置。int==out代表满，说明写入的数据全部被读取了
-    protected int out = 0;
+    <span class="token comment">// 下一个写入字节的位置。in==out代表满，说明写入的数据全部被读取了</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> in <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token comment">// 下一个读取字节的位置。int==out代表满，说明写入的数据全部被读取了</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
    
-    // 构造函数：指定与管道输入流关联的管道输出流
-    public PipedInputStream(PipedOutputStream src) throws IOException &#123;
-        this(src, DEFAULT_PIPE_SIZE);
-    &#125;
+    <span class="token comment">// 构造函数：指定与管道输入流关联的管道输出流</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedInputStream</span><span class="token punctuation">(</span><span class="token class-name">PipedOutputStream</span> src<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> DEFAULT_PIPE_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造函数：指定与管道输入流关联的管道输出流，以及缓冲区大小
-    public PipedInputStream(PipedOutputStream src, int pipeSize)
-            throws IOException &#123;
-         initPipe(pipeSize);
-         connect(src);
-    &#125;
+    <span class="token comment">// 构造函数：指定与管道输入流关联的管道输出流，以及缓冲区大小</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedInputStream</span><span class="token punctuation">(</span><span class="token class-name">PipedOutputStream</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> pipeSize<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+         <span class="token function">initPipe</span><span class="token punctuation">(</span>pipeSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token function">connect</span><span class="token punctuation">(</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造函数：默认缓冲区大小是 1024字节
-    public PipedInputStream() &#123;
-        initPipe(DEFAULT_PIPE_SIZE);
-    &#125;
+    <span class="token comment">// 构造函数：默认缓冲区大小是 1024字节</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">initPipe</span><span class="token punctuation">(</span>DEFAULT_PIPE_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造函数：指定缓冲区大小是pipeSize
-    public PipedInputStream(int pipeSize) &#123;
-        initPipe(pipeSize);
-    &#125;
+    <span class="token comment">// 构造函数：指定缓冲区大小是pipeSize</span>
+    <span class="token keyword">public</span> <span class="token class-name">PipedInputStream</span><span class="token punctuation">(</span><span class="token keyword">int</span> pipeSize<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">initPipe</span><span class="token punctuation">(</span>pipeSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 初始化管道：新建缓冲区大小
-    private void initPipe(int pipeSize) &#123;
-         if (pipeSize &lt;= 0) &#123;
-            throw new IllegalArgumentException(&quot;Pipe Size &lt;= 0&quot;);
-         &#125;
-         buffer = new byte[pipeSize];
-    &#125;
+    <span class="token comment">// 初始化管道：新建缓冲区大小</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">initPipe</span><span class="token punctuation">(</span><span class="token keyword">int</span> pipeSize<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+         <span class="token keyword">if</span> <span class="token punctuation">(</span>pipeSize <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Pipe Size &lt;= 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">&#125;</span>
+         buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>pipeSize<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 将管道输入流和管道输出流绑定
-    public void connect(PipedOutputStream src) throws IOException &#123;
-        src.connect(this);
-    &#125;
+    <span class="token comment">// 将管道输入流和管道输出流绑定</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token class-name">PipedOutputStream</span> src<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        src<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 接收int类型的数据b
-    // 它只会在PipedOutputStream的write(int b)中会被调用
-    protected synchronized void receive(int b) throws IOException &#123;
-        // 检查管道状态
-        checkStateForReceive();
-        // 获取写入管道的线程
-        writeSide = Thread.currentThread();
-        // 若写入管道的数据正好全部被读取完，则等待
-        if (in == out)
-            awaitSpace();
-        if (in &lt; 0) &#123;
-            in = 0;
-            out = 0;
-        &#125;
-        // 将b保存到缓冲区
-        buffer[in++] = (byte)(b &amp; 0xFF);
-        if (in &gt;= buffer.length) &#123;
-            in = 0;
-        &#125;
-    &#125;
+    <span class="token comment">// 接收int类型的数据b</span>
+    <span class="token comment">// 它只会在PipedOutputStream的write(int b)中会被调用</span>
+    <span class="token keyword">protected</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">receive</span><span class="token punctuation">(</span><span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 检查管道状态</span>
+        <span class="token function">checkStateForReceive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 获取写入管道的线程</span>
+        writeSide <span class="token operator">=</span> <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 若写入管道的数据正好全部被读取完，则等待</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span>
+            <span class="token function">awaitSpace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            in <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 将b保存到缓冲区</span>
+        buffer<span class="token punctuation">[</span>in<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span><span class="token punctuation">(</span>b <span class="token operator">&amp;</span> <span class="token number">0xFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            in <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 接收字节数组b
-    synchronized void receive(byte b[], int off, int len)  throws IOException &#123;
-        // 检查管道状态
-        checkStateForReceive();
-        // 获取写入管道的线程
-        writeSide = Thread.currentThread();
-        int bytesToTransfer = len;
-        while (bytesToTransfer &gt; 0) &#123;
-            // 若写入管道的数据正好全部被读取完，则等待
-            if (in == out)
-                awaitSpace();
-            int nextTransferAmount = 0;
-            // 如果管道中被读取的数据，少于写入管道的数据；
-            // 则设置 nextTransferAmount = buffer.length - in
-            if (out &lt; in) &#123;
-                nextTransferAmount = buffer.length - in;
-            &#125; else if (in &lt; out) &#123;   // 如果管道中被读取的数据，大于/等于写入管道的数据，则执行后面的操作
-                // 若in == -1(即管道的写入数据等于被读取数据)，此时nextTransferAmount = buffer.length -in
-                // 否则，nextTransferAmount = out - in
-                if (in == -1) &#123;
-                    in = out = 0;
-                    nextTransferAmount = buffer.length - in;
-                &#125; else &#123;
-                    nextTransferAmount = out - in;
-                &#125;
-            &#125;
-            if (nextTransferAmount &gt; bytesToTransfer)
-                nextTransferAmount = bytesToTransfer;
-            // 断言的作用是：若nextTransferAmount &lt;= 0, 则终止程序
-            assert(nextTransferAmount &gt; 0);
-            // 将数据写入到缓存中
-            System.arraycopy(b, off, buffer, in, nextTransferAmount);
-            bytesToTransfer -= nextTransferAmount;
-            off += nextTransferAmount;
-            in += nextTransferAmount;
-            if (in &gt;= buffer.length) &#123;
-                in = 0;
-            &#125;
-        &#125;
-    &#125;
+    <span class="token comment">// 接收字节数组b</span>
+    <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">receive</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 检查管道状态</span>
+        <span class="token function">checkStateForReceive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 获取写入管道的线程</span>
+        writeSide <span class="token operator">=</span> <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> bytesToTransfer <span class="token operator">=</span> len<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>bytesToTransfer <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 若写入管道的数据正好全部被读取完，则等待</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span>
+                <span class="token function">awaitSpace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> nextTransferAmount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token comment">// 如果管道中被读取的数据，少于写入管道的数据；</span>
+            <span class="token comment">// 则设置 nextTransferAmount = buffer.length - in</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>out <span class="token operator">&lt;</span> in<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                nextTransferAmount <span class="token operator">=</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> in<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">&lt;</span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>   <span class="token comment">// 如果管道中被读取的数据，大于/等于写入管道的数据，则执行后面的操作</span>
+                <span class="token comment">// 若in == -1(即管道的写入数据等于被读取数据)，此时nextTransferAmount = buffer.length -in</span>
+                <span class="token comment">// 否则，nextTransferAmount = out - in</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    in <span class="token operator">=</span> out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                    nextTransferAmount <span class="token operator">=</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> in<span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                    nextTransferAmount <span class="token operator">=</span> out <span class="token operator">-</span> in<span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>nextTransferAmount <span class="token operator">></span> bytesToTransfer<span class="token punctuation">)</span>
+                nextTransferAmount <span class="token operator">=</span> bytesToTransfer<span class="token punctuation">;</span>
+            <span class="token comment">// 断言的作用是：若nextTransferAmount &lt;= 0, 则终止程序</span>
+            <span class="token keyword">assert</span><span class="token punctuation">(</span>nextTransferAmount <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 将数据写入到缓存中</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> off<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> in<span class="token punctuation">,</span> nextTransferAmount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            bytesToTransfer <span class="token operator">-=</span> nextTransferAmount<span class="token punctuation">;</span>
+            off <span class="token operator">+=</span> nextTransferAmount<span class="token punctuation">;</span>
+            in <span class="token operator">+=</span> nextTransferAmount<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                in <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 检查管道状态
-    private void checkStateForReceive() throws IOException &#123;
-        if (!connected) &#123;
-            throw new IOException(&quot;Pipe not connected&quot;);
-        &#125; else if (closedByWriter || closedByReader) &#123;
-            throw new IOException(&quot;Pipe closed&quot;);
-        &#125; else if (readSide != null &amp;&amp; !readSide.isAlive()) &#123;
-            throw new IOException(&quot;Read end dead&quot;);
-        &#125;
-    &#125;
+    <span class="token comment">// 检查管道状态</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">checkStateForReceive</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>connected<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe not connected"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>closedByWriter <span class="token operator">||</span> closedByReader<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>readSide <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>readSide<span class="token punctuation">.</span><span class="token function">isAlive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Read end dead"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 等待
-    // 若写入管道的数据正好全部被读取完(例如，管道缓冲满)，则执行awaitSpace()操作
-    // 它的目的是让读取管道的线程产生读取数据请求，从而才能继续地向管道中写入数据
-    private void awaitSpace() throws IOException &#123;
-        // 如果管道中被读取的数据，等于写入管道的数据时
-        // 则每隔1000ms检查管道状态，并唤醒管道操作。若有读取管道数据线程被阻塞，则唤醒该线程。
-        while (in == out) &#123;
-            checkStateForReceive();
+    <span class="token comment">// 等待</span>
+    <span class="token comment">// 若写入管道的数据正好全部被读取完(例如，管道缓冲满)，则执行awaitSpace()操作</span>
+    <span class="token comment">// 它的目的是让读取管道的线程产生读取数据请求，从而才能继续地向管道中写入数据</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">awaitSpace</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 如果管道中被读取的数据，等于写入管道的数据时</span>
+        <span class="token comment">// 则每隔1000ms检查管道状态，并唤醒管道操作。若有读取管道数据线程被阻塞，则唤醒该线程。</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">checkStateForReceive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            /* full: kick any waiting readers */
-            notifyAll();
-            try &#123;
-                wait(1000);
-            &#125; catch (InterruptedException ex) &#123;
-                throw new java.io.InterruptedIOException();
-            &#125;
-        &#125;
-    &#125;
+            <span class="token comment">/* full: kick any waiting readers */</span>
+            <span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> ex<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>InterruptedIOException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 当PipedOutputStream被关闭时，被调用
-    synchronized void receivedLast() &#123;
-        closedByWriter = true;
-        notifyAll();
-    &#125;
+    <span class="token comment">// 当PipedOutputStream被关闭时，被调用</span>
+    <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">receivedLast</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        closedByWriter <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 从管道(的缓冲)中读取一个字节，并将其转换成int类型
-    public synchronized int read()  throws IOException &#123;
-        if (!connected) &#123;
-            throw new IOException(&quot;Pipe not connected&quot;);
-        &#125; else if (closedByReader) &#123;
-            throw new IOException(&quot;Pipe closed&quot;);
-        &#125; else if (writeSide != null &amp;&amp; !writeSide.isAlive()
-                   &amp;&amp; !closedByWriter &amp;&amp; (in &lt; 0)) &#123;
-            throw new IOException(&quot;Write end dead&quot;);
-        &#125;
+    <span class="token comment">// 从管道(的缓冲)中读取一个字节，并将其转换成int类型</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>connected<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe not connected"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>closedByReader<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>writeSide <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>writeSide<span class="token punctuation">.</span><span class="token function">isAlive</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                   <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>closedByWriter <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>in <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Write end dead"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        readSide = Thread.currentThread();
-        int trials = 2;
-        while (in &lt; 0) &#123;
-            if (closedByWriter) &#123;
-                /* closed by writer, return EOF */
-                return -1;
-            &#125;
-            if ((writeSide != null) &amp;&amp; (!writeSide.isAlive()) &amp;&amp; (--trials &lt; 0)) &#123;
-                throw new IOException(&quot;Pipe broken&quot;);
-            &#125;
-            /* might be a writer waiting */
-            notifyAll();
-            try &#123;
-                wait(1000);
-            &#125; catch (InterruptedException ex) &#123;
-                throw new java.io.InterruptedIOException();
-            &#125;
-        &#125;
-        int ret = buffer[out++] &amp; 0xFF;
-        if (out &gt;= buffer.length) &#123;
-            out = 0;
-        &#125;
-        if (in == out) &#123;
-            /* now empty */
-            in = -1;
-        &#125;
+        readSide <span class="token operator">=</span> <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> trials <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>in <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>closedByWriter<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">/* closed by writer, return EOF */</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>writeSide <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token operator">!</span>writeSide<span class="token punctuation">.</span><span class="token function">isAlive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token operator">--</span>trials <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Pipe broken"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token comment">/* might be a writer waiting */</span>
+            <span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> ex<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>InterruptedIOException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">int</span> ret <span class="token operator">=</span> buffer<span class="token punctuation">[</span>out<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> <span class="token number">0xFF</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>out <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">/* now empty */</span>
+            in <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        return ret;
-    &#125;
+        <span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 从管道(的缓冲)中读取数据，并将其存入到数组b中
-    public synchronized int read(byte b[], int off, int len)  throws IOException &#123;
-        if (b == null) &#123;
-            throw new NullPointerException();
-        &#125; else if (off &lt; 0 || len &lt; 0 || len &gt; b.length - off) &#123;
-            throw new IndexOutOfBoundsException();
-        &#125; else if (len == 0) &#123;
-            return 0;
-        &#125;
+    <span class="token comment">// 从管道(的缓冲)中读取数据，并将其存入到数组b中</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>b <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NullPointerException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>off <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span> len <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span> len <span class="token operator">></span> b<span class="token punctuation">.</span>length <span class="token operator">-</span> off<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IndexOutOfBoundsException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        /* possibly wait on the first character */
-        int c = read();
-        if (c &lt; 0) &#123;
-            return -1;
-        &#125;
-        b[off] = (byte) c;
-        int rlen = 1;
-        while ((in &gt;= 0) &amp;&amp; (len &gt; 1)) &#123;
+        <span class="token comment">/* possibly wait on the first character */</span>
+        <span class="token keyword">int</span> c <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>c <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        b<span class="token punctuation">[</span>off<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span> c<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> rlen <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>in <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>len <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-            int available;
+            <span class="token keyword">int</span> available<span class="token punctuation">;</span>
 
-            if (in &gt; out) &#123;
-                available = Math.min((buffer.length - out), (in - out));
-            &#125; else &#123;
-                available = buffer.length - out;
-            &#125;
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">></span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                available <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span><span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> out<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>in <span class="token operator">-</span> out<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                available <span class="token operator">=</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> out<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
 
-            // A byte is read beforehand outside the loop
-            if (available &gt; (len - 1)) &#123;
-                available = len - 1;
-            &#125;
-            System.arraycopy(buffer, out, b, off + rlen, available);
-            out += available;
-            rlen += available;
-            len -= available;
+            <span class="token comment">// A byte is read beforehand outside the loop</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>available <span class="token operator">></span> <span class="token punctuation">(</span>len <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                available <span class="token operator">=</span> len <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> out<span class="token punctuation">,</span> b<span class="token punctuation">,</span> off <span class="token operator">+</span> rlen<span class="token punctuation">,</span> available<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out <span class="token operator">+=</span> available<span class="token punctuation">;</span>
+            rlen <span class="token operator">+=</span> available<span class="token punctuation">;</span>
+            len <span class="token operator">-=</span> available<span class="token punctuation">;</span>
 
-            if (out &gt;= buffer.length) &#123;
-                out = 0;
-            &#125;
-            if (in == out) &#123;
-                /* now empty */
-                in = -1;
-            &#125;
-        &#125;
-        return rlen;
-    &#125;
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>out <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                out <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">/* now empty */</span>
+                in <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> rlen<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 返回不受阻塞地从此输入流中读取地字节数
-    public synchronized int available() throws IOException &#123;
-        if(in &lt; 0)
-            return 0;
-        else if(in == out)
-            return buffer.length;
-        else if (in &gt; out)
-            return in - out;
-        else
-            return in + buffer.length - out;
-    &#125;
+    <span class="token comment">// 返回不受阻塞地从此输入流中读取地字节数</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>in <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>in <span class="token operator">==</span> out<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>in <span class="token operator">></span> out<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> in <span class="token operator">-</span> out<span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            <span class="token keyword">return</span> in <span class="token operator">+</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> out<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 关闭管道输入流
-    public void close()  throws IOException &#123;
-        closedByReader = true;
-        synchronized (this) &#123;
-            in = -1;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+    <span class="token comment">// 关闭管道输入流</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        closedByReader <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            in <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -864,12 +864,12 @@ public class PipedInputStream extends InputStream &#123;
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/22/Java-IO-BufferedWriter/" rel="prev" title="Java IO之 BufferedWriter详解">
-      <i class="fa fa-chevron-left"></i> Java IO之 BufferedWriter详解
+    <a href="/2020/07/22/Java-IO-CharArrayReader/" rel="prev" title="Java IO之 CharArrayReader详解">
+      <i class="fa fa-chevron-left"></i> Java IO之 CharArrayReader详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/22/Java-IO-CharArrayReader/" rel="next" title="Java IO之 CharArrayReader详解">
-      Java IO之 CharArrayReader详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/23/Java-IO-BufferedReader/" rel="next" title="Java IO之 BufferedReader详解">
+      Java IO之 BufferedReader详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -1047,7 +1047,7 @@ public class PipedInputStream extends InputStream &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

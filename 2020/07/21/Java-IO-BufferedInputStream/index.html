@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-21T20:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.199Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,7 +295,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>21k</span>
+              <span>20k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -321,468 +321,470 @@
 <p><code>BufferedInputStream</code>的作用是为另一个输入流添加一些功能，例如：提供缓存功能以及支持<code>mark()</code>标记和<code>reset()</code>重置方法。</p>
 <p><code>BufferedInputStream</code>的本质是通过一个内部缓冲区数组四线的。例如：在新建某输入流对应的<code>BufferedInputStream</code>后，当我们通过<code>read()</code>读取输入流的数据时，<code>BufferedInputStream</code>会将该输入流的数据分批地填入到缓冲区中。每当缓冲区中地数据被读完之后，输入流会再次填充数据缓冲区；如此反复，知道读完输入流数据位置。</p>
 <p><code>BufferedInputStream</code>函数列表</p>
-<pre><code class="java">// 构造方法
-BufferedInputStream(InputStream in)
-BufferedInputStream(InputStream in, int size)
-// 常用方法
-synchronized int      available()
-void                  close()
-synchronized void     mark(int readlimit)
-boolean               markSupported()
-synchronized int      read(byte[] buffer, int off, int len)
-synchronized int      read()
-synchronized void     reset()
-synchronized long     skip(long n)
-</code></pre>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre><code class="java">import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.lang.SecurityException;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 构造方法</span>
+<span class="token class-name">BufferedInputStream</span><span class="token punctuation">(</span><span class="token class-name">InputStream</span> in<span class="token punctuation">)</span>
+<span class="token class-name">BufferedInputStream</span><span class="token punctuation">(</span><span class="token class-name">InputStream</span> in<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span>
+<span class="token comment">// 常用方法</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">int</span>      <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">void</span>                  <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">void</span>     <span class="token function">mark</span><span class="token punctuation">(</span><span class="token keyword">int</span> readlimit<span class="token punctuation">)</span>
+<span class="token keyword">boolean</span>               <span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">int</span>      <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">void</span>     <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">synchronized</span> <span class="token keyword">long</span>     <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
-public class BufferedInputStreamTest &#123;
 
-    private static final int LEN = 5;
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">BufferedInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">File</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">InputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileNotFoundException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">SecurityException</span><span class="token punctuation">;</span>
 
-    public static void main(String[] args) &#123;
-        testBufferedInputStream() ;
-    &#125;
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BufferedInputStreamTest</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> LEN <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">testBufferedInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    private static void testBufferedInputStream() &#123;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testBufferedInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-        // 创建BufferedInputStream字节流，内容是ArrayLetters数组
-        try &#123;
-            File file = new File(&quot;bufferedinputstream.txt&quot;);
-            InputStream in = new BufferedInputStream(new FileInputStream(file), 512);
+        <span class="token comment">// 创建BufferedInputStream字节流，内容是ArrayLetters数组</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"bufferedinputstream.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">InputStream</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedInputStream</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">512</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 从字节流中读取5个字节。“abcde”，a对应0x61，b对应0x62，依次类推...
-            for (int i=0; i&lt;LEN; i++) &#123;
-                // 若能继续读取下一个字节，则读取下一个字节
-                if (in.available() &gt;= 0) &#123;
-                    // 读取“字节流的下一个字节”
-                    int tmp = in.read();
-                    System.out.printf(&quot;%d : 0x%s\n&quot;, i, Integer.toHexString(tmp));
-                &#125;
-            &#125;
+            <span class="token comment">// 从字节流中读取5个字节。“abcde”，a对应0x61，b对应0x62，依次类推...</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>LEN<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 若能继续读取下一个字节，则读取下一个字节</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>in<span class="token punctuation">.</span><span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token comment">// 读取“字节流的下一个字节”</span>
+                    <span class="token keyword">int</span> tmp <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d : 0x%s\n"</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">toHexString</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
 
-            // 若该字节流不支持标记功能，则直接退出
-            if (!in.markSupported()) &#123;
-                System.out.println(&quot;make not supported!&quot;);
-                return ;
-            &#125;
+            <span class="token comment">// 若该字节流不支持标记功能，则直接退出</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>in<span class="token punctuation">.</span><span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"make not supported!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
 
-            // 标记当前索引位置，即标记第6个位置的元素--“f”
-            // 1024对应marklimit
-            in.mark(1024);
+            <span class="token comment">// 标记当前索引位置，即标记第6个位置的元素--“f”</span>
+            <span class="token comment">// 1024对应marklimit</span>
+            in<span class="token punctuation">.</span><span class="token function">mark</span><span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 跳过22个字节。
-            in.skip(22);
+            <span class="token comment">// 跳过22个字节。</span>
+            in<span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span><span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 读取5个字节
-            byte[] buf = new byte[LEN];
-            in.read(buf, 0, LEN);
-            // 将buf转换为String字符串。
-            String str1 = new String(buf);
-            System.out.printf(&quot;str1=%s\n&quot;, str1);
+            <span class="token comment">// 读取5个字节</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>LEN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            in<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> LEN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 将buf转换为String字符串。</span>
+            <span class="token class-name">String</span> str1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"str1=%s\n"</span><span class="token punctuation">,</span> str1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // 重置输入流的索引为mark()所标记的位置，即重置到“f”处。
-            in.reset();
-            // 从重置后的字节流中读取5个字节到buf中。即读取“fghij”
-            in.read(buf, 0, LEN);
-            // 将buf转换为String字符串。
-            String str2 = new String(buf);
-            System.out.printf(&quot;str2=%s\n&quot;, str2);
+            <span class="token comment">// 重置输入流的索引为mark()所标记的位置，即重置到“f”处。</span>
+            in<span class="token punctuation">.</span><span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 从重置后的字节流中读取5个字节到buf中。即读取“fghij”</span>
+            in<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> LEN<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 将buf转换为String字符串。</span>
+            <span class="token class-name">String</span> str2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"str2=%s\n"</span><span class="token punctuation">,</span> str2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            in.close();
-       &#125; catch (FileNotFoundException e) &#123;
-           e.printStackTrace();
-       &#125; catch (SecurityException e) &#123;
-           e.printStackTrace();
-       &#125; catch (IOException e) &#123;
-           e.printStackTrace();
-       &#125;
-    &#125;
-&#125;
-</code></pre>
+            in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">FileNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">SecurityException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>程序中读取的<code>bufferedinputstream.txt</code>的内容如下：</p>
-<pre><code>abcdefghijklmnopqrstuvwxyz
+<pre class="line-numbers language-none"><code class="language-none">abcdefghijklmnopqrstuvwxyz
 0123456789
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-</code></pre>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>0 : 0x61
+<pre class="line-numbers language-none"><code class="language-none">0 : 0x61
 1 : 0x62
 2 : 0x63
 3 : 0x64
 4 : 0x65
-str1=01234
-str2=fghij
-</code></pre>
-<h1 id="BufferedInputStream-源码分析"><a href="#BufferedInputStream-源码分析" class="headerlink" title="BufferedInputStream 源码分析"></a>BufferedInputStream 源码分析</h1><pre><code class="java">package java.io;
+str1&#x3D;01234
+str2&#x3D;fghij<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-import jdk.internal.misc.Unsafe;
+<h1 id="BufferedInputStream-源码分析"><a href="#BufferedInputStream-源码分析" class="headerlink" title="BufferedInputStream 源码分析"></a>BufferedInputStream 源码分析</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">java<span class="token punctuation">.</span>io</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">jdk<span class="token punctuation">.</span>internal<span class="token punctuation">.</span>misc<span class="token punctuation">.</span></span><span class="token class-name">Unsafe</span><span class="token punctuation">;</span>
 
 
-public
-class BufferedInputStream extends FilterInputStream &#123;
+<span class="token keyword">public</span>
+<span class="token keyword">class</span> <span class="token class-name">BufferedInputStream</span> <span class="token keyword">extends</span> <span class="token class-name">FilterInputStream</span> <span class="token punctuation">&#123;</span>
 
-    private static int DEFAULT_BUFFER_SIZE = 8192;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> DEFAULT_BUFFER_SIZE <span class="token operator">=</span> <span class="token number">8192</span><span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * The maximum size of array to allocate.
      * Some VMs reserve some header words in an array.
      * Attempts to allocate larger arrays may result in
      * OutOfMemoryError: Requested array size exceeds VM limit
-     */
-    private static int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> MAX_BUFFER_SIZE <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span>MAX_VALUE <span class="token operator">-</span> <span class="token number">8</span><span class="token punctuation">;</span>
 
-    /**
-     * As this class is used early during bootstrap, it&#39;s motivated to use
+    <span class="token comment">/**
+     * As this class is used early during bootstrap, it's motivated to use
      * Unsafe.compareAndSetObject instead of AtomicReferenceFieldUpdater
      * (or VarHandles) to reduce dependencies and improve startup time.
-     */
-    private static final Unsafe U = Unsafe.getUnsafe();
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Unsafe</span> <span class="token class-name">U</span> <span class="token operator">=</span> <span class="token class-name">Unsafe</span><span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    private static final long BUF_OFFSET
-            = U.objectFieldOffset(BufferedInputStream.class, &quot;buf&quot;);
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> BUF_OFFSET
+            <span class="token operator">=</span> <span class="token class-name">U</span><span class="token punctuation">.</span><span class="token function">objectFieldOffset</span><span class="token punctuation">(</span><span class="token class-name">BufferedInputStream</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"buf"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * The internal buffer array where the data is stored. When necessary,
      * it may be replaced by another array of
      * a different size.
-     */
-    /*
+     */</span>
+    <span class="token comment">/*
      * We null this out with a CAS on close(), which is necessary since
      * closes can be asynchronous. We use nullness of buf[] as primary
-     * indicator that this stream is closed. (The &quot;in&quot; field is also
+     * indicator that this stream is closed. (The "in" field is also
      * nulled out on close.)
-     */
-    protected volatile byte[] buf;
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">volatile</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buf<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * The index one greater than the index of the last valid byte in
      * the buffer.
      * This value is always
-     * in the range &lt;code&gt;0&lt;/code&gt; through &lt;code&gt;buf.length&lt;/code&gt;;
-     * elements &lt;code&gt;buf[0]&lt;/code&gt;  through &lt;code&gt;buf[count-1]
-     * &lt;/code&gt;contain buffered input data obtained
+     * in the range &lt;code>0&lt;/code> through &lt;code>buf.length&lt;/code>;
+     * elements &lt;code>buf[0]&lt;/code>  through &lt;code>buf[count-1]
+     * &lt;/code>contain buffered input data obtained
      * from the underlying  input stream.
-     */
-    protected int count;
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * The current position in the buffer. This is the index of the next
-     * character to be read from the &lt;code&gt;buf&lt;/code&gt; array.
-     * &lt;p&gt;
-     * This value is always in the range &lt;code&gt;0&lt;/code&gt;
-     * through &lt;code&gt;count&lt;/code&gt;. If it is less
-     * than &lt;code&gt;count&lt;/code&gt;, then  &lt;code&gt;buf[pos]&lt;/code&gt;
+     * character to be read from the &lt;code>buf&lt;/code> array.
+     * &lt;p>
+     * This value is always in the range &lt;code>0&lt;/code>
+     * through &lt;code>count&lt;/code>. If it is less
+     * than &lt;code>count&lt;/code>, then  &lt;code>buf[pos]&lt;/code>
      * is the next byte to be supplied as input;
-     * if it is equal to &lt;code&gt;count&lt;/code&gt;, then
-     * the  next &lt;code&gt;read&lt;/code&gt; or &lt;code&gt;skip&lt;/code&gt;
+     * if it is equal to &lt;code>count&lt;/code>, then
+     * the  next &lt;code>read&lt;/code> or &lt;code>skip&lt;/code>
      * operation will require more bytes to be
      * read from the contained  input stream.
      *
      * @see     java.io.BufferedInputStream#buf
-     */
-    protected int pos;
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> pos<span class="token punctuation">;</span>
 
-    /**
-     * The value of the &lt;code&gt;pos&lt;/code&gt; field at the time the last
-     * &lt;code&gt;mark&lt;/code&gt; method was called.
-     * &lt;p&gt;
+    <span class="token comment">/**
+     * The value of the &lt;code>pos&lt;/code> field at the time the last
+     * &lt;code>mark&lt;/code> method was called.
+     * &lt;p>
      * This value is always
-     * in the range &lt;code&gt;-1&lt;/code&gt; through &lt;code&gt;pos&lt;/code&gt;.
+     * in the range &lt;code>-1&lt;/code> through &lt;code>pos&lt;/code>.
      * If there is no marked position in  the input
-     * stream, this field is &lt;code&gt;-1&lt;/code&gt;. If
+     * stream, this field is &lt;code>-1&lt;/code>. If
      * there is a marked position in the input
-     * stream,  then &lt;code&gt;buf[markpos]&lt;/code&gt;
+     * stream,  then &lt;code>buf[markpos]&lt;/code>
      * is the first byte to be supplied as input
-     * after a &lt;code&gt;reset&lt;/code&gt; operation. If
-     * &lt;code&gt;markpos&lt;/code&gt; is not &lt;code&gt;-1&lt;/code&gt;,
-     * then all bytes from positions &lt;code&gt;buf[markpos]&lt;/code&gt;
-     * through  &lt;code&gt;buf[pos-1]&lt;/code&gt; must remain
+     * after a &lt;code>reset&lt;/code> operation. If
+     * &lt;code>markpos&lt;/code> is not &lt;code>-1&lt;/code>,
+     * then all bytes from positions &lt;code>buf[markpos]&lt;/code>
+     * through  &lt;code>buf[pos-1]&lt;/code> must remain
      * in the buffer array (though they may be
      * moved to  another place in the buffer array,
      * with suitable adjustments to the values
-     * of &lt;code&gt;count&lt;/code&gt;,  &lt;code&gt;pos&lt;/code&gt;,
-     * and &lt;code&gt;markpos&lt;/code&gt;); they may not
+     * of &lt;code>count&lt;/code>,  &lt;code>pos&lt;/code>,
+     * and &lt;code>markpos&lt;/code>); they may not
      * be discarded unless and until the difference
-     * between &lt;code&gt;pos&lt;/code&gt; and &lt;code&gt;markpos&lt;/code&gt;
-     * exceeds &lt;code&gt;marklimit&lt;/code&gt;.
+     * between &lt;code>pos&lt;/code> and &lt;code>markpos&lt;/code>
+     * exceeds &lt;code>marklimit&lt;/code>.
      *
      * @see     java.io.BufferedInputStream#mark(int)
      * @see     java.io.BufferedInputStream#pos
-     */
-    protected int markpos = -1;
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> markpos <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * The maximum read ahead allowed after a call to the
-     * &lt;code&gt;mark&lt;/code&gt; method before subsequent calls to the
-     * &lt;code&gt;reset&lt;/code&gt; method fail.
-     * Whenever the difference between &lt;code&gt;pos&lt;/code&gt;
-     * and &lt;code&gt;markpos&lt;/code&gt; exceeds &lt;code&gt;marklimit&lt;/code&gt;,
+     * &lt;code>mark&lt;/code> method before subsequent calls to the
+     * &lt;code>reset&lt;/code> method fail.
+     * Whenever the difference between &lt;code>pos&lt;/code>
+     * and &lt;code>markpos&lt;/code> exceeds &lt;code>marklimit&lt;/code>,
      * then the  mark may be dropped by setting
-     * &lt;code&gt;markpos&lt;/code&gt; to &lt;code&gt;-1&lt;/code&gt;.
+     * &lt;code>markpos&lt;/code> to &lt;code>-1&lt;/code>.
      *
      * @see     java.io.BufferedInputStream#mark(int)
      * @see     java.io.BufferedInputStream#reset()
-     */
-    protected int marklimit;
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">int</span> marklimit<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment">/**
      * Check to make sure that underlying input stream has not been
      * nulled out due to close; if not return it;
-     */
-    private InputStream getInIfOpen() throws IOException &#123;
-        InputStream input = in;
-        if (input == null)
-            throw new IOException(&quot;Stream closed&quot;);
-        return input;
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token class-name">InputStream</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">InputStream</span> input <span class="token operator">=</span> in<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>input <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Stream closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> input<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * Check to make sure that buffer has not been nulled out due to
      * close; if not return it;
-     */
-    private byte[] getBufIfOpen() throws IOException &#123;
-        byte[] buffer = buf;
-        if (buffer == null)
-            throw new IOException(&quot;Stream closed&quot;);
-        return buffer;
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> buf<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>buffer <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Stream closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> buffer<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
-     * Creates a &lt;code&gt;BufferedInputStream&lt;/code&gt;
+    <span class="token comment">/**
+     * Creates a &lt;code>BufferedInputStream&lt;/code>
      * and saves its  argument, the input stream
-     * &lt;code&gt;in&lt;/code&gt;, for later use. An internal
-     * buffer array is created and  stored in &lt;code&gt;buf&lt;/code&gt;.
+     * &lt;code>in&lt;/code>, for later use. An internal
+     * buffer array is created and  stored in &lt;code>buf&lt;/code>.
      *
      * @param   in   the underlying input stream.
-     */
-    public BufferedInputStream(InputStream in) &#123;
-        this(in, DEFAULT_BUFFER_SIZE);
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">BufferedInputStream</span><span class="token punctuation">(</span><span class="token class-name">InputStream</span> in<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">(</span>in<span class="token punctuation">,</span> DEFAULT_BUFFER_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
-     * Creates a &lt;code&gt;BufferedInputStream&lt;/code&gt;
+    <span class="token comment">/**
+     * Creates a &lt;code>BufferedInputStream&lt;/code>
      * with the specified buffer size,
      * and saves its  argument, the input stream
-     * &lt;code&gt;in&lt;/code&gt;, for later use.  An internal
-     * buffer array of length  &lt;code&gt;size&lt;/code&gt;
-     * is created and stored in &lt;code&gt;buf&lt;/code&gt;.
+     * &lt;code>in&lt;/code>, for later use.  An internal
+     * buffer array of length  &lt;code>size&lt;/code>
+     * is created and stored in &lt;code>buf&lt;/code>.
      *
      * @param   in     the underlying input stream.
      * @param   size   the buffer size.
      * @exception IllegalArgumentException if &#123;@code size &lt;= 0&#125;.
-     */
-    public BufferedInputStream(InputStream in, int size) &#123;
-        super(in);
-        if (size &lt;= 0) &#123;
-            throw new IllegalArgumentException(&quot;Buffer size &lt;= 0&quot;);
-        &#125;
-        buf = new byte[size];
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">BufferedInputStream</span><span class="token punctuation">(</span><span class="token class-name">InputStream</span> in<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Buffer size &lt;= 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        buf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>size<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * Fills the buffer with more data, taking into account
      * shuffling and other tricks for dealing with marks.
      * Assumes that it is being called by a synchronized method.
      * This method also assumes that all data has already been read in,
-     * hence pos &gt; count.
-     */
-    private void fill() throws IOException &#123;
-        byte[] buffer = getBufIfOpen();
-        if (markpos &lt; 0)
-            pos = 0;            /* no mark: throw away the buffer */
-        else if (pos &gt;= buffer.length)  /* no room left in buffer */
-            if (markpos &gt; 0) &#123;  /* can throw away early part of the buffer */
-                int sz = pos - markpos;
-                System.arraycopy(buffer, markpos, buffer, 0, sz);
-                pos = sz;
-                markpos = 0;
-            &#125; else if (buffer.length &gt;= marklimit) &#123;
-                markpos = -1;   /* buffer got too big, invalidate mark */
-                pos = 0;        /* drop buffer contents */
-            &#125; else if (buffer.length &gt;= MAX_BUFFER_SIZE) &#123;
-                throw new OutOfMemoryError(&quot;Required array size too large&quot;);
-            &#125; else &#123;            /* grow buffer */
-                int nsz = (pos &lt;= MAX_BUFFER_SIZE - pos) ?
-                        pos * 2 : MAX_BUFFER_SIZE;
-                if (nsz &gt; marklimit)
-                    nsz = marklimit;
-                byte[] nbuf = new byte[nsz];
-                System.arraycopy(buffer, 0, nbuf, 0, pos);
-                if (!U.compareAndSetObject(this, BUF_OFFSET, buffer, nbuf)) &#123;
-                    // Can&#39;t replace buf if there was an async close.
-                    // Note: This would need to be changed if fill()
-                    // is ever made accessible to multiple threads.
-                    // But for now, the only way CAS can fail is via close.
-                    // assert buf == null;
-                    throw new IOException(&quot;Stream closed&quot;);
-                &#125;
-                buffer = nbuf;
-            &#125;
-        count = pos;
-        int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-        if (n &gt; 0)
-            count = n + pos;
-    &#125;
+     * hence pos > count.
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>            <span class="token comment">/* no mark: throw away the buffer */</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>pos <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span>  <span class="token comment">/* no room left in buffer */</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  <span class="token comment">/* can throw away early part of the buffer */</span>
+                <span class="token keyword">int</span> sz <span class="token operator">=</span> pos <span class="token operator">-</span> markpos<span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> markpos<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sz<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                pos <span class="token operator">=</span> sz<span class="token punctuation">;</span>
+                markpos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">>=</span> marklimit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                markpos <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">/* buffer got too big, invalidate mark */</span>
+                pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token comment">/* drop buffer contents */</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">>=</span> MAX_BUFFER_SIZE<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">OutOfMemoryError</span><span class="token punctuation">(</span><span class="token string">"Required array size too large"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>            <span class="token comment">/* grow buffer */</span>
+                <span class="token keyword">int</span> nsz <span class="token operator">=</span> <span class="token punctuation">(</span>pos <span class="token operator">&lt;=</span> MAX_BUFFER_SIZE <span class="token operator">-</span> pos<span class="token punctuation">)</span> <span class="token operator">?</span>
+                        pos <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">:</span> MAX_BUFFER_SIZE<span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>nsz <span class="token operator">></span> marklimit<span class="token punctuation">)</span>
+                    nsz <span class="token operator">=</span> marklimit<span class="token punctuation">;</span>
+                <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nbuf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>nsz<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> nbuf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token class-name">U</span><span class="token punctuation">.</span><span class="token function">compareAndSetObject</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> BUF_OFFSET<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> nbuf<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token comment">// Can't replace buf if there was an async close.</span>
+                    <span class="token comment">// Note: This would need to be changed if fill()</span>
+                    <span class="token comment">// is ever made accessible to multiple threads.</span>
+                    <span class="token comment">// But for now, the only way CAS can fail is via close.</span>
+                    <span class="token comment">// assert buf == null;</span>
+                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Stream closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                buffer <span class="token operator">=</span> nbuf<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+            count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * See
-     * the general contract of the &lt;code&gt;read&lt;/code&gt;
-     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+     * the general contract of the &lt;code>read&lt;/code>
+     * method of &lt;code>InputStream&lt;/code>.
      *
-     * @return     the next byte of data, or &lt;code&gt;-1&lt;/code&gt; if the end of the
+     * @return     the next byte of data, or &lt;code>-1&lt;/code> if the end of the
      *             stream is reached.
      * @exception  IOException  if this input stream has been closed by
      *                          invoking its &#123;@link #close()&#125; method,
      *                          or an I/O error occurs.
      * @see        java.io.FilterInputStream#in
-     */
-    public synchronized int read() throws IOException &#123;
-        if (pos &gt;= count) &#123;
-            fill();
-            if (pos &gt;= count)
-                return -1;
-        &#125;
-        return getBufIfOpen()[pos++] &amp; 0xff;
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>pos <span class="token operator">>=</span> count<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>pos <span class="token operator">>=</span> count<span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span>pos<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span> <span class="token number">0xff</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * Read characters into a portion of an array, reading from the underlying
      * stream at most once if necessary.
-     */
-    private int read1(byte[] b, int off, int len) throws IOException &#123;
-        int avail = count - pos;
-        if (avail &lt;= 0) &#123;
-            /* If the requested length is at least as large as the buffer, and
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">read1</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> b<span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> avail <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>avail <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">/* If the requested length is at least as large as the buffer, and
                if there is no mark/reset activity, do not bother to copy the
                bytes into the local buffer.  In this way buffered streams will
-               cascade harmlessly. */
-            if (len &gt;= getBufIfOpen().length &amp;&amp; markpos &lt; 0) &#123;
-                return getInIfOpen().read(b, off, len);
-            &#125;
-            fill();
-            avail = count - pos;
-            if (avail &lt;= 0) return -1;
-        &#125;
-        int cnt = (avail &lt; len) ? avail : len;
-        System.arraycopy(getBufIfOpen(), pos, b, off, cnt);
-        pos += cnt;
-        return cnt;
-    &#125;
+               cascade harmlessly. */</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">>=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> markpos <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">return</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> off<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            avail <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>avail <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">int</span> cnt <span class="token operator">=</span> <span class="token punctuation">(</span>avail <span class="token operator">&lt;</span> len<span class="token punctuation">)</span> <span class="token operator">?</span> avail <span class="token operator">:</span> len<span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span><span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pos<span class="token punctuation">,</span> b<span class="token punctuation">,</span> off<span class="token punctuation">,</span> cnt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        pos <span class="token operator">+=</span> cnt<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> cnt<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * Reads bytes from this byte-input stream into the specified byte array,
      * starting at the given offset.
      *
-     * &lt;p&gt; This method implements the general contract of the corresponding
-     * &lt;code&gt;&#123;@link InputStream#read(byte[], int, int) read&#125;&lt;/code&gt; method of
-     * the &lt;code&gt;&#123;@link InputStream&#125;&lt;/code&gt; class.  As an additional
+     * &lt;p> This method implements the general contract of the corresponding
+     * &lt;code>&#123;@link InputStream#read(byte[], int, int) read&#125;&lt;/code> method of
+     * the &lt;code>&#123;@link InputStream&#125;&lt;/code> class.  As an additional
      * convenience, it attempts to read as many bytes as possible by repeatedly
-     * invoking the &lt;code&gt;read&lt;/code&gt; method of the underlying stream.  This
-     * iterated &lt;code&gt;read&lt;/code&gt; continues until one of the following
-     * conditions becomes true: &lt;ul&gt;
+     * invoking the &lt;code>read&lt;/code> method of the underlying stream.  This
+     * iterated &lt;code>read&lt;/code> continues until one of the following
+     * conditions becomes true: &lt;ul>
      *
-     *   &lt;li&gt; The specified number of bytes have been read,
+     *   &lt;li> The specified number of bytes have been read,
      *
-     *   &lt;li&gt; The &lt;code&gt;read&lt;/code&gt; method of the underlying stream returns
-     *   &lt;code&gt;-1&lt;/code&gt;, indicating end-of-file, or
+     *   &lt;li> The &lt;code>read&lt;/code> method of the underlying stream returns
+     *   &lt;code>-1&lt;/code>, indicating end-of-file, or
      *
-     *   &lt;li&gt; The &lt;code&gt;available&lt;/code&gt; method of the underlying stream
+     *   &lt;li> The &lt;code>available&lt;/code> method of the underlying stream
      *   returns zero, indicating that further input requests would block.
      *
-     * &lt;/ul&gt; If the first &lt;code&gt;read&lt;/code&gt; on the underlying stream returns
-     * &lt;code&gt;-1&lt;/code&gt; to indicate end-of-file then this method returns
-     * &lt;code&gt;-1&lt;/code&gt;.  Otherwise this method returns the number of bytes
+     * &lt;/ul> If the first &lt;code>read&lt;/code> on the underlying stream returns
+     * &lt;code>-1&lt;/code> to indicate end-of-file then this method returns
+     * &lt;code>-1&lt;/code>.  Otherwise this method returns the number of bytes
      * actually read.
      *
-     * &lt;p&gt; Subclasses of this class are encouraged, but not required, to
+     * &lt;p> Subclasses of this class are encouraged, but not required, to
      * attempt to read as many bytes as possible in the same fashion.
      *
      * @param      b     destination buffer.
      * @param      off   offset at which to start storing bytes.
      * @param      len   maximum number of bytes to read.
-     * @return     the number of bytes read, or &lt;code&gt;-1&lt;/code&gt; if the end of
+     * @return     the number of bytes read, or &lt;code>-1&lt;/code> if the end of
      *             the stream has been reached.
      * @exception  IOException  if this input stream has been closed by
      *                          invoking its &#123;@link #close()&#125; method,
      *                          or an I/O error occurs.
-     */
-    public synchronized int read(byte b[], int off, int len)
-        throws IOException
-    &#123;
-        getBufIfOpen(); // Check for closed stream
-        if ((off | len | (off + len) | (b.length - (off + len))) &lt; 0) &#123;
-            throw new IndexOutOfBoundsException();
-        &#125; else if (len == 0) &#123;
-            return 0;
-        &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">byte</span> b<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">int</span> off<span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name">IOException</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Check for closed stream</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>off <span class="token operator">|</span> len <span class="token operator">|</span> <span class="token punctuation">(</span>off <span class="token operator">+</span> len<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span>b<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token punctuation">(</span>off <span class="token operator">+</span> len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IndexOutOfBoundsException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>len <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        int n = 0;
-        for (;;) &#123;
-            int nread = read1(b, off + n, len - n);
-            if (nread &lt;= 0)
-                return (n == 0) ? nread : n;
-            n += nread;
-            if (n &gt;= len)
-                return n;
-            // if not closed but no bytes available, return
-            InputStream input = in;
-            if (input != null &amp;&amp; input.available() &lt;= 0)
-                return n;
-        &#125;
-    &#125;
+        <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">int</span> nread <span class="token operator">=</span> <span class="token function">read1</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> off <span class="token operator">+</span> n<span class="token punctuation">,</span> len <span class="token operator">-</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>nread <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token punctuation">(</span>n <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">?</span> nread <span class="token operator">:</span> n<span class="token punctuation">;</span>
+            n <span class="token operator">+=</span> nread<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">>=</span> len<span class="token punctuation">)</span>
+                <span class="token keyword">return</span> n<span class="token punctuation">;</span>
+            <span class="token comment">// if not closed but no bytes available, return</span>
+            <span class="token class-name">InputStream</span> input <span class="token operator">=</span> in<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>input <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> input<span class="token punctuation">.</span><span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> n<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
-     * See the general contract of the &lt;code&gt;skip&lt;/code&gt;
-     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+    <span class="token comment">/**
+     * See the general contract of the &lt;code>skip&lt;/code>
+     * method of &lt;code>InputStream&lt;/code>.
      *
      * @throws IOException  if this input stream has been closed by
      *                      invoking its &#123;@link #close()&#125; method,
      *                      &#123;@code in.skip(n)&#125; throws an IOException,
      *                      or an I/O error occurs.
-     */
-    public synchronized long skip(long n) throws IOException &#123;
-        getBufIfOpen(); // Check for closed stream
-        if (n &lt;= 0) &#123;
-            return 0;
-        &#125;
-        long avail = count - pos;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">long</span> <span class="token function">skip</span><span class="token punctuation">(</span><span class="token keyword">long</span> n<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Check for closed stream</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">long</span> avail <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
 
-        if (avail &lt;= 0) &#123;
-            // If no mark position set then don&#39;t keep in buffer
-            if (markpos &lt;0)
-                return getInIfOpen().skip(n);
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>avail <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// If no mark position set then don't keep in buffer</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">skip</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            // Fill in buffer to save bytes for reset
-            fill();
-            avail = count - pos;
-            if (avail &lt;= 0)
-                return 0;
-        &#125;
+            <span class="token comment">// Fill in buffer to save bytes for reset</span>
+            <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            avail <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>avail <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        long skipped = (avail &lt; n) ? avail : n;
-        pos += skipped;
-        return skipped;
-    &#125;
+        <span class="token keyword">long</span> skipped <span class="token operator">=</span> <span class="token punctuation">(</span>avail <span class="token operator">&lt;</span> n<span class="token punctuation">)</span> <span class="token operator">?</span> avail <span class="token operator">:</span> n<span class="token punctuation">;</span>
+        pos <span class="token operator">+=</span> skipped<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> skipped<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * Returns an estimate of the number of bytes that can be read (or
      * skipped over) from this input stream without blocking by the next
      * invocation of a method for this input stream. The next invocation might be
      * the same thread or another thread.  A single read or skip of this
      * many bytes will not block, but may read or skip fewer bytes.
-     * &lt;p&gt;
+     * &lt;p>
      * This method returns the sum of the number of bytes remaining to be read in
-     * the buffer (&lt;code&gt;count&amp;nbsp;- pos&lt;/code&gt;) and the result of calling the
+     * the buffer (&lt;code>count&amp;nbsp;- pos&lt;/code>) and the result of calling the
      * &#123;@link java.io.FilterInputStream#in in&#125;.available().
      *
      * @return     an estimate of the number of bytes that can be read (or skipped
@@ -790,67 +792,67 @@ class BufferedInputStream extends FilterInputStream &#123;
      * @exception  IOException  if this input stream has been closed by
      *                          invoking its &#123;@link #close()&#125; method,
      *                          or an I/O error occurs.
-     */
-    public synchronized int available() throws IOException &#123;
-        int n = count - pos;
-        int avail = getInIfOpen().available();
-        return n &gt; (Integer.MAX_VALUE - avail)
-                    ? Integer.MAX_VALUE
-                    : n + avail;
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">int</span> <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> n <span class="token operator">=</span> count <span class="token operator">-</span> pos<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> avail <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> n <span class="token operator">></span> <span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">.</span>MAX_VALUE <span class="token operator">-</span> avail<span class="token punctuation">)</span>
+                    <span class="token operator">?</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span>MAX_VALUE
+                    <span class="token operator">:</span> n <span class="token operator">+</span> avail<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
-     * See the general contract of the &lt;code&gt;mark&lt;/code&gt;
-     * method of &lt;code&gt;InputStream&lt;/code&gt;.
+    <span class="token comment">/**
+     * See the general contract of the &lt;code>mark&lt;/code>
+     * method of &lt;code>InputStream&lt;/code>.
      *
      * @param   readlimit   the maximum limit of bytes that can be read before
      *                      the mark position becomes invalid.
      * @see     java.io.BufferedInputStream#reset()
-     */
-    public synchronized void mark(int readlimit) &#123;
-        marklimit = readlimit;
-        markpos = pos;
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">mark</span><span class="token punctuation">(</span><span class="token keyword">int</span> readlimit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        marklimit <span class="token operator">=</span> readlimit<span class="token punctuation">;</span>
+        markpos <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
-     * See the general contract of the &lt;code&gt;reset&lt;/code&gt;
-     * method of &lt;code&gt;InputStream&lt;/code&gt;.
-     * &lt;p&gt;
-     * If &lt;code&gt;markpos&lt;/code&gt; is &lt;code&gt;-1&lt;/code&gt;
+    <span class="token comment">/**
+     * See the general contract of the &lt;code>reset&lt;/code>
+     * method of &lt;code>InputStream&lt;/code>.
+     * &lt;p>
+     * If &lt;code>markpos&lt;/code> is &lt;code>-1&lt;/code>
      * (no mark has been set or the mark has been
-     * invalidated), an &lt;code&gt;IOException&lt;/code&gt;
-     * is thrown. Otherwise, &lt;code&gt;pos&lt;/code&gt; is
-     * set equal to &lt;code&gt;markpos&lt;/code&gt;.
+     * invalidated), an &lt;code>IOException&lt;/code>
+     * is thrown. Otherwise, &lt;code>pos&lt;/code> is
+     * set equal to &lt;code>markpos&lt;/code>.
      *
      * @exception  IOException  if this stream has not been marked or,
      *                  if the mark has been invalidated, or the stream
      *                  has been closed by invoking its &#123;@link #close()&#125;
      *                  method, or an I/O error occurs.
      * @see        java.io.BufferedInputStream#mark(int)
-     */
-    public synchronized void reset() throws IOException &#123;
-        getBufIfOpen(); // Cause exception if closed
-        if (markpos &lt; 0)
-            throw new IOException(&quot;Resetting to invalid mark&quot;);
-        pos = markpos;
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Cause exception if closed</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Resetting to invalid mark"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        pos <span class="token operator">=</span> markpos<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
-     * Tests if this input stream supports the &lt;code&gt;mark&lt;/code&gt;
-     * and &lt;code&gt;reset&lt;/code&gt; methods. The &lt;code&gt;markSupported&lt;/code&gt;
-     * method of &lt;code&gt;BufferedInputStream&lt;/code&gt; returns
-     * &lt;code&gt;true&lt;/code&gt;.
+    <span class="token comment">/**
+     * Tests if this input stream supports the &lt;code>mark&lt;/code>
+     * and &lt;code>reset&lt;/code> methods. The &lt;code>markSupported&lt;/code>
+     * method of &lt;code>BufferedInputStream&lt;/code> returns
+     * &lt;code>true&lt;/code>.
      *
-     * @return  a &lt;code&gt;boolean&lt;/code&gt; indicating if this stream type supports
-     *          the &lt;code&gt;mark&lt;/code&gt; and &lt;code&gt;reset&lt;/code&gt; methods.
+     * @return  a &lt;code>boolean&lt;/code> indicating if this stream type supports
+     *          the &lt;code>mark&lt;/code> and &lt;code>reset&lt;/code> methods.
      * @see     java.io.InputStream#mark(int)
      * @see     java.io.InputStream#reset()
-     */
-    public boolean markSupported() &#123;
-        return true;
-    &#125;
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">markSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * Closes this input stream and releases any system resources
      * associated with the stream.
      * Once the stream has been closed, further read(), available(), reset(),
@@ -858,63 +860,64 @@ class BufferedInputStream extends FilterInputStream &#123;
      * Closing a previously closed stream has no effect.
      *
      * @exception  IOException  if an I/O error occurs.
-     */
-    public void close() throws IOException &#123;
-        byte[] buffer;
-        while ( (buffer = buf) != null) &#123;
-            if (U.compareAndSetObject(this, BUF_OFFSET, buffer, null)) &#123;
-                InputStream input = in;
-                in = null;
-                if (input != null)
-                    input.close();
-                return;
-            &#125;
-            // Else retry in case a new buf was CASed in fill()
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer<span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span> <span class="token punctuation">(</span>buffer <span class="token operator">=</span> buf<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">U</span><span class="token punctuation">.</span><span class="token function">compareAndSetObject</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> BUF_OFFSET<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">InputStream</span> input <span class="token operator">=</span> in<span class="token punctuation">;</span>
+                in <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>input <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+                    input<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token comment">// Else retry in case a new buf was CASed in fill()</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：<br>要想读懂<code>BufferedInputStream</code>的源码，就要先理解它的思想。<code>BufferedInputStream</code>的作用是为其它输入流提供缓冲功能。创建<code>BufferedInputStream</code>时，我们会通过它的构造函数指定某个输入流为参数。<code>BufferedInputStream</code>会将该输入流数据分批读取，每次读取一部分到缓冲中；操作完缓冲中的这部分数据之后，再从输入流中读取下一部分的数据。</p>
 <p>为什么需要缓冲呢？原因很简单，效率问题！缓冲中的数据实际上是保存在内存中，而原始数据可能是保存在硬盘或<code>NandFlash</code>等存储介质中；而我们知道，从内存中读取数据的速度比从硬盘读取数据的速度至少快10倍以上。<br>那干嘛不干脆一次性将全部数据都读取到缓冲中呢？第一，读取全部的数据所需要的时间可能会很长。第二，内存价格很贵，容量不像硬盘那么大。</p>
 <p>下面，是<code>BufferedInputStream</code>中最重要的函数<code>fill()</code>进行说明。<code>fill()</code>源码如下：</p>
-<pre><code class="java">private void fill() throws IOException &#123;
-    byte[] buffer = getBufIfOpen();
-    if (markpos &lt; 0)
-        pos = 0;            /* no mark: throw away the buffer */
-    else if (pos &gt;= buffer.length)  /* no room left in buffer */
-        if (markpos &gt; 0) &#123;  /* can throw away early part of the buffer */
-            int sz = pos - markpos;
-            System.arraycopy(buffer, markpos, buffer, 0, sz);
-            pos = sz;
-            markpos = 0;
-        &#125; else if (buffer.length &gt;= marklimit) &#123;
-            markpos = -1;   /* buffer got too big, invalidate mark */
-            pos = 0;        /* drop buffer contents */
-        &#125; else if (buffer.length &gt;= MAX_BUFFER_SIZE) &#123;
-            throw new OutOfMemoryError(&quot;Required array size too large&quot;);
-        &#125; else &#123;            /* grow buffer */
-            int nsz = (pos &lt;= MAX_BUFFER_SIZE - pos) ?
-                   pos * 2 : MAX_BUFFER_SIZE;
-            if (nsz &gt; marklimit)
-               nsz = marklimit;
-            byte[] nbuf = new byte[nsz];
-            System.arraycopy(buffer, 0, nbuf, 0, pos);
-            if (!U.compareAndSetObject(this, BUF_OFFSET, buffer, nbuf)) &#123;
-                // Can&#39;t replace buf if there was an async close.
-                // Note: This would need to be changed if fill()
-                // is ever made accessible to multiple threads.
-                // But for now, the only way CAS can fail is via close.
-                // assert buf == null;
-                throw new IOException(&quot;Stream closed&quot;);
-            &#125;
-            buffer = nbuf;
-        &#125;
-    count = pos;
-    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-    if (n &gt; 0)
-       count = n + pos;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>            <span class="token comment">/* no mark: throw away the buffer */</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>pos <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span>  <span class="token comment">/* no room left in buffer */</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  <span class="token comment">/* can throw away early part of the buffer */</span>
+            <span class="token keyword">int</span> sz <span class="token operator">=</span> pos <span class="token operator">-</span> markpos<span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> markpos<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sz<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            pos <span class="token operator">=</span> sz<span class="token punctuation">;</span>
+            markpos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">>=</span> marklimit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            markpos <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">/* buffer got too big, invalidate mark */</span>
+            pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token comment">/* drop buffer contents */</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">>=</span> MAX_BUFFER_SIZE<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">OutOfMemoryError</span><span class="token punctuation">(</span><span class="token string">"Required array size too large"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>            <span class="token comment">/* grow buffer */</span>
+            <span class="token keyword">int</span> nsz <span class="token operator">=</span> <span class="token punctuation">(</span>pos <span class="token operator">&lt;=</span> MAX_BUFFER_SIZE <span class="token operator">-</span> pos<span class="token punctuation">)</span> <span class="token operator">?</span>
+                   pos <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">:</span> MAX_BUFFER_SIZE<span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>nsz <span class="token operator">></span> marklimit<span class="token punctuation">)</span>
+               nsz <span class="token operator">=</span> marklimit<span class="token punctuation">;</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nbuf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>nsz<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> nbuf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token class-name">U</span><span class="token punctuation">.</span><span class="token function">compareAndSetObject</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> BUF_OFFSET<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> nbuf<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// Can't replace buf if there was an async close.</span>
+                <span class="token comment">// Note: This would need to be changed if fill()</span>
+                <span class="token comment">// is ever made accessible to multiple threads.</span>
+                <span class="token comment">// But for now, the only way CAS can fail is via close.</span>
+                <span class="token comment">// assert buf == null;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Stream closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            buffer <span class="token operator">=</span> nbuf<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+       count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>根据<code>fill()</code>中的<code>if...else...</code>，下面我们将<code>fill</code>分为5种情况进行说明。</p>
 <h2 id="1-读取完-buffer-中的数据，并且-buffer-没有被标记"><a href="#1-读取完-buffer-中的数据，并且-buffer-没有被标记" class="headerlink" title="1. 读取完 buffer 中的数据，并且 buffer 没有被标记"></a>1. 读取完 buffer 中的数据，并且 buffer 没有被标记</h2><p>执行流程如下：</p>
 <ol>
@@ -922,17 +925,17 @@ class BufferedInputStream extends FilterInputStream &#123;
 <li><code>fill()</code>中的<code>if (markpos &lt; 0) ...</code></li>
 </ol>
 <p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
-<pre><code class="java">private void fill() throws IOException &#123;
-    byte[] buffer = getBufIfOpen();
-    if (markpos &lt; 0)
-        pos = 0;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 
-    count = pos;
-    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-    if (n &gt; 0)
-        count = n + pos;
-&#125;
-</code></pre>
+    count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：<br>这种情况发生的情况是 —— 输入流中有很长的数据，我们每次从中读取一部分数据到<code>buffer</code>中进行操作。每次当我们读取完<code>buffer</code>中的数据之后，并且此时输入流没有被标记；那么，就接着从输入流中读取下一部分的数据到<code>buffer</code>中。</p>
 <blockquote>
 <p>判断是否读完<code>buffer</code>中的数据，是通过<code>if (pos &gt;= count)</code>来判断的；<br>判断输入流有没有被标记，是通过<code>if (markpos &lt; 0)</code>来判断的。</p>
@@ -950,23 +953,23 @@ class BufferedInputStream extends FilterInputStream &#123;
 <li><code>fill()</code>中的<code>if (markpos &gt; 0) ...</code></li>
 </ol>
 <p>为了方便分析，我们将这种情况下fill()执行的操作等价于以下代码：</p>
-<pre><code class="java">private void fill() throws IOException &#123;
-    byte[] buffer = getBufIfOpen();
-    if (markpos &gt;= 0 &amp;&amp; pos &gt;= buffer.length) &#123;
-        if (markpos &gt; 0) &#123;
-            int sz = pos - markpos;
-            System.arraycopy(buffer, markpos, buffer, 0, sz);
-            pos = sz;
-            markpos = 0;
-        &#125;
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> pos <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">int</span> sz <span class="token operator">=</span> pos <span class="token operator">-</span> markpos<span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> markpos<span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sz<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            pos <span class="token operator">=</span> sz<span class="token punctuation">;</span>
+            markpos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    count = pos;
-    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-    if (n &gt; 0)
-        count = n + pos;
-&#125;
-</code></pre>
+    count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：<br>这种情况发生的情况是 —— 输入流中有很长的数据，我们每次从中读取一部分数据到<code>buffer</code>中进行操作。当我们读取完<code>buffer</code>中的数据之后，并且此时输入流存在标记时；那么，就发生情况2。此时，我们要保留被标记位置到<code>buffer</code>末尾的数据，然后再从输入流中读取下一部分的数据到<code>buffer</code>中。</p>
 <blockquote>
 <p>其中，判断是否读完<code>buffer</code>中的数据，是通过<code>if (pos &gt;= count)</code>来判断的；<br>判断输入流有没有被标记，是通过<code>if (markpos &lt; 0)</code>来判断的。<br>判断<code>buffer</code>中没有多余的空间，是通过<code>if (pos &gt;= buffer.length)</code>来判断的。</p>
@@ -986,21 +989,21 @@ class BufferedInputStream extends FilterInputStream &#123;
 <li><code>fill()</code>中的<code>else if (buffer.length &gt;= marklimit) ...</code></li>
 </ul>
 <p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
-<pre><code class="java">private void fill() throws IOException &#123;
-    byte[] buffer = getBufIfOpen();
-    if (markpos &gt;= 0 &amp;&amp; pos &gt;= buffer.length) &#123;
-        if ( (markpos &lt;= 0) &amp;&amp; (buffer.length &gt;= marklimit) ) &#123;
-            markpos = -1;   /* buffer got too big, invalidate mark */
-            pos = 0;        /* drop buffer contents */
-        &#125;
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> pos <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">>=</span> marklimit<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            markpos <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">/* buffer got too big, invalidate mark */</span>
+            pos <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token comment">/* drop buffer contents */</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    count = pos;
-    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-    if (n &gt; 0)
-        count = n + pos;
-&#125;
-</code></pre>
+    count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：这种情况的处理非常简单。首先，就是取消标记，即<code>markpos = -1</code>；然后，设置初始化位置为0，即<code>pos=0</code>；最后，再从输入流中读取下一部分数据到<code>buffer</code>中。</p>
 <h2 id="4-读取完-buffer-中的数据，buffer-被标记位置-0，buffer-中没有多余的空间，并且-buffer-length-lt-marklimit"><a href="#4-读取完-buffer-中的数据，buffer-被标记位置-0，buffer-中没有多余的空间，并且-buffer-length-lt-marklimit" class="headerlink" title="4. 读取完 buffer 中的数据，buffer 被标记位置=0，buffer 中没有多余的空间，并且 buffer.length&lt;marklimit"></a>4. 读取完 buffer 中的数据，buffer 被标记位置=0，buffer 中没有多余的空间，并且 buffer.length&lt;marklimit</h2><p>执行流程如下：</p>
 <ul>
@@ -1009,37 +1012,37 @@ class BufferedInputStream extends FilterInputStream &#123;
 <li><code>fill()</code>中的<code>else &#123; int nsz = pos * 2; ... &#125;</code></li>
 </ul>
 <p>为了方便分析，我们将这种情况下<code>fill()</code>执行的操作等价于以下代码：</p>
-<pre><code class="java">private void fill() throws IOException &#123;
-    byte[] buffer = getBufIfOpen();
-    if (markpos &gt;= 0 &amp;&amp; pos &gt;= buffer.length) &#123;
-        if ( (markpos &lt;= 0) &amp;&amp; (buffer.length &lt; marklimit) ) &#123;
-            int nsz = pos * 2;
-            if (nsz &gt; marklimit)
-                nsz = marklimit;
-            byte nbuf[] = new byte[nsz];
-            System.arraycopy(buffer, 0, nbuf, 0, pos);
-            if (!bufUpdater.compareAndSet(this, buffer, nbuf)) &#123;
-                throw new IOException(&quot;Stream closed&quot;);
-            &#125;
-            buffer = nbuf;
-        &#125;
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>markpos <span class="token operator">>=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> pos <span class="token operator">>=</span> buffer<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token punctuation">(</span>markpos <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">.</span>length <span class="token operator">&lt;</span> marklimit<span class="token punctuation">)</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">int</span> nsz <span class="token operator">=</span> pos <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>nsz <span class="token operator">></span> marklimit<span class="token punctuation">)</span>
+                nsz <span class="token operator">=</span> marklimit<span class="token punctuation">;</span>
+            <span class="token keyword">byte</span> nbuf<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>nsz<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> nbuf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>bufUpdater<span class="token punctuation">.</span><span class="token function">compareAndSet</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> buffer<span class="token punctuation">,</span> nbuf<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IOException</span><span class="token punctuation">(</span><span class="token string">"Stream closed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            buffer <span class="token operator">=</span> nbuf<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    count = pos;
-    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-    if (n &gt; 0)
-        count = n + pos;
-&#125;
-</code></pre>
+    count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：<br>这种情况的处理非常简单。</p>
 <ul>
 <li>新建一个字节数组<code>nbuf</code>。<code>nbuf</code>的大小是<code>pos*2</code>和<code>marklimit</code>中较小的那个数。</li>
 </ul>
-<pre><code class="java">int nsz = pos * 2;
-if (nsz &gt; marklimit)
-    nsz = marklimit;
-byte nbuf[] = new byte[nsz];
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> nsz <span class="token operator">=</span> pos <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>nsz <span class="token operator">></span> marklimit<span class="token punctuation">)</span>
+    nsz <span class="token operator">=</span> marklimit<span class="token punctuation">;</span>
+<span class="token keyword">byte</span> nbuf<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>nsz<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ul>
 <li>接着，将<code>buffer</code>中的数据拷贝到新数组<code>nbuf</code>中。通过<code>System.arraycopy(buffer, 0, nbuf, 0, pos)</code></li>
 <li>最后，从输入流读取部分新数据到<code>buffer</code>中。通过<code>getInIfOpen().read(buffer, pos, buffer.length - pos)</code>；</li>
@@ -1052,15 +1055,15 @@ byte nbuf[] = new byte[nsz];
 <li><code>fill()</code>中的<code>count = pos...</code></li>
 </ol>
 <p>为了方便分析，我们将这种情况下fill()执行的操作等价于以下代码：</p>
-<pre><code class="java">private void fill() throws IOException &#123;
-    byte[] buffer = getBufIfOpen();
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> buffer <span class="token operator">=</span> <span class="token function">getBufIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    count = pos;
-    int n = getInIfOpen().read(buffer, pos, buffer.length - pos);
-    if (n &gt; 0)
-        count = n + pos;
-&#125;
-</code></pre>
+    count <span class="token operator">=</span> pos<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token function">getInIfOpen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> buffer<span class="token punctuation">.</span>length <span class="token operator">-</span> pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        count <span class="token operator">=</span> n <span class="token operator">+</span> pos<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：这种情况的处理非常简单。直接从输入流读取部分新数据到<code>buffer</code>中。</p>
 
     </div>
@@ -1090,8 +1093,8 @@ byte nbuf[] = new byte[nsz];
       <i class="fa fa-chevron-left"></i> Java IO之 BufferedOutputStream详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/21/Java-IO-ByteArrayOutputStream/" rel="next" title="Java IO之 ByteArrayOutputStream详解">
-      Java IO之 ByteArrayOutputStream详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/21/Java-IO-ObjectInputStream-ObjectOutPutStream/" rel="next" title="Java IO之 ObjectInputStream/ObjectOutPutStream详解">
+      Java IO之 ObjectInputStream/ObjectOutPutStream详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -1269,7 +1272,7 @@ byte nbuf[] = new byte[nsz];
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

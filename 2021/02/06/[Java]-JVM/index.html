@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/02/06/jBVfSHOKnc6AQvy.jpg">
 <meta property="og:image" content="https://i.loli.net/2021/02/05/AcBoQe29ibGzKHh.png">
 <meta property="article:published_time" content="2021-02-06T19:45:11.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.211Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.720Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="JVM">
@@ -274,7 +274,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -313,7 +313,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>19k</span>
+              <span>18k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -355,9 +355,9 @@
 <h2 id="类加载器的双亲委派机制"><a href="#类加载器的双亲委派机制" class="headerlink" title="类加载器的双亲委派机制"></a>类加载器的双亲委派机制</h2><p>当类加载器受到加载请求时总是从交给父类进行加载，每一层的类加载器都是如此。因此所有的加载请求都是从启动类加载器开始的，当父加载器反馈自己无法完成这个请求时，子加载器才会尝试自己去加载这个请求。</p>
 <p>采用双亲委派的一个好处是比如加载位于<code>rt.jar</code>包中的类<code>java.lang.Object</code>，不管是哪个加载器加载这个类，最终都是委托给顶层的启动类加载器进行加载，这样就保证了使用不同的类加载器最终得到的都是同样一个 Object对象。 </p>
 <h2 id="沙箱安全机制"><a href="#沙箱安全机制" class="headerlink" title="沙箱安全机制"></a>沙箱安全机制</h2><h1 id="Native关键字"><a href="#Native关键字" class="headerlink" title="Native关键字"></a>Native关键字</h1><p>等号左边叫引用在栈空间（Java栈），等号右边叫实例对象在堆，方法在栈中</p>
-<pre><code class="java">// Java中Thread类的启动方法
-private native void start0();        //native放入本地方法栈
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// Java中Thread类的启动方法</span>
+<span class="token keyword">private</span> <span class="token keyword">native</span> <span class="token keyword">void</span> <span class="token function">start0</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//native放入本地方法栈</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>本地接口的作用是融合不同的编程语言为 Java 所用，它的初衷是融合 C/C++程序，Java 诞生的时候是 C/C++横行的时候，要想立足，必须有调用 C/C++程序，于是就在内存中专门开辟了一块区域处理标记为<code>native</code>的代码，它的具体做法是<code>Native Method Stack</code>中登记 <code>native</code>方法，在<code>Execution Engine</code>执行时加载<code>native libraies</code>。目前该方法使用的越来越少了，除非是与硬件有关的应用，比如通过Java程序驱动打印机或者Java系统管理生产设备，在企业级应用中已经比较少见。因为现在的异构领域间的通信很发达，比如可以使用 Socket通信，也可以使用Web Service等等。</p>
 <h2 id="Native-Method-Stack"><a href="#Native-Method-Stack" class="headerlink" title="Native Method Stack"></a>Native Method Stack</h2><p>它的具体做法是<code>Native Method Stack</code>中登记<code>native</code>方法，在<code>Execution Engine</code>执行时加载本地方法库。</p>
 <h1 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h1><p>程序计数器又称为PC寄存器，是线程私有的，可以将程序计数器看作是一个指针，指向方法区中的方法字节码（<strong>用来存储指向下一条指令的地址，即将要执行的指令代码</strong>），由执行引擎读取下一条指令，是一个非常小的内存空间，几乎可以忽略不记。<strong>为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各线程之间计数器互不影响，独立存储，我们称这类内存区域为“线程私有”的内存。</strong></p>
@@ -373,9 +373,9 @@ private native void start0();        //native放入本地方法栈
 <p><strong>方法区和永久代的关系很像 Java 中接口和类的关系，类实现了接口，而永久代就是 HotSpot 虚拟机对虚拟机规范中方法区的一种实现方式。</strong> 也就是说，永久代是 HotSpot 的概念，方法区是 Java 虚拟机规范中的定义，是一种规范，而永久代是一种实现，一个是标准一个是实现，其他的虚拟机实现并没有永久代这一说法。</p>
 <p>JDK 1.8 的时候，方法区（HotSpot 的永久代）被彻底移除了（JDK1.7 就已经开始了），取而代之是元空间，元空间使用的是直接内存。</p>
 <p>下面是一些常用参数：</p>
-<pre><code class="java">-XX:MetaspaceSize=N //设置 Metaspace 的初始（和最小大小）
--XX:MaxMetaspaceSize=N //设置 Metaspace 的最大大小Copy to clipboardErrorCopied
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token operator">-</span>XX<span class="token operator">:</span><span class="token class-name">MetaspaceSize</span><span class="token operator">=</span><span class="token class-name">N</span> <span class="token comment">//设置 Metaspace 的初始（和最小大小）</span>
+<span class="token operator">-</span>XX<span class="token operator">:</span><span class="token class-name">MaxMetaspaceSize</span><span class="token operator">=</span><span class="token class-name">N</span> <span class="token comment">//设置 Metaspace 的最大大小Copy to clipboardErrorCopied</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>与永久代很大的不同就是，如果不指定大小的话，随着更多类的创建，虚拟机会耗尽所有可用的系统内存。</p>
 <h2 id="永久代和方法区的关系"><a href="#永久代和方法区的关系" class="headerlink" title="永久代和方法区的关系"></a>永久代和方法区的关系</h2><p> 涉及到内存模型时，往往会提到永久代，那么它和方法区又是什么关系呢？《Java虚拟机规范》只是规定了有方法区这么个概念和它的作用，并没有规定如何去实现它。那么，在不同的 JVM 上方法区的实现肯定是不同的了。 同时大多数用的JVM都是Sun公司的HotSpot。<strong>在HotSpot上把GC分代收集扩展至方法区，或者说使用永久代来实现方法区。</strong>因此，我们得到了结论：永久代是HotSpot的概念，<strong>方法区是Java虚拟机规范中的定义，是一种规范，而永久代是一种实现，一个是标准一个是实现。</strong>其他的虚拟机实现并没有永久代这一说法。</p>
 <h2 id="为什么要将永久代-PermGen-替换为元空间-MetaSpace"><a href="#为什么要将永久代-PermGen-替换为元空间-MetaSpace" class="headerlink" title="为什么要将永久代 (PermGen) 替换为元空间 (MetaSpace) ?"></a>为什么要将永久代 (PermGen) 替换为元空间 (MetaSpace) ?</h2><ol>
@@ -462,14 +462,14 @@ private native void start0();        //native放入本地方法栈
 <h2 id="字符串常量池"><a href="#字符串常量池" class="headerlink" title="字符串常量池"></a>字符串常量池</h2><p>字符串常量池是全局的，JVM 中独此一份，因此也称为全局字符串常量池。运行时常量池中的字符串字面量若是成员的，则在类的加载初始化阶段就使用到了字符串常量池；若是本地的，则在使用到的时候（执行此代码时）才会使用到字符串常量池。其实，“使用常量池”对应的字节码是一个 ldc 指令，在给 String 类型的引用赋值的时候会先执行这个指令，看常量池中是否存在这个字符串对象的引用，若有就直接返回这个引用，若没有，就在堆里创建这个字符串对象并在字符串常量池中记录下这个引用（jdk1.7)。String 类的 intern() 方法还可在运行期间把字符串放到字符串常量池中。JVM 中除了字符串常量池，8种基本数据类型中除了两种浮点类型剩余的6种基本数据类型的包装类，都使用了缓冲池技术，但是 Byte、Short、Integer、Long、Character 这5种整型的包装类也只是在对应值在 [-128,127] 时才会使用缓冲池，超出此范围仍然会去创建新的对象。其中：</p>
 <p>在 jdk1.6（含）之前也是方法区的一部分，并且其中存放的是字符串的实例；<br>在 jdk1.7（含）之后是在堆内存之中，存储的是字符串对象的引用，字符串实例是在堆中；<br>jdk1.8 已移除永久代，字符串常量池是在本地内存当中，存储的也只是引用。</p>
 <h2 id="堆内存调优"><a href="#堆内存调优" class="headerlink" title="堆内存调优"></a>堆内存调优</h2><p>JVM默认只占用本机内存的<code>1/4</code></p>
-<pre><code class="java">public static void main(String[] args)&#123;
-    long maxMemory = Runtime.getRuntime().maxMemory() ;//返回 Java 虚拟机试图使用的最大内存量。
-    long totalMemory = Runtime.getRuntime().totalMemory() ;//返回 Java 虚拟机中的内存总量。
-    System.out.println(&quot;MAX_MEMORY = &quot; + maxMemory + &quot;（字节）、&quot; + (maxMemory / (double)1024 / 1024) + &quot;MB&quot;);
-    System.out.println(&quot;TOTAL_MEMORY = &quot; + totalMemory + &quot;（字节）、&quot; + (totalMemory / (double)1024 / 1024) + &quot;MB&quot;);
-    System.out.println(&quot;CPU核心数目 =&quot; + Runtime.getRuntime().availableProcessors());    // 返回CPU核心数)
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">long</span> maxMemory <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">maxMemory</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span><span class="token comment">//返回 Java 虚拟机试图使用的最大内存量。</span>
+    <span class="token keyword">long</span> totalMemory <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">totalMemory</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span><span class="token comment">//返回 Java 虚拟机中的内存总量。</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"MAX_MEMORY = "</span> <span class="token operator">+</span> maxMemory <span class="token operator">+</span> <span class="token string">"（字节）、"</span> <span class="token operator">+</span> <span class="token punctuation">(</span>maxMemory <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span><span class="token number">1024</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"MB"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"TOTAL_MEMORY = "</span> <span class="token operator">+</span> totalMemory <span class="token operator">+</span> <span class="token string">"（字节）、"</span> <span class="token operator">+</span> <span class="token punctuation">(</span>totalMemory <span class="token operator">/</span> <span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">)</span><span class="token number">1024</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"MB"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"CPU核心数目 ="</span> <span class="token operator">+</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// 返回CPU核心数)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <table>
 <thead>
 <tr>
@@ -495,8 +495,10 @@ private native void start0();        //native放入本地方法栈
 </tr>
 </tbody></table>
 <p><strong>调参时，最大内存和初始内存一定要一样大，避免出现GC和应用程序争抢内存导致内存忽高忽低。</strong></p>
-<pre><code class="java">-Xms10m -Xmx10m -XX:+PrintGCDetails
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token operator">-</span><span class="token class-name">Xms10m</span> <span class="token operator">-</span><span class="token class-name">Xmx10m</span> <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token operator">+</span><span class="token class-name">PrintGCDetails</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
 <h1 id="HotSpot虚拟机对象"><a href="#HotSpot虚拟机对象" class="headerlink" title="HotSpot虚拟机对象"></a>HotSpot虚拟机对象</h1><h2 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h2><p><img data-src="https://i.loli.net/2021/02/05/odtxug1NLwTS25m.png"></p>
 <ol>
 <li><p><strong>类加载检查</strong></p>
@@ -572,20 +574,22 @@ private native void start0();        //native放入本地方法栈
 <h2 id="判断对象已经死亡"><a href="#判断对象已经死亡" class="headerlink" title="判断对象已经死亡"></a>判断对象已经死亡</h2><p><img data-src="https://i.loli.net/2021/02/05/wAzj9FoKEMi4S6a.png"></p>
 <h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>给对象中添加一个引用计数器，每当有一个地方引用它计数器就加1，当引用失效计数器就减1；任何时候计数器为0的对象就是不可能再被使用的。</p>
 <p>这个方法实现简单，效率高，但是目前主流的虚拟机中并没有选择这个算法来管理内存，其最主要的原因是它很难解决对象之间相互循环引用的问题。所谓对象之间的相互引用问题，如下面代码所示：除了对象ObjA和ObjeB相互引用者对方之外，这两个对象之间再无任何引用，但是他们因为相互引用对方，导致它们的引用计数器都不为0，于是引用计数算法无法通知GC回收器回收它们。</p>
-<pre><code class="java">public class ReferenceCountingGc &#123;
-    Object instance = null;
-    public static void main(String[] args) &#123;
-        ReferenceCountingGc objA = new ReferenceCountingGc();
-        ReferenceCountingGc objB = new ReferenceCountingGc();
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReferenceCountingGc</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Object</span> instance <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">ReferenceCountingGc</span> objA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReferenceCountingGc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">ReferenceCountingGc</span> objB <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReferenceCountingGc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        objA.instance = objB;
-        objB.instance = objA;
+        objA<span class="token punctuation">.</span>instance <span class="token operator">=</span> objB<span class="token punctuation">;</span>
+        objB<span class="token punctuation">.</span>instance <span class="token operator">=</span> objA<span class="token punctuation">;</span>
         
-        objA = null;
-        objB = null;
-    &#125;
-&#125;
-</code></pre>
+        objA <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        objB <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>这个算法的基本思想就是通过一系列的称为<code>GC Roots</code>的对象作为起点，从这些节点开始向下搜索，节点搜走过的路径称为引用链，当一个对象到GC Roots没有任何引用链相连的话，则证明此对象是不可用的。</p>
 <p><img data-src="https://i.loli.net/2021/02/06/GojbvSp8FswnlJM.jpg"></p>
 <p>k可作为GC Roots的对象包括以下几种：</p>
@@ -664,22 +668,22 @@ private native void start0();        //native放入本地方法栈
 <li><strong>并发（Concurrent）</strong>：指用户线程与垃圾收集线程同时执行（但不一定是并行，可能会交替执行），用户程序在继续运行，而垃圾收集器运行在另一个 CPU 上。</li>
 </ul>
 <h2 id="Parallel-Scavenge-收集器"><a href="#Parallel-Scavenge-收集器" class="headerlink" title="Parallel Scavenge 收集器"></a>Parallel Scavenge 收集器</h2><p>Parallel Scavenge 收集器也是使用复制算法的多线程收集器，它看上去几乎和 ParNew 都一样。 <strong>那么它有什么特别之处呢？</strong></p>
-<pre><code>-XX:+UseParallelGC
+<pre class="line-numbers language-none"><code class="language-none">-XX:+UseParallelGC
     使用 Parallel 收集器+ 老年代串行
 
 -XX:+UseParallelOldGC
-    使用 Parallel 收集器+ 老年代并行
-</code></pre>
+    使用 Parallel 收集器+ 老年代并行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>Parallel Scavenge 收集器关注点是吞吐量（高效率的利用 CPU）。CMS 等垃圾收集器的关注点更多的是用户线程的停顿时间（提高用户体验）。所谓吞吐量就是 CPU 中用于运行用户代码的时间与 CPU 总消耗时间的比值。</strong> Parallel Scavenge 收集器提供了很多参数供用户找到最合适的停顿时间或最大吞吐量，如果对于收集器运作不太了解，手工优化存在困难的时候，使用 Parallel Scavenge 收集器配合自适应调节策略，把内存管理优化交给虚拟机去完成也是一个不错的选择。</p>
 <p><strong>新生代采用复制算法，老年代采用标记整理算法。</strong></p>
 <p><img data-src="https://i.loli.net/2021/02/06/pAUKbO314u7qMry.jpg" alt="Parallel Scavenge收集器"></p>
 <p>这是JDK1.8默认收集器</p>
 <p>使用<code>java -XX:PrintCommandLineFlags -version</code>命令查看</p>
-<pre><code class="java">java -XX:InitialHeapSize=262921408 -XX:MaxHeapSize=4206742528 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC
-java version &quot;1.8.0_211&quot;
-Java(TM) SE Runtime Environment (build 1.8.0_211-b12)
-Java HotSpot(TM) 64-Bit Server VM (build 25.211-b12, mixed mode)
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">java <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token class-name">InitialHeapSize</span><span class="token operator">=</span><span class="token number">262921408</span> <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token class-name">MaxHeapSize</span><span class="token operator">=</span><span class="token number">4206742528</span> <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token operator">+</span><span class="token class-name">PrintCommandLineFlags</span> <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token operator">+</span><span class="token class-name">UseCompressedClassPointers</span> <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token operator">+</span><span class="token class-name">UseCompressedOops</span> <span class="token operator">-</span>XX<span class="token operator">:</span><span class="token operator">+</span><span class="token class-name">UseParallelGC</span>
+java version <span class="token string">"1.8.0_211"</span>
+<span class="token class-name">Java</span><span class="token punctuation">(</span>TM<span class="token punctuation">)</span> SE <span class="token class-name">Runtime</span> <span class="token class-name">Environment</span> <span class="token punctuation">(</span>build <span class="token number">1.8</span><span class="token number">.0_211</span><span class="token operator">-</span>b12<span class="token punctuation">)</span>
+<span class="token class-name">Java</span> <span class="token class-name">HotSpot</span><span class="token punctuation">(</span>TM<span class="token punctuation">)</span> <span class="token number">64</span><span class="token operator">-</span><span class="token class-name">Bit</span> <span class="token class-name">Server</span> VM <span class="token punctuation">(</span>build <span class="token number">25.211</span><span class="token operator">-</span>b12<span class="token punctuation">,</span> mixed mode<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>JDK1.8 默认使用的是 Parallel Scavenge + Parallel Old，如果指定了<code>-XX:+UseParallelGC</code>参数，则默认指定了<code>-XX:+UseParallelOldGC</code>，可以使用<code>-XX:-UseParallelOldGC</code>来禁用该功能</p>
 <h2 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h2><p><strong>Serial 收集器的老年代版本</strong>，它同样是一个单线程收集器。它主要有两大用途：一种用途是在 JDK1.5 以及以前的版本中与 Parallel Scavenge 收集器搭配使用，另一种用途是作为 CMS 收集器的后备方案。</p>
 <h2 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h2><p><strong>Parallel Scavenge 收集器的老年代版本</strong>。使用多线程和“标记整理”算法。在注重吞吐量以及 CPU 资源的场合，都可以优先考虑 Parallel Scavenge 收集器和 Parallel Old 收集器。</p>
@@ -952,7 +956,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.211-b12, mixed mode)
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

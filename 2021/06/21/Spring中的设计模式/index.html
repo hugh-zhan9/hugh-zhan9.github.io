@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://47.98.158.110:8888/group1/M00/00/00/L2KebmDS7ouAEqg4AAVAvHjWlwM276.jpg">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/JdLkEI9sZfcSTzZl3KysRj1PSxMbbrCsRdicRiarxb2j9CfsmwgUMdlaL1yicmLSoMX8mORj1U9N8koPQ8wlx6JqA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
 <meta property="article:published_time" content="2021-06-21T19:50:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.211Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.716Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Spring">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +297,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9k</span>
+              <span>8.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -347,45 +347,45 @@
 <h2 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h2><p>实现了 <code>FactoryBean</code> 接口的 bean 是一类叫做 <code>factory</code> 的 bean。其特点是，Spring 会在使用<code>getBean()</code> 调用获得该 bean 时，会自动调用该 bean 的 <code>getObject()</code> 方法，所以返回的不是 <code>factory</code> 这个 bean，而是这个 <code>bean.getOjbect()</code> 方法的返回值。</p>
 <h3 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h3><p>典型的例子有 Spring 与 Mybatis 的结合。</p>
 <p>代码示例：</p>
-<pre><code class="xml">&lt;bean id=&quot;sqlSessionFactory&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
-    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
-    &lt;property name=&quot;configLocation&quot; value=&quot;classpath:config/mybatis-config-master.xml&quot; /&gt;
-    &lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:config/mappers/master/**/.xml&quot; /&gt;
-&lt;/bean&gt;
-</code></pre>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sqlSessionFactory<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>org.mybatis.spring.SqlSessionFactoryBean<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dataSource<span class="token punctuation">"</span></span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dataSource<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>configLocation<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>classpath:config/mybatis-config-master.xml<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mapperLocations<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>classpath:config/mappers/master/**/.xml<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>bean</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：</p>
 <p>我们看上面该bean，因为实现了 <code>FactoryBean</code>接口，所以返回的不是 <code>SqlSessionFactoryBean</code> 的实例，而是它的 <code>SqlSessionFactoryBean.getObject()</code> 的返回值。</p>
 <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><p>Spring 依赖注入 Bean 实例默认是单例的。</p>
 <p>Spring 的依赖注入（包括<code>lazy-init</code>方式）都是发生在 <code>AbstractBeanFactory</code> 的 <code>getBean</code> 里。<code>getBean</code> 的 <code>doGetBean</code> 方法调用 <code>getSingleton</code> 进行 bean 的创建。</p>
 <p>分析 <code>getSingleton()</code> 方法</p>
-<pre><code class="java">public Object getSingleton(String beanName)&#123;
-    //参数true设置标识允许早期依赖
-    return getSingleton(beanName, true);
-&#125;
-protected Object getSingleton(String beanName, boolean allowEarlyReference) &#123;
-    //检查缓存中是否存在实例
-    Object singletonObject = this.singletonObjects.get(beanName);
-    if (singletonObject == null &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123;
-        //如果为空，则锁定全局变量并进行处理。
-        synchronized (this.singletonObjects) &#123;
-            //如果此bean正在加载，则不处理
-            singletonObject = this.earlySingletonObjects.get(beanName);
-            if (singletonObject == null &amp;&amp; allowEarlyReference) &#123;
-                //当某些方法需要提前初始化的时候则会调用addSingleFactory 方法将对应的ObjectFactory初始化策略存储在singletonFactories
-                ObjectFactory&lt;?&gt; singletonFactory = this.singletonFactories.get(beanName);
-                if (singletonFactory != null) &#123;
-                    //调用预先设定的getObject方法
-                    singletonObject = singletonFactory.getObject();
-                    //记录在缓存中，earlysingletonObjects和singletonFactories互斥
-                    this.earlySingletonObjects.put(beanName, singletonObject);
-                    this.singletonFactories.remove(beanName);
-                &#125;
-            &#125;
-        &#125;
-    &#125;
-    return (singletonObject != NULL_OBJECT ? singletonObject : null);
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">getSingleton</span><span class="token punctuation">(</span><span class="token class-name">String</span> beanName<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token comment">//参数true设置标识允许早期依赖</span>
+    <span class="token keyword">return</span> <span class="token function">getSingleton</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">protected</span> <span class="token class-name">Object</span> <span class="token function">getSingleton</span><span class="token punctuation">(</span><span class="token class-name">String</span> beanName<span class="token punctuation">,</span> <span class="token keyword">boolean</span> allowEarlyReference<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//检查缓存中是否存在实例</span>
+    <span class="token class-name">Object</span> singletonObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>singletonObjects<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isSingletonCurrentlyInCreation</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//如果为空，则锁定全局变量并进行处理。</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>singletonObjects<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">//如果此bean正在加载，则不处理</span>
+            singletonObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>earlySingletonObjects<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> allowEarlyReference<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">//当某些方法需要提前初始化的时候则会调用addSingleFactory 方法将对应的ObjectFactory初始化策略存储在singletonFactories</span>
+                <span class="token class-name">ObjectFactory</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> singletonFactory <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>singletonFactories<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>singletonFactory <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token comment">//调用预先设定的getObject方法</span>
+                    singletonObject <span class="token operator">=</span> singletonFactory<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token comment">//记录在缓存中，earlysingletonObjects和singletonFactories互斥</span>
+                    <span class="token keyword">this</span><span class="token punctuation">.</span>earlySingletonObjects<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>beanName<span class="token punctuation">,</span> singletonObject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">this</span><span class="token punctuation">.</span>singletonFactories<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>beanName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">!=</span> NULL_OBJECT <span class="token operator">?</span> singletonObject <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>getSingleton()</code> 过程图</p>
 <p>PS：Spring 依赖注入时，使用了 双重判断加锁的单例模式</p>
 <p><img data-src="https://mmbiz.qpic.cn/mmbiz_jpg/JdLkEI9sZfcSTzZl3KysRj1PSxMbbrCsRdicRiarxb2j9CfsmwgUMdlaL1yicmLSoMX8mORj1U9N8koPQ8wlx6JqA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1"></p>
@@ -411,68 +411,68 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) &#12
 <p>继承自 JDK 的 <code>EventObject</code>，所有的事件都需要继承 <code>ApplicationEvent</code>，并且通过构造器参数<code>source</code>得到事件源。</p>
 <p>该类的实现类 <code>ApplicationContextEvent</code> 表示 <code>ApplicaitonContext</code> 的容器事件。</p>
 <p>代码：</p>
-<pre><code class="java">public abstract class ApplicationEvent extends EventObject &#123;
-    private static final long serialVersionUID = 7099057708183571937L;
-    private final long timestamp;
-    public ApplicationEvent(Object source) &#123;
-        super(source);
-        this.timestamp = System.currentTimeMillis();
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">ApplicationEvent</span> <span class="token keyword">extends</span> <span class="token class-name">EventObject</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">7099057708183571937L</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">long</span> timestamp<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">ApplicationEvent</span><span class="token punctuation">(</span><span class="token class-name">Object</span> source<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    	<span class="token keyword">super</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token keyword">this</span><span class="token punctuation">.</span>timestamp <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    public final long getTimestamp() &#123;
-        return this.timestamp;
-    &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">long</span> <span class="token function">getTimestamp</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>timestamp<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>ApplicationListener</code>接口<code>[事件监听器]</code></p>
 <p>继承自JDK的<code>EventListener</code>，所有的监听器都要实现这个接口。</p>
 <p>这个接口只有一个 <code>onApplicationEvent()</code> 方法，该方法接受一个 <code>ApplicationEvent</code> 或其子类对象作为参数，在方法体中，可以通过不同对 Event类的判断来进行相应的处理。</p>
 <p>当事件触发时所有的监听器都会收到消息。</p>
 <p>代码：</p>
-<pre><code class="java">public interface ApplicationListener&lt;E extends ApplicationEvent&gt; extends EventListener &#123;
-     void onApplicationEvent(E event);
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ApplicationListener</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span> <span class="token keyword">extends</span> <span class="token class-name">ApplicationEvent</span><span class="token punctuation">></span></span> <span class="token keyword">extends</span> <span class="token class-name">EventListener</span> <span class="token punctuation">&#123;</span>
+     <span class="token keyword">void</span> <span class="token function">onApplicationEvent</span><span class="token punctuation">(</span><span class="token class-name">E</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p><code>ApplicationContext</code> 接口<code>[事件源]</code></p>
 <p><code>ApplicationContext</code> 是 Spring 中的全局容器，翻译过来是”应用上下文”。</p>
 <p>实现了 <code>ApplicationEventPublisher</code> 接口。</p>
 <h2 id="职责"><a href="#职责" class="headerlink" title="职责"></a>职责</h2><p>负责读取 bean 的配置文档，管理 bean 的加载，维护 bean 之间的依赖关系，可以说是负责 bean 的整个生命周期，再通俗一点就是我们平时所说的 IOC 容器。</p>
 <p>代码：</p>
-<pre><code class="java">public interface ApplicationEventPublisher &#123;
-        void publishEvent(ApplicationEvent event);
-&#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ApplicationEventPublisher</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">void</span> <span class="token function">publishEvent</span><span class="token punctuation">(</span><span class="token class-name">ApplicationEvent</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-public void publishEvent(ApplicationEvent event) &#123;
-    Assert.notNull(event, &quot;Event must not be null&quot;);
-    if (logger.isTraceEnabled()) &#123;
-         logger.trace(&quot;Publishing event in &quot; + getDisplayName() + &quot;: &quot; + event);
-    &#125;
-    getApplicationEventMulticaster().multicastEvent(event);
-    if (this.parent != null) &#123;
-    this.parent.publishEvent(event);
-    &#125;
-&#125;
-</code></pre>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">publishEvent</span><span class="token punctuation">(</span><span class="token class-name">ApplicationEvent</span> event<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Assert</span><span class="token punctuation">.</span><span class="token function">notNull</span><span class="token punctuation">(</span>event<span class="token punctuation">,</span> <span class="token string">"Event must not be null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>logger<span class="token punctuation">.</span><span class="token function">isTraceEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+         logger<span class="token punctuation">.</span><span class="token function">trace</span><span class="token punctuation">(</span><span class="token string">"Publishing event in "</span> <span class="token operator">+</span> <span class="token function">getDisplayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">getApplicationEventMulticaster</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">multicastEvent</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>parent <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>parent<span class="token punctuation">.</span><span class="token function">publishEvent</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>ApplicationEventMulticaster</code>抽象类<code>[事件源中publishEvent方法需要调用其方法getApplicationEventMulticaster]</code></p>
 <p>属于事件广播器，它的作用是把<code>Applicationcontext</code>发布的 Event广播给所有的监听器。</p>
 <p>代码：</p>
-<pre><code class="java">public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext, DisposableBean &#123;
-    private ApplicationEventMulticaster applicationEventMulticaster;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractApplicationContext</span> <span class="token keyword">extends</span> <span class="token class-name">DefaultResourceLoader</span> <span class="token keyword">implements</span> <span class="token class-name">ConfigurableApplicationContext</span><span class="token punctuation">,</span> <span class="token class-name">DisposableBean</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">ApplicationEventMulticaster</span> applicationEventMulticaster<span class="token punctuation">;</span>
     
-    protected void registerListeners() &#123;
-        // Register statically specified listeners first.
-        for (ApplicationListener&lt;?&gt; listener : getApplicationListeners()) &#123;
-            getApplicationEventMulticaster().addApplicationListener(listener);
-        &#125;
-        // Do not initialize FactoryBeans here: We need to leave all regular beans
-        // uninitialized to let post-processors apply to them!
-        String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, true, false);
-        for (String lisName : listenerBeanNames) &#123;
-            getApplicationEventMulticaster().addApplicationListenerBean(lisName);
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">registerListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Register statically specified listeners first.</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">ApplicationListener</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> listener <span class="token operator">:</span> <span class="token function">getApplicationListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">getApplicationEventMulticaster</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addApplicationListener</span><span class="token punctuation">(</span>listener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// Do not initialize FactoryBeans here: We need to leave all regular beans</span>
+        <span class="token comment">// uninitialized to let post-processors apply to them!</span>
+        <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> listenerBeanNames <span class="token operator">=</span> <span class="token function">getBeanNamesForType</span><span class="token punctuation">(</span><span class="token class-name">ApplicationListener</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> lisName <span class="token operator">:</span> listenerBeanNames<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">getApplicationEventMulticaster</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addApplicationListenerBean</span><span class="token punctuation">(</span>lisName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><h2 id="实现方式-6"><a href="#实现方式-6" class="headerlink" title="实现方式"></a>实现方式</h2><p>Spring 框架的资源访问<code>Resource</code>接口。该接口提供了更强的资源访问能力，Spring 框架本身大量使用了 <code>Resource</code> 接口来访问底层资源。</p>
 <h2 id="Resource-接口介绍"><a href="#Resource-接口介绍" class="headerlink" title="Resource 接口介绍"></a>Resource 接口介绍</h2><p>source 接口是具体资源访问策略的抽象，也是所有资源访问类所实现的接口。</p>
 <p>Resource 接口主要提供了如下几个方法:</p>
@@ -513,62 +513,62 @@ public void publishEvent(ApplicationEvent event) &#123;
 <h2 id="Spring-模板方法模式实质"><a href="#Spring-模板方法模式实质" class="headerlink" title="Spring 模板方法模式实质"></a>Spring 模板方法模式实质</h2><p>是模板方法模式和回调模式的结合，是 Template Method 不需要继承的另一种实现方式。Spring 几乎所有的外接扩展都采用这种模式。</p>
 <h2 id="具体实现-1"><a href="#具体实现-1" class="headerlink" title="具体实现"></a>具体实现</h2><p>JDBC 的抽象和对 Hibernate 的集成，都采用了一种理念或者处理方式，那就是模板方法模式与相应的<code>Callback</code>接口相结合。</p>
 <p>采用模板方法模式是为了以一种统一而集中的方式来处理资源的获取和释放，以<code>JdbcTempalte</code>为例:</p>
-<pre><code class="java">public abstract class JdbcTemplate &#123;
-     public final Object execute（String sql）&#123;
-        Connection con=null;
-        Statement stmt=null;
-        try&#123;
-            con=getConnection（）;
-            stmt=con.createStatement（）;
-            Object retValue=executeWithStatement（stmt,sql）;
-            return retValue;
-        &#125;catch（SQLException e）&#123;
-             ...
-        &#125;finally&#123;
-            closeStatement（stmt）;
-            releaseConnection（con）;
-        &#125;
-    &#125;
-    protected abstract Object executeWithStatement（Statement   stmt, String sql）;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">JdbcTemplate</span> <span class="token punctuation">&#123;</span>
+     <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token class-name">Object</span> execute（<span class="token class-name">String</span> sql）<span class="token punctuation">&#123;</span>
+        <span class="token class-name">Connection</span> con<span class="token operator">=</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token class-name">Statement</span> stmt<span class="token operator">=</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span><span class="token punctuation">&#123;</span>
+            con<span class="token operator">=</span>getConnection（）<span class="token punctuation">;</span>
+            stmt<span class="token operator">=</span>con<span class="token punctuation">.</span>createStatement（）<span class="token punctuation">;</span>
+            <span class="token class-name">Object</span> retValue<span class="token operator">=</span>executeWithStatement（stmt<span class="token punctuation">,</span>sql）<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> retValue<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token keyword">catch</span>（<span class="token class-name">SQLException</span> e）<span class="token punctuation">&#123;</span>
+             <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token punctuation">&#125;</span><span class="token keyword">finally</span><span class="token punctuation">&#123;</span>
+            closeStatement（stmt）<span class="token punctuation">;</span>
+            releaseConnection（con）<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">protected</span> <span class="token keyword">abstract</span> <span class="token class-name">Object</span> executeWithStatement（<span class="token class-name">Statement</span>   stmt<span class="token punctuation">,</span> <span class="token class-name">String</span> sql）<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="引入回调原因："><a href="#引入回调原因：" class="headerlink" title="引入回调原因："></a>引入回调原因：</h2><p><code>JdbcTemplate</code> 是抽象类，不能够独立使用，每次进行数据访问的时候都要给出一个相应的子类实现，这样肯定不方便，所以就引入了回调。</p>
 <p>回调代码</p>
-<pre><code class="java">public interface StatementCallback&#123;
-    Object doWithStatement（Statement stmt）;
-&#125;
-</code></pre>
-<p>利用回调方法重写<code>JdbcTemplate</code>方法</p>
-<pre><code class="java">public class JdbcTemplate &#123;
-    public final Object execute（StatementCallback callback）&#123;
-        Connection con=null;
-        Statement stmt=null;
-        try&#123;
-            con=getConnection（）;
-            stmt=con.createStatement（）;
-            Object retValue=callback.doWithStatement（stmt）;
-            return retValue;
-        &#125;catch（SQLException e）&#123;
-            ...
-        &#125;finally&#123;
-            closeStatement（stmt）;
-            releaseConnection（con）;
-        &#125;
-    &#125;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">StatementCallback</span><span class="token punctuation">&#123;</span>
+    <span class="token class-name">Object</span> doWithStatement（<span class="token class-name">Statement</span> stmt）<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-    ...//其它方法定义
-&#125;
-</code></pre>
+<p>利用回调方法重写<code>JdbcTemplate</code>方法</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">JdbcTemplate</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token class-name">Object</span> execute（<span class="token class-name">StatementCallback</span> callback）<span class="token punctuation">&#123;</span>
+        <span class="token class-name">Connection</span> con<span class="token operator">=</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token class-name">Statement</span> stmt<span class="token operator">=</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span><span class="token punctuation">&#123;</span>
+            con<span class="token operator">=</span>getConnection（）<span class="token punctuation">;</span>
+            stmt<span class="token operator">=</span>con<span class="token punctuation">.</span>createStatement（）<span class="token punctuation">;</span>
+            <span class="token class-name">Object</span> retValue<span class="token operator">=</span>callback<span class="token punctuation">.</span>doWithStatement（stmt）<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> retValue<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token keyword">catch</span>（<span class="token class-name">SQLException</span> e）<span class="token punctuation">&#123;</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token punctuation">&#125;</span><span class="token keyword">finally</span><span class="token punctuation">&#123;</span>
+            closeStatement（stmt）<span class="token punctuation">;</span>
+            releaseConnection（con）<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment">//其它方法定义</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>JDBC使用方法如下：</p>
-<pre><code class="java">JdbcTemplate jdbcTemplate=...;
-    final String sql=...;
-    StatementCallback callback=new StatementCallback()&#123;
-    public Object=doWithStatement(Statement stmt)&#123;
-        return ...;
-    &#125;
-&#125;
-jdbcTemplate.execute(callback);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">JdbcTemplate</span> jdbcTemplate<span class="token operator">=</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+    <span class="token keyword">final</span> <span class="token class-name">String</span> sql<span class="token operator">=</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+    <span class="token class-name">StatementCallback</span> callback<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">StatementCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span><span class="token operator">=</span><span class="token function">doWithStatement</span><span class="token punctuation">(</span><span class="token class-name">Statement</span> stmt<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+jdbcTemplate<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="为什么-JdbcTemplate-没有使用继承？"><a href="#为什么-JdbcTemplate-没有使用继承？" class="headerlink" title="为什么 JdbcTemplate 没有使用继承？"></a>为什么 JdbcTemplate 没有使用继承？</h2><p>因为这个类的方法太多，但是我们还是想用到 <code>JdbcTemplate</code> 已有的稳定的、公用的数据库连接，那么我们怎么办呢？</p>
 <p>我们可以把变化的东西抽出来作为一个参数传入 <code>JdbcTemplate</code> 的方法中。但是变化的东西是一段代码，而且这段代码会用到 <code>JdbcTemplate</code> 中的变量。怎么办？</p>
 <p>那我们就用回调对象吧。在这个回调对象中定义一个操纵 <code>JdbcTemplate</code> 中变量的方法，我们去实现这个方法，就把变化的东西集中到这里了。然后我们再传入这个回调对象到<code>JdbcTemplate</code>，从而完成了调用。</p>
@@ -780,7 +780,7 @@ jdbcTemplate.execute(callback);
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

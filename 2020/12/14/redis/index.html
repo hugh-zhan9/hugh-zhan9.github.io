@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://gitee.com/hugh-zhan9/pic-go-image-host/raw/master/wallhaven-rd7drw.jpg">
 <meta property="og:image" content="https://i.loli.net/2021/02/15/r1qBdSTPMFf96yn.jpg">
 <meta property="article:published_time" content="2020-12-14T11:11:11.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.219Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.728Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Redis">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -320,23 +320,25 @@
 <span id="more"></span>
 
 <p>Redis（Remote Dictionary Server）是一种NoSQL型数据库，它不使用表来存储数据，而是使用<code>key-value</code>的形式，将数据存储在内存中，因此不存储海量数据，但是查询效率高。</p>
-<pre><code class="bash"># 商品的描述、评论
-    文档型数据库中，MongoDB
-# 图片
-    分布式文件系统 FastDFS
-    淘宝自己的    TFS
-    谷歌的    GFS
-    Hadoop的    HDFS
-    阿里云的    OSS    
-# 列存储数据库
-    HBase
-# 商品的关键字
-    搜索引擎    solr elasticsearch
-    ISerach    多隆手写
-# 商品热门的波段信息
-    内存型数据库 redis、Tair、Memache...
-# 第三方应用...
-</code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 商品的描述、评论</span>
+	文档型数据库中，MongoDB
+<span class="token comment"># 图片</span>
+	分布式文件系统 FastDFS
+	淘宝自己的	TFS
+	谷歌的	GFS
+	Hadoop的	HDFS
+	阿里云的	OSS	
+<span class="token comment"># 列存储数据库</span>
+	HBase
+<span class="token comment"># 商品的关键字</span>
+	搜索引擎	solr elasticsearch
+	ISerach	多隆手写
+<span class="token comment"># 商品热门的波段信息</span>
+	内存型数据库 redis、Tair、Memache<span class="token punctuation">..</span>.
+<span class="token comment"># 第三方应用...</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <p>《阿里巴巴中文架构》</p>
 <hr>
 <p>传统RDBMS和NoSQL的区别</p>
@@ -523,8 +525,8 @@
 <p><code>dbfilename</code>：Redis持久化数据生成的文件名，默认是<code>dump.rdb</code>，也可以自己配置</p>
 <p><code>dir</code>：Redis持久化数据生成文件保存的目录，默认是<code>./</code>，即Redis的启动目录，可以自己指定</p>
 <h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p>与快照持久化相⽐，AOF 持久化 的实时性更好，因此已成为主流的持久化⽅案。默认情况下 Redis 没有开启 AOF（append only file）⽅式的持久化，可以通过 appendonly 参数开启：</p>
-<pre><code class="conf">appendonly yes
-</code></pre>
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf">appendonly yes<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><code>appendonly</code>：配置是否开启AOF，yes表示开启，no表示关闭，默认为no</p>
 <p><code>appendfilename</code>：AOF保存文件名</p>
 <p><code>appendfsync</code>：AOF 异步持久化策略</p>
@@ -542,16 +544,16 @@
 <p><code>discard</code>：放弃已压入队列中命令，并且结束事务</p>
 <p><code>watch</code>：用来监控某一个或某几个<code>key</code>，此<code>key</code>对应的<code>value</code>一旦发生改变，则放弃本事务。类比乐观锁</p>
 <p><code>unwatch</code>：放弃监控所有键对事务的影响。</p>
-<pre><code class="shell">&gt; MULTI
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token operator">></span> MULTI
 OK
-&gt; INCR foo
+<span class="token operator">></span> INCR foo
 QUEUED
-&gt; INCR bar
+<span class="token operator">></span> INCR bar
 QUEUED
-&gt; EXEC
-1) (integer) 1
-2) (integer) 1
-</code></pre>
+<span class="token operator">></span> EXEC
+<span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span>
+<span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>integer<span class="token punctuation">)</span> <span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>Redis 的事务和我们平时理解的关系型数据库的事务不同。我们知道事务具有四⼤特性：1. 原⼦性，2. 隔离性，3. 持久性，4. ⼀致性。 </p>
 <ol>
 <li>原⼦性（Atomicity）： 事务是最⼩的执⾏单位，不允许分割。事务的原⼦性确保动作要么 全部完成，要么完全不起作⽤； </li>
@@ -580,58 +582,58 @@ QUEUED
 <h1 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h1><p>主机宕机的时候自动进行从机上位。</p>
 <p>部署哨兵监控主机，哨兵模式配置文件：<code>redis安装目录/sentinel.conf</code></p>
 <p>可以自定义配置文件：<code>redis_sentinel.conf</code></p>
-<pre><code class="properties">sentinel monitor dc-redis 127.0.0.1 6379 1
-# 指定哨兵程序需要监视的主机地址
-# 1 表示哨兵投票数（当哨兵投票数大于或等于此数时切换主从关系），根据实际情况设置值
-</code></pre>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">sentinel</span> <span class="token attr-value">monitor dc-redis 127.0.0.1 6379 1</span>
+<span class="token comment"># 指定哨兵程序需要监视的主机地址</span>
+<span class="token comment"># 1 表示哨兵投票数（当哨兵投票数大于或等于此数时切换主从关系），根据实际情况设置值</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>启动哨兵服务：<code>redis-sentinel redis_sentinel.conf</code></p>
 <p>使用哨兵模式，一旦之前的主机恢复之后，哨兵程序会自动将该服务从属于新的主机成为从机</p>
 <h1 id="Jedis"><a href="#Jedis" class="headerlink" title="Jedis"></a>Jedis</h1><p>添加依赖</p>
-<pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;redis.clients&lt;/groupId&gt;
-    &lt;artifactId&gt;jedis&lt;/artifactId&gt;
-    &lt;version&gt;3.1.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-<p>实例</p>
-<pre><code class="java">// 连接
-Jedis jedis = new Jedis(&quot;192.168.40.139&quot;, 6379);
-// 使用jedis对象操作redis服务
-String ret = jedis.ping();    // 如果返回pong则表示连接成功
-Set&lt;String&gt; keys = redis.keys(&quot;*&quot;); // 返回所有的key
-Boolean flag = redis.exists(&quot;key&quot;); // 查询key是否存在
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>redis.clients<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>jedis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>3.1.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-// 开启事务
-Transaction tran = jedis.multi();
-....
-// 执行事务
-tran.exec();
-...
-</code></pre>
+<p>实例</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 连接</span>
+<span class="token class-name">Jedis</span> jedis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jedis</span><span class="token punctuation">(</span><span class="token string">"192.168.40.139"</span><span class="token punctuation">,</span> <span class="token number">6379</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 使用jedis对象操作redis服务</span>
+<span class="token class-name">String</span> ret <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">ping</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// 如果返回pong则表示连接成功</span>
+<span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> keys <span class="token operator">=</span> redis<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 返回所有的key</span>
+<span class="token class-name">Boolean</span> flag <span class="token operator">=</span> redis<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 查询key是否存在</span>
+
+<span class="token comment">// 开启事务</span>
+<span class="token class-name">Transaction</span> tran <span class="token operator">=</span> jedis<span class="token punctuation">.</span><span class="token function">multi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token comment">// 执行事务</span>
+tran<span class="token punctuation">.</span><span class="token function">exec</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>Jedis中的方法与redis中的命令一一对应。</p>
 <h1 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h1><h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><h3 id="什么是缓存穿透"><a href="#什么是缓存穿透" class="headerlink" title="什么是缓存穿透"></a>什么是缓存穿透</h3><p>缓存穿透说简单点就是⼤量请求的 key 根本不存在于缓存中，导致请求直接到了数据库上，根本没有经过缓存这⼀层。举个例⼦：某个⿊客故意制造缓存中不存在的 key 发起⼤量请求，导致⼤量请求落到数据库。</p>
 <h3 id="有哪些解决方法"><a href="#有哪些解决方法" class="headerlink" title="有哪些解决方法"></a>有哪些解决方法</h3><p>最基本的就是⾸先做好参数校验，⼀些不合法的参数请求直接抛出异常信息返回给客户端。⽐如 查询的数据库 id 不能⼩于 0、传⼊的邮箱格式不对的时候直接返回错误消息给客户端等等。 </p>
 <p><strong>1）缓存⽆效 key</strong> </p>
 <p>如果缓存和数据库都查不到某个 key 的数据就写⼀个到 Redis 中去并设置过期时间，具体命令如 下：<code>SET key value EX 10086</code>。这种⽅式可以解决请求的 key 变化不频繁的情况，如果⿊客恶意攻击，每次构建不同的请求 key，会导致 Redis 中缓存⼤量⽆效的 key 。很明显，这种⽅案并不能从根本上解决此问题。如果⾮要⽤这种⽅式来解决穿透问题的话，尽量将⽆效的 key 的过期时 间设置短⼀点⽐如 1 分钟。 另外，这⾥多说⼀嘴，⼀般情况下我们是这样设计 key 的：<code>表名:列名:主键名:主键值</code>。 如果⽤ Java 代码展示的话，差不多是下⾯这样的：</p>
-<pre><code class="java">public Object getObjectInclNullById(Integer id) &#123;
-    // 从缓存中获取数据
-    Object cacheValue = cache.get(id);
-    // 缓存为空
-    if (cacheValue == null) &#123;
-        // 从数据库中获取
-        Object storageValue = storage.get(key);
-        // 缓存空对象
-        cache.set(key, storageValue);
-        // 如果存储数据为空，需要设置⼀个过期时间(300秒)
-        if (storageValue == null) &#123;
-            // 必须设置过期时间，否则有被攻击的⻛险
-            cache.expire(key, 60 * 5);
-        &#125;
-        return storageValue;
-    &#125;
-    return cacheValue;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">getObjectInclNullById</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 从缓存中获取数据</span>
+    <span class="token class-name">Object</span> cacheValue <span class="token operator">=</span> cache<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 缓存为空</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>cacheValue <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 从数据库中获取</span>
+        <span class="token class-name">Object</span> storageValue <span class="token operator">=</span> storage<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 缓存空对象</span>
+        cache<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> storageValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 如果存储数据为空，需要设置⼀个过期时间(300秒)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>storageValue <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 必须设置过期时间，否则有被攻击的⻛险</span>
+            cache<span class="token punctuation">.</span><span class="token function">expire</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> storageValue<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> cacheValue<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p> <strong>2）布隆过滤器</strong> </p>
 <p>布隆过滤器是⼀个⾮常神奇的数据结构，通过它可以⾮常⽅便地判断⼀个给定数据是否存在于海量数据中。我们需要做的就是判断一个 key 是否合法。 具体是这样做的：把所有可能存在的请求的值都存放在布隆过滤器中，当⽤户请求过来，先判断⽤户发来的请求的值是否存在于布隆过滤器中。不存在的话，直接返回请求参数错误信息给客户端，存在的话才会⾛下⾯的流程。 </p>
 <p>需要注意的是布隆过滤器可能会存在误判的情况。总结来说就是： <strong>布隆过滤器说某个元素存在，⼩概率会误判。布隆过滤器说某个元素不在，那么这个元素⼀定不在。</strong> 为什么会出现误判的情况呢? 我们还要从布隆过滤器的原理来说！ 我们先来看⼀下，当⼀个元素加⼊布隆过滤器中的时候，会进⾏哪些操作： </p>
@@ -877,7 +879,7 @@ tran.exec();
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="-MySQL">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-04T14:30:29.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.207Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.716Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -330,21 +330,21 @@
 <li><strong>多条 SQL 语句必须以分号（<code>;</code>）分隔</strong>。</li>
 <li>处理 SQL 语句时，<strong>所有空格都被忽略</strong>。SQL 语句可以写成一行，也可以分写为多行。</li>
 </ul>
-<pre><code class="sql">-- 一行 SQL 语句
-update user set username=&#39;robot&#39;, password=&#39;robot&#39; where username = &#39;root&#39;;
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 一行 SQL 语句</span>
+<span class="token keyword">update</span> <span class="token keyword">user</span> <span class="token keyword">set</span> username<span class="token operator">=</span><span class="token string">'robot'</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">'robot'</span> <span class="token keyword">where</span> username <span class="token operator">=</span> <span class="token string">'root'</span><span class="token punctuation">;</span>
 
--- 多行 SQL 语句
-update user
-set username=&#39;robot&#39;, password=&#39;robot&#39;
-where username = &#39;root&#39;;
-</code></pre>
+<span class="token comment">-- 多行 SQL 语句</span>
+<span class="token keyword">update</span> <span class="token keyword">user</span>
+<span class="token keyword">set</span> username<span class="token operator">=</span><span class="token string">'robot'</span><span class="token punctuation">,</span> password<span class="token operator">=</span><span class="token string">'robot'</span>
+<span class="token keyword">where</span> username <span class="token operator">=</span> <span class="token string">'root'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ul>
 <li>SQL 支持三种注释</li>
 </ul>
-<pre><code class="mysql">## 注释1
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">## 注释1
 -- 注释2
-/* 注释3 */
-</code></pre>
+&#x2F;* 注释3 *&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="SQL-分类"><a href="#SQL-分类" class="headerlink" title="SQL 分类"></a>SQL 分类</h1><h2 id="数据定义语言（DDL）"><a href="#数据定义语言（DDL）" class="headerlink" title="数据定义语言（DDL）"></a>数据定义语言（DDL）</h2><p>数据定义语言（Data Definition Language，DDL）是SQL语言集中负责数据结构定义与数据库对象定义的语言。</p>
 <p>DDL的主要功能是<strong>定义数据库对象</strong>。</p>
 <p>DDL的核心指令是 create、<code>alter</code>、<code>drop</code>。</p>
@@ -362,62 +362,62 @@ where username = &#39;root&#39;;
 </blockquote>
 <h2 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h2><p><code>insert into</code> 语句用于向表中插入新记录。</p>
 <p>插入完整的行</p>
-<pre><code class="sql">insert into user
-values (10,&#39;root&#39;,&#39;root&#39;,&#39;xxxxx@163.com&#39;);
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token keyword">user</span>
+<span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token string">'root'</span><span class="token punctuation">,</span><span class="token string">'root'</span><span class="token punctuation">,</span><span class="token string">'xxxxx@163.com'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>插入行的一部分</p>
-<pre><code class="sql">insert into user(username, password, email)
-values (&#39;admin&#39;, &#39;admin&#39;, &#39;xxxx@163.com&#39;);
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token keyword">user</span><span class="token punctuation">(</span>username<span class="token punctuation">,</span> password<span class="token punctuation">,</span> email<span class="token punctuation">)</span>
+<span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token string">'admin'</span><span class="token punctuation">,</span> <span class="token string">'admin'</span><span class="token punctuation">,</span> <span class="token string">'xxxx@163.com'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>插入查询出来的数据</p>
-<pre><code class="sql">insert into user(username) select name from account;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token keyword">user</span><span class="token punctuation">(</span>username<span class="token punctuation">)</span> <span class="token keyword">select</span> name <span class="token keyword">from</span> account<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h2><p><code>update</code>语句用于更新表中的记录。</p>
-<pre><code class="mysql">update user set username=&#39;robot&#39;, password=&#39;robot&#39;
-where username = &#39;root&#39;;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">update user set username&#x3D;&#39;robot&#39;, password&#x3D;&#39;robot&#39;
+where username &#x3D; &#39;root&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>没有给定条件时更新所有语句。</p>
 <h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><p><code>delete</code>语句用于删除表中的记录。</p>
 <p>删除表中的指定数据：</p>
-<pre><code class="mysql">delete from user where username = &#39;robot&#39;;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">delete from user where username &#x3D; &#39;robot&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>没有<code>where</code>条件时表示删除整个数据（可以回滚）：</p>
-<pre><code class="mysql">delete from user;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">delete from user;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><code>truncate table</code>表示截断清空表，也就是删除所有行（不能回滚）。截断表中的数据：</p>
-<pre><code class="mysql">truncate table user;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">truncate table user;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h1 id="DQL：查询数据"><a href="#DQL：查询数据" class="headerlink" title="DQL：查询数据"></a>DQL：查询数据</h1><p><code>select</code>语句用于从数据库中查询数据</p>
 <p><code>distinct</code>用于返回唯一不同的值，即去重。它作用于所有列，也就是说所有列的值都相同才算相同。</p>
 <p><code>limit</code>限制返回的行数。可以有两个参数，第一个参数为起始行，从0开始；第二个参数为返回的总函数，是MySQL中特有的语法，其他数据库中没有，不通用。</p>
 <p><code>limit</code>子句是SQL语句最后执行的环节。</p>
 <p>语法机制</p>
-<pre><code class="mysql">limit startIndex, length
-    startIndex：表示起始位置，从0开始，表示第一行数据
-    length：表示取几个
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">limit startIndex, length
+	startIndex：表示起始位置，从0开始，表示第一行数据
+	length：表示取几个<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <hr>
 <p>查询单列</p>
-<pre><code class="mysql">select prod_name from products;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select prod_name from products;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>查询多列</p>
-<pre><code class="mysql">select prod_id, prod_name, prod_price
-from products;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select prod_id, prod_name, prod_price
+from products;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>查询所有列</p>
-<pre><code class="mysql">select * from products;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select * from products;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>查询不同的值（去重）</p>
-<pre><code class="mysql">select distinct vend_id from products;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select distinct vend_id from products;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><strong>distinct 只能出现在所有字段的最前面。表示所有字段联合去重。</strong></p>
 <p>限制查询结果</p>
-<pre><code class="mysql">-- 返回前 5 行
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 返回前 5 行
 select * from mytable limit 5;
 select * from mytable limit 0, 5;
 -- 返回第 3 ~ 5 行
-select * from mytable limit 2, 3;
-</code></pre>
+select * from mytable limit 2, 3;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><blockquote>
 <p>子查询是嵌套在较大查询中的 SQL 查询。子查询也称为<strong>内部查询</strong>或<strong>内部选择</strong>，而包含子查询的语句也称为<strong>外部查询</strong>或<strong>外部选择</strong>。</p>
 </blockquote>
@@ -432,58 +432,58 @@ select * from mytable limit 2, 3;
 <ul>
 <li>子查询都可以出现在哪里：</li>
 </ul>
-<pre><code class="mysql">select 
-    ..(select).
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select 
+	..(select).
 from 
-    ..(select).
+	..(select).
 where
-    ..(select).
-</code></pre>
+	..(select).<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="where-子句中使用子查询"><a href="#where-子句中使用子查询" class="headerlink" title="where 子句中使用子查询"></a>where 子句中使用子查询</h3><p>找出高于平均薪资的员工信息</p>
-<pre><code class="mysql">select * from emp where sal &gt; (select avg(sal) from emp);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select * from emp where sal &gt; (select avg(sal) from emp);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h3 id="from-子句中使用子查询"><a href="#from-子句中使用子查询" class="headerlink" title="from 子句中使用子查询"></a>from 子句中使用子查询</h3><p>找出每个部门平均薪资等级</p>
 <p>第一步，先找出每个部门平均薪资（按部门编号分组，求sal的平均值）</p>
-<pre><code class="mysql">select deptno, avg(sal) as avgsal from emp group by deptno;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select deptno, avg(sal) as avgsal from emp group by deptno;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>第二步，将第一步的结果当作一个新表和salgrade进行连接</p>
-<pre><code class="mysql">select t.*, s.grade 
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select t.*, s.grade 
 from (select deptno, avg(sal) as avgsal from emp group by deptno;) t
 join salgrade s 
-on t.avgsal between s.losal and hisal;
-</code></pre>
+on t.avgsal between s.losal and hisal;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>找出每个部门平均的薪资等级</p>
 <p>先找出每个员工的薪资等级</p>
-<pre><code class="mysql">select e.ename, e.sal, e.deptno, s.garde from emp e
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename, e.sal, e.deptno, s.garde from emp e
 join salgarde s 
-on e.sal between s.losal and s.hisal;  
-</code></pre>
+on e.sal between s.losal and s.hisal;  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>再做按照部门分组做平均</p>
-<pre><code class="mysql">select t.* 
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select t.* 
 from (select e.ename, e.sal, e.deptno, s.garde from emp e
 join salgarde s 
 on e.sal between s.losal and s.hisal;) t 
-where group by t.deptno;
-</code></pre>
+where group by t.deptno;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>没这个必要，可以直接进行分组，因为from子句已经执行完成。</p>
-<pre><code class="mysql">select e.ename, e.sal, e.deptno, s.garde, avg(s,grade) from emp e
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename, e.sal, e.deptno, s.garde, avg(s,grade) from emp e
 join salgarde s 
 on e.sal between s.losal and s.hisal
-where group by e.deptno;
-</code></pre>
+where group by e.deptno;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="select-子句中使用子查询"><a href="#select-子句中使用子查询" class="headerlink" title="select 子句中使用子查询"></a>select 子句中使用子查询</h3><p>找出每个员工所在的部门名称。要求显示员工名和部门名。</p>
-<pre><code class="mysql">select e.ename, 
-(select d.dname from dept d where e.deptno = d.deptno) as dname
-from emp e;
-</code></pre>
-<h3 id="子查询的子查询"><a href="#子查询的子查询" class="headerlink" title="子查询的子查询"></a>子查询的子查询</h3><pre><code class="sql">select cust_name, cust_contact
-from customers
-where cust_id in (select cust_id
-                  from orders
-                  where order_num in (select order_num
-                                      from orderitems
-                                      where prod_id = &#39;RGAN01&#39;));
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename, 
+(select d.dname from dept d where e.deptno &#x3D; d.deptno) as dname
+from emp e;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="子查询的子查询"><a href="#子查询的子查询" class="headerlink" title="子查询的子查询"></a>子查询的子查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> cust_name<span class="token punctuation">,</span> cust_contact
+<span class="token keyword">from</span> customers
+<span class="token keyword">where</span> cust_id <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token keyword">select</span> cust_id
+                  <span class="token keyword">from</span> orders
+                  <span class="token keyword">where</span> order_num <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token keyword">select</span> order_num
+                                      <span class="token keyword">from</span> orderitems
+                                      <span class="token keyword">where</span> prod_id <span class="token operator">=</span> <span class="token string">'RGAN01'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h2><h3 id="where"><a href="#where" class="headerlink" title="where"></a>where</h3><ul>
 <li><code>where</code> 子句用于过滤记录，即缩小访问数据的范围。</li>
 <li><code>where</code> 后跟一个返回 <code>true</code> 或 <code>false</code> 的条件。</li>
@@ -535,32 +535,32 @@ where cust_id in (select cust_id
 </tr>
 </tbody></table>
 <p>select 语句中的 where 子句</p>
-<pre><code class="sql">select * from Customers
-where cust_name = &#39;Kids Place&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> Customers
+<span class="token keyword">where</span> cust_name <span class="token operator">=</span> <span class="token string">'Kids Place'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>update 语句中的 where 子句</p>
-<pre><code class="sql">update Customers
-set cust_name = &#39;Jack Jones&#39;
-where cust_name = &#39;Kids Place&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">update</span> Customers
+<span class="token keyword">set</span> cust_name <span class="token operator">=</span> <span class="token string">'Jack Jones'</span>
+<span class="token keyword">where</span> cust_name <span class="token operator">=</span> <span class="token string">'Kids Place'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>delete 语句中的 where 子句</p>
-<pre><code class="sql">delete from Customers
-where cust_name = &#39;Kids Place&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">delete</span> <span class="token keyword">from</span> Customers
+<span class="token keyword">where</span> cust_name <span class="token operator">=</span> <span class="token string">'Kids Place'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h3 id="in-和-between"><a href="#in-和-between" class="headerlink" title="in 和 between"></a>in 和 between</h3><ul>
 <li><code>in</code> 操作符在 <code>where</code> 子句中使用，作用是在指定的几个特定值中任选一个值。还有一个<code>not in</code>可以组合使用。</li>
 <li><code>between</code> 操作符在 <code>where</code> 子句中使用，作用是选取介于某个范围内的值。</li>
 </ul>
 <p>in 示例</p>
-<pre><code class="sql">select * 
-from products
-where vend_id IN (&#39;DLL01&#39;, &#39;BRS01&#39;);
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> 
+<span class="token keyword">from</span> products
+<span class="token keyword">where</span> vend_id <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'DLL01'</span><span class="token punctuation">,</span> <span class="token string">'BRS01'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>between 示例</p>
-<pre><code class="SQL">select *
+<pre class="line-numbers language-SQL" data-language="SQL"><code class="language-SQL">select *
 from products
-where prod_price between 3 and 5;
-</code></pre>
+where prod_price between 3 and 5;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="and、or、not"><a href="#and、or、not" class="headerlink" title="and、or、not"></a>and、or、not</h3><ul>
 <li><code>and</code>、<code>or</code>、<code>not</code> 是用于对过滤条件的逻辑处理指令。</li>
 <li><code>and</code> 优先级高于 <code>or</code>，为了明确处理顺序，可以使用 <code>()</code>。注意：</li>
@@ -569,20 +569,20 @@ where prod_price between 3 and 5;
 <li><code>not</code> 操作符用于否定一个条件。</li>
 </ul>
 <p>and 示例</p>
-<pre><code class="sql">select prod_id, prod_name, prod_price
-from products
-where vend_id = &#39;DLL01&#39; and prod_price &lt;= 4;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> prod_id<span class="token punctuation">,</span> prod_name<span class="token punctuation">,</span> prod_price
+<span class="token keyword">from</span> products
+<span class="token keyword">where</span> vend_id <span class="token operator">=</span> <span class="token string">'DLL01'</span> <span class="token operator">and</span> prod_price <span class="token operator">&lt;=</span> <span class="token number">4</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>or 示例</p>
-<pre><code class="sql">select prod_id, prod_name, prod_price
-from products
-where vend_id = &#39;DLL01&#39; or vend_id = &#39;BRS01&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> prod_id<span class="token punctuation">,</span> prod_name<span class="token punctuation">,</span> prod_price
+<span class="token keyword">from</span> products
+<span class="token keyword">where</span> vend_id <span class="token operator">=</span> <span class="token string">'DLL01'</span> <span class="token operator">or</span> vend_id <span class="token operator">=</span> <span class="token string">'BRS01'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>not 示例</p>
-<pre><code class="sql">select *
-from products
-where prod_price not between 3 and 5;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span>
+<span class="token keyword">from</span> products
+<span class="token keyword">where</span> prod_price <span class="token operator">not</span> <span class="token operator">between</span> <span class="token number">3</span> <span class="token operator">and</span> <span class="token number">5</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h3 id="like（模糊查询）"><a href="#like（模糊查询）" class="headerlink" title="like（模糊查询）"></a>like（模糊查询）</h3><ul>
 <li><code>LIKE</code> 操作符在 <code>where</code> 子句中使用，作用是确定字符串是否匹配模式。</li>
 <li>只有字段是文本值时才使用 <code>LIKE</code>。</li>
@@ -592,33 +592,33 @@ where prod_price not between 3 and 5;
 <li><code>_</code> 表示任何字符出现一次。</li>
 </ul>
 <p>% 示例</p>
-<pre><code class="sql">select prod_id, prod_name, prod_price
-from products
-where prod_name LIKE &#39;%bean bag%&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> prod_id<span class="token punctuation">,</span> prod_name<span class="token punctuation">,</span> prod_price
+<span class="token keyword">from</span> products
+<span class="token keyword">where</span> prod_name <span class="token operator">LIKE</span> <span class="token string">'%bean bag%'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>_ 示例</p>
-<pre><code class="sql">select prod_id, prod_name, prod_price
-from products
-where prod_name LIKE &#39;__ inch teddy bear&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> prod_id<span class="token punctuation">,</span> prod_name<span class="token punctuation">,</span> prod_price
+<span class="token keyword">from</span> products
+<span class="token keyword">where</span> prod_name <span class="token operator">LIKE</span> <span class="token string">'__ inch teddy bear'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>找出名字中有下划线的</p>
-<pre><code class="sql">select ename form enames where ename like &#39;%\_%&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> ename form enames <span class="token keyword">where</span> ename <span class="token operator">like</span> <span class="token string">'%\_%'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p><code>\</code>起到转义的作用。</p>
-<h3 id="between-and-组合"><a href="#between-and-组合" class="headerlink" title="between and 组合"></a>between and 组合</h3><pre><code class="sql">select number from emp where name between 3000 and 5000;
-</code></pre>
+<h3 id="between-and-组合"><a href="#between-and-组合" class="headerlink" title="between and 组合"></a>between and 组合</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> number <span class="token keyword">from</span> emp <span class="token keyword">where</span> name <span class="token operator">between</span> <span class="token number">3000</span> <span class="token operator">and</span> <span class="token number">5000</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>取<strong>闭区间</strong><code>[3000,5000]</code>，还可以用在字符串的筛选</p>
-<pre><code class="SQL">select ename form emp where ename between &#39;A&#39; and &#39;C&#39;;
-</code></pre>
+<pre class="line-numbers language-SQL" data-language="SQL"><code class="language-SQL">select ename form emp where ename between &#39;A&#39; and &#39;C&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>取<strong>左闭右开区间</strong></p>
-<h3 id="判断是否为空（null）"><a href="#判断是否为空（null）" class="headerlink" title="判断是否为空（null）"></a>判断是否为空（null）</h3><pre><code class="sql">select number from emp where number is null;
-</code></pre>
+<h3 id="判断是否为空（null）"><a href="#判断是否为空（null）" class="headerlink" title="判断是否为空（null）"></a>判断是否为空（null）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> number <span class="token keyword">from</span> emp <span class="token keyword">where</span> number <span class="token operator">is</span> <span class="token boolean">null</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><blockquote>
 <p>🔔 注意：不同数据库的函数往往各不相同，因此不可移植。本节主要以 Mysql 的函数为例。</p>
 </blockquote>
 <h3 id="单行处理函数"><a href="#单行处理函数" class="headerlink" title="单行处理函数"></a>单行处理函数</h3><p><strong>单行处理函数中，只要存在为<code>null</code>的数据，那么之后的处理结果都为<code>null</code>。</strong>所有数据库都是这样规定的。</p>
-<h4 id="空值处理函数"><a href="#空值处理函数" class="headerlink" title="空值处理函数"></a>空值处理函数</h4><pre><code class="sql">select ename, ifnull&lt;number,0&gt; form emp;
-</code></pre>
+<h4 id="空值处理函数"><a href="#空值处理函数" class="headerlink" title="空值处理函数"></a>空值处理函数</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> ename<span class="token punctuation">,</span> ifnull<span class="token operator">&lt;</span>number<span class="token punctuation">,</span><span class="token number">0</span><span class="token operator">></span> form emp<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h4 id="文本处理"><a href="#文本处理" class="headerlink" title="文本处理"></a>文本处理</h4><table>
 <thead>
 <tr>
@@ -727,9 +727,9 @@ where prod_name LIKE &#39;__ inch teddy bear&#39;;
 <td align="center">返回一个日期的年份部分s</td>
 </tr>
 </tbody></table>
-<pre><code class="sql">mysql&gt; select NOW();
-2018-4-14 20:25:11
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">mysql<span class="token operator">></span> <span class="token keyword">select</span> <span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">14</span> <span class="token number">20</span>:<span class="token number">25</span>:<span class="token number">11</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h4 id="数值处理"><a href="#数值处理" class="headerlink" title="数值处理"></a>数值处理</h4><table>
 <thead>
 <tr>
@@ -805,28 +805,28 @@ where prod_name LIKE &#39;__ inch teddy bear&#39;;
 </tbody></table>
 <p><strong>分组函数会自动忽略<code>null</code>行。</strong></p>
 <p><strong>分组函数不能直接出现在<code>where</code>子句中。</strong>（找出工资比平均工资高的）</p>
-<pre><code class="mysql">select ename from enum where sal &gt; avg(sal);    
---这是错的，会报错ERROR 1111(BY000)：Invalid use of group function
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select ename from enum where sal &gt; avg(sal);    
+--这是错的，会报错ERROR 1111(BY000)：Invalid use of group function<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>为什么？</p>
 <p>SQL语句中有一个语法规则，分组函数不可直接使用在<code>where</code>字句当中。因为<code>group by</code>语句是在<code>where</code>执行之后才会执行的。分组函数是在<code>group by</code>语句执行之后才会执行的。</p>
 <p>所有语句的执行顺序：</p>
-<pre><code class="mysql">select     --5
-    ...
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select     --5
+	...
 from       --1
-    ...
+	...
 where      --2
-    ...
+	...
 group by   --4
-    ...
+	...
 having     --4
-    ...
+	...
 order by   --6
-    ...
-</code></pre>
+	...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>解决方法：</p>
-<pre><code class="mysql">select ename, sal from emp where sal &gt; (select avg(sal) from emp);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select ename, sal from emp where sal &gt; (select avg(sal) from emp);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>这就是子查询。</p>
 <p><code>count(*)</code>和<code>count(sal)</code>有什么区别</p>
 <ul>
@@ -834,12 +834,12 @@ order by   --6
 <li><code>count(sal)</code>：是统计<code>sal</code>字段中不为<code>null</code>的数据总量。</li>
 </ul>
 <p>分组函数也可以组合起来用。</p>
-<pre><code class="mysql">sum(*), avg(*), max(sal), min(sal);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">sum(*), avg(*), max(sal), min(sal);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>使用<code>DISTINCT</code>可以让汇总函数值汇总不同的值。</p>
-<pre><code class="sql">select AVG（DISTINCT col1） AS avg_col
-from mytable
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> AVG（<span class="token keyword">DISTINCT</span> col1） <span class="token keyword">AS</span> avg_col
+<span class="token keyword">from</span> mytable<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <h2 id="排序和分组"><a href="#排序和分组" class="headerlink" title="排序和分组"></a>排序和分组</h2><h3 id="order-by"><a href="#order-by" class="headerlink" title="order by"></a>order by</h3><p><strong><code>order by</code> 用于对结果集进行排序。</strong></p>
 <ul>
 <li><code>ASC</code> ：升序（默认）</li>
@@ -847,9 +847,9 @@ from mytable
 <li>可以按多个列进行排序，并且为每个列指定不同的排序方式</li>
 </ul>
 <p><strong>指定多个列的排序方向</strong></p>
-<pre><code class="sql">select * from products
-order by prod_price DESC, prod_name ASC;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> products
+<span class="token keyword">order</span> <span class="token keyword">by</span> prod_price <span class="token keyword">DESC</span><span class="token punctuation">,</span> prod_name <span class="token keyword">ASC</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>先按照<code>prod_price</code>降序排列，当两个<code>prod_price</code>相同时，按照<code>prod_name</code>升序排列。</p>
 <h3 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h3><p>按照某些字段或某个字段进行分组。</p>
 <ul>
@@ -860,25 +860,25 @@ order by prod_price DESC, prod_name ASC;
 <li>当一条<code>sql</code>语句没有<code>group by</code>语句时，整张表自成一组。</li>
 </ul>
 <p><strong>分组</strong></p>
-<pre><code class="sql">select cust_name, COUNT(cust_address) AS addr_num
-from Customers group by cust_name;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> cust_name<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>cust_address<span class="token punctuation">)</span> <span class="token keyword">AS</span> addr_num
+<span class="token keyword">from</span> Customers <span class="token keyword">group</span> <span class="token keyword">by</span> cust_name<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p><strong>分组后排序</strong></p>
-<pre><code class="sql">select cust_name, COUNT(cust_address) AS addr_num
-from Customers group by cust_name
-order by cust_name DESC;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> cust_name<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>cust_address<span class="token punctuation">)</span> <span class="token keyword">AS</span> addr_num
+<span class="token keyword">from</span> Customers <span class="token keyword">group</span> <span class="token keyword">by</span> cust_name
+<span class="token keyword">order</span> <span class="token keyword">by</span> cust_name <span class="token keyword">DESC</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>查找各个工作岗位的最高薪资：</p>
-<pre><code class="sql">select max(sal), job from emp group by job;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">max</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span><span class="token punctuation">,</span> job <span class="token keyword">from</span> emp <span class="token keyword">group</span> <span class="token keyword">by</span> job<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>思考一下：下面这条语句能不能执行。</p>
-<pre><code class="sql">select ename max(sal), job from emp group by job;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> ename <span class="token function">max</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span><span class="token punctuation">,</span> job <span class="token keyword">from</span> emp <span class="token keyword">group</span> <span class="token keyword">by</span> job<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>执行报错：</p>
 <p>因为<code>ename</code>没有参加分组，当一条语句有<code>group by</code>的话，<code>select</code>后面只能跟参加分组的字段和分组函数，别的东西都不能跟。</p>
 <p>查找每个部门不同岗位的最高薪资：</p>
-<pre><code class="sql">select max(sal), job, deptmo from emp group by deptno, job;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">max</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span><span class="token punctuation">,</span> job<span class="token punctuation">,</span> deptmo <span class="token keyword">from</span> emp <span class="token keyword">group</span> <span class="token keyword">by</span> deptno<span class="token punctuation">,</span> job<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h3 id="having"><a href="#having" class="headerlink" title="having"></a>having</h3><p><code>having</code> 用于对汇总的 <code>group by</code> 结果进行过滤。</p>
 <ul>
 <li><p><code>having</code> 要求存在一个 <code>group by</code> 子句。</p>
@@ -893,22 +893,22 @@ order by cust_name DESC;
 </li>
 </ul>
 <p><strong>使用 where 和 having 过滤数据</strong></p>
-<pre><code class="sql">select cust_name, count(*) as num
-from Customers
-where cust_email is not NULL
-group by cust_name
-having count(*) &gt;= 1;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> cust_name<span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> num
+<span class="token keyword">from</span> Customers
+<span class="token keyword">where</span> cust_email <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">NULL</span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> cust_name
+<span class="token keyword">having</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">1</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>找出每个部门的最高薪资，要求显示薪资大于2900的数据。</p>
-<pre><code class="mysql">select max(sal), deptno from emp group deptno having max(sal) &gt; 2900;
--- 这种方式效率低
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select max(sal), deptno from emp group deptno having max(sal) &gt; 2900;
+-- 这种方式效率低<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>建议使用:</p>
-<pre><code class="sql">select max(sal), deptno from emp where sal &gt; 2900 group deptno;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">max</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span><span class="token punctuation">,</span> deptno <span class="token keyword">from</span> emp <span class="token keyword">where</span> sal <span class="token operator">></span> <span class="token number">2900</span> <span class="token keyword">group</span> deptno<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>找出每个部门的平均薪资，要求显示大于2000的数据。</p>
-<pre><code class="mysql">select deptno, avg(sal) from emp group by deptno having avg(sal) &gt; 2000;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select deptno, avg(sal) from emp group by deptno having avg(sal) &gt; 2000;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="连接（join）"><a href="#连接（join）" class="headerlink" title="连接（join）"></a>连接（join）</h2><blockquote>
 <ul>
 <li>连接用于连接多个表，使用 <code>JOIN</code> 关键字，并且条件语句使用 <code>ON</code> 而不是 <code>where</code>。</li>
@@ -933,81 +933,81 @@ having count(*) &gt;= 1;
 <p>全连接</p>
 <hr>
 <p>在表的连接查询方面有一种现象被称为：笛卡尔积（乘积）现象、</p>
-<pre><code class="mysql">select ename, dname from emp, dept;
--- 表示ename和dname要联合起来一块显示，粘在一块。
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select ename, dname from emp, dept;
+-- 表示ename和dname要联合起来一块显示，粘在一块。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>如果两张表进行连接查询时没有条件限制的话，查询结果为两者的乘积。</p>
 <p>关于表的别名：</p>
-<pre><code class="mysql">select e.ename d.dname from emp e,dept d; 
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename d.dname from emp e,dept d; <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>别名的优点：执行效率高，可读性好。</p>
 <p>怎么避免笛卡尔积现象呢？ ——加条件进行过滤。</p>
 <p>思考：避免了笛卡尔积现象会减少记录的匹配次数吗？</p>
 <p>​    不会，匹配此时还是不变，只是进行了过滤输出。没有提高执行效率。</p>
 <h4 id="内连接（inner-join）"><a href="#内连接（inner-join）" class="headerlink" title="内连接（inner join）"></a>内连接（inner join）</h4><p>假设A和B表进行连接，使用内连接的话，凡是A表和B表能够匹配上的记录查询出来，这就是内连接，AB两张表没有主副之分，两张表是平等的。</p>
-<pre><code class="mysql">select vend_name, prod_name, prod_price
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select vend_name, prod_name, prod_price
 from vendors inner join products
-on vendors.vend_id = products.vend_id;
-</code></pre>
+on vendors.vend_id &#x3D; products.vend_id;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h5 id="等值连接"><a href="#等值连接" class="headerlink" title="等值连接"></a>等值连接</h5><p>最大的特点是：条件是等量关系</p>
-<pre><code class="mysql">select e.ename, d.dname 
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename, d.dname 
 from emp e inner join dept d
-on e.deptno = d.deptno;
-</code></pre>
+on e.deptno &#x3D; d.deptno;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>语法格式</p>
-<pre><code class="mysql">...
-    A
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">...
+	A
 inner join
-    B
+	B
 on
-    连接条件
+	连接条件
 where
-    ....
--- inner可以省略，写出来可读性更好。表示内连接
-</code></pre>
+	....
+-- inner可以省略，写出来可读性更好。表示内连接<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>(表的连接条件和后来的过滤条件分开了，结构更清晰)</p>
 <h5 id="非等值连接"><a href="#非等值连接" class="headerlink" title="非等值连接"></a>非等值连接</h5><p>最大的特点是：连接条件中的关系是非等值关系</p>
-<pre><code class="mysql">select e.name, e.sal, s,grade
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.name, e.sal, s,grade
 from emp e inner join salgrade s
-on e.sal between s.losal and s.hisal;
-</code></pre>
+on e.sal between s.losal and s.hisal;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h5 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h5><p>最大的特点是：一张表看作两张表，自己连接自己。</p>
-<pre><code class="mysql">select c1.cust_id, c1.cust_name, c1.cust_contact
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select c1.cust_id, c1.cust_name, c1.cust_contact
 from customers c1 join customers c2
-on c1.cust_name = c2.cust_name
-and c2.cust_contact = &#39;Jim Jones&#39;;
-</code></pre>
-<h4 id="自然连接（natural-join）"><a href="#自然连接（natural-join）" class="headerlink" title="自然连接（natural join）"></a>自然连接（natural join）</h4><pre><code class="mysql">select * from Products natural join Customers;
-</code></pre>
+on c1.cust_name &#x3D; c2.cust_name
+and c2.cust_contact &#x3D; &#39;Jim Jones&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="自然连接（natural-join）"><a href="#自然连接（natural-join）" class="headerlink" title="自然连接（natural join）"></a>自然连接（natural join）</h4><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select * from Products natural join Customers;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h4 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h4><p>假设A和B表进行连接，使用外连接的话，AB两张表中有一张是主表，一张表是副表，主要查询主表中的数据，捎带查询副表，当副表中的数据没有和主表中的数据匹配上，副表自动模拟出 null 与之匹配。</p>
 <p>最重要的特点就是：主表的数据无条件的查询出来。</p>
-<h5 id="左连接（left-join）"><a href="#左连接（left-join）" class="headerlink" title="左连接（left join）"></a>左连接（left join）</h5><pre><code class="sql">select customers.cust_id, orders.order_num
-from customers left join orders
-on customers.cust_id = orders.cust_id;
-</code></pre>
-<h5 id="右连接（right-join）"><a href="#右连接（right-join）" class="headerlink" title="右连接（right join）"></a>右连接（right join）</h5><pre><code class="sql">select customers.cust_id, orders.order_num
-from customers right join orders
-on customers.cust_id = orders.cust_id;
-</code></pre>
+<h5 id="左连接（left-join）"><a href="#左连接（left-join）" class="headerlink" title="左连接（left join）"></a>左连接（left join）</h5><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> customers<span class="token punctuation">.</span>cust_id<span class="token punctuation">,</span> orders<span class="token punctuation">.</span>order_num
+<span class="token keyword">from</span> customers <span class="token keyword">left</span> <span class="token keyword">join</span> orders
+<span class="token keyword">on</span> customers<span class="token punctuation">.</span>cust_id <span class="token operator">=</span> orders<span class="token punctuation">.</span>cust_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="右连接（right-join）"><a href="#右连接（right-join）" class="headerlink" title="右连接（right join）"></a>右连接（right join）</h5><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> customers<span class="token punctuation">.</span>cust_id<span class="token punctuation">,</span> orders<span class="token punctuation">.</span>order_num
+<span class="token keyword">from</span> customers <span class="token keyword">right</span> <span class="token keyword">join</span> orders
+<span class="token keyword">on</span> customers<span class="token punctuation">.</span>cust_id <span class="token operator">=</span> orders<span class="token punctuation">.</span>cust_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>三张表以上的连接</p>
 <p>找出每个员工的部门名称和工资等级。</p>
-<pre><code class="mysql">select e.ename &#39;员工名&#39;, d.dname &#39;部门&#39;, s.grade, e1.ename &#39;领导&#39;
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename &#39;员工名&#39;, d.dname &#39;部门&#39;, s.grade, e1.ename &#39;领导&#39;
 from emp e
 join dept d
-on e.deptno = d.deptno
+on e.deptno &#x3D; d.deptno
 join salgrade s
-on e.sal between s.losal and s.hisal;
-</code></pre>
+on e.sal between s.losal and s.hisal;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>找出每个员工的部门名称和工资等级以及上级领导。</p>
-<pre><code class="mysql">select e.ename &#39;员工名&#39;, d.dname &#39;部门&#39;, s.grade, e1.ename &#39;领导&#39;
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select e.ename &#39;员工名&#39;, d.dname &#39;部门&#39;, s.grade, e1.ename &#39;领导&#39;
 from emp e
 join dept d
-on e.deptno = d.deptno
+on e.deptno &#x3D; d.deptno
 join salgrade s
 on e.sal between s.losal and s.hisal
 left join emp e1
-on e.mgr = e1.empno;
-</code></pre>
+on e.mgr &#x3D; e1.empno;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h2 id="组合（union）"><a href="#组合（union）" class="headerlink" title="组合（union）"></a>组合（union）</h2><p><code>union</code> 运算符将两个或更多查询的结果组合在一块，并生成一个结果集，其中包含来自 <code>union</code> 中参与查询的提取行。</p>
 <p><code>union</code> 基本规则：</p>
 <ul>
@@ -1023,14 +1023,14 @@ on e.mgr = e1.empno;
 <li>对一个表执行多个查询，按一个查询返回数据。</li>
 </ul>
 <p>组合查询</p>
-<pre><code class="sql">select cust_name, cust_contact, cust_email
-from customers
-where cust_state in (&#39;IL&#39;, &#39;IN&#39;, &#39;MI&#39;)
-union
-select cust_name, cust_contact, cust_email
-from customers
-where cust_name = &#39;Fun4All&#39;;
-</code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> cust_name<span class="token punctuation">,</span> cust_contact<span class="token punctuation">,</span> cust_email
+<span class="token keyword">from</span> customers
+<span class="token keyword">where</span> cust_state <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token string">'IL'</span><span class="token punctuation">,</span> <span class="token string">'IN'</span><span class="token punctuation">,</span> <span class="token string">'MI'</span><span class="token punctuation">)</span>
+<span class="token keyword">union</span>
+<span class="token keyword">select</span> cust_name<span class="token punctuation">,</span> cust_contact<span class="token punctuation">,</span> cust_email
+<span class="token keyword">from</span> customers
+<span class="token keyword">where</span> cust_name <span class="token operator">=</span> <span class="token string">'Fun4All'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>join vs union</p>
 <ul>
 <li><code>join</code> 中连接表的列可能不同，但在 <code>union</code> 中，所有查询的列数和列顺序必须相同。</li>
@@ -1039,12 +1039,12 @@ where cust_name = &#39;Fun4All&#39;;
 <h1 id="DDL：数据定义"><a href="#DDL：数据定义" class="headerlink" title="DDL：数据定义"></a>DDL：数据定义</h1><blockquote>
 <p>DDL的主要功能是定义数据库对象（如：数据库、数据包、视图、索引等）。</p>
 </blockquote>
-<h2 id="数据库（database）"><a href="#数据库（database）" class="headerlink" title="数据库（database）"></a>数据库（database）</h2><h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><pre><code class="mysql">create database test;
-</code></pre>
-<h3 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h3><pre><code class="mysql">drop database test;
-</code></pre>
-<h3 id="选择数据库"><a href="#选择数据库" class="headerlink" title="选择数据库"></a>选择数据库</h3><pre><code class="mysql">use test;
-</code></pre>
+<h2 id="数据库（database）"><a href="#数据库（database）" class="headerlink" title="数据库（database）"></a>数据库（database）</h2><h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create database test;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop database test;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="选择数据库"><a href="#选择数据库" class="headerlink" title="选择数据库"></a>选择数据库</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">use test;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="数据表（table）"><a href="#数据表（table）" class="headerlink" title="数据表（table）"></a>数据表（table）</h2><h3 id="MySQL-中字段的数据类型"><a href="#MySQL-中字段的数据类型" class="headerlink" title="MySQL 中字段的数据类型"></a>MySQL 中字段的数据类型</h3><ul>
 <li><code>int</code> 整形</li>
 <li><code>bigint</code>   长整型（Java中的<code>long</code>）</li>
@@ -1063,47 +1063,47 @@ where cust_name = &#39;Fun4All&#39;;
 </blockquote>
 <h3 id="创建数据表"><a href="#创建数据表" class="headerlink" title="创建数据表"></a>创建数据表</h3><p>表名在数据库中建议使用<code>t_</code>或者<code>tbl_</code>开头。</p>
 <p>普通创建</p>
-<pre><code class="mysql">create TABLE user (
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create TABLE user (
   id int(10) unsigned NOT NULL COMMENT &#39;Id&#39;,
   username varchar(64) NOT NULL DEFAULT &#39;default&#39; COMMENT &#39;用户名&#39;,
   password varchar(64) NOT NULL DEFAULT &#39;default&#39; COMMENT &#39;密码&#39;,
   email varchar(64) NOT NULL DEFAULT &#39;default&#39; COMMENT &#39;邮箱&#39;
-) COMMENT=&#39;用户表&#39;;
-</code></pre>
+) COMMENT&#x3D;&#39;用户表&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>根据已有的表创建新表（表的复制）</p>
-<pre><code class="mysql">create table vip_user as select * from user;
-</code></pre>
-<h3 id="插入数据-1"><a href="#插入数据-1" class="headerlink" title="插入数据"></a>插入数据</h3><pre><code class="mysql">insert into t_student (no,name,sex,classno,birth) values (1,&#39;zhangyukun&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create table vip_user as select * from user;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="插入数据-1"><a href="#插入数据-1" class="headerlink" title="插入数据"></a>插入数据</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">insert into t_student (no,name,sex,classno,birth) values (1,&#39;zhangyukun&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>也可以不写字段名直接给数据，但是要和字段名在表中的顺序对齐。</p>
-<pre><code class="mysql">insert into t_student(1,&#39;zhangyukun&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">insert into t_student(1,&#39;zhangyukun&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>可以一次插入多条语句</p>
-<pre><code class="mysql">insert into t_student(1,&#39;zhangyukun&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;),(2,&#39;zhangyu&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;),(3,&#39;zhang&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">insert into t_student(1,&#39;zhangyukun&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;),(2,&#39;zhangyu&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;),(3,&#39;zhang&#39;,&#39;1&#39;,&#39;8&#39;,&#39;1996-12-20&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>将查询结果插入到表中</p>
-<pre><code class="mysql">insert into dept1 select * from dept;
-</code></pre>
-<h3 id="删除数据表"><a href="#删除数据表" class="headerlink" title="删除数据表"></a>删除数据表</h3><pre><code class="mysql">drop table vip_user;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">insert into dept1 select * from dept;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="删除数据表"><a href="#删除数据表" class="headerlink" title="删除数据表"></a>删除数据表</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop table vip_user;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h3 id="修改数据表"><a href="#修改数据表" class="headerlink" title="修改数据表"></a>修改数据表</h3><p>添加列</p>
-<pre><code class="mysql">alter table user add age int(3);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">alter table user add age int(3);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>添加列时可以附加信息：</p>
-<pre><code class="mysql">alter table user add age int(3) not null default 20;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">alter table user add age int(3) not null default 20;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>删除列</p>
-<pre><code class="sql">alter table user drop column age;
-</code></pre>
+ <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token keyword">user</span> <span class="token keyword">drop</span> <span class="token keyword">column</span> age<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>修改列</p>
-<pre><code class="mysql">alter table user modify column age tinyint;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">alter table user modify column age tinyint;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>添加主键</p>
-<pre><code class="mysql">alter table user add primary key(id);
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">alter table user add primary key(id);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>删除主键</p>
-<pre><code class="mysql">alter table user drop primary key;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">alter table user drop primary key;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><blockquote>
 <p>SQL 约束用于规定表中的数据规则。</p>
 </blockquote>
@@ -1116,25 +1116,25 @@ where cust_name = &#39;Fun4All&#39;;
 <p>检查约束：<code>check</code>，Oracle数据库有check约束，但是MySQL约束没有，目前MySQL不支持该约束。</p>
 <hr>
 <p>创建表时使用约束条件：</p>
-<pre><code class="mysql">create table Users (
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create table Users (
   Id int(10) unsigned not null auto_increment comment &#39;自增Id&#39;,
   Username varchar(64) not null unique default &#39;default&#39; comment &#39;用户名&#39;,
   Password varchar(64) not null default &#39;default&#39; comment &#39;密码&#39;,
   Email varchar(64) not null default &#39;default&#39; comment &#39;邮箱地址&#39;,
   Enabled int(4) default null comment &#39;是否有效&#39;,
   primary key (Id)   
-) ENGINE=InnoDB auto_increment=2 default CHARSET=utf8mb4 comment=&#39;用户表&#39;;
+) ENGINE&#x3D;InnoDB auto_increment&#x3D;2 default CHARSET&#x3D;utf8mb4 comment&#x3D;&#39;用户表&#39;;
 
--- auto_incremet 自增    Oracle中也提供了一种自增，叫sequence（序列）
-</code></pre>
+-- auto_incremet 自增    Oracle中也提供了一种自增，叫sequence（序列）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>多个字段联合添加约束：</p>
-<pre><code class="mysql">create table t_user(
-    id int,
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create table t_user(
+	id int,
     usercode varchar(255),
     username varchar(255),
     unique(usercode,username)
-);
-</code></pre>
+);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>主键的分类：</p>
 <ol>
 <li><p>根据主键字段的字段数量来分：</p>
@@ -1156,23 +1156,23 @@ where cust_name = &#39;Fun4All&#39;;
 </ol>
 <p><strong>主键值最好和业务之没有任何关系，因为一旦以后业务发生改变时，主键值也需要随之改变，但可能导致主键值重复，无法改变。</strong></p>
 <p>创建外界约束</p>
-<pre><code class="mysql">drop table if exits t_student;
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop table if exits t_student;
 drop table if exits t_class;
 
 create table t_class(
-    cno int,
+	cno int,
     cname varchar(255),
     primary key(cno)
 );
 
 creat table t_student(
-    sno int,
-    sname varchar(255),
-    classno int,
+	sno int,
+	sname varchar(255),
+	classno int,
     primary key (sno)
     foreign key(classno) references t_class(cno)
-);
-</code></pre>
+);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>外键可以为<code>null</code>。</p>
 <h1 id="TCL：事务处理"><a href="#TCL：事务处理" class="headerlink" title="TCL：事务处理"></a>TCL：事务处理</h1><blockquote>
 <ul>
@@ -1183,9 +1183,9 @@ creat table t_student(
 </blockquote>
 <h2 id="什么是事务"><a href="#什么是事务" class="headerlink" title="什么是事务"></a>什么是事务</h2><p>一个事务是一个完整的业务逻辑单元，不可区分。</p>
 <p>​    比如：银行账户转账，需要执行两条update语句</p>
-<pre><code class="mysql">update t_act set balance = balance - 1000 where actno = &#39;act-001&#39;;
-update t_act set balance = balance + 1000 where actno = &#39;act-002&#39;;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">update t_act set balance &#x3D; balance - 1000 where actno &#x3D; &#39;act-001&#39;;
+update t_act set balance &#x3D; balance + 1000 where actno &#x3D; &#39;act-002&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>以上两条DML语句必须同时成功，或者同时失败，不允许一条成功，一条失败。要保证以上的两条DML语句同时成功或者失败，那么就必须使用数据库的<strong>事务机制</strong>。</p>
 <p><strong>只有DML语句才支持事务，（insert, delete, update），为什么？</strong></p>
 <p>因为只有它们适合数据库表当中的数据有关的，事务的存在是为了保证数据的完整性，安全性。</p>
@@ -1196,7 +1196,7 @@ update t_act set balance = balance + 1000 where actno = &#39;act-002&#39;;
 <li><code>commit</code> - 提交事务。</li>
 </ul>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>假设一个事需要执行一条insert，再执行一条update，最后执行一条delete，这个事才算完成。</p>
-<pre><code>开启事务机制（开始）
+<pre class="line-numbers language-none"><code class="language-none">开启事务机制（开始）
 
 执行insert语句 （这个执行成功之后，把这个执行记录到数据库的历史当中，并不会向文件中保存一条数据，不会真正的修改硬盘上的数据。）
 
@@ -1204,8 +1204,8 @@ update t_act set balance = balance + 1000 where actno = &#39;act-002&#39;;
 
 执行delete语句 （同上，也是记录历史操作）
 
-提交或回滚事务 （commit / rollback）（结束）
-</code></pre>
+提交或回滚事务 （commit &#x2F; rollback）（结束）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>保存点 <code>savepoint a1</code>，回滚<code>rollback a1</code>。</p>
 <h2 id="事务的四大特性-ACID"><a href="#事务的四大特性-ACID" class="headerlink" title="事务的四大特性 ACID"></a>事务的四大特性 ACID</h2><p>A：原子性：事务是最小的工作单元，不可再分。</p>
 <p>C：一致性：事务必须保证多条DML语句同时成功或者同时失败。</p>
@@ -1222,14 +1222,16 @@ update t_act set balance = balance + 1000 where actno = &#39;act-002&#39;;
 </li>
 </ul>
 <p>MySQL默认隔离级别：可重复读。Oracle默认隔离级别：读已提交。</p>
-<pre><code class="mysql">-- 设置全局的隔离级别
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 设置全局的隔离级别
 set global transaction isolation level read uncommitted;
 -- 设置全局隔离级别为 read uncommitted
 
 -- 查看全局隔离级别
-select @@global.tx_isolation;
-</code></pre>
-<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><pre><code class="mysql">-- 开始事务，关闭自动提交机制
+select @@global.tx_isolation;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">-- 开始事务，关闭自动提交机制
 start transaction;
 
 -- 插入操作 A
@@ -1245,8 +1247,10 @@ insert into user values (2, &#39;root2&#39;, &#39;root2&#39;, &#39;xxxx@163.com&
 rollback to updateA;
 
 -- 提交事务，只有操作 A 生效
-commit;
-</code></pre>
+commit;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 <h1 id="DCL：权限控制"><a href="#DCL：权限控制" class="headerlink" title="DCL：权限控制"></a>DCL：权限控制</h1><blockquote>
 <ul>
 <li><p><code>grant</code>和<code>revoke</code>可在几个层次上控制访问权限：</p>
@@ -1273,21 +1277,21 @@ commit;
 <p> ​    USE mysql;</p>
 <p> ​    select user from user;<br> ​    复制代码</p>
 </blockquote>
-<h2 id="创建账户"><a href="#创建账户" class="headerlink" title="创建账户"></a>创建账户</h2><pre><code class="mysql">create user myuser identified by &#39;mypassword&#39;;
-</code></pre>
-<h2 id="修改账户名"><a href="#修改账户名" class="headerlink" title="修改账户名"></a>修改账户名</h2><pre><code class="mysql">update user set user=&#39;newuser&#39; where user=&#39;myuser&#39;;
-flush privileges;
-</code></pre>
-<h2 id="删除账户"><a href="#删除账户" class="headerlink" title="删除账户"></a>删除账户</h2><pre><code class="mysql">drop user myuser;
-</code></pre>
-<h2 id="查看权限"><a href="#查看权限" class="headerlink" title="查看权限"></a>查看权限</h2><pre><code class="mysql">show grants for myuser;
-</code></pre>
-<h2 id="授予权限"><a href="#授予权限" class="headerlink" title="授予权限"></a>授予权限</h2><pre><code class="mysql">grant select, insert on *.* to myuser;
-</code></pre>
-<h2 id="删除权限"><a href="#删除权限" class="headerlink" title="删除权限"></a>删除权限</h2><pre><code class="sql">remove select, insert on *.* form myuser;
-</code></pre>
-<h2 id="更改密码"><a href="#更改密码" class="headerlink" title="更改密码"></a>更改密码</h2><pre><code class="mysql">set password for myuser = &#39;mypass&#39;;
-</code></pre>
+<h2 id="创建账户"><a href="#创建账户" class="headerlink" title="创建账户"></a>创建账户</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create user myuser identified by &#39;mypassword&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="修改账户名"><a href="#修改账户名" class="headerlink" title="修改账户名"></a>修改账户名</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">update user set user&#x3D;&#39;newuser&#39; where user&#x3D;&#39;myuser&#39;;
+flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h2 id="删除账户"><a href="#删除账户" class="headerlink" title="删除账户"></a>删除账户</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop user myuser;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="查看权限"><a href="#查看权限" class="headerlink" title="查看权限"></a>查看权限</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">show grants for myuser;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="授予权限"><a href="#授予权限" class="headerlink" title="授予权限"></a>授予权限</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">grant select, insert on *.* to myuser;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="删除权限"><a href="#删除权限" class="headerlink" title="删除权限"></a>删除权限</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">remove <span class="token keyword">select</span><span class="token punctuation">,</span> <span class="token keyword">insert</span> <span class="token keyword">on</span> <span class="token operator">*</span><span class="token punctuation">.</span><span class="token operator">*</span> form myuser<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="更改密码"><a href="#更改密码" class="headerlink" title="更改密码"></a>更改密码</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">set password for myuser &#x3D; &#39;mypass&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><blockquote>
 <p>索引相当于一本书的目录，通过目录可以快速查找数据。</p>
 </blockquote>
@@ -1303,13 +1307,13 @@ flush privileges;
 <li>更新一个包含索引的表需要比更新一个没有索引的表花费更多的时间，这是由于索引本身也需要更新。因此，理想的做法是仅仅在常常被搜索的列（以及表）上面创建索引。</li>
 <li>模糊查询时，第一个字母为通配符<code>%</code>时，索引会失效。</li>
 </ul>
-<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><pre><code class="mysql">create index user_id_index on user(id);
-</code></pre>
+<h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create index user_id_index on user(id);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>创建唯一索引</p>
-<pre><code class="mysql">create unique index user_id_index on user(id);
-</code></pre>
-<h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><pre><code class="mysql">drop index user_id_index on user;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create unique index user_id_index on user(id);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop index user_id_index on user;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h2 id="索引的分类"><a href="#索引的分类" class="headerlink" title="索引的分类"></a>索引的分类</h2><p>单一索引：给单个字段添加索引。</p>
 <p>复合索引：给多个字段联合起来添加1个索引。</p>
 <p>主键索引：主键上会自动添加索引。</p>
@@ -1326,14 +1330,14 @@ flush privileges;
 <li>通过只给用户访问视图的权限，保证数据的安全性；</li>
 </ul>
 <p>创建视图</p>
-<pre><code class="mysql">create view top_10_user_view as 
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create view top_10_user_view as 
 select id, username from user
 where id &lt; 10;
--- 只有DQL语句才能以视图的方式创建，可以对视图进行CRUD
-</code></pre>
+-- 只有DQL语句才能以视图的方式创建，可以对视图进行CRUD<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>删除视图</p>
-<pre><code class="mysql">drop view top_10_user_view;
-</code></pre>
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop view top_10_user_view;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <h1 id="数据库设计三范式"><a href="#数据库设计三范式" class="headerlink" title="数据库设计三范式"></a>数据库设计三范式</h1><p>什么是范式：简言之就是，数据库设计对数据的存储性能，还有开发人员对数据的操作都有莫大的关系。所以建立科学的，规范的的数据库是需要满足一些规范的来优化数据数据存储方式。在关系型数据库中这些规范就可以称为范式。范式是关系数据库理论的基础，也是我们在设计数据库结构过程中所要遵循的规则和指导方法。</p>
 <h2 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h2><blockquote>
 <p>具有原子性</p>
@@ -1374,26 +1378,26 @@ where id &lt; 10;
 <li>给变量赋值都需要用 select into 语句。</li>
 <li>每次只能给一个变量赋值，不支持集合的操作。</li>
 </ul>
-<pre><code class="mysql">drop procedure if exists `proc_adder`;
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop procedure if exists &#96;proc_adder&#96;;
 delimiter ;;
-creatr definer=`root`@`localhost` procedure `proc_adder`(in a int, in b int, out sum int)
+creatr definer&#x3D;&#96;root&#96;@&#96;localhost&#96; procedure &#96;proc_adder&#96;(in a int, in b int, out sum int)
 begin
     declare c int;
-    if a is null then set a = 0;
+    if a is null then set a &#x3D; 0;
     end if;
 
-    if b is null then set b = 0;
+    if b is null then set b &#x3D; 0;
     end if;
 
-    set sum  = a + b;
+    set sum  &#x3D; a + b;
 end
 ;;
-delimiter ;
-</code></pre>
-<h2 id="使用存储过程"><a href="#使用存储过程" class="headerlink" title="使用存储过程"></a>使用存储过程</h2><pre><code class="sql">set @b=5;
-call proc_adder(2,@b,@s);
-select @s as sum;
-</code></pre>
+delimiter ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="使用存储过程"><a href="#使用存储过程" class="headerlink" title="使用存储过程"></a>使用存储过程</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">set</span> <span class="token variable">@b</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token keyword">call</span> proc_adder<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token variable">@b</span><span class="token punctuation">,</span><span class="token variable">@s</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token variable">@s</span> <span class="token keyword">as</span> sum<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h1><blockquote>
 <ul>
 <li><p>游标（cursor）是一个存储在DBMS服务器上的数据库查询，它不是一条<code>select</code>语句，而是被该语句检索出来的结果集。</p>
@@ -1411,7 +1415,7 @@ select @s as sum;
 <li>取出数据；</li>
 <li>关闭游标；</li>
 </ol>
-<pre><code class="mysql">delimiter $
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">delimiter $
 create  PROCEDURE getTotal()
 begin
     declare total int;
@@ -1425,13 +1429,13 @@ begin
     -- 创建游标
     declare cur cursor dor select id,name,age from cursor_table where age&gt;30;
     -- 指定游标循环结束时的返回值
-    declare continue handler for not found set done = true;
-    set total = 0;
+    declare continue handler for not found set done &#x3D; true;
+    set total &#x3D; 0;
     open cur;
     fetch cur into sid, sname, sage;
     while(not done)
     do
-        set total = total + 1;
+        set total &#x3D; total + 1;
         fetch cur into sid, sname, sage;
     end while;
 
@@ -1441,8 +1445,8 @@ end $
 delimiter ;
 
 -- 调用存储过程
-call getTotal();
-</code></pre>
+call getTotal();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h1><blockquote>
 <p>触发器是一种与表操作有关的数据库对象，当触发器所在表上出现指定事件时，将调用该对象，即表的操作事件触发表上的触发器的执行。</p>
 </blockquote>
@@ -1467,15 +1471,15 @@ call getTotal();
 </blockquote>
 <p><code>create trigger</code> 指令用于创建触发器。</p>
 <p>语法：</p>
-<pre><code class="mysql">create trigger trigger_name
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">create trigger trigger_name
 trigger_time
 trigger_event
 on table_name
 for each row
 begin
   trigger_statements
-end;
-</code></pre>
+end;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>说明：</p>
 <ul>
 <li>trigger_name：触发器名</li>
@@ -1486,20 +1490,19 @@ end;
 <li>trigger_statements：触发器执行动作。是一条或多条 SQL 语句的列表，列表内的每条语句都必须用分号 <code>;</code> 来结尾。</li>
 </ul>
 <p>示例：</p>
-<pre><code class="mysql">delimiter $
-create trigger `trigger_insert_user`
-after insert on `user`
+<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">delimiter $
+create trigger &#96;trigger_insert_user&#96;
+after insert on &#96;user&#96;
 for each row
 begin
-    insert into `user_history`(user_id, operate_type, operate_time)
+    insert into &#96;user_history&#96;(user_id, operate_type, operate_time)
     values (NEW.id, &#39;add a user&#39;,  now());
 end $
-delimiter ;
-</code></pre>
-<h3 id="查看触发器"><a href="#查看触发器" class="headerlink" title="查看触发器"></a>查看触发器</h3><pre><code class="mysql">show triggers;
-</code></pre>
-<h3 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h3><pre><code class="mysql">drop trigger if exists trigger_insert_user;
-</code></pre>
+delimiter ;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="查看触发器"><a href="#查看触发器" class="headerlink" title="查看触发器"></a>查看触发器</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">show triggers;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="删除触发器"><a href="#删除触发器" class="headerlink" title="删除触发器"></a>删除触发器</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">drop trigger if exists trigger_insert_user;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
     </div>
 
@@ -1707,7 +1710,7 @@ delimiter ;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

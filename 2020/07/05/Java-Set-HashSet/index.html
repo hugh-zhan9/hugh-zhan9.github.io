@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s1.ax1x.com/2020/07/06/UiIKfI.jpg">
 <meta property="article:published_time" content="2020-07-05T15:42:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.207Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.712Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-集合">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +297,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.7k</span>
+              <span>7.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -321,29 +321,29 @@
 
 <h1 id="HashSet-介绍"><a href="#HashSet-介绍" class="headerlink" title="HashSet 介绍"></a>HashSet 介绍</h1><h2 id="HashSet-简介"><a href="#HashSet-简介" class="headerlink" title="HashSet 简介"></a>HashSet 简介</h2><p><code>HashSet</code>是一个没有重复元素的集合。由<code>HashMap</code>实现的，不保证元素的顺序，而且<code>HashSet</code>允许使用<code>null</code>元素。</p>
 <p><code>HashSet</code>是非同步的。如果多个线程同时访问一个<code>HashSet</code>，而其中至少一个线程修改了该<code>set</code>，那么它必须保持外部同步。这通常是通过对自然封装该<code>set</code>的对象执行同步操作来完成的。如果不存在这样的对象，则应该使用<code>Collections.synchronizedSet</code>方法来“包装”<code>set</code>。最好在创建时完成这一操作，以防止对该<code>set</code>进行意外的不同步访问：</p>
-<h2 id="HashSet-的构造函数"><a href="#HashSet-的构造函数" class="headerlink" title="HashSet 的构造函数"></a>HashSet 的构造函数</h2><pre><code class="java">// 默认构造函数
-public HashSet() 
+<h2 id="HashSet-的构造函数"><a href="#HashSet-的构造函数" class="headerlink" title="HashSet 的构造函数"></a>HashSet 的构造函数</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 默认构造函数</span>
+<span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
 
-// 带集合的构造函数
-public HashSet(Collection&lt;? extends E&gt; c) 
+<span class="token comment">// 带集合的构造函数</span>
+<span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token class-name">Collection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token punctuation">></span></span> c<span class="token punctuation">)</span> 
 
-// 指定HashSet初始容量的构造函数
-public HashSet(int initialCapacity) 
+<span class="token comment">// 指定HashSet初始容量的构造函数</span>
+<span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token keyword">int</span> initialCapacity<span class="token punctuation">)</span> 
 
-// 指定HashSet初始容量和加载因子的构造函数
-public HashSet(int initialCapacity, float loadFactor) 
-</code></pre>
+<span class="token comment">// 指定HashSet初始容量和加载因子的构造函数</span>
+<span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token keyword">int</span> initialCapacity<span class="token punctuation">,</span> <span class="token keyword">float</span> loadFactor<span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <h1 id="HashSet-数据结构"><a href="#HashSet-数据结构" class="headerlink" title="HashSet 数据结构"></a>HashSet 数据结构</h1><p>HashSet 的继承关系：</p>
-<pre><code>java.util.Object
-    |-        java.util.Collection&lt;E&gt;
-        |-        java.util.AbstractSet&lt;E&gt;
-            |-        java.util.HashSet&lt;E&gt;
-</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">java.util.Object
+	|-		java.util.Collection&lt;E&gt;
+		|-		java.util.AbstractSet&lt;E&gt;
+			|-		java.util.HashSet&lt;E&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>HashSet 的申明：</p>
-<pre><code class="java">public class HashSet&lt;E&gt;
-    extends AbstractSet&lt;E&gt;
-    implements Set&lt;E&gt;, Cloneable, java.io.Serializable
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span>
+    <span class="token keyword">extends</span> <span class="token class-name">AbstractSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span>
+    <span class="token keyword">implements</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span><span class="token punctuation">,</span> <span class="token class-name">Cloneable</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>Serializable</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>HashSet 与 Map 关系如下：</p>
 <p><img data-src="https://s1.ax1x.com/2020/07/06/UiIKfI.jpg"></p>
 <p>从图中可以看出：</p>
@@ -355,321 +355,321 @@ public HashSet(int initialCapacity, float loadFactor)
 <li>根据<code>iterator()</code>获取<code>HashSet</code>的迭代器</li>
 <li>遍历迭代器获取各个元素</li>
 </ol>
-<pre><code class="java">Iterator iterator = hashSet.iterator();
-while (iterator.hasNext()) &#123;
-    System.out.println(iterator.next());
-&#125;
-// 匿名局部类来写 
-for(Iterator iterator = hashSet.iterator();
-           iterator.hasNext();) &#123;
-    System.out.println(iterator.next());
-&#125;
-</code></pre>
-<h2 id="通过-for-each-遍历-HashSet"><a href="#通过-for-each-遍历-HashSet" class="headerlink" title="通过 for - each 遍历 HashSet"></a>通过 for - each 遍历 HashSet</h2><pre><code class="java">for (Obj obj : hashSet)&#123;
-    System.out.println(obj);
-&#125;
-</code></pre>
-<h1 id="HashSet-示例"><a href="#HashSet-示例" class="headerlink" title="HashSet 示例"></a>HashSet 示例</h1><pre><code class="java">import java.util.HashSet;
-import java.util.Iterator;
- 
-public class Test &#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Iterator</span> iterator <span class="token operator">=</span> hashSet<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 匿名局部类来写 </span>
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Iterator</span> iterator <span class="token operator">=</span> hashSet<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   		iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-    /** 
+<h2 id="通过-for-each-遍历-HashSet"><a href="#通过-for-each-遍历-HashSet" class="headerlink" title="通过 for - each 遍历 HashSet"></a>通过 for - each 遍历 HashSet</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Obj</span> obj <span class="token operator">:</span> hashSet<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="HashSet-示例"><a href="#HashSet-示例" class="headerlink" title="HashSet 示例"></a>HashSet 示例</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">HashSet</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Iterator</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">/** 
     * @desc HashSet常用API的使用。 
     * 
     * @author hugh-zhan9
-    */
+    */</span>
 
-    public static void main(String[] args) &#123;
-        // HashSet常用API
-        testHashSetAPIs() ;
-    &#125;
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// HashSet常用API</span>
+        <span class="token function">testHashSetAPIs</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     
-    /*
+    <span class="token comment">/*
      * HashSet除了iterator()和add()之外的其它常用API
-     */
-    private static void testHashSetAPIs() &#123;
-        // 新建HashSet
-        HashSet&lt;String&gt; set = new HashSet&lt;&gt;();
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testHashSetAPIs</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 新建HashSet</span>
+        <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> set <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 将元素添加到Set中
-        set.add(&quot;a&quot;);
-        set.add(&quot;b&quot;);
-        set.add(&quot;c&quot;);
-        set.add(&quot;d&quot;);
-        set.add(&quot;e&quot;);
+        <span class="token comment">// 将元素添加到Set中</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"d"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        set<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"e"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 打印HashSet的实际大小
-        System.out.printf(&quot;size : %d\n&quot;, set.size());
+        <span class="token comment">// 打印HashSet的实际大小</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"size : %d\n"</span><span class="token punctuation">,</span> set<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 判断HashSet是否包含某个值
-        System.out.printf(&quot;HashSet contains a :%s\n&quot;, set.contains(&quot;a&quot;));
-        System.out.printf(&quot;HashSet contains g :%s\n&quot;, set.contains(&quot;g&quot;));
+        <span class="token comment">// 判断HashSet是否包含某个值</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"HashSet contains a :%s\n"</span><span class="token punctuation">,</span> set<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"HashSet contains g :%s\n"</span><span class="token punctuation">,</span> set<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">"g"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 删除HashSet中的“e”
-        set.remove(&quot;e&quot;);
+        <span class="token comment">// 删除HashSet中的“e”</span>
+        set<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token string">"e"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 将Set转换为数组
-        String[] arr = (String[])set.toArray(new String[0]);
-        for (String str:arr)
-            System.out.printf(&quot;for each : %s\n&quot;, str);
+        <span class="token comment">// 将Set转换为数组</span>
+        <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>set<span class="token punctuation">.</span><span class="token function">toArray</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> str<span class="token operator">:</span>arr<span class="token punctuation">)</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"for each : %s\n"</span><span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 新建一个包含b、c、f的HashSet
-        HashSet&lt;String&gt; otherset = new HashSet&lt;&gt;();
-        otherset.add(&quot;b&quot;);
-        otherset.add(&quot;c&quot;);
-        otherset.add(&quot;f&quot;);
+        <span class="token comment">// 新建一个包含b、c、f的HashSet</span>
+        <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> otherset <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        otherset<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        otherset<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        otherset<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"f"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 克隆一个removeset，内容和set一模一样
-        HashSet&lt;String&gt; removeset = (HashSet)set.clone();
-        // 删除“removeset中，属于otherSet的元素”
-        removeset.removeAll(otherset);
-        // 打印removeset
-        System.out.printf(&quot;removeset : %s\n&quot;, removeset);
+        <span class="token comment">// 克隆一个removeset，内容和set一模一样</span>
+        <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> removeset <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HashSet</span><span class="token punctuation">)</span>set<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 删除“removeset中，属于otherSet的元素”</span>
+        removeset<span class="token punctuation">.</span><span class="token function">removeAll</span><span class="token punctuation">(</span>otherset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 打印removeset</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"removeset : %s\n"</span><span class="token punctuation">,</span> removeset<span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 克隆一个retainset，内容和set一模一样
-        HashSet retainset = (HashSet)set.clone();
-        // 保留“retainset中，属于otherSet的元素”
-        retainset.retainAll(otherset);
-        // 打印retainset
-        System.out.printf(&quot;retainset : %s\n&quot;, retainset);
+        <span class="token comment">// 克隆一个retainset，内容和set一模一样</span>
+        <span class="token class-name">HashSet</span> retainset <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HashSet</span><span class="token punctuation">)</span>set<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 保留“retainset中，属于otherSet的元素”</span>
+        retainset<span class="token punctuation">.</span><span class="token function">retainAll</span><span class="token punctuation">(</span>otherset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 打印retainset</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"retainset : %s\n"</span><span class="token punctuation">,</span> retainset<span class="token punctuation">)</span><span class="token punctuation">;</span>
     
     
-        // 遍历HashSet
-        // Iterator 遍历 HashSet
-        for(Iterator&lt;String&gt; iterator = set.iterator();
-               iterator.hasNext(); ) &#123;
-                System.out.printf(&quot;iterator : %s\n&quot;, iterator.next());
-               &#125;
-        // for-each 遍历 HashSet 
-        for(String s:set) &#123;
-            System.out.println(s);
-        &#125;
+        <span class="token comment">// 遍历HashSet</span>
+        <span class="token comment">// Iterator 遍历 HashSet</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Iterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> iterator <span class="token operator">=</span> set<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"iterator : %s\n"</span><span class="token punctuation">,</span> iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+	    <span class="token comment">// for-each 遍历 HashSet </span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token operator">:</span>set<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        // 清空HashSet
-        set.clear();
+        <span class="token comment">// 清空HashSet</span>
+        set<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     
-        // 输出HashSet是否为空
-        System.out.printf(&quot;%s\n&quot;, set.isEmpty()?&quot;set is empty&quot;:&quot;set is not empty&quot;);
-    &#125;
-&#125;
-</code></pre>
+        <span class="token comment">// 输出HashSet是否为空</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> set<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span><span class="token string">"set is empty"</span><span class="token operator">:</span><span class="token string">"set is not empty"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code class="java">size : 5
-HashSet contains a :true
-HashSet contains g :false
-for each : a
-for each : b
-for each : c
-for each : d
-removeset : [a, d]
-retainset : [b, c]
-iterator : a
-iterator : b
-iterator : c
-iterator : d
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">size <span class="token operator">:</span> <span class="token number">5</span>
+<span class="token class-name">HashSet</span> contains a <span class="token operator">:</span><span class="token boolean">true</span>
+<span class="token class-name">HashSet</span> contains g <span class="token operator">:</span><span class="token boolean">false</span>
+<span class="token keyword">for</span> each <span class="token operator">:</span> a
+<span class="token keyword">for</span> each <span class="token operator">:</span> b
+<span class="token keyword">for</span> each <span class="token operator">:</span> c
+<span class="token keyword">for</span> each <span class="token operator">:</span> d
+removeset <span class="token operator">:</span> <span class="token punctuation">[</span>a<span class="token punctuation">,</span> d<span class="token punctuation">]</span>
+retainset <span class="token operator">:</span> <span class="token punctuation">[</span>b<span class="token punctuation">,</span> c<span class="token punctuation">]</span>
+iterator <span class="token operator">:</span> a
+iterator <span class="token operator">:</span> b
+iterator <span class="token operator">:</span> c
+iterator <span class="token operator">:</span> d
 a
 b
 c
 d
-set is empty
-</code></pre>
-<h1 id="HashSet-源码解析"><a href="#HashSet-源码解析" class="headerlink" title="HashSet 源码解析"></a>HashSet 源码解析</h1><pre><code class="java">package java.util;
+set is empty<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-import java.io.InvalidObjectException;
-import jdk.internal.access.SharedSecrets;
+<h1 id="HashSet-源码解析"><a href="#HashSet-源码解析" class="headerlink" title="HashSet 源码解析"></a>HashSet 源码解析</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">java<span class="token punctuation">.</span>util</span><span class="token punctuation">;</span>
 
-
-public class HashSet&lt;E&gt;
-    extends AbstractSet&lt;E&gt;
-    implements Set&lt;E&gt;, Cloneable, java.io.Serializable
-&#123;
-    // java序列化机制，通过判断类的serialVersionUID来验证的版本一致性
-    @java.io.Serial
-    static final long serialVersionUID = -5024744406713321676L;
-
-    // 声明一个HashMap，transient修饰表示该对象不会被序列化
-    private transient HashMap&lt;E,Object&gt; map;
-
-    // Dummy value to associate with an Object in the backing Map
-    // 伪值，以便与后备映射中的对象相关联
-    // 新建一个对象，这个对象会在后续的 HashMap中充当Value的值
-    private static final Object PRESENT = new Object();
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">InvalidObjectException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">jdk<span class="token punctuation">.</span>internal<span class="token punctuation">.</span>access<span class="token punctuation">.</span></span><span class="token class-name">SharedSecrets</span><span class="token punctuation">;</span>
 
 
-    // 构造方法，实际上是新建一个 HashMap ————HashSet是通过HashMap实现的 
-    public HashSet() &#123;
-        map = new HashMap&lt;&gt;(); // 初始化持有的HashMap对象，由实例变量map负责持有
-    &#125;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span>
+    <span class="token keyword">extends</span> <span class="token class-name">AbstractSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span>
+    <span class="token keyword">implements</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span><span class="token punctuation">,</span> <span class="token class-name">Cloneable</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>Serializable</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token comment">// java序列化机制，通过判断类的serialVersionUID来验证的版本一致性</span>
+    <span class="token annotation punctuation">@java.io.Serial</span>
+    <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">5024744406713321676L</span><span class="token punctuation">;</span>
 
-    // 构造方法，参数为集合
-    public HashSet(Collection&lt;? extends E&gt; c) &#123;
-        // 初始化map，将集合c的size属性值/0.75之后强转为int类型，最后与16比较取最大值设为map的容量
-        map = new HashMap&lt;&gt;(Math.max((int) (c.size()/.75f) + 1, 16));
-        /** 
+    <span class="token comment">// 声明一个HashMap，transient修饰表示该对象不会被序列化</span>
+    <span class="token keyword">private</span> <span class="token keyword">transient</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">,</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> map<span class="token punctuation">;</span>
+
+    <span class="token comment">// Dummy value to associate with an Object in the backing Map</span>
+    <span class="token comment">// 伪值，以便与后备映射中的对象相关联</span>
+    <span class="token comment">// 新建一个对象，这个对象会在后续的 HashMap中充当Value的值</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Object</span> PRESENT <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token comment">// 构造方法，实际上是新建一个 HashMap ————HashSet是通过HashMap实现的 </span>
+    <span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 初始化持有的HashMap对象，由实例变量map负责持有</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 构造方法，参数为集合</span>
+    <span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token class-name">Collection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token punctuation">></span></span> c<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 初始化map，将集合c的size属性值/0.75之后强转为int类型，最后与16比较取最大值设为map的容量</span>
+        map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">.75f</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">/** 
         * addAll是属于AbstractCollection的方法，定义如下：
-        *    public boolean addAll(Collection&lt;? extends E&gt; c) &#123;
-        *        boolean modified = false;
-        *        for (E e : c)
-        *            if (add(e))
-        *                modified = true;
-        *        return modified;
-        *    &#125;
-        */
-        addAll(c);
-    &#125;
+        *	public boolean addAll(Collection&lt;? extends E> c) &#123;
+        *		boolean modified = false;
+        *		for (E e : c)
+        *    		if (add(e))
+        *        		modified = true;
+        *		return modified;
+    	*	&#125;
+        */</span>
+        <span class="token function">addAll</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造方法，参数为初始化的大小以及负载因子
-    public HashSet(int initialCapacity, float loadFactor) &#123;
-        map = new HashMap&lt;&gt;(initialCapacity, loadFactor);
-    &#125;
+    <span class="token comment">// 构造方法，参数为初始化的大小以及负载因子</span>
+    <span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token keyword">int</span> initialCapacity<span class="token punctuation">,</span> <span class="token keyword">float</span> loadFactor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>initialCapacity<span class="token punctuation">,</span> loadFactor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造方法，参数为初始化的大小
-    public HashSet(int initialCapacity) &#123;
-        map = new HashMap&lt;&gt;(initialCapacity);
-    &#125;
+    <span class="token comment">// 构造方法，参数为初始化的大小</span>
+    <span class="token keyword">public</span> <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token keyword">int</span> initialCapacity<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>initialCapacity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 构造方法，参数为初始化的大小，负载因子，以及一个标志位
-    HashSet(int initialCapacity, float loadFactor, boolean dummy) &#123;
-        map = new LinkedHashMap&lt;&gt;(initialCapacity, loadFactor);
-    &#125;
+    <span class="token comment">// 构造方法，参数为初始化的大小，负载因子，以及一个标志位</span>
+    <span class="token class-name">HashSet</span><span class="token punctuation">(</span><span class="token keyword">int</span> initialCapacity<span class="token punctuation">,</span> <span class="token keyword">float</span> loadFactor<span class="token punctuation">,</span> <span class="token keyword">boolean</span> dummy<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>initialCapacity<span class="token punctuation">,</span> loadFactor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 迭代器方法，返回迭代器对象
-    public Iterator&lt;E&gt; iterator() &#123;
-        return map.keySet().iterator();
-    &#125;
+    <span class="token comment">// 迭代器方法，返回迭代器对象</span>
+    <span class="token keyword">public</span> <span class="token class-name">Iterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span> <span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">keySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     
-    public int size() &#123;
-        return map.size();
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public boolean isEmpty() &#123;
-        return map.isEmpty();
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public boolean contains(Object o) &#123;
-        return map.containsKey(o);
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">contains</span><span class="token punctuation">(</span><span class="token class-name">Object</span> o<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public boolean add(E e) &#123;
-        return map.put(e, PRESENT)==null;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">E</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> PRESENT<span class="token punctuation">)</span><span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public boolean remove(Object o) &#123;
-        return map.remove(o)==PRESENT;
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">remove</span><span class="token punctuation">(</span><span class="token class-name">Object</span> o<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token operator">==</span>PRESENT<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public void clear() &#123;
-        map.clear();
-    &#125;
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        map<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 表示告诉编译器忽视unchecked警告
-    @SuppressWarnings(&quot;unchecked&quot;)
-    public Object clone() &#123;
-        try &#123;
-            // 这里的clone是深拷贝，当原来的本体发生了改变，克隆体不会变
-            HashSet&lt;E&gt; newSet = (HashSet&lt;E&gt;) super.clone();
-            newSet.map = (HashMap&lt;E, Object&gt;) map.clone();
-            return newSet;
-        &#125; catch (CloneNotSupportedException e) &#123;
-            throw new InternalError(e);
-        &#125;
-    &#125;
-
-
-    @java.io.Serial
-    private void writeObject(java.io.ObjectOutputStream s)
-        throws java.io.IOException &#123;
-        // Write out any hidden serialization magic
-        s.defaultWriteObject();
-
-        // Write out HashMap capacity and load factor
-        s.writeInt(map.capacity());
-        s.writeFloat(map.loadFactor());
-
-        // Write out size
-        s.writeInt(map.size());
-
-        // Write out all elements in the proper order.
-        for (E e : map.keySet())
-            s.writeObject(e);
-    &#125;
+    <span class="token comment">// 表示告诉编译器忽视unchecked警告</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 这里的clone是深拷贝，当原来的本体发生了改变，克隆体不会变</span>
+            <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span> newSet <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span><span class="token punctuation">)</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            newSet<span class="token punctuation">.</span>map <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">)</span> map<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> newSet<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">CloneNotSupportedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InternalError</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    @java.io.Serial
-    private void readObject(java.io.ObjectInputStream s)
-        throws java.io.IOException, ClassNotFoundException &#123;
-        // Read in any hidden serialization magic
-        s.defaultReadObject();
+    <span class="token annotation punctuation">@java.io.Serial</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">writeObject</span><span class="token punctuation">(</span><span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>ObjectOutputStream</span> s<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Write out any hidden serialization magic</span>
+        s<span class="token punctuation">.</span><span class="token function">defaultWriteObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // Read capacity and verify non-negative.
-        int capacity = s.readInt();
-        if (capacity &lt; 0) &#123;
-            throw new InvalidObjectException(&quot;Illegal capacity: &quot; +
-                                             capacity);
-        &#125;
+        <span class="token comment">// Write out HashMap capacity and load factor</span>
+        s<span class="token punctuation">.</span><span class="token function">writeInt</span><span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">writeFloat</span><span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">loadFactor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // Read load factor and verify positive and non NaN.
-        float loadFactor = s.readFloat();
-        if (loadFactor &lt;= 0 || Float.isNaN(loadFactor)) &#123;
-            throw new InvalidObjectException(&quot;Illegal load factor: &quot; +
-                                             loadFactor);
-        &#125;
+        <span class="token comment">// Write out size</span>
+        s<span class="token punctuation">.</span><span class="token function">writeInt</span><span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // Read size and verify non-negative.
-        int size = s.readInt();
-        if (size &lt; 0) &#123;
-            throw new InvalidObjectException(&quot;Illegal size: &quot; +
-                                             size);
-        &#125;
-
-        // Set the capacity according to the size and load factor ensuring that
-        // the HashMap is at least 25% full but clamping to maximum capacity.
-        capacity = (int) Math.min(size * Math.min(1 / loadFactor, 4.0f),
-                HashMap.MAXIMUM_CAPACITY);
-
-        // Constructing the backing map will lazily create an array when the first element is
-        // added, so check it before construction. Call HashMap.tableSizeFor to compute the
-        // actual allocation size. Check Map.Entry[].class since it&#39;s the nearest public type to
-        // what is actually created.
-        SharedSecrets.getJavaObjectInputStreamAccess()
-                     .checkArray(s, Map.Entry[].class, HashMap.tableSizeFor(capacity));
-
-        // Create backing HashMap
-        map = (((HashSet&lt;?&gt;)this) instanceof LinkedHashSet ?
-               new LinkedHashMap&lt;&gt;(capacity, loadFactor) :
-               new HashMap&lt;&gt;(capacity, loadFactor));
-
-        // Read in all elements in the proper order.
-        for (int i=0; i&lt;size; i++) &#123;
-            @SuppressWarnings(&quot;unchecked&quot;)
-                E e = (E) s.readObject();
-            map.put(e, PRESENT);
-        &#125;
-    &#125;
+        <span class="token comment">// Write out all elements in the proper order.</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">E</span> e <span class="token operator">:</span> map<span class="token punctuation">.</span><span class="token function">keySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            s<span class="token punctuation">.</span><span class="token function">writeObject</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    public Spliterator&lt;E&gt; spliterator() &#123;
-        return new HashMap.KeySpliterator&lt;&gt;(map, 0, -1, 0, 0);
-    &#125;
+    <span class="token annotation punctuation">@java.io.Serial</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">readObject</span><span class="token punctuation">(</span><span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>ObjectInputStream</span> s<span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>IOException</span><span class="token punctuation">,</span> <span class="token class-name">ClassNotFoundException</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Read in any hidden serialization magic</span>
+        s<span class="token punctuation">.</span><span class="token function">defaultReadObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    @Override
-    public Object[] toArray() &#123;
-        return map.keysToArray(new Object[map.size()]);
-    &#125;
+        <span class="token comment">// Read capacity and verify non-negative.</span>
+        <span class="token keyword">int</span> capacity <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">readInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>capacity <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidObjectException</span><span class="token punctuation">(</span><span class="token string">"Illegal capacity: "</span> <span class="token operator">+</span>
+                                             capacity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-    @Override
-    public &lt;T&gt; T[] toArray(T[] a) &#123;
-        return map.keysToArray(map.prepareArray(a));
-    &#125;
-&#125;
-</code></pre>
+        <span class="token comment">// Read load factor and verify positive and non NaN.</span>
+        <span class="token keyword">float</span> loadFactor <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">readFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>loadFactor <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> <span class="token class-name">Float</span><span class="token punctuation">.</span><span class="token function">isNaN</span><span class="token punctuation">(</span>loadFactor<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidObjectException</span><span class="token punctuation">(</span><span class="token string">"Illegal load factor: "</span> <span class="token operator">+</span>
+                                             loadFactor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// Read size and verify non-negative.</span>
+        <span class="token keyword">int</span> size <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">readInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidObjectException</span><span class="token punctuation">(</span><span class="token string">"Illegal size: "</span> <span class="token operator">+</span>
+                                             size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// Set the capacity according to the size and load factor ensuring that</span>
+        <span class="token comment">// the HashMap is at least 25% full but clamping to maximum capacity.</span>
+        capacity <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>size <span class="token operator">*</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">/</span> loadFactor<span class="token punctuation">,</span> <span class="token number">4.0f</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token class-name">HashMap</span><span class="token punctuation">.</span>MAXIMUM_CAPACITY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Constructing the backing map will lazily create an array when the first element is</span>
+        <span class="token comment">// added, so check it before construction. Call HashMap.tableSizeFor to compute the</span>
+        <span class="token comment">// actual allocation size. Check Map.Entry[].class since it's the nearest public type to</span>
+        <span class="token comment">// what is actually created.</span>
+        <span class="token class-name">SharedSecrets</span><span class="token punctuation">.</span><span class="token function">getJavaObjectInputStreamAccess</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                     <span class="token punctuation">.</span><span class="token function">checkArray</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token class-name">Map<span class="token punctuation">.</span>Entry</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">.</span><span class="token function">tableSizeFor</span><span class="token punctuation">(</span>capacity<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Create backing HashMap</span>
+        map <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token keyword">instanceof</span> <span class="token class-name">LinkedHashSet</span> <span class="token operator">?</span>
+               <span class="token keyword">new</span> <span class="token class-name">LinkedHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>capacity<span class="token punctuation">,</span> loadFactor<span class="token punctuation">)</span> <span class="token operator">:</span>
+               <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>capacity<span class="token punctuation">,</span> loadFactor<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Read in all elements in the proper order.</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span>size<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+                <span class="token class-name">E</span> e <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">E</span><span class="token punctuation">)</span> s<span class="token punctuation">.</span><span class="token function">readObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> PRESENT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token keyword">public</span> <span class="token class-name">Spliterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">E</span><span class="token punctuation">></span></span> <span class="token function">spliterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">HashMap<span class="token punctuation">.</span>KeySpliterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>map<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">toArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">keysToArray</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">[</span>map<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token class-name">T</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">toArray</span><span class="token punctuation">(</span><span class="token class-name">T</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> map<span class="token punctuation">.</span><span class="token function">keysToArray</span><span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">prepareArray</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -877,7 +877,7 @@ public class HashSet&lt;E&gt;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-20T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.203Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.708Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-IO">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,14 +295,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.9k</span>
+              <span>3.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -328,32 +328,32 @@
 </ul>
 <p>它们3个的原理和用法都类似，下面我们通过<code>out</code>来进行深入研究。</p>
 <h2 id="out-的作用和原理"><a href="#out-的作用和原理" class="headerlink" title="out 的作用和原理"></a>out 的作用和原理</h2><p><code>out</code>是标准输出(屏幕)的描述符。但是它有什么作用呢？<br>我们可以通俗理解，<code>out</code>就代表了标准输出(屏幕)。若我们要输出信息到屏幕上，即可通过<code>out</code>来进行操作；但是，<code>out</code>又没有提供输出信息到屏幕的接口(因为<code>out</code>本质是<code>FileDescriptor</code>对象，而<code>FileDescriptor</code>没有输出接口)。怎么办呢？<br>很简单，我们创建<code>out</code>对应的“输出流对象”，然后通过输出流的<code>write()</code>等输出接口就可以将信息输出到屏幕上。如下代码：</p>
-<pre><code class="java">try &#123;
-    FileOutputStream out = new FileOutputStream(FileDescriptor.out);
-    out.write(&#39;A&#39;);
-    out.close();
-&#125; catch (IOException e) &#123;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">FileOutputStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">FileDescriptor</span><span class="token punctuation">.</span>out<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>执行上面的程序，会在屏幕上输出字母<code>A</code>。</p>
 <p>为了方便我们操作，Java早已为我们封装好了“能方便的在屏幕上输出信息的接口”：通过<code>System.out</code>，我们能方便的输出信息到屏幕上。<br>因此，我们可以等价的将上面的程序转换为如下代码：</p>
-<pre><code class="java">System.out.print(&#39;A&#39;);
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>下面讲讲上面两段代码的原理<br>查看看<code>out</code>的定义。它的定义在<code>FileDescriptor</code>中，相关源码如下：</p>
-<pre><code class="java">public final class FileDescriptor &#123;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">FileDescriptor</span> <span class="token punctuation">&#123;</span>
 
-    private int fd;
+    <span class="token keyword">private</span> <span class="token keyword">int</span> fd<span class="token punctuation">;</span>
 
-    public static final FileDescriptor out = new FileDescriptor(1);
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">FileDescriptor</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileDescriptor</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    private FileDescriptor(int fd) &#123;
-        this.fd = fd;
-        useCount = new AtomicInteger();
-    &#125;
+    <span class="token keyword">private</span> <span class="token class-name">FileDescriptor</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>fd <span class="token operator">=</span> fd<span class="token punctuation">;</span>
+        useCount <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AtomicInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    ...
-&#125;
-</code></pre>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>从中，可以看出</p>
 <ul>
 <li>out就是一个FileDescriptor对象。它是通过构造函数FileDescriptor(int fd)创建的。</li>
@@ -362,103 +362,101 @@
 <p><code>FileOutputStream out = new FileOutputStream(FileDescriptor.out);</code> 就是利用构造函数<code>FileOutputStream(FileDescriptor fdObj)</code>来创建<code>Filed.out</code>对应的<code>FileOutputStream</code>对象。</p>
 <p>关于<code>System.out</code>是如何定义的。可以参考<a href="">深入了解System.out.println(“hello world”)</a> </p>
 <p>通过上面的学习，我们知道，我们可以自定义标准的文件描述符 [即，<code>in</code>(标准输入)，<code>out</code>(标准输出)，<code>err</code>(标准错误输出)] 的流，从而完成输入/输出功能；但是，Java已经为我们封装好了相应的接口，即我们可以更方便的<code>System.in</code>，<code>System.out</code>，<code>System.err</code>去使用它们。<br>另外，我们也可以自定义文件、Socket等的文件描述符，进而对它们进行操作。参考下面示例代码中的<code>testWrite()</code>，<code>testRead()</code>等接口。</p>
-<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><pre><code class="java">import java.io.PrintStream;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">PrintStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileDescriptor</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileInputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileOutputStream</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
 
 
-// FileDescriptor 测试程序
-public class FileDescriptorTest &#123;
+<span class="token comment">// FileDescriptor 测试程序</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileDescriptorTest</span> <span class="token punctuation">&#123;</span>
 
-    private static final String FileName = &quot;file.txt&quot;;
-    private static final String OutText = &quot;Hi FileDescriptor&quot;;
-    public static void main(String[] args) &#123;
-        testWrite();
-        testRead();
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token class-name">FileName</span> <span class="token operator">=</span> <span class="token string">"file.txt"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token class-name">OutText</span> <span class="token operator">=</span> <span class="token string">"Hi FileDescriptor"</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">testWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">testRead</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        testStandFD() ;
-        //System.out.println(OutText);
-    &#125;
+        <span class="token function">testStandFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">;</span>
+        <span class="token comment">//System.out.println(OutText);</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * FileDescriptor.out 的测试程序
      * 该程序的效果 等价于 System.out.println(OutText);
-     */
-    private static void testStandFD() &#123;
-        // 创建FileDescriptor.out 对应的PrintStream
-        PrintStream out = new PrintStream(new FileOutputStream(FileDescriptor.out));
-        // 在屏幕上输出 Hi FileDescriptor
-        out.println(OutText);
-        out.close();
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testStandFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 创建FileDescriptor.out 对应的PrintStream</span>
+        <span class="token class-name">PrintStream</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PrintStream</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">FileDescriptor</span><span class="token punctuation">.</span>out<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 在屏幕上输出 Hi FileDescriptor</span>
+        out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token class-name">OutText</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        out<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * FileDescriptor写入示例程序
      * 
      * (01) 为了说明，通过文件名创建FileOutputStream与通过文件描述符创建FileOutputStream对象是等效的
-     * (02) 该程序会在“该源文件”所在目录新建文件&quot;file.txt&quot;，并且文件内容是&quot;Aa&quot;。
-     */
-    private static void testWrite() &#123;
-        try &#123;
-            // 新建文件“file.txt”对应的FileOutputStream对象
-            FileOutputStream out1 = new FileOutputStream(FileName);
-            // 获取文件“file.txt”对应的“文件描述符”
-            FileDescriptor fdout = out1.getFD();
-            // 根据“文件描述符”创建“FileOutputStream”对象
-            FileOutputStream out2 = new FileOutputStream(fdout);
+     * (02) 该程序会在“该源文件”所在目录新建文件"file.txt"，并且文件内容是"Aa"。
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testWrite</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 新建文件“file.txt”对应的FileOutputStream对象</span>
+            <span class="token class-name">FileOutputStream</span> out1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 获取文件“file.txt”对应的“文件描述符”</span>
+            <span class="token class-name">FileDescriptor</span> fdout <span class="token operator">=</span> out1<span class="token punctuation">.</span><span class="token function">getFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 根据“文件描述符”创建“FileOutputStream”对象</span>
+            <span class="token class-name">FileOutputStream</span> out2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>fdout<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            out1.write(&#39;A&#39;);    // 通过out1向“file.txt”中写入&#39;A&#39;
-            out2.write(&#39;a&#39;);    // 通过out2向“file.txt”中写入&#39;A&#39;
+            out1<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 通过out1向“file.txt”中写入'A'</span>
+            out2<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 通过out2向“file.txt”中写入'A'</span>
 
-            if (fdout!=null)
-                System.out.printf(&quot;fdout(%s) is %s\n&quot;,fdout, fdout.valid());
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>fdout<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"fdout(%s) is %s\n"</span><span class="token punctuation">,</span>fdout<span class="token punctuation">,</span> fdout<span class="token punctuation">.</span><span class="token function">valid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            out1.close();
-            out2.close();
+            out1<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            out2<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * FileDescriptor读取示例程序
      *
-     * 为了说明，&quot;通过文件名创建FileInputStream&quot;与“通过文件描述符创建FileInputStream”对象是等效的
-     */
-    private static void testRead() &#123;
-        try &#123;
-            // 新建文件“file.txt”对应的FileInputStream对象
-            FileInputStream in1 = new FileInputStream(FileName);
-            // 获取文件“file.txt”对应的“文件描述符”
-            FileDescriptor fdin = in1.getFD();
-            // 根据“文件描述符”创建“FileInputStream”对象
-            FileInputStream in2 = new FileInputStream(fdin);
+     * 为了说明，"通过文件名创建FileInputStream"与“通过文件描述符创建FileInputStream”对象是等效的
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">testRead</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 新建文件“file.txt”对应的FileInputStream对象</span>
+            <span class="token class-name">FileInputStream</span> in1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token class-name">FileName</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 获取文件“file.txt”对应的“文件描述符”</span>
+            <span class="token class-name">FileDescriptor</span> fdin <span class="token operator">=</span> in1<span class="token punctuation">.</span><span class="token function">getFD</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// 根据“文件描述符”创建“FileInputStream”对象</span>
+            <span class="token class-name">FileInputStream</span> in2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>fdin<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            System.out.println(&quot;in1.read():&quot;+(char)in1.read());
-            System.out.println(&quot;in2.read():&quot;+(char)in2.read());
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"in1.read():"</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span>in1<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"in2.read():"</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span>in2<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            if (fdin!=null)
-                System.out.printf(&quot;fdin(%s) is %s\n&quot;, fdin, fdin.valid());
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>fdin<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"fdin(%s) is %s\n"</span><span class="token punctuation">,</span> fdin<span class="token punctuation">,</span> fdin<span class="token punctuation">.</span><span class="token function">valid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            in1.close();
-            in2.close();
-        &#125; catch(IOException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+            in1<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            in2<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行结果：</p>
-<pre><code>fdout(java.io.FileDescriptor@2b820dda) is true
+<pre class="line-numbers language-none"><code class="language-none">fdout(java.io.FileDescriptor@2b820dda) is true
 in1.read():A
 in2.read():a
 fdin(java.io.FileDescriptor@675b7986) is true
-Hi FileDescriptor
-</code></pre>
-
+Hi FileDescriptor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
     </div>
 
     
@@ -486,8 +484,8 @@ Hi FileDescriptor
       <i class="fa fa-chevron-left"></i> Java IO之 ByteArrayInputStream详解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/07/20/Java-IO-FileInputStream-FileOutputStream/" rel="next" title="Java IO之 FileInputStream/FileOutputStream详解">
-      Java IO之 FileInputStream/FileOutputStream详解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/07/20/Java-IO-FilterOutputStream/" rel="next" title="Java IO之 FilterOutputStream详解">
+      Java IO之 FilterOutputStream详解 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -665,7 +663,7 @@ Hi FileDescriptor
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 

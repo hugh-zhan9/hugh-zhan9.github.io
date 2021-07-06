@@ -29,7 +29,7 @@
 <meta property="og:description" content="-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-16T22:22:28.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:12:03.207Z">
+<meta property="article:modified_time" content="2021-07-06T03:50:36.712Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java-集合">
 <meta name="twitter:card" content="summary">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:12:03" itemprop="dateModified" datetime="2021-07-06T03:12:03+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -295,7 +295,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.9k</span>
+              <span>7.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -336,15 +336,15 @@
 <h2 id="HashMap-和-Hashtable-的不同点"><a href="#HashMap-和-Hashtable-的不同点" class="headerlink" title="HashMap 和 Hashtable 的不同点"></a>HashMap 和 Hashtable 的不同点</h2><h3 id="继承和实现方式不同"><a href="#继承和实现方式不同" class="headerlink" title="继承和实现方式不同"></a>继承和实现方式不同</h3><p><code>HashMap</code>继承于<code>AbstractMap</code>，实现了<code>Map</code>、<code>Cloneable</code>、<code>java.io.Serializable</code>接口。</p>
 <p><code>Hashtable</code>继承于<code>Dictionary</code>，实现了<code>Map</code>、<code>Cloneable</code>、<code>java.io.Serializable</code>接口。</p>
 <p><code>HashMap</code>的定义：</p>
-<pre><code class="java">public class HashMap&lt;K,V&gt;
-    extends AbstractMap&lt;K,V&gt;
-    implements Map&lt;K,V&gt;, Cloneable, Serializable &#123;...&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span>
+    <span class="token keyword">extends</span> <span class="token class-name">AbstractMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span>
+    <span class="token keyword">implements</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span><span class="token punctuation">,</span> <span class="token class-name">Cloneable</span><span class="token punctuation">,</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p><code>Hashtable</code>的定义：</p>
-<pre><code class="java">public class Hashtable&lt;K,V&gt;
-    extends Dictionary&lt;K,V&gt;
-    implements Map&lt;K,V&gt;, Cloneable, Serializable &#123;...&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Hashtable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span>
+    <span class="token keyword">extends</span> <span class="token class-name">Dictionary</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span>
+    <span class="token keyword">implements</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span><span class="token punctuation">,</span> <span class="token class-name">Cloneable</span><span class="token punctuation">,</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>从中可以看到：</p>
 <p><code>HashMap</code>和<code>Hashtable</code>都实现了<code>Map</code>、<code>Cloneable</code>、<code>java.io.Serializable</code>接口。</p>
 <p>实现<code>Map</code>接口意味着他们都支持<code>key-value</code>键值对操作。支持添加<code>key-value</code>键值对、获取<code>key</code>、获取<code>value</code>、获取<code>map</code>大小、清空<code>map</code>等基本的<code>key-value</code>键值对操作。</p>
@@ -359,35 +359,35 @@
 <h3 id="对-null-值的处理不同"><a href="#对-null-值的处理不同" class="headerlink" title="对 null 值的处理不同"></a>对 null 值的处理不同</h3><p><code>HashMap</code>的<code>key</code>，<code>value</code>都可以为<code>null</code></p>
 <p><code>Hashtable</code>的<code>key</code>，<code>value</code>都不可以为<code>null</code></p>
 <p><code>HashMap</code>中添加<code>key</code>，<code>value</code>的方法</p>
-<pre><code class="java">// 将key-value添加到HashMap中
-public V put (K key, V value) &#123;
-    return putVal(hash(key), key, value, false, true);
-&#125;
-public void putAll(Map&lt;? extends K, ? extends V&gt; m) &#123;
-    putMapEntries(m, true);
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 将key-value添加到HashMap中</span>
+<span class="token keyword">public</span> <span class="token class-name">V</span> put <span class="token punctuation">(</span><span class="token class-name">K</span> key<span class="token punctuation">,</span> <span class="token class-name">V</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">putVal</span><span class="token punctuation">(</span><span class="token function">hash</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">putAll</span><span class="token punctuation">(</span><span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">K</span><span class="token punctuation">,</span> <span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">V</span><span class="token punctuation">></span></span> m<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">putMapEntries</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>Hashtable</code>中添加<code>key</code>，<code>value</code>的方法</p>
-<pre><code class="java">public synchronized V put(K key, V value) &#123;
-    if (value == null) &#123;
-        throw new NullPointerException();
-    &#125;
-    Emtry&lt;?,?&gt; tab[] = table;
-    int hash = key.hashCode();
-    int index = (hash &amp; 0x7FFFFFFF) % tab.length;
-    @SuppressWarnings(&quot;unchecked&quot;)
-    Entry&lt;K,V&gt; entry = (Entry&lt;K,V&gt;)tab[index];
-    for (; entry != null ; entry = entry.next) &#123;
-        if ((entry.hash == hash) &amp;&amp; entry.key.equals(key)) &#123;
-            V old = entry.value;
-            entry.value = value;
-            return old;
-        &#125;
-    &#125;
-    addEntry(hash, key, value, index);
-    return null;
-&#125;
-</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token class-name">V</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">K</span> key<span class="token punctuation">,</span> <span class="token class-name">V</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NullPointerException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token class-name">Emtry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">,</span><span class="token operator">?</span><span class="token punctuation">></span></span> tab<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> table<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> hash <span class="token operator">=</span> key<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token punctuation">(</span>hash <span class="token operator">&amp;</span> <span class="token number">0x7FFFFFFF</span><span class="token punctuation">)</span> <span class="token operator">%</span> tab<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+    <span class="token class-name">Entry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span> entry <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Entry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span><span class="token punctuation">)</span>tab<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> entry <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token punctuation">;</span> entry <span class="token operator">=</span> entry<span class="token punctuation">.</span>next<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>entry<span class="token punctuation">.</span>hash <span class="token operator">==</span> hash<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> entry<span class="token punctuation">.</span>key<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">V</span> old <span class="token operator">=</span> entry<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+            entry<span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> old<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">addEntry</span><span class="token punctuation">(</span>hash<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>根据上面的代码，我们可以看出：</p>
 <p><code>Hashtable</code>的<code>key</code>或<code>value</code>，都不能为<code>null</code>。否则，会抛出异常<code>NullPointerException</code>。</p>
 <p><code>HashMap</code>的<code>key</code>、<code>value</code>都可以为<code>null</code>。 当<code>HashMap</code>的<code>key</code>为<code>null</code>时，<code>HashMap</code>会将其固定的插入<code>table[0]</code>位置(即<code>HashMap</code>散列表的第一个位置)；而且<code>table[0]</code>处只会容纳一个<code>key</code>为<code>null</code>的值，当有多个<code>key</code>为<code>null</code>的值插入的时候，<code>table[0]</code>会保留最后插入的<code>value</code>。</p>
@@ -438,140 +438,140 @@ public void putAll(Map&lt;? extends K, ? extends V&gt; m) &#123;
 <p>例如：当我们读取<code>WeakHashMap</code>中的元素或获取<code>WeakReference</code>得到大小时，他会先同步<code>table</code>和<code>queue</code>。目的是删除<code>table</code>中被GC回收的弱键对应的键值对。删除的方法就是逐个比较<code>table</code>中元素的键和<code>queue</code>中的键。若它们相当，则删除<code>table</code>中的该键值对。</p>
 </li>
 </ol>
-<h2 id="HashMap-和-WeakHashMap-的比较测试程序"><a href="#HashMap-和-WeakHashMap-的比较测试程序" class="headerlink" title="HashMap 和 WeakHashMap 的比较测试程序"></a>HashMap 和 WeakHashMap 的比较测试程序</h2><pre><code class="java">import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.Date;
-import java.lang.ref.WeakReference;
+<h2 id="HashMap-和-WeakHashMap-的比较测试程序"><a href="#HashMap-和-WeakHashMap-的比较测试程序" class="headerlink" title="HashMap 和 WeakHashMap 的比较测试程序"></a>HashMap 和 WeakHashMap 的比较测试程序</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">HashMap</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Iterator</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Map</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">WeakHashMap</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Date</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>ref<span class="token punctuation">.</span></span><span class="token class-name">WeakReference</span><span class="token punctuation">;</span>
 
-public class CompareHashmapAndWeakHashmap &#123;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CompareHashmapAndWeakHashmap</span> <span class="token punctuation">&#123;</span>
 
-    public static void main(String[] args) throws Exception &#123;
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
 
-        // 当弱键是String时，比较HashMap和WeakHashMap
-        compareWithString();
-        // 当弱键是自定义类型时，比较HashMap和WeakHashMap
-        compareWithSelfClass();
-    &#125;
+    	<span class="token comment">// 当弱键是String时，比较HashMap和WeakHashMap</span>
+    	<span class="token function">compareWithString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token comment">// 当弱键是自定义类型时，比较HashMap和WeakHashMap</span>
+    	<span class="token function">compareWithSelfClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    /**
+    <span class="token comment">/**
      * 遍历map，并打印map的大小
-     */
-    private static void iteratorAndCountMap(Map map) &#123;
-        // 遍历map
-        for (Iterator iter = map.entrySet().iterator(); iter.hasNext(); ) &#123;
-            Map.Entry en = (Map.Entry)iter.next();
-            System.out.printf(&quot;map entry : %s - %s\n &quot;,en.getKey(), en.getValue());
-        &#125;
-        // 打印HashMap的实际大小
-        System.out.printf(&quot; map size:%s\n\n&quot;, map.size());
-    &#125;
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">iteratorAndCountMap</span><span class="token punctuation">(</span><span class="token class-name">Map</span> map<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    	<span class="token comment">// 遍历map</span>
+    	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Iterator</span> iter <span class="token operator">=</span> map<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        	<span class="token class-name">Map<span class="token punctuation">.</span>Entry</span> en <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Map<span class="token punctuation">.</span>Entry</span><span class="token punctuation">)</span>iter<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"map entry : %s - %s\n "</span><span class="token punctuation">,</span>en<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> en<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token punctuation">&#125;</span>
+    	<span class="token comment">// 打印HashMap的实际大小</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" map size:%s\n\n"</span><span class="token punctuation">,</span> map<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 通过String对象测试HashMap和WeakHashMap
-    private static void compareWithString() &#123;
-        // 新建4个String字符串
-        String w1 = new String(&quot;W1&quot;);
-        String w2 = new String(&quot;W2&quot;);
-        String h1 = new String(&quot;H1&quot;);
-        String h2 = new String(&quot;H2&quot;);
+    <span class="token comment">// 通过String对象测试HashMap和WeakHashMap</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">compareWithString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    	<span class="token comment">// 新建4个String字符串</span>
+    	<span class="token class-name">String</span> w1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"W1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">String</span> w2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"W2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">String</span> h1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"H1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">String</span> h2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">"H2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 新建 WeakHashMap对象，并将w1,w2添加到 WeakHashMap中
-        Map wmap = new WeakHashMap();
-        wmap.put(w1, &quot;w1&quot;);
-        wmap.put(w2, &quot;w2&quot;);
+    	<span class="token comment">// 新建 WeakHashMap对象，并将w1,w2添加到 WeakHashMap中</span>
+    	<span class="token class-name">Map</span> wmap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakHashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	wmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>w1<span class="token punctuation">,</span> <span class="token string">"w1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	wmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>w2<span class="token punctuation">,</span> <span class="token string">"w2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 新建 HashMap对象，并将h1,h2添加到 WeakHashMap中
-        Map hmap = new HashMap();
-        hmap.put(h1, &quot;h1&quot;);
-        hmap.put(h2, &quot;h2&quot;);
+    	<span class="token comment">// 新建 HashMap对象，并将h1,h2添加到 WeakHashMap中</span>
+    	<span class="token class-name">Map</span> hmap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	hmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>h1<span class="token punctuation">,</span> <span class="token string">"h1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	hmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>h2<span class="token punctuation">,</span> <span class="token string">"h2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 删除HashMap中的“h1”。
-        // 结果：删除“h1”之后，HashMap中只有 h2 ！
-        hmap.remove(h1);
+    	<span class="token comment">// 删除HashMap中的“h1”。</span>
+    	<span class="token comment">// 结果：删除“h1”之后，HashMap中只有 h2 ！</span>
+    	hmap<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 将WeakHashMap中的w1设置null，并执行gc()。系统会回收w1
-        // 结果：w1是“弱键”，被GC回收后，WeakHashMap中w1对应的键值对，也会被从WeakHashMap中删除。
-        //       w2是“弱键”，但它不是null，不会被GC回收；也就不会被从WeakHashMap中删除。
-        // 因此，WeakHashMap中只有 w2
-        // 注意：若去掉“w1=null” 或者“System.gc()”，结果都会不一样！
-        w1 = null;
-        System.gc();
+    	<span class="token comment">// 将WeakHashMap中的w1设置null，并执行gc()。系统会回收w1</span>
+    	<span class="token comment">// 结果：w1是“弱键”，被GC回收后，WeakHashMap中w1对应的键值对，也会被从WeakHashMap中删除。</span>
+    	<span class="token comment">//       w2是“弱键”，但它不是null，不会被GC回收；也就不会被从WeakHashMap中删除。</span>
+    	<span class="token comment">// 因此，WeakHashMap中只有 w2</span>
+    	<span class="token comment">// 注意：若去掉“w1=null” 或者“System.gc()”，结果都会不一样！</span>
+    	w1 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 遍历并打印HashMap的大小
-        System.out.printf(&quot; -- HashMap --\n&quot;);
-        iteratorAndCountMap(hmap);
+    	<span class="token comment">// 遍历并打印HashMap的大小</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" -- HashMap --\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token function">iteratorAndCountMap</span><span class="token punctuation">(</span>hmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 遍历并打印WeakHashMap的大小
-        System.out.printf(&quot; -- WeakHashMap --\n&quot;);
-        iteratorAndCountMap(wmap);
-    &#125;
+    	<span class="token comment">// 遍历并打印WeakHashMap的大小</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" -- WeakHashMap --\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token function">iteratorAndCountMap</span><span class="token punctuation">(</span>wmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    // 通过自定义类测试HashMap和WeakHashMap
-    private static void compareWithSelfClass() &#123;
-        // 新建4个自定义对象
-        Self s1 = new Self(10);
-        Self s2 = new Self(20);
-        Self s3 = new Self(30);
-        Self s4 = new Self(40);
+    <span class="token comment">// 通过自定义类测试HashMap和WeakHashMap</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">compareWithSelfClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    	<span class="token comment">// 新建4个自定义对象</span>
+    	<span class="token class-name">Self</span> s1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Self</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">Self</span> s2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Self</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">Self</span> s3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Self</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token class-name">Self</span> s4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Self</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 新建 WeakHashMap对象，并将s1,s2添加到 WeakHashMap中
-        Map wmap = new WeakHashMap();
-        wmap.put(s1, &quot;s1&quot;);
-        wmap.put(s2, &quot;s2&quot;);
+    	<span class="token comment">// 新建 WeakHashMap对象，并将s1,s2添加到 WeakHashMap中</span>
+    	<span class="token class-name">Map</span> wmap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakHashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	wmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span> <span class="token string">"s1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	wmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>s2<span class="token punctuation">,</span> <span class="token string">"s2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 新建 HashMap对象，并将s3,s4添加到 WeakHashMap中
-        Map hmap = new HashMap();
-        hmap.put(s3, &quot;s3&quot;);
-        hmap.put(s4, &quot;s4&quot;);
+    	<span class="token comment">// 新建 HashMap对象，并将s3,s4添加到 WeakHashMap中</span>
+    	<span class="token class-name">Map</span> hmap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	hmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>s3<span class="token punctuation">,</span> <span class="token string">"s3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	hmap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>s4<span class="token punctuation">,</span> <span class="token string">"s4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 删除HashMap中的s3。
-        // 结果：删除s3之后，HashMap中只有 s4 ！
-        hmap.remove(s3);
+    	<span class="token comment">// 删除HashMap中的s3。</span>
+    	<span class="token comment">// 结果：删除s3之后，HashMap中只有 s4 ！</span>
+    	hmap<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>s3<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 将WeakHashMap中的s1设置null，并执行gc()。系统会回收w1
-        // 结果：s1是“弱键”，被GC回收后，WeakHashMap中s1对应的键值对，也会被从WeakHashMap中删除。
-        //       w2是“弱键”，但它不是null，不会被GC回收；也就不会被从WeakHashMap中删除。
-        // 因此，WeakHashMap中只有 s2
-        // 注意：若去掉“s1=null” 或者“System.gc()”，结果都会不一样！
-        s1 = null;
-        System.gc();
+    	<span class="token comment">// 将WeakHashMap中的s1设置null，并执行gc()。系统会回收w1</span>
+    	<span class="token comment">// 结果：s1是“弱键”，被GC回收后，WeakHashMap中s1对应的键值对，也会被从WeakHashMap中删除。</span>
+    	<span class="token comment">//       w2是“弱键”，但它不是null，不会被GC回收；也就不会被从WeakHashMap中删除。</span>
+    	<span class="token comment">// 因此，WeakHashMap中只有 s2</span>
+    	<span class="token comment">// 注意：若去掉“s1=null” 或者“System.gc()”，结果都会不一样！</span>
+    	s1 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        /*
-        // 休眠500ms
-        try &#123;
-            Thread.sleep(500);
-        &#125; catch (InterruptedException e) &#123;
-            e.printStackTrace();
-        &#125;
-        // */
+    	<span class="token comment">/*
+    	// 休眠500ms
+    	try &#123;
+        	Thread.sleep(500);
+    	&#125; catch (InterruptedException e) &#123;
+        	e.printStackTrace();
+    	&#125;
+    	// */</span>
 
-        // 遍历并打印HashMap的大小
-        System.out.printf(&quot; -- Self-def HashMap --\n&quot;);
-        iteratorAndCountMap(hmap);
+    	<span class="token comment">// 遍历并打印HashMap的大小</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" -- Self-def HashMap --\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token function">iteratorAndCountMap</span><span class="token punctuation">(</span>hmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 遍历并打印WeakHashMap的大小
-        System.out.printf(&quot; -- Self-def WeakHashMap --\n&quot;);
-        iteratorAndCountMap(wmap);
-    &#125;
+    	<span class="token comment">// 遍历并打印WeakHashMap的大小</span>
+    	<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" -- Self-def WeakHashMap --\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token function">iteratorAndCountMap</span><span class="token punctuation">(</span>wmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
 
-    private static class Self &#123; 
-        int id;
+	<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Self</span> <span class="token punctuation">&#123;</span> 
+    	<span class="token keyword">int</span> id<span class="token punctuation">;</span>
 
-        public Self(int id) &#123;
-            this.id = id;
-        &#125;
+    	<span class="token keyword">public</span> <span class="token class-name">Self</span><span class="token punctuation">(</span><span class="token keyword">int</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    		<span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
 
-        // 覆盖finalize()方法
-        // 在GC回收时会被执行
-        protected void finalize() throws Throwable &#123;
-            super.finalize();
-            System.out.printf(&quot;GC Self: id=%d addr=0x%s)\n&quot;, id, this);
-        &#125;   
-    &#125;
-&#125;
-</code></pre>
+    	<span class="token comment">// 覆盖finalize()方法</span>
+		<span class="token comment">// 在GC回收时会被执行</span>
+		<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">finalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Throwable</span> <span class="token punctuation">&#123;</span>
+    		<span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">finalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    		<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"GC Self: id=%d addr=0x%s)\n"</span><span class="token punctuation">,</span> id<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	<span class="token punctuation">&#125;</span>   
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
     </div>
 
@@ -779,7 +779,7 @@ public class CompareHashmapAndWeakHashmap &#123;
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24:16</span>
+    <span title="站点阅读时长">23:33</span>
 </div><!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span> 
