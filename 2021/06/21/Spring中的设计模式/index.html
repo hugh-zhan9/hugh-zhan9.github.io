@@ -27,9 +27,8 @@
 <meta property="og:site_name" content="日积硅步">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://47.98.158.110:8888/group1/M00/00/00/L2KebmDS7ouAEqg4AAVAvHjWlwM276.jpg">
-<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/JdLkEI9sZfcSTzZl3KysRj1PSxMbbrCsRdicRiarxb2j9CfsmwgUMdlaL1yicmLSoMX8mORj1U9N8koPQ8wlx6JqA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
 <meta property="article:published_time" content="2021-06-21T19:50:00.000Z">
-<meta property="article:modified_time" content="2021-07-06T03:50:36.716Z">
+<meta property="article:modified_time" content="2021-07-06T04:35:20.168Z">
 <meta property="article:author" content="深南大道">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Spring">
@@ -258,7 +257,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-06 03:50:36" itemprop="dateModified" datetime="2021-07-06T03:50:36+00:00">2021-07-06</time>
+                <time title="修改时间：2021-07-06 04:35:20" itemprop="dateModified" datetime="2021-07-06T04:35:20+00:00">2021-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +296,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.9k</span>
+              <span>8.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -386,9 +385,7 @@
     <span class="token keyword">return</span> <span class="token punctuation">(</span>singletonObject <span class="token operator">!=</span> NULL_OBJECT <span class="token operator">?</span> singletonObject <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><code>getSingleton()</code> 过程图</p>
 <p>PS：Spring 依赖注入时，使用了 双重判断加锁的单例模式</p>
-<p><img data-src="https://mmbiz.qpic.cn/mmbiz_jpg/JdLkEI9sZfcSTzZl3KysRj1PSxMbbrCsRdicRiarxb2j9CfsmwgUMdlaL1yicmLSoMX8mORj1U9N8koPQ8wlx6JqA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1"></p>
 <p><strong>总结</strong></p>
 <p>单例模式定义： 保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
 <p>Spring 对单例的实现： Spring 中的单例模式完成了后半句话，即提供了全局的访问点 <code>BeanFactory</code>。但没有从构造器级别去控制单例，这是因为 Spring 管理的是任意的 Java对象。</p>
