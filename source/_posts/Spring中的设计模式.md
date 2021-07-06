@@ -119,11 +119,9 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 }
 ```
 
-`getSingleton()` 过程图
-
 PS：Spring 依赖注入时，使用了 双重判断加锁的单例模式
 
-![](https://mmbiz.qpic.cn/mmbiz_jpg/JdLkEI9sZfcSTzZl3KysRj1PSxMbbrCsRdicRiarxb2j9CfsmwgUMdlaL1yicmLSoMX8mORj1U9N8koPQ8wlx6JqA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
 
 **总结**
 
