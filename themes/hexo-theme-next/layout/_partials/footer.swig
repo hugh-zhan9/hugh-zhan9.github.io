@@ -59,3 +59,5 @@
 {%- endif %}
 
 {{- next_inject('footer') }}
+
+<script src="/js/prism/prism.js" async></script>

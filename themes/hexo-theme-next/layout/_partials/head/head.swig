@@ -59,3 +59,4 @@
 {%- endif %}
 
 {{ next_config() }}
+<link rel="stylesheet" href="/js/prism/prism.css">
