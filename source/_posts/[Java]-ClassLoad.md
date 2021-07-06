@@ -1,21 +1,11 @@
 ---
 title: Java 类加载机制
-tags: [Java]
+tags: Java
 categories: Java
 date: 2021-02-27 19:50:00
 
 
-
-
-
-
-
-
 ---
-
-
-
-
 
 >以下哪项不属于Java类加载过程 ( )
 >A. 生成`java.lang.Class`对象
