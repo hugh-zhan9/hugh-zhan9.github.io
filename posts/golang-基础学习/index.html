@@ -1,108 +1,482 @@
 <!doctype html><html><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>Golang 基础学习 - 晚青</title><meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=description content="记录一下学习Golang基础语法时的笔记"><meta property="og:image" content><meta property="og:url" content="https://hugh-zhan9.github.io/posts/golang-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/"><meta property="og:site_name" content="晚青"><meta property="og:title" content="Golang 基础学习"><meta property="og:description" content="记录一下学习Golang基础语法时的笔记"><meta property="og:locale" content="zh_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-11-25T10:48:25+08:00"><meta property="article:modified_time" content="2024-11-25T10:48:25+08:00"><meta property="article:tag" content="Golang"><meta name=twitter:card content="summary"><meta name=twitter:title content="Golang 基础学习"><meta name=twitter:description content="记录一下学习Golang基础语法时的笔记"><link href=https://hugh-zhan9.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://hugh-zhan9.github.io/css/main.5cebd7d4fb2b97856af8d32a6def16164fcf7d844e98e236fcb3559655020373.css></head><body><div class=content><header><div class=main><a href=https://hugh-zhan9.github.io/>晚青</a></div><nav></nav></header><main><article><div class=title><h1 class=title>Golang 基础学习</h1><div class=meta>Posted on Nov 25, 2024</div></div><section class=body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;database/sql&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;fmt&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;io/ioutil&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;os&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;path/filepath&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;strconv&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;strings&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;time&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;os&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;errors&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;sync&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;time&#34;</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>_</span> <span style=color:#e6db74>&#34;github.com/go-sql-driver/mysql&#34;</span>
-</span></span><span style=display:flex><span>)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// VideoInfo 存储视频的信息
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>VideoInfo</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Name</span>    <span style=color:#66d9ef>string</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Size</span>    <span style=color:#66d9ef>int64</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Width</span>   <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Height</span>  <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Bitrate</span> <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Codec</span>   <span style=color:#66d9ef>string</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>FPS</span>     <span style=color:#66d9ef>float64</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Created</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Modified</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>helloWord</span> <span style=color:#66d9ef>string</span> = <span style=color:#e6db74>&#34;Hellow Word!&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>()  {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>paramVar</span> = <span style=color:#e6db74>&#34;测试&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>paramVar</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>test</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;测试&#34;</span>;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>helloWord</span>);
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>test</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>x</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>p</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>x</span>         <span style=color:#75715e>// 获取 x 的指针
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>p</span>)   
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#f92672>*</span><span style=color:#a6e22e>p</span>)
+</span></span><span style=display:flex><span>	<span style=color:#f92672>*</span><span style=color:#a6e22e>p</span> = <span style=color:#ae81ff>2</span>          <span style=color:#75715e>// *p表达式对应p指针指向的变量的值
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>x</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 数组
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>nums</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>10</span>,<span style=color:#ae81ff>20</span>,<span style=color:#ae81ff>30</span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 切片
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>slice1</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>float32</span>, <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>slice2</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>float32</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>5</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(len(<span style=color:#a6e22e>slice1</span>), len(<span style=color:#a6e22e>slice2</span>), cap(<span style=color:#a6e22e>slice2</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>slice2</span> = append(<span style=color:#a6e22e>slice2</span>, <span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>4</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(len(<span style=color:#a6e22e>slice2</span>), cap(<span style=color:#a6e22e>slice2</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 子切片 [start:end)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>subSlice1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>slice2</span>[<span style=color:#ae81ff>3</span>:]
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>subSlice2</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>slice2</span>[:<span style=color:#ae81ff>3</span>]
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>subSlice3</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>slice2</span>[<span style=color:#ae81ff>1</span>:<span style=color:#ae81ff>4</span>]
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(cap(<span style=color:#a6e22e>subSlice3</span>), <span style=color:#a6e22e>subSlice3</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 切片合并
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>appendSlice</span> <span style=color:#f92672>:=</span> append(<span style=color:#a6e22e>subSlice1</span>, <span style=color:#a6e22e>subSlice2</span><span style=color:#f92672>...</span>)    <span style=color:#75715e>// subSlice2... 是切片解构的写法，将切片解构为 N 个独立的元素。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>appendSlice</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// map
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>map1</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>map2</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>		<span style=color:#e6db74>&#34;key&#34;</span>: <span style=color:#e6db74>&#34;value&#34;</span>,
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>map1</span>[<span style=color:#e6db74>&#34;key&#34;</span>] = <span style=color:#e6db74>&#34;value&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>map1</span>, <span style=color:#a6e22e>map2</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// if-else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>map1</span>[<span style=color:#e6db74>&#34;key&#34;</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;value&#34;</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;true&#34;</span>)
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;false&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 简写
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>age</span><span style=color:#f92672>:=</span><span style=color:#ae81ff>18</span>; <span style=color:#a6e22e>age</span>&lt;<span style=color:#ae81ff>18</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;simple true&#34;</span>)
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;simple false&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// switch
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 在这里，使用了type 关键字定义了一个新的类型 Gender。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 使用 const 定义了 MALE 和 FEMALE 2 个常量，Go 语言中没有枚举(enum)的概念，一般可以用常量的方式来模拟枚举。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Gender</span> <span style=color:#66d9ef>int8</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>const</span>(
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>MALE</span> <span style=color:#a6e22e>Gender</span> = <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>FEMLE</span> <span style=color:#a6e22e>Gender</span> = <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>	)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>gender</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>MALE</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 和其他语言不同的地方在于，Go 语言的 switch 不需要 break，匹配到某个 case，执行完该 case 定义的行为后，默认不会继续往下执行。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>gender</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>MALE</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;MALE&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>FEMLE</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;FEMALE&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>default</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;default&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 如果需要继续往下执行，需要使用 fallthrough，
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>gender</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>MALE</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;MALE&#34;</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>fallthrough</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>FEMLE</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;FEMALE&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>default</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;default&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// for
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>sum</span><span style=color:#f92672>:=</span><span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>50</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>sum</span><span style=color:#f92672>++</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>sum</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//遍历 集合
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>num</span><span style=color:#f92672>:=</span><span style=color:#66d9ef>range</span> <span style=color:#a6e22e>nums</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>num</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>key</span>, <span style=color:#a6e22e>value</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>map2</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>key</span>, <span style=color:#a6e22e>value</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>add</span>(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>div</span>(<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>addWithReturn</span>(<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>4</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>openFile</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>hello</span>(<span style=color:#e6db74>&#34;hugh_&#34;</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;err is nil&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>hello</span>(<span style=color:#e6db74>&#34;&#34;</span>); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>res</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>getByIndexWithOutPanic</span>(<span style=color:#ae81ff>5</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>res</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// getByIndex(5)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>stu</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Student</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>name</span>: <span style=color:#e6db74>&#34;Tom&#34;</span>,
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>msg</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>stu</span>.<span style=color:#a6e22e>hello</span>(<span style=color:#e6db74>&#34;Jack&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>msg</span>) <span style=color:#75715e>// hello Jack, I am Tom
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 初始化一个对象， 使用接口
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 实例化 Cat后，强制类型转换为接口类型 Animals
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>ani</span> <span style=color:#a6e22e>Animals</span> = <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Cat</span>{
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>name</span>: <span style=color:#e6db74>&#34;Tom&#34;</span>,
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>age</span>:  <span style=color:#ae81ff>18</span>,
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>ani</span>.<span style=color:#a6e22e>getName</span>())
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 实例可以强制类型转换为接口，接口也可以强制类型转换为实例。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 接口转为实例
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>cat</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ani</span>.(<span style=color:#f92672>*</span><span style=color:#a6e22e>Cat</span>) 
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>cat</span>.<span style=color:#a6e22e>getAge</span>())
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>emptyInterface</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;================================== sync ==================================&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>10</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>syncDownload</span>()
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;sync job done&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// wg.add(1) 为 wg 添加一个计数， wg.Done() 会减去一个计数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// go syncDownload() 启动一个协程去并发的执行 syncDownload 函数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// wg.wait() 等待所有协程执行结束
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>3</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>channelDownload</span>(<span style=color:#e6db74>&#34;download url/&#34;</span> <span style=color:#f92672>+</span> string(<span style=color:#a6e22e>i</span> <span style=color:#f92672>+</span><span style=color:#e6db74>&#39;0&#39;</span>))    
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// string(i+&#39;0&#39;) 是一种将数值转换成对应 字符串的方式， 是通过 ASCII 码转换的。 
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// 在 golang 中可以使用 str := strconv.Itoa(num) 的方式实现 Java 中 String.valueOf 的效果
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// 对于其他类型的数值，比如 float64 类型，Go 语言使用 strconv.FormatFloat 函数来实现类似的精准转换
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// fmt 的 Sprinf 函数也可以达到相同的效果
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>3</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>msg</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>channel</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;finish&#34;</span>, <span style=color:#a6e22e>msg</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;channel job done&#34;</span>)
+</span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// 替换为您的 MySQL 数据库连接信息
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>db</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>sql</span>.<span style=color:#a6e22e>Open</span>(<span style=color:#e6db74>&#34;mysql&#34;</span>, <span style=color:#e6db74>&#34;username:password@tcp(localhost:3306)/dbname&#34;</span>)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span><span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;数据库连接错误:&#34;</span>, <span style=color:#a6e22e>err</span>)
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>db</span>.<span style=color:#a6e22e>Close</span>()
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// 替换为您要扫描的目录
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>dir</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;/your/directory&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>scanDirectory</span>(<span style=color:#a6e22e>dir</span>, <span style=color:#a6e22e>db</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 函数  func functionName(param1 type, param2 type, ....) (result1 type, ...) { //body }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>notReturn</span>(<span style=color:#a6e22e>num1</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>num2</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>num1</span><span style=color:#f92672>+</span><span style=color:#a6e22e>num2</span>)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>scanDirectory</span>(<span style=color:#a6e22e>dir</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>db</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>sql</span>.<span style=color:#a6e22e>DB</span>) {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>files</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadDir</span>(<span style=color:#a6e22e>dir</span>)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span><span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;读取目录错误:&#34;</span>, <span style=color:#a6e22e>err</span>)
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>file</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>files</span> {
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>filePath</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>filepath</span>.<span style=color:#a6e22e>Join</span>(<span style=color:#a6e22e>dir</span>, <span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>Name</span>())
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>IsDir</span>() {
-</span></span><span style=display:flex><span>            <span style=color:#a6e22e>scanDirectory</span>(<span style=color:#a6e22e>filePath</span>, <span style=color:#a6e22e>db</span>)
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
-</span></span><span style=display:flex><span>        }
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>isVideoFile</span>(<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>Name</span>()) {
-</span></span><span style=display:flex><span>            <span style=color:#a6e22e>videoInfo</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>getVideoInfo</span>(<span style=color:#a6e22e>filePath</span>)
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span><span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
-</span></span><span style=display:flex><span>                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;获取视频信息错误:&#34;</span>, <span style=color:#a6e22e>err</span>)
-</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
-</span></span><span style=display:flex><span>            }
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>            <span style=color:#a6e22e>insertVideoInfo</span>(<span style=color:#a6e22e>videoInfo</span>, <span style=color:#a6e22e>db</span>)
-</span></span><span style=display:flex><span>        }
-</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>noParams</span>() <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;this is retrun&#34;</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>isVideoFile</span>(<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>bool</span> {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>extensions</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;.mp4&#34;</span>, <span style=color:#e6db74>&#34;.mkv&#34;</span>, <span style=color:#e6db74>&#34;.avi&#34;</span>}
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ext</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>ToLower</span>(<span style=color:#a6e22e>filepath</span>.<span style=color:#a6e22e>Ext</span>(<span style=color:#a6e22e>name</span>))
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>e</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>extensions</span> {
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>ext</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>e</span> {
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>        }
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add</span>(<span style=color:#a6e22e>num1</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>num2</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>num1</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>num2</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getVideoInfo</span>(<span style=color:#a6e22e>filePath</span> <span style=color:#66d9ef>string</span>) (<span style=color:#a6e22e>VideoInfo</span>, <span style=color:#66d9ef>error</span>) {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fileInfo</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Stat</span>(<span style=color:#a6e22e>filePath</span>)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span><span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>VideoInfo</span>{}, <span style=color:#a6e22e>err</span>
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// 此处模拟获取视频的其他信息，实际需要使用相应的视频处理库来获取
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>VideoInfo</span>{
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Name</span>:    <span style=color:#a6e22e>fileInfo</span>.<span style=color:#a6e22e>Name</span>(),
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Size</span>:    <span style=color:#a6e22e>fileInfo</span>.<span style=color:#a6e22e>Size</span>(),
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Width</span>:   <span style=color:#ae81ff>1920</span>,
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Height</span>:  <span style=color:#ae81ff>1080</span>,
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Bitrate</span>: <span style=color:#ae81ff>10000</span>,
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Codec</span>:   <span style=color:#e6db74>&#34;H.264&#34;</span>,
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>FPS</span>:     <span style=color:#ae81ff>30.0</span>,
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Created</span>: <span style=color:#a6e22e>fileInfo</span>.<span style=color:#a6e22e>ModTime</span>(),
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Modified</span>: <span style=color:#a6e22e>fileInfo</span>.<span style=color:#a6e22e>ModTime</span>(),
-</span></span><span style=display:flex><span>    }, <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>div</span>(<span style=color:#a6e22e>num1</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>num2</span> <span style=color:#66d9ef>int</span>) (<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>num1</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>num2</span>, <span style=color:#a6e22e>num1</span> <span style=color:#f92672>%</span> <span style=color:#a6e22e>num2</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>insertVideoInfo</span>(<span style=color:#a6e22e>videoInfo</span> <span style=color:#a6e22e>VideoInfo</span>, <span style=color:#a6e22e>db</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>sql</span>.<span style=color:#a6e22e>DB</span>) {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>query</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;INSERT INTO videos (name, size, width, height, bitrate, codec, fps, created, modified) VALUES (?,?,?,?,?,?,?,?,?)&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>db</span>.<span style=color:#a6e22e>Exec</span>(<span style=color:#a6e22e>query</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Name</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Size</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Width</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Height</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Bitrate</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Codec</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>FPS</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Created</span>, <span style=color:#a6e22e>videoInfo</span>.<span style=color:#a6e22e>Modified</span>)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span><span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
-</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;插入数据库错误:&#34;</span>, <span style=color:#a6e22e>err</span>)
-</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 也可以给返回值命名，简化 return，例如 add 函数可以改写为
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>addWithReturn</span>(<span style=color:#a6e22e>num1</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>num2</span> <span style=color:#66d9ef>int</span>) (<span style=color:#a6e22e>ans</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ans</span> = <span style=color:#a6e22e>num1</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>num2</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span>
 </span></span><span style=display:flex><span>}
-</span></span></code></pre></div></section><div class=post-tags><nav class="nav tags"><ul class=tags><li><a href=/tags/golang>Golang</a></li></ul></nav></div></article></main><footer><div style=display:flex></div></footer></div></body></html>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 异常处理
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>openFile</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Open</span>(<span style=color:#e6db74>&#34;filename.txt&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 可以通过 errorw.New 返回自定义的错误
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>hello</span>(<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>error</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> len(<span style=color:#a6e22e>name</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>errors</span>.<span style=color:#a6e22e>New</span>(<span style=color:#e6db74>&#34;error: name is null&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Hello,&#34;</span>, <span style=color:#a6e22e>name</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// error 往往是能预知的错误，但是也可能出现一些不可预知的错误，例如数组越界，
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 这种错误可能会导致程序非正常退出，在 Go 语言中称之为 panic。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getByIndex</span>(<span style=color:#a6e22e>index</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>array</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>array</span>[<span style=color:#a6e22e>index</span>];
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// defer-recover 类似 Java 中的 try-catch
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 在函数中，使用 defer 定义了异常处理的函数，在协程退出前，会执行完 defer 挂载的任务。因此如果触发了 panic，控制权就交给了 defer。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 在 defer 的处理逻辑中，使用 recover，使程序恢复正常，并且将返回值设置为 -1，在这里也可以不处理返回值，如果不处理返回值，返回值将被置为默认值 0
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getByIndexWithOutPanic</span>(<span style=color:#a6e22e>index</span> <span style=color:#66d9ef>int</span>) (<span style=color:#a6e22e>ret</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>r</span> <span style=color:#f92672>:=</span> recover(); <span style=color:#a6e22e>r</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;some error happend!&#34;</span>, <span style=color:#a6e22e>r</span>)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>ret</span> = <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}()
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>array</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>array</span>[<span style=color:#a6e22e>index</span>];
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 结构体 struct 类似于 class
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Student</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>age</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 这是一个方法， 使用 func 直接定义的是函数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>stu</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Student</span>) <span style=color:#a6e22e>hello</span>(<span style=color:#a6e22e>person</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintln</span>(<span style=color:#e6db74>&#34;hello %s, I am %s&#34;</span>, <span style=color:#a6e22e>stu</span>.<span style=color:#a6e22e>name</span>, <span style=color:#a6e22e>person</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintf</span>(<span style=color:#e6db74>&#34;hello %s, I am %s&#34;</span>, <span style=color:#a6e22e>stu</span>.<span style=color:#a6e22e>name</span>, <span style=color:#a6e22e>person</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// f: 支持占位符 ln: 不支持占位符，空格间隔 S：不在终端显示
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 使用 Student{field: value, ...}的形式创建 Student 的实例，字段不需要每个都赋值，没有显性赋值的变量将被赋予默认值，
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 例如 age 将被赋予默认值 0。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 实现方法与实现函数的区别在于，func 和函数名hello 之间，加上该方法对应的实例名 stu 及其类型 *Student，
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 可以通过实例名访问该实例的字段name和其他方法了。调用方法通过 实例名.方法名(参数) 的方式。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 除此之外，还可以使用 new 实例化：
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>newStudent</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>stu2</span> <span style=color:#f92672>:=</span> new(<span style=color:#a6e22e>Student</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>stu2</span>.<span style=color:#a6e22e>hello</span>(<span style=color:#e6db74>&#34;Alice&#34;</span>)) <span style=color:#75715e>// hello Alice, I am  , name 被赋予默认值&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 接口 interface
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// golang中并不需要显式地声明实现了哪一个接口，只需要直接实现该接口对应的方法即可。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Animals</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>getName</span>() <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Cat</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>age</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>smallCat</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Cat</span>) <span style=color:#a6e22e>getName</span>() <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;a small cat, miao miao&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>cat</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Cat</span>) <span style=color:#a6e22e>getAge</span>() <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>cat</span>.<span style=color:#a6e22e>age</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Dog</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>gender</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>smallDog</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Dog</span>) <span style=color:#a6e22e>getName</span>() <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;a small dog, wang wang&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 通过下面这种方式可以校验 struct 是否实现了对应接口
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Fish</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>gender</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 就是将 struct 的实例强制转换成 接口的实例，没有实现的接口的话转换就会报错
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 将空值 nil 转换为 *Cat 类型，再转换为 Animals 接口
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>_</span> <span style=color:#a6e22e>Animals</span> = (<span style=color:#f92672>*</span><span style=color:#a6e22e>Cat</span>)(<span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>_</span> <span style=color:#a6e22e>Animals</span> = (<span style=color:#f92672>*</span><span style=color:#a6e22e>Dog</span>)(<span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e>// var _ Animals = (*Fish)(nil) //cannot use (*Fish)(nil) (value of type *Fish) as Animals value in variable declaration: *Fish does not implement Animals (missing method getName)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 空接口
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 如果定义了一个没有任何方法的空接口，那么这个接口可以表示任意类型
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>emptyInterface</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>m</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>m</span>[<span style=color:#e6db74>&#34;name&#34;</span>] = <span style=color:#e6db74>&#34;hugh&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>m</span>[<span style=color:#e6db74>&#34;age&#34;</span>] = <span style=color:#ae81ff>27</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>m</span>[<span style=color:#e6db74>&#34;source&#34;</span>] = []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>}   <span style=color:#75715e>// [3]int{1,2,3} 这是一个数组， 而 []int{1,2,3} 是一个切片，数组的长度不能变化，而切片的长度可以变化。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>m</span>)   
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *   golang 中的并发编程
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// sync
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// golang 中提供了 sync 和 channel 两种方式支持 协程 goroutine 的并发
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 如果类似并发下载，多个并发协程不需要通信，可以使用 sync.WaitGroup 等待所有并发协程执行结束
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 注意这里不是 var wg = sync.WaitGroup
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>syncDownload</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;start to sync download something&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// channel
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 使用 channel 信道，可以在协程之间传递消息。阻塞等待并发协程返回消息
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>channel</span> = make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>, <span style=color:#ae81ff>10</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>channelDownload</span>(<span style=color:#a6e22e>url</span> <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;start to channel download something&#34;</span>, <span style=color:#a6e22e>url</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>channel</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>url</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 单元测试
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 假设我们希望测试 package main 下 calc.go 中的函数，只需要新建一个 calc_test.go 文件
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 在其中新建测试用例即可
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// calc.go 文件中
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// package main
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// func add(num1 int, num2 int) int {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	return num1 + num2
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// calc_test.go
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// package main
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// import &#34;testing&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// func TestAdd(t *testing.T) {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	 if ans := add(1, 2); ans != 3 {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 		t.Error(&#34;add(1, 2) should be equal to 3&#34;)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	 }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 运行 go test，将自动运行当前 package 下的所有测试用例，如果需要查看详细的信息，可以添加-v参数。  go test -v
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// golang 中的 包Package 和 模块Modules
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 一般来说，一个文件夹可以作为 package，同一个 package 内部变量、类型、方法等定义可以相互看到
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 加入在一个文件夹中我们写了一个 calc.go 和 main.go， calc.go 定义了一个 add 函数, 在 main.go 中进行了调用，此时就需要 go run . 或者  go run main.go calc.go 来编译
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// golang 也有 Public 和 Private 的概念，粒度是包。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 如果类型/接口/方法/函数/字段的首字母大写，则是 Public 的，对其他 package 可见，如果首字母小写，则是 Private 的，对其他 package 不可见
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Modules 是 golang 1.11 之后引入的，之前使用 $GOPATH 机制，Go Modules 可以算作是较为完善的包管理工具。同时支持代理，国内也能享受高速的第三方包镜像服务。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// Go Modules 在 1.13 版本仍是可选使用的，环境变量 GO111MODULE 的值默认为 AUTO，强制使用 Go Modules 进行依赖管理，可以将 GO111MODULE 设置为 ON。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 在一个空文件夹下，初始化一个 Module
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// $ go mod init example
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// go: creating new go.mod: module example
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 此时，在当前文件夹下生成了go.mod，这个文件记录当前模块的模块名以及所有依赖包的版本。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 接着，我们在当前目录下新建文件 main.go，添加如下代码：
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// package main
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// import (
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;fmt&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;rsc.io/quote&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// )
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// func main() {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	fmt.Println(quote.Hello())  // Ahoy, world!
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 运行 go run .，就会触发第三方包 rsc.io/quoto 的下载，具体的版本信息也会记录在 go.mod 中
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// module example
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// go 1.13
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// require rsc.io/quote v3.1.0+incompatible
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 我们在当前目录，添加一个子 package calc，代码目录如下：
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// demo/
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//    |--calc/
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//       |--calc.go
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//    |--main.go
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 在 calc.go 中写入
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// package calc
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// func Add(num1 int, num2 int) int {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	return num1 + num2
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 在 package main 中如何使用 package cal 中的 Add 函数呢？import 模块名/子目录名 即可，修改后的 main 函数如下：
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// package main
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// import (
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;fmt&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;example/calc&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;rsc.io/quote&#34;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// )
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// func main() {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	fmt.Println(quote.Hello())
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	fmt.Println(calc.Add(10, 3))
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Go Modules 就类似于 Java 中的 Maven，做一个项目中的包管理
+</span></span></span></code></pre></div></section><div class=post-tags><nav class="nav tags"><ul class=tags><li><a href=/tags/golang>Golang</a></li></ul></nav></div></article></main><footer><div style=display:flex></div></footer></div></body></html>
