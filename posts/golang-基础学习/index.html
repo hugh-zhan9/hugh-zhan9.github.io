@@ -387,15 +387,15 @@
 </span></span><span style=display:flex><span><span style=color:#75715e>// 在其中新建测试用例即可</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// calc.go 文件中</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// </span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// package main</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// </span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// func add(num1 int, num2 int) int {</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// package main</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// func add(num1 int, num2 int) int {</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 	return num1 + num2</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// }</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// calc_test.go</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// calc_test.go</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// package main</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// import &#34;testing&#34;</span>
@@ -423,8 +423,8 @@
 </span></span><span style=display:flex><span><span style=color:#75715e>// Go Modules 在 1.13 版本仍是可选使用的，环境变量 GO111MODULE 的值默认为 AUTO，强制使用 Go Modules 进行依赖管理，可以将 GO111MODULE 设置为 ON。</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 在一个空文件夹下，初始化一个 Module</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// </span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// $ go mod init example</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// $ go mod init example</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// go: creating new go.mod: module example</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 此时，在当前文件夹下生成了go.mod，这个文件记录当前模块的模块名以及所有依赖包的版本。</span>
@@ -450,13 +450,13 @@
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 我们在当前目录，添加一个子 package calc，代码目录如下：</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// demo/</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// demo/</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>//    |--calc/</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>//       |--calc.go</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>//    |--main.go</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>//</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 在 calc.go 中写入</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>//
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 在 calc.go 中写入</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// package calc</span>
 </span></span><span style=display:flex><span>
@@ -467,15 +467,15 @@
 </span></span><span style=display:flex><span><span style=color:#75715e>// 在 package main 中如何使用 package cal 中的 Add 函数呢？import 模块名/子目录名 即可，修改后的 main 函数如下：</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// package main</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// </span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// import (</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// import (</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;fmt&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;example/calc&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// </span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;rsc.io/quote&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// 	&#34;rsc.io/quote&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// )</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// </span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// func main() {</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// func main() {</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 	fmt.Println(quote.Hello())</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// 	fmt.Println(calc.Add(10, 3))</span>
 </span></span><span style=display:flex><span><span style=color:#75715e>// }</span>

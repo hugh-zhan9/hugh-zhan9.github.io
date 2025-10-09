@@ -1,0 +1,188 @@
+<!doctype html><html><head lang=en><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>- 牧己</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="minio 文件存储
+version: &#34;3&#34;
+services:
+  minio:
+    image: bitnami/minio:2025
+    # image: ccr.ccs.tencentyun.com/k7scn/minio:2025
+    container_name: minio
+    restart: always
+    environment:
+      - MINIO_ROOT_USER=homes4
+      - MINIO_ROOT_PASSWORD=aiy0ooCheephai0ohNahmu3Aijee6eiv
+      - MINIO_DEFAULT_BUCKETS=homes4
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - '/volume1/docker/minio/data:/bitnami/minio/data'
+caddy
+services:
+  caddy:
+    image: ysicing/caddy2
+    # image: ccr.ccs.tencentyun.com/k7scn/caddy2
+    container_name: caddy
+    restart: always
+    # 可选host或者端口映射
+    network_mode: host
+    volumes:
+      - '/data/caddy/cfg:/etc/caddy'
+      - '/data/caddy/data:/data'
+      - '/data/caddy/config:/config'
+      - '/data/caddy/log:/var/log/caddy'
+此 Caddy 镜像为我的定制版，内置以下常用插件：
+xcaddy build \
+    --with github.com/caddy-dns/cloudflare \
+    --with github.com/caddy-dns/tencentcloud \
+    --with github.com/caddy-dns/alidns \
+    --with github.com/caddy-dns/dnspod \
+    --with github.com/ysicing/caddy2-geocn \
+    --with github.com/mholt/caddy-l4 \
+    --with github.com/mholt/caddy-ratelimit
+Caddy 配置
+配置文件位于 /data/caddy/cfg，目录结构如下："><meta property="og:image" content><meta property="og:url" content="https://hugh-zhan9.github.io/posts/%E6%88%91%E7%9A%84%E4%B8%80%E4%BA%9Bdocker%E6%9C%8D%E5%8A%A1/"><meta property="og:site_name" content="牧己"><meta property="og:title" content="牧己"><meta property="og:description" content="minio 文件存储
+version: &#34;3&#34; services: minio: image: bitnami/minio:2025 # image: ccr.ccs.tencentyun.com/k7scn/minio:2025 container_name: minio restart: always environment: - MINIO_ROOT_USER=homes4 - MINIO_ROOT_PASSWORD=aiy0ooCheephai0ohNahmu3Aijee6eiv - MINIO_DEFAULT_BUCKETS=homes4 ports: - '9000:9000' - '9001:9001' volumes: - '/volume1/docker/minio/data:/bitnami/minio/data' caddy
+services: caddy: image: ysicing/caddy2 # image: ccr.ccs.tencentyun.com/k7scn/caddy2 container_name: caddy restart: always # 可选host或者端口映射 network_mode: host volumes: - '/data/caddy/cfg:/etc/caddy' - '/data/caddy/data:/data' - '/data/caddy/config:/config' - '/data/caddy/log:/var/log/caddy' 此 Caddy 镜像为我的定制版，内置以下常用插件：
+xcaddy build \ --with github.com/caddy-dns/cloudflare \ --with github.com/caddy-dns/tencentcloud \ --with github.com/caddy-dns/alidns \ --with github.com/caddy-dns/dnspod \ --with github.com/ysicing/caddy2-geocn \ --with github.com/mholt/caddy-l4 \ --with github.com/mholt/caddy-ratelimit Caddy 配置 配置文件位于 /data/caddy/cfg，目录结构如下："><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta name=twitter:card content="summary"><meta name=twitter:title content="牧己"><meta name=twitter:description content="minio 文件存储
+version: &#34;3&#34; services: minio: image: bitnami/minio:2025 # image: ccr.ccs.tencentyun.com/k7scn/minio:2025 container_name: minio restart: always environment: - MINIO_ROOT_USER=homes4 - MINIO_ROOT_PASSWORD=aiy0ooCheephai0ohNahmu3Aijee6eiv - MINIO_DEFAULT_BUCKETS=homes4 ports: - '9000:9000' - '9001:9001' volumes: - '/volume1/docker/minio/data:/bitnami/minio/data' caddy
+services: caddy: image: ysicing/caddy2 # image: ccr.ccs.tencentyun.com/k7scn/caddy2 container_name: caddy restart: always # 可选host或者端口映射 network_mode: host volumes: - '/data/caddy/cfg:/etc/caddy' - '/data/caddy/data:/data' - '/data/caddy/config:/config' - '/data/caddy/log:/var/log/caddy' 此 Caddy 镜像为我的定制版，内置以下常用插件：
+xcaddy build \ --with github.com/caddy-dns/cloudflare \ --with github.com/caddy-dns/tencentcloud \ --with github.com/caddy-dns/alidns \ --with github.com/caddy-dns/dnspod \ --with github.com/ysicing/caddy2-geocn \ --with github.com/mholt/caddy-l4 \ --with github.com/mholt/caddy-ratelimit Caddy 配置 配置文件位于 /data/caddy/cfg，目录结构如下："><script src=https://hugh-zhan9.github.io/js/feather.min.js></script><link href=https://hugh-zhan9.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://hugh-zhan9.github.io/css/main.5cebd7d4fb2b97856af8d32a6def16164fcf7d844e98e236fcb3559655020373.css><link id=darkModeStyle rel=stylesheet type=text/css href=https://hugh-zhan9.github.io/css/dark.d22e2a2879d933a4b781535fc4c4c716e9f9d35ea4986dd0cbabda82effc4bdd.css disabled></head><body><div class=content><header><div class=main><a href=https://hugh-zhan9.github.io/>牧己</a></div><nav><a href=/>Home</a>
+<a href=/posts>All posts</a>
+<a href=/tags>Tags</a>
+| <span id=dark-mode-toggle onclick=toggleTheme()></span>
+<script src=https://hugh-zhan9.github.io/js/themetoggle.js></script></nav></header><main><article><div class=title><h1 class=title></h1><div class=meta>Posted on Jan 1, 1</div></div><section class=body><p>minio 文件存储</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>minio</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>bitnami/minio:2025</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># image: ccr.ccs.tencentyun.com/k7scn/minio:2025</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>minio</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_ROOT_USER=homes4</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_ROOT_PASSWORD=aiy0ooCheephai0ohNahmu3Aijee6eiv</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_DEFAULT_BUCKETS=homes4</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;9000:9000&#39;</span>
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;9001:9001&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;/volume1/docker/minio/data:/bitnami/minio/data&#39;</span>
+</span></span></code></pre></div><p>caddy</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>caddy</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>ysicing/caddy2</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># image: ccr.ccs.tencentyun.com/k7scn/caddy2</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>caddy</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 可选host或者端口映射</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>network_mode</span>: <span style=color:#ae81ff>host</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;/data/caddy/cfg:/etc/caddy&#39;</span>
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;/data/caddy/data:/data&#39;</span>
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;/data/caddy/config:/config&#39;</span>
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;/data/caddy/log:/var/log/caddy&#39;</span>
+</span></span></code></pre></div><p>此 Caddy 镜像为我的定制版，内置以下常用插件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>xcaddy build <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/caddy-dns/cloudflare <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/caddy-dns/tencentcloud <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/caddy-dns/alidns <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/caddy-dns/dnspod <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/ysicing/caddy2-geocn <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/mholt/caddy-l4 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --with github.com/mholt/caddy-ratelimit
+</span></span></code></pre></div><h4 id=caddy-配置>Caddy 配置</h4><p>配置文件位于 <code>/data/caddy/cfg</code>，目录结构如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>/data/caddy/cfg# tree
+</span></span><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── Caddyfile
+</span></span><span style=display:flex><span>├── load.sh
+</span></span><span style=display:flex><span>└── site
+</span></span><span style=display:flex><span>    ├── cr.caddy
+</span></span><span style=display:flex><span>    ├── dev.caddy
+</span></span><span style=display:flex><span>    ├── hub.caddy
+</span></span><span style=display:flex><span>    ├── http.caddy
+</span></span><span style=display:flex><span>    └── minio.caddy
+</span></span></code></pre></div><h4 id=caddyfile-示例>Caddyfile 示例</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#f92672>(</span>LOG<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>	log <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>		output file <span style=color:#e6db74>&#34;{args[0]}&#34;</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>			roll_size 50M
+</span></span><span style=display:flex><span>			roll_uncompressed
+</span></span><span style=display:flex><span>			roll_local_time
+</span></span><span style=display:flex><span>			roll_keep <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>			roll_keep_for 7d
+</span></span><span style=display:flex><span>		<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>		format json
+</span></span><span style=display:flex><span>	<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>COMCFG<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>	encode zstd gzip
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>ERR<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>	handle_errors <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    	<span style=color:#75715e># 异常重定向</span>
+</span></span><span style=display:flex><span>		redir https://dxgw-<span style=color:#f92672>{</span>err.status_code<span style=color:#f92672>}</span>.caddy.local
+</span></span><span style=display:flex><span>	<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>	debug
+</span></span><span style=display:flex><span>	<span style=color:#75715e># admin off</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span>TLS<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>tls <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  dns tencentcloud <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    secret_id AKID***
+</span></span><span style=display:flex><span>    secret_key CH85***
+</span></span><span style=display:flex><span>  <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>import /etc/caddy/site/*.caddy
+</span></span><span style=display:flex><span>复制
+</span></span></code></pre></div><h4 id=minio-配置>MinIO 配置</h4><blockquote><p>minio.caddy</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>域名 <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>	import ERR
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 如果是内网域名可以设置import TLS开启dns签发证书</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># import TLS</span>
+</span></span><span style=display:flex><span>    import LOG <span style=color:#e6db74>&#34;/var/log/caddy/minio.log&#34;</span>
+</span></span><span style=display:flex><span>	@rootPath <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>		path /
+</span></span><span style=display:flex><span>	<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>	handle @rootPath <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>		respond <span style=color:#e6db74>&#34;EdgeONE 451 Forbidden&#34;</span> <span style=color:#ae81ff>451</span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 内网minio地址</span>
+</span></span><span style=display:flex><span>    reverse_proxy 100.90.80.2:9000
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>同理，minio 控制台也是一样，通常控制台不对外开放，仅限内网访问。</p><blockquote><p>minio-api.caddy</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span>域名 {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>import</span> ERR
+</span></span><span style=display:flex><span>    <span style=color:#960050;background-color:#1e0010>#</span> 如果是内网域名可以设置import TLS开启dns签发证书
+</span></span><span style=display:flex><span>    <span style=color:#960050;background-color:#1e0010>#</span> <span style=color:#66d9ef>import</span> TLS
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>import</span> LOG <span style=color:#e6db74>&#34;/var/log/caddy/minio-api.log&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>@denied</span> not remote_ip <span style=color:#ae81ff>192.168</span>.<span style=color:#ae81ff>1.0</span>/<span style=color:#ae81ff>24</span>
+</span></span><span style=display:flex><span>    respond <span style=color:#a6e22e>@denied</span> <span style=color:#e6db74>&#34;Access Denied&#34;</span> <span style=color:#ae81ff>403</span>
+</span></span><span style=display:flex><span>    <span style=color:#960050;background-color:#1e0010>#</span> 内网minio api地址
+</span></span><span style=display:flex><span>    reverse_proxy <span style=color:#ae81ff>100.90</span>.<span style=color:#ae81ff>80.2</span>:<span style=color:#ae81ff>9001</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=重新加载配置>重新加载配置</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl <span style=color:#e6db74>&#34;http://localhost:2019/load&#34;</span> -H <span style=color:#e6db74>&#34;Content-Type: text/caddyfile&#34;</span> --data-binary @Caddyfile
+</span></span></code></pre></div><h3 id=使用-minio>使用 MinIO</h3><blockquote><p>配置 MinIO 客户端（mc）以访问服务：</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 内网</span>
+</span></span><span style=display:flex><span>mc alias set home http://100.90.80.2:9000 homes4 aiy0ooCheephai0ohNahmu3Aijee6eiv
+</span></span><span style=display:flex><span><span style=color:#75715e># 外网</span>
+</span></span><span style=display:flex><span>mc alias set home https://域名 homes4 aiy0ooCheephai0ohNahmu3Aijee6eiv
+</span></span></code></pre></div><p>更多场景可结合 <a href=https://blog.ysicing.net/backup-restic>restic</a>，rclone，<a href=https://blog.ysicing.net/docker-aria2-pro>下载服务</a>等</p><h2 id=alist>Alist</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>alist</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>xhofe/alist:main-aio</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># image: ccr.ccs.tencentyun.com/k7scn/alist:main-aio</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>alist</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;5244:5244&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>/data/alist:/opt/alist/data</span> <span style=color:#75715e># 应用程序持久化数据</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>/data/share:/opt/share</span> <span style=color:#75715e># 本地存储，可选</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>TZ=Asia/Shanghai</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>ALIST_ADMIN_PASSWORD=goxee7dieXeihu9uochoo6iquaighail</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span></code></pre></div><p><code>ALIST_ADMIN_PASSWORD</code> 支持自定义密码</p><h3 id=启动容器>启动容器</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker compose up -d
+</span></span></code></pre></div><h3 id=配置-caddy>配置 caddy</h3><p>caddy 配置比较简单</p><pre tabindex=0><code>alist.ysicing.eu.org {  reverse_proxy 100.90.80.2:5244}
+</code></pre><h3 id=访问-alist>访问 alist</h3><p>访问 Alist：在浏览器输入 <code>http://你的服务器IP:5244</code> 或者 <code>caddy域名</code>，进入 Alist 界面。</p><p>默认用户名是 <code>admin</code>, 密码是你配置的 <code>ALIST_ADMIN_PASSWORD</code> 值信息</p><h2 id=挂载-minio-存储>挂载 MinIO 存储</h2><p>登录 Alist，点击 <strong>管理</strong> > <strong>存储</strong> > <strong>添加</strong> 。</p><p>选择存储类型为<strong>对象存储</strong></p><p><img src=https://global.12306.work/2025/20250507/alist-minio/02.png alt></p><p>填写以下信息：</p><ul><li>挂载路径：自定义，例如 /minio。</li><li>Endpoint：<a href=http://minio/>http://minio</a> 域名地址:9000。</li><li>Bucket：填写你在 MinIO 创建的存储桶名称，例如 ja。</li><li>Access Key 和 Secret Key：填入 MinIO 控制台生成的密钥。</li><li>强制路径样式：默认勾选</li><li>地区：默认留空</li></ul><p><img src=https://global.12306.work/2025/20250507/alist-minio/03.png alt></p><p>保存配置后，返回 Alist 主页，即可看到挂载的 MinIO 存储</p><p><img src=https://global.12306.work/2025/20250507/alist-minio/04.png alt></p><p>可以上面的操作后就可以通过 Alist 浏览、分享 MinIO 中的文件，支持在线预览、下载等功能。</p><p><img src=https://global.12306.work/2025/20250507/alist-minio/05.png alt></p></section><div class=post-tags></div></article></main><footer><div style=display:flex><a class=soc href=https://running.zhangyk.space rel=me title=Running><i data-feather=battery-charging></i></a>
+<a class=border></a><a class=soc href=https://ipv4.zhangyk.space:8096 rel=me title=Jellyfin><i data-feather=film></i></a>
+<a class=border></a><a class=soc href=https://ipv4.zhangyk.space:9089 rel=me title=Image><i data-feather=image></i></a>
+<a class=border></a><a class=soc href=https://ipv4.zhangyk.space:3000 rel=me title=PengYouQuan><i data-feather=aperture></i></a>
+<a class=border></a></div></footer><script>feather.replace()</script></div></body></html>
