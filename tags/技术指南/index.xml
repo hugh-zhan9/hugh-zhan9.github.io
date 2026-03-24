@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术指南 on 牧己</title><link>https://hugh-zhan9.github.io/tags/%E6%8A%80%E6%9C%AF%E6%8C%87%E5%8D%97/</link><description>Recent content in 技术指南 on 牧己</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 24 Mar 2026 18:34:07 +0800</lastBuildDate><atom:link href="https://hugh-zhan9.github.io/tags/%E6%8A%80%E6%9C%AF%E6%8C%87%E5%8D%97/index.xml" rel="self" type="application/rss+xml"/><item><title>用 Superpowers 为 AI 编程注入工程化灵魂</title><link>https://hugh-zhan9.github.io/posts/%E7%94%A8-superpowers-%E4%B8%BA-ai-%E7%BC%96%E7%A8%8B%E6%B3%A8%E5%85%A5%E5%B7%A5%E7%A8%8B%E5%8C%96%E7%81%B5%E9%AD%82/</link><pubDate>Tue, 24 Mar 2026 18:34:07 +0800</pubDate><guid>https://hugh-zhan9.github.io/posts/%E7%94%A8-superpowers-%E4%B8%BA-ai-%E7%BC%96%E7%A8%8B%E6%B3%A8%E5%85%A5%E5%B7%A5%E7%A8%8B%E5%8C%96%E7%81%B5%E9%AD%82/</guid><description>&lt;p&gt;随着 Codex、Claude Code 等 AI 编程工具的普及，我们似乎进入了“动动嘴皮子就能写代码”的时代。然而，当项目复杂度稍微上升，你可能就会遇到这样的噩梦：AI 开始胡乱修改文件、陷入死循环报错（修复一个 Bug 又引发三个）、甚至完全偏离最初的需求。&lt;/p&gt;
+&lt;p&gt;造成这些问题的根源，不在于 AI 不够聪明，而在于它们缺乏工程化纪律。&lt;/p&gt;
+&lt;p&gt;这正是 GitHub 开源项目 obra/superpowers 诞生的意义。它不仅仅是一组提示词，而是一个专为 AI 编码代理（Agent）设计的技能（Skill）框架与软件开发方法论。它可以与现有的 AI Agent（如 Claude Code 或 Codex 等）直接结合，它的核心使命，是把 AI 从一个“莽撞的代码打字员”，调教成一位“遵循严谨流程的高级资深工程师”。&lt;/p&gt;
+&lt;h2 id="什么是-superpowers它是如何工作的"&gt;什么是 Superpowers？它是如何工作的？&lt;/h2&gt;
+&lt;p&gt;Superpowers 并不提供新的大模型，而是提供了一套基于提示词工程封装的 &lt;strong&gt;“技能（Skills）”集合&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;你可以把它理解为给 AI 安装的 &lt;strong&gt;“行为外骨骼”。一旦安装（例如在 Claude Code 中通过 /plugin install superpowers），当你在对话框中提出需求时，AI 不会再直接开始写代码，而是会自动触发&lt;/strong&gt; 并调用这些预设的技能。它强制 AI 遵循一套特定的、系统化的工作流。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="如何安装与使用"&gt;如何安装与使用&lt;/h2&gt;
+&lt;p&gt;Superpowers 的设计初衷是做到“开箱即用”且“无缝集成”。你不需要学习复杂的提示词，只需要将它作为插件安装到你常用的 AI 开发工具中。&lt;/p&gt;
+&lt;h3 id="安装方法"&gt;安装方法&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;在 Codex 中使用，只需在对话框中直接对它输入以下指令即可自动完成配置：
+Fetch and follow instructions from &lt;a href="https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md"&gt;https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;在 Claude Code 中使用 打开终端，直接运行官方市场命令：
+/plugin install superpowers@claude-plugins-official&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="使用方式无感触发"&gt;使用方式：无感触发&lt;/h3&gt;
+&lt;p&gt;安装完成后，你不需要输入类似“请使用 TDD 技能”这样的特殊指令。你只需要像平时一样自然地与 AI 交流：&lt;/p&gt;</description></item></channel></rss>
