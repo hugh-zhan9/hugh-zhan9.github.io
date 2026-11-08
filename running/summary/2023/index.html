@@ -152,10 +152,102 @@
     <link rel="icon" type="image/png" href="/running/assets/favicon-D8b4bbiy.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Running Page</title>
-    <script type="module" crossorigin src="/running/assets/index-CVVV9oqf.js"></script>
-    <link rel="stylesheet" crossorigin href="/running/assets/index-DOy3Hrdk.css">
+    <style>.running-loading {
+  max-width: 1312px;
+  margin: 0 auto;
+  padding: 32px 48px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 32px;
+  color: var(--site-text, #292e29);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+}
+.running-loading h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+.running-loading h2 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.running-loading p {
+  color: var(--site-muted, #6a7167);
+  font-size: 14px;
+}
+.loading-card {
+  padding: 24px;
+  margin-block: 20px;
+  border: 1px solid var(--site-border, #dfe3da);
+  border-radius: 8px;
+}
+.loading-map {
+  min-height: 240px;
+}
+.loading-bars {
+  height: 80px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--site-border, #dfe3da) 0 10px,
+    transparent 10px 26px
+  );
+  opacity: 0.45;
+}
+.running-shell .site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1312px;
+  margin: 0 48px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--site-border, #dfe3da);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+}
+.running-shell .site-brand {
+  font-size: 30px;
+  font-weight: 700;
+}
+.running-shell nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.running-shell a {
+  color: var(--site-text, #292e29);
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+html[data-running-story] .running-shell .site-header {
+  display: none;
+}
+.running-section-status {
+  padding: 32px;
+  min-height: 160px;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  color: var(--site-muted);
+}
+@media (max-width: 640px) {
+  .running-loading {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    gap: 0;
+  }
+  .running-shell .site-header {
+    margin-inline: 20px;
+    padding: 20px 0;
+  }
+}
+</style>
+    <script>if (/^\/running\/summary\/\d{4}(?:\/|$)/.test(location.pathname)) document.documentElement.dataset.runningStory = 'true';</script>
+    <script type="module" crossorigin src="/running/assets/index-COXpFfIQ.js"></script>
+    <link rel="stylesheet" crossorigin href="/running/assets/index-ChDymM0L.css">
+    <link rel="preload" as="fetch" href="/running/data/activity-index.851e28fdfdf5a547.json" crossorigin="anonymous">
   </head>
   <body class="running-site">
-    <div id="root"></div>
+    <div id="root"><div class="running-shell"><header class="site-header"><a class="site-brand" href="/">牧己</a><nav aria-label="站点导航"><a href="/blog/">文章</a><a href="/crazy-talk/">疯言疯语</a><a href="/running/">跑步</a><a href="/images/">图床</a><span class="nav-divider" aria-hidden="true"></span><a href="/running/summary/">汇总</a></nav></header><main class="running-loading" aria-busy="true" aria-label="跑步记录正在加载"><section><h1>跑步记录</h1><p>统计和活动记录正在准备中，你可以先浏览其他栏目。</p><div class="loading-card"><h2>活动统计</h2><div class="loading-bars"></div></div></section><section><div class="loading-card loading-map"><h2>跑步地图</h2><p>路线将单独加载</p></div><div class="loading-card"><h2>活动记录</h2><div class="loading-bars"></div></div></section></main></div></div>
   </body>
 </html>
