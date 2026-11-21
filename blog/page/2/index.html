@@ -12,7 +12,7 @@
 </span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
 </span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_ROOT_USER=homes4</span>
-</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_ROOT_PASSWORD=aiy0ooCheephai0ohNahmu3Aijee6eiv</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:?Set MINIO_ROOT_PASSWORD}</span>
 </span></span><span style=display:flex><span>      - <span style=color:#ae81ff>MINIO_DEFAULT_BUCKETS=homes4</span>
 </span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
 </span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;9000:9000&#39;</span>
