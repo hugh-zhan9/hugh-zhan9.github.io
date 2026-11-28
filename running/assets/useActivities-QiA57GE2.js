@@ -1,0 +1,1 @@
+import{i as e}from"./chunk-DtcAfS_W.js";import{x as t}from"./index-CdIix1IM.js";import{t as n}from"./ActivitiesContext-B9LWuyRp.js";var r=e(t(),1),i=()=>{let e=(0,r.useContext)(n);if(!e)throw Error(`useActivities must be used within an ActivitiesProvider`);return e};export{i as t};
